@@ -1,0 +1,40 @@
+#Brandon Chisham
+#3-26-2008
+#Build manager for translator prototype
+
+
+
+INCLUDES=-I. -I../include
+
+CXXFLAGS=-Wall -g $(INCLUDES)
+
+GRAMMAR=grammar/nexus
+CODEGEN=codegen
+#Specifies all the Object code files needed to build
+LIBOBJS=util.o \
+        data_representation.o \
+        $(GRAMMAR)/nexus_reader.o \
+        $(GRAMMAR)/tree_description_parser.o \
+	$(GRAMMAR)/tree_description_scanner.o \
+	$(CODEGEN)/codegen.o
+#Specifies external libraries needed to build.
+LIBS=../lib/ncl/libncl.a
+
+all:
+	make pre-reqs
+	(cd grammar && make)
+	(cd codegen && make)
+	make bin	
+bin: 
+	g++ $(CXXFLAGS) -otranslator main.cpp $(LIBOBJS) $(LIBS)
+clean:
+		(cd grammar && make clean)
+	(cd codegen && make clean)
+	rm translator
+pre-reqs: data_representation.o util.o
+	make data_representation.o
+
+data_representation.o: data_representation.cpp data_representation.hpp util.o
+	$(CXX) $(CXXFLAGS) -c data_representation.cpp
+util.o: util.cpp util.hpp
+	$(CXX) $(CXXFLAGS) -c util.cpp

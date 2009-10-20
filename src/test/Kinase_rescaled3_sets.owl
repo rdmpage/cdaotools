@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
+	<!ENTITY owl11 "http://www.w3.org/2006/12/owl11#">
+	<!ENTITY dc "http://purl.org/dc/elements/1.1/#">
+	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
+	<!ENTITY owl11xml "http://www.w3.org/2006/12/owl11-xml#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY cdao "http://www.cs.nmsu.edu/~epontell/CURRENT.owl#">
+	<!ENTITY amino-acid "http://www.co-ode.org/ontologies/amino-acid/2005/10/11/amino-acid.owl#">
+]>
+
+
+<rdf:RDF xmlns="http://www.cs.nmsu.edu/~epontell/stdout.owl#"
+	xml:base="http://www.cs.nmsu.edu/~epontell/stdout.owl#"
+	xmlns:owl11="http://www.w3.org/2006/12/owl11#"
+	xmlns:owl11xml="http://www.w3.org/2006/12/owl11-xml#"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:cdao="http://www.cs.nmsu.edu/~epontell/CURRENT.owl#"
+	xmlns:amino-acid="http://www.co-ode.org/ontologies/amino-acid/2005/10/11/amino-acid.owl#">
+	<owl:Ontology rdf:about="http://www.cs.nmsu.edu/~epontell/CURRENT.owl">
+		<owl:imports rdf:resource="http://www.cs.nmsu.edu/~epontell/CURRENT.owl"/>
+	</owl:Ontology>

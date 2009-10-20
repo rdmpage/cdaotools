@@ -1,0 +1,2435 @@
+{\rtf1\ansi\ansicpg1252\uc1 \deff0\deflang1033\deflangfe1033
+{\fonttbl {\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}
+{\f1\fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+{\f2\fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New;}
+{\f3\froman\fcharset2\fprq2{\*\panose 05050102010706020507}Symbol;}
+}
+{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;}
+{\stylesheet
+{\widctlpar\adjustright \fs20\cgrid \snext0 Normal;}
+{\s1\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs36\kerning36\cgrid \sbasedon0 \snext0 heading 1;}
+{\s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid \sbasedon0 \snext0 heading 2;}
+{\s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid \sbasedon0 \snext0 heading 3;}
+{\s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid \sbasedon0 \snext0 heading 4;}{\*\cs10 \additive Default Paragraph Font;}
+{\s5\sb90\sa30\keepn\widctlpar\adjustright \b\f1\fs20\cgrid \sbasedon0 \snext0 heading 5;}{\*\cs10 \additive Default Paragraph Font;}
+{\s15\qc\sb240\sa60\widctlpar\outlinelevel0\adjustright \b\f1\fs32\kerning28\cgrid \sbasedon0 \snext15 Title;}
+{\s16\qc\sa60\widctlpar\outlinelevel1\adjustright \f1\cgrid \sbasedon0 \snext16 Subtitle;}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid \sbasedon0 \snext17 BodyText;}
+{\s18\widctlpar\fs22\cgrid \sbasedon0 \snext18 DenseText;}
+{\s28\widctlpar\tqc\tx4320\tqr\tx8640\adjustright \fs20\cgrid \sbasedon0 \snext28 header;}
+{\s29\widctlpar\tqc\tx4320\tqr\tx8640\qr\adjustright \fs20\cgrid \sbasedon0 \snext29 footer;}
+{\s30\li360\sa60\sb120\keepn\widctlpar\adjustright \b\f1\fs20\cgrid \sbasedon0 \snext30 GroupHeader;}
+{\s40\li0\widctlpar\adjustright \shading1000\cbpat8 \f2\fs16\cgrid \sbasedon0 \snext41 Code Example 0;}
+{\s41\li360\widctlpar\adjustright \shading1000\cbpat8 \f2\fs16\cgrid \sbasedon0 \snext42 Code Example 1;}
+{\s42\li720\widctlpar\adjustright \shading1000\cbpat8 \f2\fs16\cgrid \sbasedon0 \snext43 Code Example 2;}
+{\s43\li1080\widctlpar\adjustright \shading1000\cbpat8 \f2\fs16\cgrid \sbasedon0 \snext44 Code Example 3;}
+{\s44\li1440\widctlpar\adjustright \shading1000\cbpat8 \f2\fs16\cgrid \sbasedon0 \snext45 Code Example 4;}
+{\s45\li1800\widctlpar\adjustright \shading1000\cbpat8 \f2\fs16\cgrid \sbasedon0 \snext46 Code Example 5;}
+{\s46\li2160\widctlpar\adjustright \shading1000\cbpat8 \f2\fs16\cgrid \sbasedon0 \snext47 Code Example 6;}
+{\s47\li2520\widctlpar\adjustright \shading1000\cbpat8 \f2\fs16\cgrid \sbasedon0 \snext48 Code Example 7;}
+{\s48\li2880\widctlpar\adjustright \shading1000\cbpat8 \f2\fs16\cgrid \sbasedon0 \snext49 Code Example 8;}
+{\s49\li3240\widctlpar\adjustright \shading1000\cbpat8 \f2\fs16\cgrid \sbasedon0 \snext49 Code Example 9;}
+{\s50\li0\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid \sbasedon0 \snext51 List Continue 0;}
+{\s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid \sbasedon0 \snext52 List Continue 1;}
+{\s52\li720\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid \sbasedon0 \snext53 List Continue 2;}
+{\s53\li1080\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid \sbasedon0 \snext54 List Continue 3;}
+{\s54\li1440\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid \sbasedon0 \snext55 List Continue 4;}
+{\s55\li1800\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid \sbasedon0 \snext56 List Continue 5;}
+{\s56\li2160\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid \sbasedon0 \snext57 List Continue 6;}
+{\s57\li2520\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid \sbasedon0 \snext58 List Continue 7;}
+{\s58\li2880\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid \sbasedon0 \snext59 List Continue 8;}
+{\s59\li3240\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid \sbasedon0 \snext59 List Continue 9;}
+{\s60\li0\widctlpar\ql\adjustright \fs20\cgrid \sbasedon0 \snext61 DescContinue 0;}
+{\s61\li360\widctlpar\ql\adjustright \fs20\cgrid \sbasedon0 \snext62 DescContinue 1;}
+{\s62\li720\widctlpar\ql\adjustright \fs20\cgrid \sbasedon0 \snext63 DescContinue 2;}
+{\s63\li1080\widctlpar\ql\adjustright \fs20\cgrid \sbasedon0 \snext64 DescContinue 3;}
+{\s64\li1440\widctlpar\ql\adjustright \fs20\cgrid \sbasedon0 \snext65 DescContinue 4;}
+{\s65\li1800\widctlpar\ql\adjustright \fs20\cgrid \sbasedon0 \snext66 DescContinue 5;}
+{\s66\li2160\widctlpar\ql\adjustright \fs20\cgrid \sbasedon0 \snext67 DescContinue 6;}
+{\s67\li2520\widctlpar\ql\adjustright \fs20\cgrid \sbasedon0 \snext68 DescContinue 7;}
+{\s68\li2880\widctlpar\ql\adjustright \fs20\cgrid \sbasedon0 \snext69 DescContinue 8;}
+{\s69\li3240\widctlpar\ql\adjustright \fs20\cgrid \sbasedon0 \snext69 DescContinue 9;}
+{\s70\li0\sa30\sb30\widctlpar\tqr\tldot\tx8640\adjustright \fs20\cgrid \sbasedon0 \snext81 LatexTOC 0;}
+{\s71\li360\sa27\sb27\widctlpar\tqr\tldot\tx8640\adjustright \fs20\cgrid \sbasedon0 \snext82 LatexTOC 1;}
+{\s72\li720\sa24\sb24\widctlpar\tqr\tldot\tx8640\adjustright \fs20\cgrid \sbasedon0 \snext83 LatexTOC 2;}
+{\s73\li1080\sa21\sb21\widctlpar\tqr\tldot\tx8640\adjustright \fs20\cgrid \sbasedon0 \snext84 LatexTOC 3;}
+{\s74\li1440\sa18\sb18\widctlpar\tqr\tldot\tx8640\adjustright \fs20\cgrid \sbasedon0 \snext85 LatexTOC 4;}
+{\s75\li1800\sa15\sb15\widctlpar\tqr\tldot\tx8640\adjustright \fs20\cgrid \sbasedon0 \snext86 LatexTOC 5;}
+{\s76\li2160\sa12\sb12\widctlpar\tqr\tldot\tx8640\adjustright \fs20\cgrid \sbasedon0 \snext87 LatexTOC 6;}
+{\s77\li2520\sa9\sb9\widctlpar\tqr\tldot\tx8640\adjustright \fs20\cgrid \sbasedon0 \snext88 LatexTOC 7;}
+{\s78\li2880\sa6\sb6\widctlpar\tqr\tldot\tx8640\adjustright \fs20\cgrid \sbasedon0 \snext89 LatexTOC 8;}
+{\s79\li3240\sa3\sb3\widctlpar\tqr\tldot\tx8640\adjustright \fs20\cgrid \sbasedon0 \snext89 LatexTOC 9;}
+{\s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid \sbasedon0 \snext81 \sautoupd List Bullet 0;}
+{\s81\fi-360\li720\widctlpar\jclisttab\tx720{\*\pn \pnlvlbody\ilvl0\ls2\pnrnot0\pndec }\ls2\adjustright \fs20\cgrid \sbasedon0 \snext82 \sautoupd List Bullet 1;}
+{\s82\fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlbody\ilvl0\ls3\pnrnot0\pndec }\ls3\adjustright \fs20\cgrid \sbasedon0 \snext83 \sautoupd List Bullet 2;}
+{\s83\fi-360\li1440\widctlpar\jclisttab\tx1440{\*\pn \pnlvlbody\ilvl0\ls4\pnrnot0\pndec }\ls4\adjustright \fs20\cgrid \sbasedon0 \snext84 \sautoupd List Bullet 3;}
+{\s84\fi-360\li1800\widctlpar\jclisttab\tx1800{\*\pn \pnlvlbody\ilvl0\ls5\pnrnot0\pndec }\ls5\adjustright \fs20\cgrid \sbasedon0 \snext85 \sautoupd List Bullet 4;}
+{\s85\fi-360\li2160\widctlpar\jclisttab\tx2160{\*\pn \pnlvlbody\ilvl0\ls6\pnrnot0\pndec }\ls6\adjustright \fs20\cgrid \sbasedon0 \snext86 \sautoupd List Bullet 5;}
+{\s86\fi-360\li2520\widctlpar\jclisttab\tx2520{\*\pn \pnlvlbody\ilvl0\ls7\pnrnot0\pndec }\ls7\adjustright \fs20\cgrid \sbasedon0 \snext87 \sautoupd List Bullet 6;}
+{\s87\fi-360\li2880\widctlpar\jclisttab\tx2880{\*\pn \pnlvlbody\ilvl0\ls8\pnrnot0\pndec }\ls8\adjustright \fs20\cgrid \sbasedon0 \snext88 \sautoupd List Bullet 7;}
+{\s88\fi-360\li3240\widctlpar\jclisttab\tx3240{\*\pn \pnlvlbody\ilvl0\ls9\pnrnot0\pndec }\ls9\adjustright \fs20\cgrid \sbasedon0 \snext89 \sautoupd List Bullet 8;}
+{\s89\fi-360\li3600\widctlpar\jclisttab\tx3600{\*\pn \pnlvlbody\ilvl0\ls10\pnrnot0\pndec }\ls10\adjustright \fs20\cgrid \sbasedon0 \snext89 \sautoupd List Bullet 9;}
+{\s90\fi-360\li360\widctlpar\fs20\cgrid \sbasedon0 \snext91 \sautoupd List Enum 0;}
+{\s91\fi-360\li720\widctlpar\fs20\cgrid \sbasedon0 \snext92 \sautoupd List Enum 1;}
+{\s92\fi-360\li1080\widctlpar\fs20\cgrid \sbasedon0 \snext93 \sautoupd List Enum 2;}
+{\s93\fi-360\li1440\widctlpar\fs20\cgrid \sbasedon0 \snext94 \sautoupd List Enum 3;}
+{\s94\fi-360\li1800\widctlpar\fs20\cgrid \sbasedon0 \snext95 \sautoupd List Enum 4;}
+{\s95\fi-360\li2160\widctlpar\fs20\cgrid \sbasedon0 \snext96 \sautoupd List Enum 5;}
+{\s96\fi-360\li2520\widctlpar\fs20\cgrid \sbasedon0 \snext96 \sautoupd List Enum 5;}
+{\s97\fi-360\li2880\widctlpar\fs20\cgrid \sbasedon0 \snext98 \sautoupd List Enum 7;}
+{\s98\fi-360\li3240\widctlpar\fs20\cgrid \sbasedon0 \snext99 \sautoupd List Enum 8;}
+{\s99\fi-360\li3600\widctlpar\fs20\cgrid \sbasedon0 \snext99 \sautoupd List Enum 9;}
+}
+{\comment begin body}
+{\info 
+{\title {\comment {\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+C++{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Logging{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Facility{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Reference{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Manual{\comment RTFDocVisitor::visitPost(DocText)}
+ {\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+2{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}}C++ Logging Facility}
+{\comment {\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Generated{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+by{\comment RTFDocVisitor::visitPost(DocText)}
+Doxgyen. }
+{\creatim \yr2006\mo5\dy26\hr1\min4\sec11}
+}\pard\plain 
+\sectd\pgnlcrm
+{\footer \s29\widctlpar\tqc\tx4320\tqr\tx8640\qr\adjustright \fs20\cgrid {\chpgn}}
+\pard\plain \s16\qc\sa60\widctlpar\outlinelevel1\adjustright \f1\cgrid 
+\vertalc\qc\par\par\par\par\par\par\par
+\pard\plain \s15\qc\sb240\sa60\widctlpar\outlinelevel0\adjustright \b\f1\fs32\kerning28\cgrid 
+{\field\fldedit {\*\fldinst TITLE \\*MERGEFORMAT}{\fldrslt TITLE}}\par
+\pard\plain \s16\qc\sa60\widctlpar\outlinelevel1\adjustright \f1\cgrid 
+\par
+\par\par\par\par\par\par\par\par\par\par\par\par
+\pard\plain \s16\qc\sa60\widctlpar\outlinelevel1\adjustright \f1\cgrid 
+{\field\fldedit {\*\fldinst AUTHOR \\*MERGEFORMAT}{\fldrslt AUTHOR}}\par
+Version 2\par{\field\fldedit {\*\fldinst CREATEDATE \\*MERGEFORMAT}{\fldrslt CREATEDATE}}\par
+\page\page\vertalt
+\pard\plain 
+\s1\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs36\kerning36\cgrid Table of Contents\par
+\pard\plain \par
+{\field\fldedit {\*\fldinst TOC \\f \\*MERGEFORMAT}{\fldrslt Table of contents}}\par
+\pard\plain 
+
+\pard\plain \sect\sbkpage
+\s1\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs36\kerning36\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+C++{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Logging{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Facility{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Hierarchical{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Index{\comment RTFDocVisitor::visitPost(DocText)}
+\par \pard\plain 
+{\tc \v Hierarchical Index}
+\pard\plain \s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+C++{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Logging{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Facility{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Hierarchy{\comment RTFDocVisitor::visitPost(DocText)}
+\par \pard\plain 
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+This{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+inheritance{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+list{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+is{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+sorted{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+roughly{\comment RTFDocVisitor::visit(DocWord)}
+,{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+but{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+not{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+completely{\comment RTFDocVisitor::visit(DocWord)}
+,{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+alphabetically{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+}
+{
+\pard\plain \s71\li360\sa27\sb27\widctlpar\tqr\tldot\tx8640\adjustright \fs20\cgrid 
+Loggable\tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAC \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+{
+\pard\plain \s72\li720\sa24\sb24\widctlpar\tqr\tldot\tx8640\adjustright \fs20\cgrid 
+LoggableEndLine\tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAD \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+LoggableSpace\tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAE \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+}Logger\tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAF \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+{
+\pard\plain \s72\li720\sa24\sb24\widctlpar\tqr\tldot\tx8640\adjustright \fs20\cgrid 
+CLogger\tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAA \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+CppLogger\tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAB \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+SysLogger\tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAH \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+}LogManager\tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAG \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+}
+\pard\plain \sect\sbkpage
+\s1\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs36\kerning36\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+C++{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Logging{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Facility{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Index{\comment RTFDocVisitor::visitPost(DocText)}
+\par \pard\plain 
+{\tc \v Class Index}
+\pard\plain \s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+C++{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Logging{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Facility{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+List{\comment RTFDocVisitor::visitPost(DocText)}
+\par \pard\plain 
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Here{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+are{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+classes{\comment RTFDocVisitor::visit(DocWord)}
+,{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+structs{\comment RTFDocVisitor::visit(DocWord)}
+,{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+unions{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+and{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+interfaces{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+with{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+brief{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+descriptions{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+}
+{
+\pard\plain \s71\li360\sa27\sb27\widctlpar\tqr\tldot\tx8640\adjustright \fs20\cgrid 
+\par
+{\b {\b CLogger} } \tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAA \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+{\b {\b CppLogger} } \tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAB \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+{\b {\b Loggable} } \tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAC \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+{\b {\b LoggableEndLine} } \tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAD \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+{\b {\b LoggableSpace} } \tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAE \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+{\b {\b Logger} } \tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAF \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+{\b {\b LogManager} } \tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAG \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+{\b {\b SysLogger} } \tab {\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAH \\*MERGEFORMAT}{\fldrslt pagenum}}
+\par
+\par
+}\sect \sbkpage \pgndec \pgnrestart
+\sect \sectd \sbknone
+{\footer \s29\widctlpar\tqc\tx4320\tqr\tx8640\qr\adjustright \fs20\cgrid {\chpgn}}
+
+\pard\plain \sect\sbkpage
+\s1\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs36\kerning36\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+C++{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Logging{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Facility{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Documentation{\comment RTFDocVisitor::visitPost(DocText)}
+{\tc \v Class Documentation}
+\par \pard\plain 
+\pard\plain \s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+CLogger{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Reference{\comment RTFDocVisitor::visitPost(DocText)}
+\par \pard\plain 
+{\tc\tcl2 \v CLogger}
+{\xe \v CLogger}
+{\bkmkstart AAAAAAAAAA}
+{\bkmkend AAAAAAAAAA}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\f2 #include <CLogger.hpp>}\par
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Inheritance{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+diagram{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+CLogger{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+{
+\pard\plain 
+\par\pard \qc {\field\flddirty {\*\fldinst INCLUDEPICTURE "classCLogger.png" \\d \\*MERGEFORMAT}{\fldrslt IMAGE}}\par
+}
+}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Public{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Functions{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+
+{
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+
+{\b CLogger} (FILE *&log, int nLogLevel=ERROR_MESSAGES_LR, bool closeOnExit=false){\bkmkstart AAAAAAAAAI}
+{\bkmkend AAAAAAAAAI}
+\par
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+virtual void {\b log} (int level=ERROR_MESSAGES_LR, const string &message="") const \par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Detailed{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Description{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid \par
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Provides{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+an{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+interface{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+log{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+a{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+FILE*{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}\par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Function{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Documentation{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{\xe \v log\:CLogger}
+{\xe \v CLogger\:log}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+void CLogger::log (int {\i level} = {\f2 ERROR_MESSAGES_LR}, const string & {\i message} = {\f2 ""}) const{\f2  [virtual]}}
+}\par
+{\bkmkstart AAAAAAAAAJ}
+{\bkmkend AAAAAAAAAJ}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Description{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Tests{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+log{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+level{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+of{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+message{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+and{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+reports{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+message{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+if{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+it{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+has{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+a{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+high{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+enough{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+priority{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+otherwise{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+message{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+is{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+suppressed{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Implements{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visitPost(DocText)}
+{\b Logger} ({\i p.{\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAK \\*MERGEFORMAT}{\fldrslt pagenum}}}){\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocText)}
+}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+The{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+documentation{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+this{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+was{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+generated{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+from{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+following{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+files{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+{\par
+\pard\plain \s81\fi-360\li720\widctlpar\jclisttab\tx720{\*\pn \pnlvlbody\ilvl0\ls2\pnrnot0\pndec }\ls2\adjustright \fs20\cgrid 
+CLogger.hpp\par
+\pard\plain \s81\fi-360\li720\widctlpar\jclisttab\tx720{\*\pn \pnlvlbody\ilvl0\ls2\pnrnot0\pndec }\ls2\adjustright \fs20\cgrid 
+CLogger.cpp\par
+}}
+\par \pard\plain 
+
+\pard\plain \sect\sbkpage
+\s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+\pard\plain \s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+CppLogger{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Reference{\comment RTFDocVisitor::visitPost(DocText)}
+\par \pard\plain 
+{\tc\tcl2 \v CppLogger}
+{\xe \v CppLogger}
+{\bkmkstart AAAAAAAAAB}
+{\bkmkend AAAAAAAAAB}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\f2 #include <CppLogger.hpp>}\par
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Inheritance{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+diagram{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+CppLogger{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+{
+\pard\plain 
+\par\pard \qc {\field\flddirty {\*\fldinst INCLUDEPICTURE "classCppLogger.png" \\d \\*MERGEFORMAT}{\fldrslt IMAGE}}\par
+}
+}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Public{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Functions{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+
+{
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+{\b CppLogger} (const {\b CppLogger} &rhs)\par
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+
+{\b CppLogger} (ostream &log=cerr, int nLogLevel=0){\bkmkstart AAAAAAAAAL}
+{\bkmkend AAAAAAAAAL}
+\par
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+virtual {\b ~CppLogger} ()\par
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+virtual void {\b log} (int level=ERROR_MESSAGES_LR, const std::string &message="") const \par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Detailed{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Description{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid \par
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Provides{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+a{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+ofstream{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+interface{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocLinkedWord)}
+{\b Logger}{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+system{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}\par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Constructor{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocSymbol)}
+&{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Destructor{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Documentation{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{\xe \v CppLogger\:CppLogger}
+{\xe \v CppLogger\:CppLogger}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+CppLogger::CppLogger (const {\b CppLogger} & {\i rhs}){\f2  [inline]}}
+}\par
+{\bkmkstart AAAAAAAAAM}
+{\bkmkend AAAAAAAAAM}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Description{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Copies{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+an{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+existing{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+logger{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}}
+{\xe \v ~CppLogger\:CppLogger}
+{\xe \v CppLogger\:~CppLogger}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+virtual CppLogger::~CppLogger (){\f2  [inline, virtual]}}
+}\par
+{\bkmkstart AAAAAAAAAN}
+{\bkmkend AAAAAAAAAN}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Description{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Currently{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+does{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+nothing{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+since{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocLinkedWord)}
+{\b Logger}{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+does{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+not{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+allocate{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+resources{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+itself{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Function{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Documentation{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{\xe \v log\:CppLogger}
+{\xe \v CppLogger\:log}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+virtual void CppLogger::log (int {\i level} = {\f2 ERROR_MESSAGES_LR}, const std::string & {\i message} = {\f2 ""}) const{\f2  [virtual]}}
+}\par
+{\bkmkstart AAAAAAAAAO}
+{\bkmkend AAAAAAAAAO}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Description{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Tests{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+log{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+level{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+of{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+message{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+and{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+reports{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+message{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+if{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+it{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+has{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+a{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+high{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+enough{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+priority{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+otherwise{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+message{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+is{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+suppressed{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+The{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+documentation{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+this{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+was{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+generated{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+from{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+following{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+file{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+{\par
+\pard\plain \s81\fi-360\li720\widctlpar\jclisttab\tx720{\*\pn \pnlvlbody\ilvl0\ls2\pnrnot0\pndec }\ls2\adjustright \fs20\cgrid 
+CppLogger.hpp\par
+}}
+\par \pard\plain 
+
+\pard\plain \sect\sbkpage
+\s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+\pard\plain \s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Loggable{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Reference{\comment RTFDocVisitor::visitPost(DocText)}
+\par \pard\plain 
+{\tc\tcl2 \v Loggable}
+{\xe \v Loggable}
+{\bkmkstart AAAAAAAAAC}
+{\bkmkend AAAAAAAAAC}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\f2 #include <Loggable.hpp>}\par
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Inheritance{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+diagram{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Loggable{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+{
+\pard\plain 
+\par\pard \qc {\field\flddirty {\*\fldinst INCLUDEPICTURE "classLoggable.png" \\d \\*MERGEFORMAT}{\fldrslt IMAGE}}\par
+}
+}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Public{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Functions{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+
+{
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+virtual std::string {\b toString} () const =0\par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Detailed{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Description{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid \par
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Description{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Loggable{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+specifies{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+an{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+interface{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+classes{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+may{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+inherit{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+more{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+easily{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+integrate{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+with{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocLinkedWord)}
+{\b LogManager}{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}\par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Function{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Documentation{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{\xe \v toString\:Loggable}
+{\xe \v Loggable\:toString}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+virtual std::string Loggable::toString () const{\f2  [pure virtual]}}
+}\par
+{\bkmkstart AAAAAAAAAP}
+{\bkmkend AAAAAAAAAP}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Clients{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+should{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+use{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+this{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+interface{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+memeber{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+provide{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+logger{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+with{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+a{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+formatted{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+message{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Implemented{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+in{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visitPost(DocText)}
+{\b LoggableEndLine} ({\i p.{\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAQ \\*MERGEFORMAT}{\fldrslt pagenum}}}){\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+,{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+and{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visitPost(DocText)}
+{\b LoggableSpace} ({\i p.{\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAR \\*MERGEFORMAT}{\fldrslt pagenum}}}){\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocText)}
+}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+The{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+documentation{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+this{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+was{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+generated{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+from{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+following{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+file{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+{\par
+\pard\plain \s81\fi-360\li720\widctlpar\jclisttab\tx720{\*\pn \pnlvlbody\ilvl0\ls2\pnrnot0\pndec }\ls2\adjustright \fs20\cgrid 
+Loggable.hpp\par
+}}
+\par \pard\plain 
+
+\pard\plain \sect\sbkpage
+\s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+\pard\plain \s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+LoggableEndLine{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Reference{\comment RTFDocVisitor::visitPost(DocText)}
+\par \pard\plain 
+{\tc\tcl2 \v LoggableEndLine}
+{\xe \v LoggableEndLine}
+{\bkmkstart AAAAAAAAAD}
+{\bkmkend AAAAAAAAAD}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\f2 #include <Loggable.hpp>}\par
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Inheritance{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+diagram{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+LoggableEndLine{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+{
+\pard\plain 
+\par\pard \qc {\field\flddirty {\*\fldinst INCLUDEPICTURE "classLoggableEndLine.png" \\d \\*MERGEFORMAT}{\fldrslt IMAGE}}\par
+}
+}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Public{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Functions{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+
+{
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+virtual std::string {\b toString} () const \par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Detailed{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Description{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid \par
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+This{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+predefined{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+log{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+token{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+is{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+a{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+wrapper{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+new{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+line{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+character{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}\par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Function{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Documentation{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{\xe \v toString\:LoggableEndLine}
+{\xe \v LoggableEndLine\:toString}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+virtual std::string LoggableEndLine::toString () const{\f2  [inline, virtual]}}
+}\par
+{\bkmkstart AAAAAAAAAQ}
+{\bkmkend AAAAAAAAAQ}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Clients{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+should{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+use{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+this{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+interface{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+memeber{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+provide{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+logger{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+with{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+a{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+formatted{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+message{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Implements{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visitPost(DocText)}
+{\b Loggable} ({\i p.{\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAP \\*MERGEFORMAT}{\fldrslt pagenum}}}){\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocText)}
+}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+The{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+documentation{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+this{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+was{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+generated{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+from{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+following{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+file{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+{\par
+\pard\plain \s81\fi-360\li720\widctlpar\jclisttab\tx720{\*\pn \pnlvlbody\ilvl0\ls2\pnrnot0\pndec }\ls2\adjustright \fs20\cgrid 
+Loggable.hpp\par
+}}
+\par \pard\plain 
+
+\pard\plain \sect\sbkpage
+\s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+\pard\plain \s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+LoggableSpace{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Reference{\comment RTFDocVisitor::visitPost(DocText)}
+\par \pard\plain 
+{\tc\tcl2 \v LoggableSpace}
+{\xe \v LoggableSpace}
+{\bkmkstart AAAAAAAAAE}
+{\bkmkend AAAAAAAAAE}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\f2 #include <Loggable.hpp>}\par
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Inheritance{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+diagram{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+LoggableSpace{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+{
+\pard\plain 
+\par\pard \qc {\field\flddirty {\*\fldinst INCLUDEPICTURE "classLoggableSpace.png" \\d \\*MERGEFORMAT}{\fldrslt IMAGE}}\par
+}
+}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Public{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Functions{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+
+{
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+virtual std::string {\b toString} () const \par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Detailed{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Description{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid \par
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+This{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+predefined{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+log{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+tokent{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+is{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+a{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+wrapper{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+space{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+character{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}\par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Function{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Documentation{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{\xe \v toString\:LoggableSpace}
+{\xe \v LoggableSpace\:toString}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+virtual std::string LoggableSpace::toString () const{\f2  [inline, virtual]}}
+}\par
+{\bkmkstart AAAAAAAAAR}
+{\bkmkend AAAAAAAAAR}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Clients{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+should{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+use{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+this{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+interface{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+memeber{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+provide{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+logger{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+with{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+a{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+formatted{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+message{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Implements{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visitPost(DocText)}
+{\b Loggable} ({\i p.{\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAP \\*MERGEFORMAT}{\fldrslt pagenum}}}){\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocText)}
+}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+The{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+documentation{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+this{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+was{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+generated{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+from{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+following{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+file{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+{\par
+\pard\plain \s81\fi-360\li720\widctlpar\jclisttab\tx720{\*\pn \pnlvlbody\ilvl0\ls2\pnrnot0\pndec }\ls2\adjustright \fs20\cgrid 
+Loggable.hpp\par
+}}
+\par \pard\plain 
+
+\pard\plain \sect\sbkpage
+\s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+\pard\plain \s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Logger{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Reference{\comment RTFDocVisitor::visitPost(DocText)}
+\par \pard\plain 
+{\tc\tcl2 \v Logger}
+{\xe \v Logger}
+{\bkmkstart AAAAAAAAAF}
+{\bkmkend AAAAAAAAAF}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\f2 #include <Logger.hpp>}\par
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Inheritance{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+diagram{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Logger{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+{
+\pard\plain 
+\par\pard \qc {\field\flddirty {\*\fldinst INCLUDEPICTURE "classLogger.png" \\d \\*MERGEFORMAT}{\fldrslt IMAGE}}\par
+}
+}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Public{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Functions{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+
+{
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+
+{\b Logger} (int logLevel){\bkmkstart AAAAAAAAAS}
+{\bkmkend AAAAAAAAAS}
+\par
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+virtual {\b ~Logger} ()\par
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+virtual void {\b log} (int level=ERROR_MESSAGES_LR, const string &message="") const =0\par
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+void {\b changeLevel} (const int nLevel)\par
+}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Protected{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Attributes{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+
+{
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+int {\b logLevel_}\par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Detailed{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Description{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid \par
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Logger{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+defines{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+a{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+variable{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+verbosity{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+logging{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+mechanism{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}\par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Constructor{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocSymbol)}
+&{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Destructor{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Documentation{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{\xe \v ~Logger\:Logger}
+{\xe \v Logger\:~Logger}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+virtual Logger::~Logger (){\f2  [inline, virtual]}}
+}\par
+{\bkmkstart AAAAAAAAAT}
+{\bkmkend AAAAAAAAAT}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Currently{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+does{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+nothing{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+since{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Logger{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+does{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+not{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+allocate{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+resources{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+itself{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Function{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Documentation{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{\xe \v changeLevel\:Logger}
+{\xe \v Logger\:changeLevel}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+void Logger::changeLevel (const int {\i nLevel}){\f2  [inline]}}
+}\par
+{\bkmkstart AAAAAAAAAU}
+{\bkmkend AAAAAAAAAU}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Changes{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+reporting{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+level{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+of{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+logger{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+It{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+is{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+recommended{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+that{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+client{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+use{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+one{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+of{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+provided{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+named{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+constants{\comment RTFDocVisitor::visit(DocWord)}
+,{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+but{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+an{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+arbitrary{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+integer{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+will{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+work{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}}
+{\xe \v log\:Logger}
+{\xe \v Logger\:log}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+virtual void Logger::log (int {\i level} = {\f2 ERROR_MESSAGES_LR}, const string & {\i message} = {\f2 ""}) const{\f2  [pure virtual]}}
+}\par
+{\bkmkstart AAAAAAAAAK}
+{\bkmkend AAAAAAAAAK}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Tests{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+log{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+level{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+of{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+message{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+and{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+reports{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+message{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+if{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+it{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+has{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+a{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+high{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+enough{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+priority{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+otherwise{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+message{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+is{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+suppressed{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Implemented{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+in{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visitPost(DocText)}
+{\b CLogger} ({\i p.{\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAJ \\*MERGEFORMAT}{\fldrslt pagenum}}}){\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+,{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+and{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visitPost(DocText)}
+{\b SysLogger} ({\i p.{\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAV \\*MERGEFORMAT}{\fldrslt pagenum}}}){\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocText)}
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Data{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Documentation{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{\xe \v logLevel_\:Logger}
+{\xe \v Logger\:logLevel_}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+int {\b Logger::logLevel_}{\f2  [protected]}}
+}\par
+{\bkmkstart AAAAAAAAAW}
+{\bkmkend AAAAAAAAAW}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Specifies{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+level{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+that{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+this{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+instance{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+will{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+listen{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+In{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+current{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+implementation{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+level{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+specified{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+indicates{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+least{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+serious{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+message{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+that{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+logger{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+will{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+report{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+The{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+documentation{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+this{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+was{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+generated{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+from{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+following{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+file{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+{\par
+\pard\plain \s81\fi-360\li720\widctlpar\jclisttab\tx720{\*\pn \pnlvlbody\ilvl0\ls2\pnrnot0\pndec }\ls2\adjustright \fs20\cgrid 
+Logger.hpp\par
+}}
+\par \pard\plain 
+
+\pard\plain \sect\sbkpage
+\s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+\pard\plain \s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+LogManager{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Reference{\comment RTFDocVisitor::visitPost(DocText)}
+\par \pard\plain 
+{\tc\tcl2 \v LogManager}
+{\xe \v LogManager}
+{\bkmkstart AAAAAAAAAG}
+{\bkmkend AAAAAAAAAG}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\f2 #include <LogManager.hpp>}\par
+}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Public{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Functions{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+
+{
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+{\b ~LogManager} ()\par
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+void {\b registerListener} (const {\b Logger} *nLog)\par
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+void {\b log} (int level=ERROR_MESSAGES_LR, const string &message="") const \par
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+void {\b log} (int level=ERROR_MESSAGES_LR, const list< {\b Loggable} * > &messageTokens=list< {\b Loggable} * >()) const \par
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+
+bool {\b getContinue} (){\bkmkstart AAAAAAAAAX}
+{\bkmkend AAAAAAAAAX}
+\par
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+
+void {\b stopLogger} (){\bkmkstart AAAAAAAAAY}
+{\bkmkend AAAAAAAAAY}
+\par
+}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Static{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Public{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Functions{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+
+{
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+
+static {\b LogManager} & {\b getInstance} (){\bkmkstart AAAAAAAAAZ}
+{\bkmkend AAAAAAAAAZ}
+\par
+}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Protected{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Functions{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+
+{
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+{\b LogManager} ()\par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Detailed{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Description{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid \par
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+LogMangager{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+specifies{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+an{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+flexible{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+singleton{\comment RTFDocVisitor::visit(DocWord)}
+,{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+publisher/subscriber{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+patterned{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+logging{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+facility{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Loggers{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+subscribe{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+with{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+it{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+and{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+are{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+then{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+informed{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+when{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+log{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+events{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+occur{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}\par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Constructor{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocSymbol)}
+&{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Destructor{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Documentation{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{\xe \v LogManager\:LogManager}
+{\xe \v LogManager\:LogManager}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+LogManager::LogManager (){\f2  [protected]}}
+}\par
+{\bkmkstart AAAAAAAABA}
+{\bkmkend AAAAAAAABA}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Creates{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+a{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+default{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+logger{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+with{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+no{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+listeners{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}}
+{\xe \v ~LogManager\:LogManager}
+{\xe \v LogManager\:~LogManager}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+LogManager::~LogManager (){\f2  [inline]}}
+}\par
+{\bkmkstart AAAAAAAABB}
+{\bkmkend AAAAAAAABB}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Releases{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+mutex{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+and{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+heap{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+space{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+system{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+when{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+last{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+handle{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+LogManager{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+instance{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+has{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+gone{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+out{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+of{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+scope{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Function{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Documentation{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{\xe \v log\:LogManager}
+{\xe \v LogManager\:log}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+void LogManager::log (int {\i level} = {\f2 ERROR_MESSAGES_LR}, const list< {\b Loggable} * > & {\i messageTokens} = {\f2 list<\~ {\b Loggable}\~ *\~ >()}) const}
+}\par
+{\bkmkstart AAAAAAAABC}
+{\bkmkend AAAAAAAABC}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Broadcasts{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+specified{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+message{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+tokens{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+all{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+subscribed{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+loggers{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}}
+{\xe \v log\:LogManager}
+{\xe \v LogManager\:log}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+void LogManager::log (int {\i level} = {\f2 ERROR_MESSAGES_LR}, const string & {\i message} = {\f2 ""}) const}
+}\par
+{\bkmkstart AAAAAAAABD}
+{\bkmkend AAAAAAAABD}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Broadcasts{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+specified{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+string{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+all{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+subscribed{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+loggers{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}}
+{\xe \v registerListener\:LogManager}
+{\xe \v LogManager\:registerListener}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+void LogManager::registerListener (const {\b Logger} * {\i nLog})}
+}\par
+{\bkmkstart AAAAAAAABE}
+{\bkmkend AAAAAAAABE}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Adds{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+a{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+new{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+log{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+listener{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+system{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+The{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+documentation{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+this{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+was{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+generated{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+from{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+following{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+files{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+{\par
+\pard\plain \s81\fi-360\li720\widctlpar\jclisttab\tx720{\*\pn \pnlvlbody\ilvl0\ls2\pnrnot0\pndec }\ls2\adjustright \fs20\cgrid 
+LogManager.hpp\par
+\pard\plain \s81\fi-360\li720\widctlpar\jclisttab\tx720{\*\pn \pnlvlbody\ilvl0\ls2\pnrnot0\pndec }\ls2\adjustright \fs20\cgrid 
+LogManager.cpp\par
+}}
+\par \pard\plain 
+
+\pard\plain \sect\sbkpage
+\s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+\pard\plain \s2\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs28\kerning28\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+SysLogger{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Reference{\comment RTFDocVisitor::visitPost(DocText)}
+\par \pard\plain 
+{\tc\tcl2 \v SysLogger}
+{\xe \v SysLogger}
+{\bkmkstart AAAAAAAAAH}
+{\bkmkend AAAAAAAAAH}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\f2 #include <SysLogger.hpp>}\par
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Inheritance{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+diagram{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+SysLogger{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+{
+\pard\plain 
+\par\pard \qc {\field\flddirty {\*\fldinst INCLUDEPICTURE "classSysLogger.png" \\d \\*MERGEFORMAT}{\fldrslt IMAGE}}\par
+}
+}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Public{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Functions{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+
+{
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+{\b SysLogger} (const char *ident=NULL, int option=LOG_NDELAY, int facility=LOG_USER, int nLogLevel=ERROR_MESSAGES_LR)\par
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+virtual {\b ~SysLogger} ()\par
+\pard\plain \s80\fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls1\pnrnot0\pndec }\ls1\adjustright \fs20\cgrid 
+virtual void {\b log} (int level=ERROR_MESSAGES_LR, const string &message="") const \par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Detailed{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Description{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid \par
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+This{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocLinkedWord)}
+{\b Logger}{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+provides{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+an{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+interface{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+system{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+logger{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}\par
+}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Constructor{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocSymbol)}
+&{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Destructor{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Documentation{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{\xe \v SysLogger\:SysLogger}
+{\xe \v SysLogger\:SysLogger}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+SysLogger::SysLogger (const char * {\i ident} = {\f2 NULL}, int {\i option} = {\f2 LOG_NDELAY}, int {\i facility} = {\f2 LOG_USER}, int {\i nLogLevel} = {\f2 ERROR_MESSAGES_LR}){\f2  [inline]}}
+}\par
+{\bkmkstart AAAAAAAABF}
+{\bkmkend AAAAAAAABF}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Allows{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+user{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+to{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+tune{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+logger{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}}
+{\xe \v ~SysLogger\:SysLogger}
+{\xe \v SysLogger\:~SysLogger}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+virtual SysLogger::~SysLogger (){\f2  [inline, virtual]}}
+}\par
+{\bkmkstart AAAAAAAABG}
+{\bkmkend AAAAAAAABG}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Releases{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+syslog{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+connection{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}}
+{\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+\pard\plain \s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid 
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Member{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Function{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+Documentation{\comment RTFDocVisitor::visitPost(DocText)}
+\par
+\pard\plain 
+{\xe \v log\:SysLogger}
+{\xe \v SysLogger\:log}
+\pard\plain \s4\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs20\cgrid {
+{\b 
+void SysLogger::log (int {\i level} = {\f2 ERROR_MESSAGES_LR}, const string & {\i message} = {\f2 ""}) const{\f2  [virtual]}}
+}\par
+{\bkmkstart AAAAAAAAAV}
+{\bkmkend AAAAAAAAAV}
+{
+\pard\plain \s51\li360\sa60\sb30\qj\widctlpar\qj\adjustright \fs20\cgrid 
+{\comment RTFDocVisitor::visitPre(DocRoot)}
+{\s17\sa60\sb30\widctlpar\qj \fs22\cgrid 
+{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Handles{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+receipt{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+of{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+preformatted{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+messages{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocPara)}
+{\comment RTFDocVisitor::visitPost(DocRoot)}
+\par
+}{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+Implements{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visitPost(DocText)}
+{\b Logger} ({\i p.{\field\fldedit {\*\fldinst PAGEREF AAAAAAAAAK \\*MERGEFORMAT}{\fldrslt pagenum}}}){\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+.{\comment RTFDocVisitor::visitPost(DocText)}
+}
+{
+\pard\plain \s17\sa60\sb30\widctlpar\qj \fs22\cgrid {\pard\widctlpar\brdrb\brdrs\brdrw5\brsp20 \adjustright \par}
+{\comment RTFDocVisitor::visitPre(DocText)}
+{\comment RTFDocVisitor::visit(DocWord)}
+The{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+documentation{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+for{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+this{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+class{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+was{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+generated{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+from{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+the{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+following{\comment RTFDocVisitor::visit(DocWhiteSpace)}
+ {\comment RTFDocVisitor::visit(DocWord)}
+files{\comment RTFDocVisitor::visit(DocWord)}
+:{\comment RTFDocVisitor::visitPost(DocText)}
+{\par
+\pard\plain \s81\fi-360\li720\widctlpar\jclisttab\tx720{\*\pn \pnlvlbody\ilvl0\ls2\pnrnot0\pndec }\ls2\adjustright \fs20\cgrid 
+SysLogger.hpp\par
+\pard\plain \s81\fi-360\li720\widctlpar\jclisttab\tx720{\*\pn \pnlvlbody\ilvl0\ls2\pnrnot0\pndec }\ls2\adjustright \fs20\cgrid 
+SysLogger.cpp\par
+}}
+
+\pard\plain \sect\sbkpage
+\s1\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs36\kerning36\cgrid 
+\s1\sb240\sa60\keepn\widctlpar\adjustright \b\f1\fs36\kerning36\cgrid Index\par 
+\pard\plain 
+{\tc \v Index}
+{\field\fldedit {\*\fldinst INDEX \\c2 \\*MERGEFORMAT}{\fldrslt INDEX}}
+}

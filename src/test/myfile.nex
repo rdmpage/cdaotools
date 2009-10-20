@@ -1,0 +1,30 @@
+#NEXUS
+
+BEGIN TAXA;
+        DIMENSIONS ntax=10;
+        TAXLABELS  Arabidopsis_thaliana_AAD31363.1 Arabidopsis_thaliana_CAB79970.1 Oryza_sativa_BAB21282.1 Dictyostelium_discoideum_AAO51107.1 Caenorhabditis_elegans_CAA92686.1 Drosophila_melanogaster_AAF55117.1 Drosophila_melanogaster_AAF55115.1 Mus_musculus_BAB61955.1 Saccharomyces_cerevisiae_AAB68881.1 Schizosaccharomyces_pombe_CAB16373.1;
+END;
+
+BEGIN CHARACTERS;
+        TITLE dna;
+        LINK taxa=PF00137_47;
+        DIMENSIONS nchar=10;
+        FORMAT datatype=dna gap=- missing=?;
+        MATRIX
+        Arabidopsis_thaliana_CAB79970.1         gtgtggttgc
+        Schizosaccharomyces_pombe_CAB16373.1    tgtatatgct
+        Drosophila_melanogaster_AAF55117.1      tgtacttcgt
+        Arabidopsis_thaliana_AAD31363.1         gt---gtggc
+        Oryza_sativa_BAB21282.1                 ct--------
+        Saccharomyces_cerevisiae_AAB68881.1     tgtacaagct
+        Mus_musculus_BAB61955.1                 tctgctacac
+        Dictyostelium_discoideum_AAO51107.1     cacttactcc
+        Caenorhabditis_elegans_CAA92686.1       tgttttacat
+        Drosophila_melanogaster_AAF55115.1      ac------g-
+        ;
+END;
+
+BEGIN TREES;
+        TREE con_50_majrule =
+(((Arabidopsis_thaliana_AAD31363.1:0.004496,Arabidopsis_thaliana_CAB79970.1:0.009539)inode15:0.090479,Oryza_sativa_BAB21282.1:0.043596)inode14:0.219708,(Dictyostelium_discoideum_AAO51107.1:0.341768,(((Caenorhabditis_elegans_CAA92686.1:0.308884,(Drosophila_melanogaster_AAF55117.1:0.128132,Drosophila_melanogaster_AAF55115.1:0.384443)inode20:0.236060)inode19:0.093887,Mus_musculus_BAB61955.1:0.243982)inode18:0.150844,(Saccharomyces_cerevisiae_AAB68881.1:0.235101,Schizosaccharomyces_pombe_CAB16373.1:0.261646)inode21:0.225955)inode17:0.189073)inode16:0.127974)root;
+END;

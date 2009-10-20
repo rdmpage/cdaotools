@@ -1,0 +1,1885 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE Ontology [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY dc "http://purl.org/dc/elements/1.1/" >
+    <!ENTITY owl11 "http://www.w3.org/2006/12/owl11#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl11xml "http://www.w3.org/2006/12/owl11-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY revision "http://cdao.cvs.sourceforge.net/*checkout*/cdao/cdao/OWL/cdao.owl?revision=1.14#" >
+]>
+
+
+
+
+
+<!-- Axioms: 426 -->
+
+<Ontology xmlns="http://www.w3.org/2006/12/owl11-xml#"
+     xml:base="http://www.w3.org/2006/12/owl11-xml#"
+     xmlns:owl11="http://www.w3.org/2006/12/owl11#"
+     xmlns:owl11xml="http://www.w3.org/2006/12/owl11-xml#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:revision="http://cdao.cvs.sourceforge.net/*checkout*/cdao/cdao/OWL/cdao.owl?revision=1.14#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     URI="http://cdao.cvs.sourceforge.net/*checkout*/cdao/cdao/OWL/cdao.owl?revision=1.14">
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;belongs_to_Compound_Character"/>
+        <OWLClass URI="&revision;Compound_Character"/>
+    </ObjectPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;Continuous"/>
+        <OWLClass URI="&revision;Character_State_Domain"/>
+    </SubClassOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;homologous_to"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Nucleotide_Datum"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Ancestral_Node"/>
+        <ObjectMinCardinality cardinality="1">
+            <ObjectProperty URI="&revision;part_of"/>
+            <OWLClass URI="&revision;Rooted_Tree"/>
+        </ObjectMinCardinality>
+    </SubClassOf>
+    <Declaration>
+        <OWLClass URI="&revision;Edge_Transformation"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Edge_Annotation"/>
+        <OWLClass URI="&revision;CDAO_Annotation"/>
+    </SubClassOf>
+    <EquivalentClasses>
+        <ObjectIntersectionOf>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty URI="&revision;has_Child_Node"/>
+                <OWLClass URI="&revision;Node"/>
+            </ObjectExactCardinality>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty URI="&revision;has_Parent_Node"/>
+                <OWLClass URI="&revision;Node"/>
+            </ObjectExactCardinality>
+            <OWLClass URI="&revision;Edge"/>
+        </ObjectIntersectionOf>
+        <OWLClass URI="&revision;Directed_Edge"/>
+    </EquivalentClasses>
+    <ClassAssertion>
+        <OWLClass URI="&revision;gap"/>
+        <Individual URI="&revision;Generic_State"/>
+    </ClassAssertion>
+    <Declaration>
+        <Individual URI="&revision;W"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_TU"/>
+    </Declaration>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;L"/>
+    </ClassAssertion>
+    <SubClassOf>
+        <OWLClass URI="&revision;Gap_cost"/>
+        <OWLClass URI="&revision;Model_description"/>
+    </SubClassOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Coordinate_System"/>
+        <OWLClass URI="&revision;Datum_Coordinate"/>
+    </ObjectPropertyDomain>
+    <SubClassOf>
+        <OWLClass URI="&revision;Taxonomic_Link"/>
+        <DataSomeValuesFrom>
+            <DataProperty URI="&revision;has_External_Reference"/>
+            <Datatype URI="&xsd;anyType"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Character"/>
+        <OWLClass URI="&revision;Character_State_Data_Matrix"/>
+    </ObjectPropertyDomain>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;G"/>
+    </ClassAssertion>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Nucleotide_Datum"/>
+        <OWLClass URI="&revision;Nucleotide_State_Datum"/>
+    </ObjectPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;Kimura_2_parameters"/>
+        <OWLClass URI="&revision;Substitution_model"/>
+    </SubClassOf>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;R"/>
+    </ClassAssertion>
+    <SubClassOf>
+        <OWLClass URI="&revision;Edge_Transformation"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty URI="&revision;has_Left_State"/>
+            <OWLClass URI="&revision;Character_State_Domain"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Parent"/>
+    </Declaration>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Continuous_State"/>
+        <OWLClass URI="&revision;Continuous"/>
+    </ObjectPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;CDAO_Annotation"/>
+        <OWLClass URI="&owl;Thing"/>
+    </SubClassOf>
+    <Declaration>
+        <OWLClass URI="&revision;Character_State_Data_Matrix_Annotation"/>
+    </Declaration>
+    <FunctionalObjectProperty>
+        <ObjectProperty URI="&revision;belongs_to_Amino_Acid_Character"/>
+    </FunctionalObjectProperty>
+    <Declaration>
+        <OWLClass URI="&revision;Coordinate_Range"/>
+    </Declaration>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Right_Node"/>
+        <ObjectProperty URI="&revision;has_Transformation_Component"/>
+    </SubObjectPropertyOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Transformation_Component"/>
+    </Declaration>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Remaining_Coordinate_List"/>
+        <ObjectProperty URI="&revision;has"/>
+    </SubObjectPropertyOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Alignment_Procedure"/>
+        <OWLClass URI="&revision;Character_State_Data_Matrix_Annotation"/>
+    </SubClassOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;belongs_to_Nucleotide_Character"/>
+    </Declaration>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;belongs_to_Nucleotide_Character"/>
+        <ObjectProperty URI="&revision;belongs_to_Character"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Parent_Node"/>
+        <ObjectProperty URI="&revision;has_Node"/>
+    </SubObjectPropertyOf>
+    <Declaration>
+        <Individual URI="&revision;E"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Coordinate_Point"/>
+        <OWLClass URI="&revision;Datum_Coordinate"/>
+    </SubClassOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;belongs_to_Amino_Acid_Character"/>
+        <OWLClass URI="&revision;Amino_Acid_State_Datum"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Amino_Acid_Datum"/>
+        <OWLClass URI="&revision;Amino_Acid_Character"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;belongs_to_TU"/>
+        <OWLClass URI="&revision;TU"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;belongs_to_Edge_as_Child"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyDomain>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Coordinate"/>
+    </Declaration>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Amino_Acid_State"/>
+        <OWLClass URI="&revision;Amino_Acid_State_Datum"/>
+    </ObjectPropertyDomain>
+    <SubClassOf>
+        <OWLClass URI="&revision;Character"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty URI="&revision;has_Datum"/>
+            <OWLClass URI="&revision;Character_State_Datum"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;belongs_to_TU"/>
+        <ObjectProperty URI="&revision;belongs_to"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;represented_by_Node"/>
+        <OWLClass URI="&revision;TU"/>
+    </ObjectPropertyDomain>
+    <SubClassOf>
+        <OWLClass URI="&revision;Imported_Nucleotide"/>
+        <OWLClass URI="&revision;Character_State_Domain"/>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Amino_Acid_Character"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty URI="&revision;has_Amino_Acid_Datum"/>
+            <OWLClass URI="&revision;Amino_Acid_State_Datum"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Generic_State"/>
+        <OWLClass URI="&revision;Character_State_Domain"/>
+    </SubClassOf>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Ancestor"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;Nucleotide_Character"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty URI="&revision;has_Nucleotide_Datum"/>
+            <OWLClass URI="&revision;Nucleotide_State_Datum"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <Declaration>
+        <Individual URI="&revision;S"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Parent_Node"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Rooted_Tree"/>
+        <ObjectAllValuesFrom>
+            <ObjectProperty URI="&revision;has"/>
+            <ObjectUnionOf>
+                <OWLClass URI="&revision;Node"/>
+                <OWLClass URI="&revision;Directed_Edge"/>
+            </ObjectUnionOf>
+        </ObjectAllValuesFrom>
+    </SubClassOf>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Compound_Character"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >A character that could be divided into separate characters but is not due to the non-independence of changes that would result, e.g., as in the case of a subsequence that is either present or absent as a block. </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <SubClassOf>
+        <OWLClass URI="&revision;Model_description"/>
+        <OWLClass URI="&revision;CDAO_Annotation"/>
+    </SubClassOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;belongs_to_Compound_Character"/>
+        <OWLClass URI="&revision;Compound_State_Datum"/>
+    </ObjectPropertyDomain>
+    <SubClassOf>
+        <OWLClass URI="&revision;Jukes_and_Kantor"/>
+        <OWLClass URI="&revision;Substitution_model"/>
+    </SubClassOf>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Character"/>
+        <Annotation annotationURI="&rdfs;comment">
+            <Constant datatypeURI="&xsd;string"
+                >Traits shown to be relevant for phylogenetic classification</Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <FunctionalObjectProperty>
+        <ObjectProperty URI="&revision;belongs_to_Character"/>
+    </FunctionalObjectProperty>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Node"/>
+        <ObjectProperty URI="&revision;has"/>
+    </SubObjectPropertyOf>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Datum_Coordinate"/>
+        <Annotation annotationURI="&rdfs;comment">
+            <Constant
+                >drawing from seqloc categories from NCBI at http://www.ncbi.nlm.nih.gov/IEB/ToolBox/SDKDOCS/SEQLOC.HTML#_Seq-loc:_Locations_on</Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;belongs_to_Character"/>
+        <ObjectProperty URI="&revision;belongs_to"/>
+    </SubObjectPropertyOf>
+    <FunctionalObjectProperty>
+        <ObjectProperty URI="&revision;belongs_to_Continuous_Character"/>
+    </FunctionalObjectProperty>
+    <SubClassOf>
+        <OWLClass URI="&revision;Edge_Transformation"/>
+        <OWLClass URI="&revision;Edge_Annotation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Amino_Acid_Character"/>
+        <ObjectAllValuesFrom>
+            <ObjectProperty URI="&revision;has_Datum"/>
+            <OWLClass URI="&revision;Amino_Acid_State_Datum"/>
+        </ObjectAllValuesFrom>
+    </SubClassOf>
+    <EquivalentClasses>
+        <OWLClass URI="&revision;Generic_State"/>
+        <ObjectOneOf>
+            <Individual URI="&revision;unknown"/>
+            <Individual URI="&revision;absent"/>
+            <Individual URI="&revision;gap"/>
+        </ObjectOneOf>
+    </EquivalentClasses>
+    <Declaration>
+        <OWLClass URI="&revision;Ancestral_Node"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty URI="&revision;has_Range_Start_Value"/>
+    </Declaration>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Compound_Datum"/>
+        <OWLClass URI="&revision;Compound_Character"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Parent_Node"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyRange>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Datum_Coordinate"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >A positional coordinate giving the source of a character state, used for molecular sequences.  </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_root"/>
+    </Declaration>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Amino_Acid_State"/>
+        <ObjectProperty URI="&revision;has_State"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;belongs_to_Character_State_Data_Matrix"/>
+        <OWLClass URI="&revision;Character_State_Data_Matrix"/>
+    </ObjectPropertyRange>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;T"/>
+    </ClassAssertion>
+    <SubClassOf>
+        <OWLClass URI="&revision;Edge_Length"/>
+        <OWLClass URI="&revision;Edge_Annotation"/>
+    </SubClassOf>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;represents_TU"/>
+        <OWLClass URI="&revision;TU"/>
+    </ObjectPropertyRange>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Right_State"/>
+    </Declaration>
+    <Declaration>
+        <OWLClass URI="&revision;Taxonomic_Link"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty URI="&revision;belongs_to_Amino_Acid_Character"/>
+    </Declaration>
+    <Declaration>
+        <OWLClass URI="&revision;Edge_Annotation"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty URI="&revision;belongs_to_TU"/>
+            <OWLClass URI="&revision;TU"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Child"/>
+        <ObjectProperty URI="&revision;has"/>
+    </SubObjectPropertyOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;belongs_to_Edge"/>
+    </Declaration>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;subtree_of"/>
+        <OWLClass URI="&revision;Network"/>
+    </ObjectPropertyDomain>
+    <DataPropertyRange>
+        <DataProperty URI="&revision;has_Point_Coordinate_Value"/>
+        <Datatype URI="&xsd;integer"/>
+    </DataPropertyRange>
+    <InverseObjectProperties>
+        <ObjectProperty URI="&revision;connects_to"/>
+        <ObjectProperty URI="&revision;connects_to"/>
+    </InverseObjectProperties>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Coordinate_System"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >A reference to an external coordinate system.  Coordinates for data must refer to some such external coordinate system. </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <Declaration>
+        <OWLClass URI="&revision;Continuous"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty URI="&revision;belongs_to_TU"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Nucleotide_State"/>
+    </Declaration>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Edge_Transformation"/>
+        <Annotation annotationURI="&rdfs;comment">
+            <Constant
+                >If left state is same as left node, then transformation will imply correct direction.  </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Remaining_Coordinate_List"/>
+        <OWLClass URI="&revision;Coordinate_List"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;belongs_to_Nucleotide_Character"/>
+        <OWLClass URI="&revision;Nucleotide_Character"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Ancestor"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyDomain>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Ancestor"/>
+    </Declaration>
+    <Declaration>
+        <Individual URI="&revision;C"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Continuous_Character"/>
+        <OWLClass URI="&revision;Character"/>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Rooted_Tree"/>
+        <ObjectAllValuesFrom>
+            <ObjectProperty URI="&revision;subtree_of"/>
+            <OWLClass URI="&revision;Rooted_Tree"/>
+        </ObjectAllValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+        <OWLClass URI="&owl;Thing"/>
+    </SubClassOf>
+    <Declaration>
+        <Individual URI="&revision;Y"/>
+    </Declaration>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;belongs_to_Compound_Character"/>
+        <ObjectProperty URI="&revision;belongs_to_Character"/>
+    </SubObjectPropertyOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Child_Node"/>
+    </Declaration>
+    <Declaration>
+        <Individual URI="&revision;P"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Nucleotide_Character"/>
+        <OWLClass URI="&revision;Character"/>
+    </SubClassOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;belongs_to_Edge_as_Child"/>
+    </Declaration>
+    <EquivalentObjectProperties>
+        <ObjectProperty URI="&revision;belongs_to"/>
+        <ObjectProperty URI="&revision;part_of"/>
+    </EquivalentObjectProperties>
+    <SubObjectPropertyOf>
+        <SubObjectPropertyChain>
+            <ObjectProperty URI="&revision;belongs_to_Edge_as_Parent"/>
+            <ObjectProperty URI="&revision;has_Child_Node"/>
+        </SubObjectPropertyChain>
+        <ObjectProperty URI="&revision;has_Child"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;belongs_to_Nucleotide_Character"/>
+        <OWLClass URI="&revision;Nucleotide_State_Datum"/>
+    </ObjectPropertyDomain>
+    <Declaration>
+        <DataProperty URI="&revision;has_Precision"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Node"/>
+    </Declaration>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_root"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;Tree_Procedure"/>
+        <OWLClass URI="&revision;Tree_Annotation"/>
+    </SubClassOf>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Directed_Edge"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >A directed edge. Rooted trees have directed edges. The direction is specified by way of the parent and child relationships of nodes that the edge connects. </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <SubClassOf>
+        <OWLClass URI="&revision;Continuous"/>
+        <DataExactCardinality cardinality="1">
+            <DataProperty URI="&revision;has_Value"/>
+        </DataExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Datum_Coordinate"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty URI="&revision;has_Coordinate_System"/>
+            <OWLClass URI="&revision;Coordinate_System"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <Declaration>
+        <OWLClass URI="&revision;Continuous_Character"/>
+    </Declaration>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Left_State"/>
+        <OWLClass URI="&revision;Character_State_Domain"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;belongs_to"/>
+        <OWLClass URI="&owl;Thing"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Parent_Node"/>
+        <OWLClass URI="&revision;Directed_Edge"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Datum"/>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+    </ObjectPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;Nucleotide_Character"/>
+        <ObjectAllValuesFrom>
+            <ObjectProperty URI="&revision;has_Datum"/>
+            <OWLClass URI="&revision;Nucleotide_State_Datum"/>
+        </ObjectAllValuesFrom>
+    </SubClassOf>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;W"/>
+    </ClassAssertion>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Nucleotide_State"/>
+        <ObjectUnionOf>
+            <OWLClass URI="&revision;Nucleotide"/>
+            <OWLClass URI="&revision;Generic_State"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <Declaration>
+        <OWLClass URI="&revision;Sequence"/>
+    </Declaration>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Datum"/>
+        <OWLClass URI="&revision;Character"/>
+    </ObjectPropertyDomain>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;E"/>
+    </ClassAssertion>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Continuous_State"/>
+    </Declaration>
+    <EntityAnnotation>
+        <OWLClass URI="&owl;Thing"/>
+        <Annotation annotationURI="&dc;date">
+            <Constant
+                >Modified 4/14/2008</Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Amino_Acid_Datum"/>
+    </Declaration>
+    <FunctionalObjectProperty>
+        <ObjectProperty URI="&revision;represents_TU"/>
+    </FunctionalObjectProperty>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;belongs_to_Edge"/>
+        <OWLClass URI="&revision;Edge"/>
+    </ObjectPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;Coordinate_Range"/>
+        <OWLClass URI="&revision;Datum_Coordinate"/>
+    </SubClassOf>
+    <Declaration>
+        <Individual URI="&revision;dA"/>
+    </Declaration>
+    <DataPropertyRange>
+        <DataProperty URI="&revision;has_Range_End_Value"/>
+        <Datatype URI="&xsd;integer"/>
+    </DataPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;Unrooted_Tree"/>
+        <OWLClass URI="&revision;Tree"/>
+    </SubClassOf>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Parent"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Nucleotide_Datum"/>
+        <OWLClass URI="&revision;Nucleotide_Character"/>
+    </ObjectPropertyDomain>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Edge_Length"/>
+        <Annotation annotationURI="&rdfs;comment">
+            <Constant
+                >Its possible that this should not be classed as an &apos;annotation&apos; since it contains data rather than meta-data.  </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;belongs_to_Continuous_Character"/>
+        <OWLClass URI="&revision;Continuous_State_Datum"/>
+    </ObjectPropertyDomain>
+    <Declaration>
+        <Individual URI="&revision;F"/>
+    </Declaration>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;belongs_to_Edge"/>
+        <ObjectProperty URI="&revision;belongs_to"/>
+    </SubObjectPropertyOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Sequence"/>
+        <ObjectAllValuesFrom>
+            <ObjectProperty URI="&revision;has"/>
+            <ObjectMinCardinality cardinality="1">
+                <ObjectProperty URI="&revision;has_Coordinate"/>
+                <OWLClass URI="&revision;Datum_Coordinate"/>
+            </ObjectMinCardinality>
+        </ObjectAllValuesFrom>
+    </SubClassOf>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Generic_State"/>
+        <Annotation annotationURI="&rdfs;comment">
+            <Constant
+                >This class should be renamed.  These are not generic states but non-concrete states including gap, unknown and missing.  </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;belongs_to_Edge_as_Child"/>
+        <OWLClass URI="&revision;Directed_Edge"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;transformation_of"/>
+        <OWLClass URI="&revision;Character"/>
+    </ObjectPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;Rooted_Tree"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty URI="&revision;has_root"/>
+            <OWLClass URI="&revision;Node"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <Declaration>
+        <OWLClass URI="&revision;Nucleotide_Character"/>
+    </Declaration>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Sequence"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >A set of ordered states, typically the residues in a macromolecular sequence.</Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_State"/>
+        <OWLClass URI="&revision;Character_State_Domain"/>
+    </ObjectPropertyRange>
+    <Declaration>
+        <OWLClass URI="&revision;Amino_Acid_Character"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Left_State"/>
+    </Declaration>
+    <Declaration>
+        <Individual URI="&revision;dT"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Rooted_Tree"/>
+        <OWLClass URI="&revision;Tree"/>
+    </SubClassOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Compound_Datum"/>
+        <ObjectProperty URI="&revision;has_Datum"/>
+    </SubObjectPropertyOf>
+    <DisjointClasses>
+        <OWLClass URI="&revision;Amino_Acid_Character"/>
+        <OWLClass URI="&revision;Nucleotide_Character"/>
+        <OWLClass URI="&revision;Continuous_Character"/>
+    </DisjointClasses>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Imported_Nucleotide"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >This is an open class that should be made equivalent to an imported class describing the concept of Nucleotide. </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;V"/>
+    </ClassAssertion>
+    <Declaration>
+        <ObjectProperty URI="&revision;belongs_to_Edge_as_Parent"/>
+    </Declaration>
+    <Declaration>
+        <Individual URI="&revision;absent"/>
+    </Declaration>
+    <Declaration>
+        <OWLClass URI="&revision;Network"/>
+    </Declaration>
+    <DataPropertyDomain>
+        <DataProperty URI="&revision;has_Point_Coordinate_Value"/>
+        <OWLClass URI="&revision;Coordinate_Point"/>
+    </DataPropertyDomain>
+    <Declaration>
+        <OWLClass URI="&revision;CDAO_Annotation"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty URI="&revision;precedes"/>
+    </Declaration>
+    <Declaration>
+        <Individual URI="&revision;L"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Coordinate_List"/>
+        <OWLClass URI="&revision;Datum_Coordinate"/>
+    </SubClassOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Left_Node"/>
+        <OWLClass URI="&revision;Edge_Transformation"/>
+    </ObjectPropertyDomain>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;D"/>
+    </ClassAssertion>
+    <EntityAnnotation>
+        <OWLClass URI="&owl;Thing"/>
+        <Annotation annotationURI="&dc;creator">
+            <Constant>CDAO Team</Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <Declaration>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+    </Declaration>
+    <Declaration>
+        <OWLClass URI="&revision;Continuous_State_Datum"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Nucleotide"/>
+        <OWLClass URI="&revision;Character_State_Domain"/>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Edge"/>
+        <ObjectExactCardinality cardinality="2">
+            <ObjectProperty URI="&revision;has_Node"/>
+            <OWLClass URI="&revision;Node"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <Declaration>
+        <Individual URI="&revision;V"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Tree_Annotation"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty URI="&revision;is_annotation"/>
+            <OWLClass URI="&revision;Tree"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <EquivalentClasses>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <ObjectOneOf>
+            <Individual URI="&revision;Y"/>
+            <Individual URI="&revision;D"/>
+            <Individual URI="&revision;P"/>
+            <Individual URI="&revision;K"/>
+            <Individual URI="&revision;S"/>
+            <Individual URI="&revision;A"/>
+            <Individual URI="&revision;V"/>
+            <Individual URI="&revision;G"/>
+            <Individual URI="&revision;N"/>
+            <Individual URI="&revision;I"/>
+            <Individual URI="&revision;C"/>
+            <Individual URI="&revision;T"/>
+            <Individual URI="&revision;W"/>
+            <Individual URI="&revision;Q"/>
+            <Individual URI="&revision;H"/>
+            <Individual URI="&revision;M"/>
+            <Individual URI="&revision;E"/>
+            <Individual URI="&revision;L"/>
+            <Individual URI="&revision;F"/>
+            <Individual URI="&revision;R"/>
+        </ObjectOneOf>
+    </EquivalentClasses>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Continuous_Datum"/>
+    </Declaration>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Character_State_Data_Matrix"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >A matrix of character-state data, typically containing observed data, though in some cases the states in the matrix might be simulated or hypothetical. Synonyms: character Data matrix, character-state matrix </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;subtree_of"/>
+        <OWLClass URI="&revision;Network"/>
+    </ObjectPropertyRange>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Nucleotide"/>
+        <Individual URI="&revision;dT"/>
+    </ClassAssertion>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;belongs_to_Character_State_Data_Matrix"/>
+        <ObjectProperty URI="&revision;belongs_to"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;belongs_to_Edge_as_Child"/>
+        <ObjectProperty URI="&revision;belongs_to_Edge"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Child_Node"/>
+        <ObjectProperty URI="&revision;has_Node"/>
+    </SubObjectPropertyOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;subtree_of"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty URI="&revision;has_Support_Value"/>
+    </Declaration>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;belongs_to_Edge_as_Parent"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyDomain>
+    <SubClassOf>
+        <OWLClass URI="&revision;Network"/>
+        <ObjectAllValuesFrom>
+            <ObjectProperty URI="&revision;has"/>
+            <ObjectUnionOf>
+                <OWLClass URI="&revision;Node"/>
+                <OWLClass URI="&revision;Edge"/>
+            </ObjectUnionOf>
+        </ObjectAllValuesFrom>
+    </SubClassOf>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;represented_by_Node"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;belongs_to_Amino_Acid_Character"/>
+        <OWLClass URI="&revision;Amino_Acid_Character"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Compound_Datum"/>
+        <OWLClass URI="&revision;Compound_State_Datum"/>
+    </ObjectPropertyRange>
+    <Declaration>
+        <Individual URI="&revision;A"/>
+    </Declaration>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Node"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyRange>
+    <Declaration>
+        <OWLClass URI="&revision;Nucleotide_State_Datum"/>
+    </Declaration>
+    <FunctionalObjectProperty>
+        <ObjectProperty URI="&revision;belongs_to_Nucleotide_Character"/>
+    </FunctionalObjectProperty>
+    <Declaration>
+        <Individual URI="&revision;H"/>
+    </Declaration>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;belongs_to_Edge_as_Parent"/>
+        <OWLClass URI="&revision;Directed_Edge"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;homologous_to"/>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+    </ObjectPropertyDomain>
+    <SubClassOf>
+        <OWLClass URI="&revision;Amino_Acid_State_Datum"/>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Character_State_Data_Matrix"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty URI="&revision;has"/>
+            <OWLClass URI="&revision;Character_State_Data_Matrix_Annotation"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Nucleotide_Datum"/>
+        <ObjectProperty URI="&revision;has_Datum"/>
+    </SubObjectPropertyOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Character"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Tree"/>
+        <OWLClass URI="&revision;Network"/>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Lineage"/>
+        <ObjectAllValuesFrom>
+            <ObjectProperty URI="&revision;has"/>
+            <ObjectUnionOf>
+                <OWLClass URI="&revision;Directed_Edge"/>
+                <ObjectMaxCardinality cardinality="1">
+                    <ObjectProperty URI="&revision;has_Child"/>
+                    <OWLClass URI="&revision;Node"/>
+                </ObjectMaxCardinality>
+            </ObjectUnionOf>
+        </ObjectAllValuesFrom>
+    </SubClassOf>
+    <Declaration>
+        <Individual URI="&revision;N"/>
+    </Declaration>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;H"/>
+    </ClassAssertion>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Child_Node"/>
+        <OWLClass URI="&revision;Directed_Edge"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;belongs_to_Character_State_Data_Matrix"/>
+        <ObjectUnionOf>
+            <OWLClass URI="&revision;Character"/>
+            <OWLClass URI="&revision;TU"/>
+        </ObjectUnionOf>
+    </ObjectPropertyDomain>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Left_State"/>
+        <ObjectProperty URI="&revision;has_Transformation_Component"/>
+    </SubObjectPropertyOf>
+    <Declaration>
+        <Individual URI="&revision;M"/>
+    </Declaration>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Amino_Acid_Datum"/>
+        <ObjectProperty URI="&revision;has_Datum"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;belongs_to_Edge"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Coordinate"/>
+        <OWLClass URI="&revision;Datum_Coordinate"/>
+    </ObjectPropertyRange>
+    <InverseObjectProperties>
+        <ObjectProperty URI="&revision;represented_by_Node"/>
+        <ObjectProperty URI="&revision;represents_TU"/>
+    </InverseObjectProperties>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Edge_Length"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >The length of an edge (branch) of a Tree or Network, typically in units of evolutionary changes in character-state per character.  </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <SubClassOf>
+        <OWLClass URI="&revision;Parsimony"/>
+        <OWLClass URI="&revision;Tree_Procedure"/>
+    </SubClassOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Compound_State"/>
+        <OWLClass URI="&revision;Compound_State_Datum"/>
+    </ObjectPropertyDomain>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Descendant"/>
+    </Declaration>
+    <ClassAssertion>
+        <OWLClass URI="&revision;unknown"/>
+        <Individual URI="&revision;Generic_State"/>
+    </ClassAssertion>
+    <Declaration>
+        <OWLClass URI="&revision;Compound_State_Datum"/>
+    </Declaration>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Nucleotide"/>
+        <Individual URI="&revision;dC"/>
+    </ClassAssertion>
+    <SubClassOf>
+        <OWLClass URI="&revision;Distance_based_method"/>
+        <OWLClass URI="&revision;Tree_Procedure"/>
+    </SubClassOf>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Model_description"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >Description of a model of transformations. </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_State"/>
+    </Declaration>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Left_State"/>
+        <OWLClass URI="&revision;Edge_Transformation"/>
+    </ObjectPropertyDomain>
+    <SubClassOf>
+        <OWLClass URI="&revision;Lineage"/>
+        <OWLClass URI="&revision;Tree"/>
+    </SubClassOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Compound_State"/>
+    </Declaration>
+    <Declaration>
+        <OWLClass URI="&revision;Alignment_Procedure"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Ancestral_Node"/>
+        <OWLClass URI="&revision;Node"/>
+    </SubClassOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;belongs_to_Compound_Character"/>
+    </Declaration>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Transformation_Component"/>
+        <OWLClass URI="&revision;Edge_Transformation"/>
+    </ObjectPropertyDomain>
+    <Declaration>
+        <Individual URI="&revision;I"/>
+    </Declaration>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_root"/>
+        <ObjectProperty URI="&revision;has"/>
+    </SubObjectPropertyOf>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Edge"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >An edge connecting two nodes in a (Phylogenetic) Tree or Network, also known as a &apos;branch&apos;.  Edges may have attributes such as length, degree of support, and direction.  An edge can be a surrogate for a &apos;split&apos; or bipartition, since each edge in a tree divides the terminal nodes into two sets. </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <SubClassOf>
+        <OWLClass URI="&revision;Amino_Acid_Character"/>
+        <OWLClass URI="&revision;Character"/>
+    </SubClassOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Character"/>
+        <ObjectProperty URI="&revision;has"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_First_Coordinate_Item"/>
+        <OWLClass URI="&revision;Coordinate_List"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Right_State"/>
+        <OWLClass URI="&revision;Edge_Transformation"/>
+    </ObjectPropertyDomain>
+    <SubClassOf>
+        <OWLClass URI="&revision;Compound_Character"/>
+        <OWLClass URI="&revision;Character"/>
+    </SubClassOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Right_Node"/>
+        <OWLClass URI="&revision;Edge_Transformation"/>
+    </ObjectPropertyDomain>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Ancestor"/>
+        <ObjectProperty URI="&revision;has"/>
+    </SubObjectPropertyOf>
+    <Declaration>
+        <OWLClass URI="&revision;Coordinate_Point"/>
+    </Declaration>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Continuous_Datum"/>
+        <OWLClass URI="&revision;Continuous_Character"/>
+    </ObjectPropertyDomain>
+    <SubClassOf>
+        <OWLClass URI="&revision;Continuous_State_Datum"/>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+    </SubClassOf>
+    <FunctionalObjectProperty>
+        <ObjectProperty URI="&revision;belongs_to_TU"/>
+    </FunctionalObjectProperty>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Right_State"/>
+        <ObjectProperty URI="&revision;has_Transformation_Component"/>
+    </SubObjectPropertyOf>
+    <Declaration>
+        <OWLClass URI="&revision;Coordinate_List"/>
+    </Declaration>
+    <Declaration>
+        <OWLClass URI="&revision;Edge_Length"/>
+    </Declaration>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;TU"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >A unit of analysis that may be tied to a node in a tree and to a row in a character matrix.  It subsumes the traditional concepts of &apos;OTU&apos; and &apos;HTU&apos;. </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Character_State_Domain"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >The universe of possible states for a particular type of character, e.g., the states of an Amino_Acid character come from the Amino_Acid domain.  </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <DisjointClasses>
+        <OWLClass URI="&revision;Rooted_Tree"/>
+        <OWLClass URI="&revision;Unrooted_Tree"/>
+    </DisjointClasses>
+    <SubClassOf>
+        <OWLClass URI="&revision;Character_State_Data_Matrix_Annotation"/>
+        <OWLClass URI="&revision;CDAO_Annotation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Edge_Transformation"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty URI="&revision;transformation_of"/>
+            <OWLClass URI="&revision;Character"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;F"/>
+    </ClassAssertion>
+    <EquivalentClasses>
+        <OWLClass URI="&revision;Nucleotide"/>
+        <ObjectOneOf>
+            <Individual URI="&revision;dT"/>
+            <Individual URI="&revision;dG"/>
+            <Individual URI="&revision;dC"/>
+            <Individual URI="&revision;dA"/>
+        </ObjectOneOf>
+    </EquivalentClasses>
+    <SubClassOf>
+        <OWLClass URI="&revision;Edge"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty URI="&revision;has"/>
+            <OWLClass URI="&revision;Edge_Annotation"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;represents_TU"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Substitution_model"/>
+        <OWLClass URI="&revision;Model_description"/>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Datum_Coordinate"/>
+        <OWLClass URI="&owl;Thing"/>
+    </SubClassOf>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;CDAO_Annotation"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >The base class of annotations in CDAO.</Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Continuous_State"/>
+        <ObjectProperty URI="&revision;has_State"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Nucleotide_State"/>
+        <OWLClass URI="&revision;Nucleotide_State_Datum"/>
+    </ObjectPropertyDomain>
+    <Declaration>
+        <OWLClass URI="&revision;Datum_Coordinate"/>
+    </Declaration>
+    <EquivalentClasses>
+        <OWLClass URI="&revision;Branch"/>
+        <OWLClass URI="&revision;Edge"/>
+    </EquivalentClasses>
+    <SubClassOf>
+        <OWLClass URI="&revision;Character_State_Data_Matrix"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty URI="&revision;has_Character"/>
+            <OWLClass URI="&revision;Character"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Remaining_Coordinate_List"/>
+    </Declaration>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Descendant"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;Gamma_distribution"/>
+        <OWLClass URI="&revision;Substitution_model"/>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Sequence"/>
+        <OWLClass URI="&owl;Thing"/>
+    </SubClassOf>
+    <Declaration>
+        <Individual URI="&revision;T"/>
+    </Declaration>
+    <DisjointClasses>
+        <OWLClass URI="&revision;Nucleotide_State_Datum"/>
+        <OWLClass URI="&revision;Amino_Acid_State_Datum"/>
+        <OWLClass URI="&revision;Continuous_State_Datum"/>
+    </DisjointClasses>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Child_Node"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyRange>
+    <Declaration>
+        <Individual URI="&revision;dG"/>
+    </Declaration>
+    <Declaration>
+        <Individual URI="&revision;G"/>
+    </Declaration>
+    <Declaration>
+        <OWLClass URI="&revision;Directed_Edge"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty URI="&revision;belongs_to_Continuous_Character"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Nucleotide_State_Datum"/>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+    </SubClassOf>
+    <DataPropertyRange>
+        <DataProperty URI="&revision;has_Precision"/>
+        <Datatype URI="&xsd;float"/>
+    </DataPropertyRange>
+    <Declaration>
+        <OWLClass URI="&revision;Imported_Nucleotide"/>
+    </Declaration>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Character_State_Data_Matrix_Annotation"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >Meta-information associated with a character matrix, such as, for the case of a sequence alignment, the method of alignment. </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <Declaration>
+        <DataProperty URI="&revision;has_Range_End_Value"/>
+    </Declaration>
+    <FunctionalObjectProperty>
+        <ObjectProperty URI="&revision;has_root"/>
+    </FunctionalObjectProperty>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;belongs_to_Amino_Acid_Character"/>
+        <ObjectProperty URI="&revision;belongs_to_Character"/>
+    </SubObjectPropertyOf>
+    <Declaration>
+        <Individual URI="&revision;gap"/>
+    </Declaration>
+    <DataPropertyRange>
+        <DataProperty URI="&revision;has_Range_Start_Value"/>
+        <Datatype URI="&xsd;integer"/>
+    </DataPropertyRange>
+    <InverseObjectProperties>
+        <ObjectProperty URI="&revision;has_Parent"/>
+        <ObjectProperty URI="&revision;has_Child"/>
+    </InverseObjectProperties>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;S"/>
+    </ClassAssertion>
+    <SubClassOf>
+        <OWLClass URI="&revision;Common_Ancestral_Node"/>
+        <OWLClass URI="&revision;Ancestral_Node"/>
+    </SubClassOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;transformation_of"/>
+        <OWLClass URI="&revision;Edge_Transformation"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Node"/>
+        <OWLClass URI="&revision;Edge"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Character"/>
+        <OWLClass URI="&revision;Character"/>
+    </ObjectPropertyRange>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Compound_Datum"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Taxonomic_Link"/>
+        <OWLClass URI="&revision;TU_Annotation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty URI="&revision;belongs_to_Character"/>
+            <OWLClass URI="&revision;Character"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <Declaration>
+        <Individual URI="&revision;D"/>
+    </Declaration>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;I"/>
+    </ClassAssertion>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_First_Coordinate_Item"/>
+        <ObjectProperty URI="&revision;has"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;belongs_to_TU"/>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+    </ObjectPropertyDomain>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Nucleotide_State"/>
+        <ObjectProperty URI="&revision;has_State"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Continuous_Datum"/>
+        <OWLClass URI="&revision;Continuous_State_Datum"/>
+    </ObjectPropertyRange>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Nucleotide"/>
+        <Individual URI="&revision;dG"/>
+    </ClassAssertion>
+    <SubClassOf>
+        <OWLClass URI="&revision;TU"/>
+        <OWLClass URI="&owl;Thing"/>
+    </SubClassOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;belongs_to"/>
+    </Declaration>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_root"/>
+        <OWLClass URI="&revision;Rooted_Tree"/>
+    </ObjectPropertyDomain>
+    <Declaration>
+        <OWLClass URI="&revision;Amino_Acid_State_Datum"/>
+    </Declaration>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Generic_State"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >This concept is tied to the verbally ambiguous &apos;gap&apos; concept and to the use of a gap character (often the en dash &apos;-&apos;) in text representations of sequence alignments. In general, this represents the absence of any positively diagnosed Character-State. As such, the gap may be interpreted as an additional Character-State, as the absence of the Character, or as an unknown value.  In some cases it is helpful to separate these. </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Datum"/>
+    </Declaration>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;Y"/>
+    </ClassAssertion>
+    <SubClassOf>
+        <OWLClass URI="&revision;Node"/>
+        <ObjectMinCardinality cardinality="1">
+            <ObjectProperty URI="&revision;part_of"/>
+            <OWLClass URI="&revision;Network"/>
+        </ObjectMinCardinality>
+    </SubClassOf>
+    <FunctionalObjectProperty>
+        <ObjectProperty URI="&revision;has_Child_Node"/>
+    </FunctionalObjectProperty>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Child"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Sequence"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty URI="&revision;has"/>
+            <OWLClass URI="&revision;Character_State_Datum"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Right_Node"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;Compound_State_Datum"/>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+    </SubClassOf>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;homologous_to"/>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+    </ObjectPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;Coordinate_System"/>
+        <OWLClass URI="&owl;Thing"/>
+    </SubClassOf>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;CDAO_Annotation"/>
+        <Annotation annotationURI="&rdfs;comment">
+            <Constant
+                >Its possible that this base class should be discarded and that annotations should inherit from an imported base class if one exists. </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <TransitiveObjectProperty>
+        <ObjectProperty URI="&revision;has_Descendant"/>
+    </TransitiveObjectProperty>
+    <Declaration>
+        <Individual URI="&revision;R"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty URI="&revision;has_Point_Coordinate_Value"/>
+    </Declaration>
+    <Declaration>
+        <Individual URI="&revision;dC"/>
+    </Declaration>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Parent"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyDomain>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Datum"/>
+        <ObjectProperty URI="&revision;has"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Continuous_State"/>
+        <OWLClass URI="&revision;Continuous_State_Datum"/>
+    </ObjectPropertyDomain>
+    <Declaration>
+        <ObjectProperty URI="&revision;belongs_to_Character"/>
+    </Declaration>
+    <ClassAssertion>
+        <OWLClass URI="&revision;absent"/>
+        <Individual URI="&revision;Generic_State"/>
+    </ClassAssertion>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Left_Node"/>
+    </Declaration>
+    <Declaration>
+        <OWLClass URI="&revision;MRCA_Node"/>
+    </Declaration>
+    <DataPropertyRange>
+        <DataProperty URI="&revision;has_Support_Value"/>
+        <Datatype URI="&xsd;float"/>
+    </DataPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;MRCA_Node"/>
+        <OWLClass URI="&revision;Common_Ancestral_Node"/>
+    </SubClassOf>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_TU"/>
+        <OWLClass URI="&revision;TU"/>
+    </ObjectPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;Character_State_Data_Matrix"/>
+        <OWLClass URI="&owl;Thing"/>
+    </SubClassOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_State"/>
+        <ObjectProperty URI="&revision;has"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Compound_State"/>
+        <ObjectUnionOf>
+            <OWLClass URI="&revision;Compound"/>
+            <OWLClass URI="&revision;Generic_State"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Imported_Amino_Acid"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >Open class that should be defined equivalent to an external class defining the concept of Amino Acid. 
+Enables importing external ontologies defining Amino Acids</Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_TU"/>
+        <ObjectProperty URI="&revision;has"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_First_Coordinate_Item"/>
+        <ObjectUnionOf>
+            <OWLClass URI="&revision;Coordinate_Point"/>
+            <OWLClass URI="&revision;Coordinate_Range"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <Declaration>
+        <OWLClass URI="&revision;Imported_Amino_Acid"/>
+    </Declaration>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Remaining_Coordinate_List"/>
+        <OWLClass URI="&revision;Coordinate_List"/>
+    </ObjectPropertyRange>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Right_Node"/>
+    </Declaration>
+    <InverseObjectProperties>
+        <ObjectProperty URI="&revision;has_Ancestor"/>
+        <ObjectProperty URI="&revision;has_Descendant"/>
+    </InverseObjectProperties>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Amino_Acid_Datum"/>
+        <OWLClass URI="&revision;Amino_Acid_State_Datum"/>
+    </ObjectPropertyRange>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Taxonomic_Link"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >Link to an externally defined taxonomic hierarchy.</Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <SubClassOf>
+        <OWLClass URI="&revision;Imported_Amino_Acid"/>
+        <OWLClass URI="&revision;Character_State_Domain"/>
+    </SubClassOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;belongs_to_Continuous_Character"/>
+        <ObjectProperty URI="&revision;belongs_to_Character"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Coordinate"/>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+    </ObjectPropertyDomain>
+    <SymmetricObjectProperty>
+        <ObjectProperty URI="&revision;connects_to"/>
+    </SymmetricObjectProperty>
+    <Declaration>
+        <Individual URI="&revision;unknown"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty URI="&revision;has_External_Reference"/>
+    </Declaration>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;C"/>
+    </ClassAssertion>
+    <FunctionalObjectProperty>
+        <ObjectProperty URI="&revision;has_Parent_Node"/>
+    </FunctionalObjectProperty>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;belongs_to_Character"/>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+    </ObjectPropertyDomain>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Edge_Transformation"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >A transformation (in states of a character) associated with an edge (branch) of a Tree or Network. </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <Declaration>
+        <OWLClass URI="&revision;Character_State_Data_Matrix"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Edge_Transformation"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty URI="&revision;has_Right_State"/>
+            <OWLClass URI="&revision;Character_State_Domain"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <Declaration>
+        <ObjectProperty URI="&revision;belongs_to_Character_State_Data_Matrix"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Compound_Character"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty URI="&revision;has_Compound_Datum"/>
+            <OWLClass URI="&revision;Compound_State_Datum"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <Declaration>
+        <OWLClass URI="&revision;Generic_State"/>
+    </Declaration>
+    <Declaration>
+        <OWLClass URI="&revision;Compound"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty URI="&revision;represented_by_Node"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;TU_Annotation"/>
+        <OWLClass URI="&revision;CDAO_Annotation"/>
+    </SubClassOf>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Continuous"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >This class describes a continuous value. The link to the actual float value is through the property has_Value. It could have also other properties attached (e.g., has_Precision).</Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <SubClassOf>
+        <OWLClass URI="&revision;Character_State_Data_Matrix"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty URI="&revision;has_TU"/>
+            <OWLClass URI="&revision;TU"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <Declaration>
+        <OWLClass URI="&revision;TU_Annotation"/>
+    </Declaration>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;N"/>
+    </ClassAssertion>
+    <SubClassOf>
+        <OWLClass URI="&revision;Maximum_likelihood"/>
+        <OWLClass URI="&revision;Tree_Procedure"/>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Node"/>
+        <OWLClass URI="&owl;Thing"/>
+    </SubClassOf>
+    <Declaration>
+        <OWLClass URI="&revision;Coordinate_System"/>
+    </Declaration>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Compound_State"/>
+        <ObjectProperty URI="&revision;has_State"/>
+    </SubObjectPropertyOf>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;K"/>
+    </ClassAssertion>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Branch"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >&apos;Branch&apos; is the domain-specific synonym for an edge of a (Phylogenetic) Tree or Network.  Branches may have properties such as length and degree of support. </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Left_Node"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Coordinate_System"/>
+        <OWLClass URI="&revision;Coordinate_System"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;belongs_to"/>
+        <OWLClass URI="&owl;Thing"/>
+    </ObjectPropertyDomain>
+    <SubClassOf>
+        <OWLClass URI="&revision;Tree_Annotation"/>
+        <OWLClass URI="&revision;CDAO_Annotation"/>
+    </SubClassOf>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Nucleotide"/>
+        <Individual URI="&revision;dA"/>
+    </ClassAssertion>
+    <SubObjectPropertyOf>
+        <SubObjectPropertyChain>
+            <ObjectProperty URI="&revision;belongs_to_Edge_as_Parent"/>
+            <ObjectProperty URI="&revision;has_Child_Node"/>
+        </SubObjectPropertyChain>
+        <ObjectProperty URI="&revision;has_Descendant"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <SubObjectPropertyChain>
+            <ObjectProperty URI="&revision;belongs_to_Edge_as_Child"/>
+            <ObjectProperty URI="&revision;has_Parent_Node"/>
+        </SubObjectPropertyChain>
+        <ObjectProperty URI="&revision;has_Ancestor"/>
+    </SubObjectPropertyOf>
+    <InverseObjectProperties>
+        <ObjectProperty URI="&revision;has"/>
+        <ObjectProperty URI="&revision;part_of"/>
+    </InverseObjectProperties>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Child"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyRange>
+    <Declaration>
+        <OWLClass URI="&revision;Tree_Procedure"/>
+    </Declaration>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Continuous_Datum"/>
+        <ObjectProperty URI="&revision;has_Datum"/>
+    </SubObjectPropertyOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Node"/>
+        <ObjectMaxCardinality cardinality="1">
+            <ObjectProperty URI="&revision;belongs_to_Edge_as_Child"/>
+            <OWLClass URI="&revision;Directed_Edge"/>
+        </ObjectMaxCardinality>
+    </SubClassOf>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;Q"/>
+    </ClassAssertion>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Coordinate"/>
+        <ObjectProperty URI="&revision;has"/>
+    </SubObjectPropertyOf>
+    <DataPropertyDomain>
+        <DataProperty URI="&revision;has_Range_End_Value"/>
+        <OWLClass URI="&revision;Coordinate_Range"/>
+    </DataPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_TU"/>
+        <OWLClass URI="&revision;Character_State_Data_Matrix"/>
+    </ObjectPropertyDomain>
+    <SubClassOf>
+        <OWLClass URI="&revision;Continuous_Character"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty URI="&revision;has_Continuous_Datum"/>
+            <OWLClass URI="&revision;Continuous_State_Datum"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <Declaration>
+        <OWLClass URI="&revision;Compound_Character"/>
+    </Declaration>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Model_description"/>
+        <Annotation annotationURI="&rdfs;comment">
+            <Constant
+                >This is a non-computible description of a model, not the fully specified mathematical model, which typically relates the probability of a transformation to various parameters.  </Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <Declaration>
+        <OWLClass URI="&revision;Common_Ancestral_Node"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Edge"/>
+        <OWLClass URI="&owl;Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Compound_Character"/>
+        <ObjectAllValuesFrom>
+            <ObjectProperty URI="&revision;has_Datum"/>
+            <OWLClass URI="&revision;Compound_State_Datum"/>
+        </ObjectAllValuesFrom>
+    </SubClassOf>
+    <Declaration>
+        <Individual URI="&revision;Q"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Continuous_Character"/>
+        <ObjectAllValuesFrom>
+            <ObjectProperty URI="&revision;has_Datum"/>
+            <OWLClass URI="&revision;Continuous_State_Datum"/>
+        </ObjectAllValuesFrom>
+    </SubClassOf>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;P"/>
+    </ClassAssertion>
+    <Declaration>
+        <DataProperty URI="&revision;has_Value"/>
+    </Declaration>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;belongs_to_Continuous_Character"/>
+        <OWLClass URI="&revision;Continuous_Character"/>
+    </ObjectPropertyRange>
+    <SubClassOf>
+        <OWLClass URI="&revision;Common_Ancestral_Node"/>
+        <ObjectMinCardinality cardinality="2">
+            <ObjectProperty URI="&revision;has_Descendant"/>
+            <OWLClass URI="&revision;Node"/>
+        </ObjectMinCardinality>
+    </SubClassOf>
+    <InverseObjectProperties>
+        <ObjectProperty URI="&revision;belongs_to_Edge_as_Parent"/>
+        <ObjectProperty URI="&revision;has_Parent_Node"/>
+    </InverseObjectProperties>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Amino_Acid_State"/>
+        <ObjectUnionOf>
+            <OWLClass URI="&revision;Amino_Acid"/>
+            <OWLClass URI="&revision;Generic_State"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Left_Node"/>
+        <ObjectProperty URI="&revision;has_Transformation_Component"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;belongs_to_Character"/>
+        <OWLClass URI="&revision;Character"/>
+    </ObjectPropertyRange>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Amino_Acid_State"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_First_Coordinate_Item"/>
+    </Declaration>
+    <DataPropertyDomain>
+        <DataProperty URI="&revision;has_Range_Start_Value"/>
+        <OWLClass URI="&revision;Coordinate_Range"/>
+    </DataPropertyDomain>
+    <Declaration>
+        <Individual URI="&revision;K"/>
+    </Declaration>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;represents_TU"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyDomain>
+    <InverseObjectProperties>
+        <ObjectProperty URI="&revision;belongs_to_Edge_as_Child"/>
+        <ObjectProperty URI="&revision;has_Child_Node"/>
+    </InverseObjectProperties>
+    <SubObjectPropertyOf>
+        <SubObjectPropertyChain>
+            <ObjectProperty URI="&revision;belongs_to_Edge_as_Child"/>
+            <ObjectProperty URI="&revision;has_Parent_Node"/>
+        </SubObjectPropertyChain>
+        <ObjectProperty URI="&revision;has_Parent"/>
+    </SubObjectPropertyOf>
+    <EntityAnnotation>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+        <Annotation annotationURI="&dc;description">
+            <Constant
+                >The instance of a given character for a given TU.  Its state is an object property drawn from a particular character state domain, e.g., the state of an Amino_Acid_State_Datum is an object property drawn from the domain Amino_Acid.</Constant>
+        </Annotation>
+    </EntityAnnotation>
+    <Declaration>
+        <ObjectProperty URI="&revision;has_Coordinate_System"/>
+    </Declaration>
+    <SubClassOf>
+        <OWLClass URI="&revision;Compound"/>
+        <OWLClass URI="&revision;Character_State_Domain"/>
+    </SubClassOf>
+    <SubClassOf>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <OWLClass URI="&revision;Character_State_Domain"/>
+    </SubClassOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Transformation_Component"/>
+        <ObjectProperty URI="&revision;has"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;belongs_to_Edge_as_Parent"/>
+        <ObjectProperty URI="&revision;belongs_to_Edge"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Parent"/>
+        <ObjectProperty URI="&revision;has"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_State"/>
+        <OWLClass URI="&revision;Character_State_Datum"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Descendant"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty URI="&revision;has_Right_State"/>
+        <OWLClass URI="&revision;Character_State_Domain"/>
+    </ObjectPropertyRange>
+    <SubObjectPropertyOf>
+        <ObjectProperty URI="&revision;has_Descendant"/>
+        <ObjectProperty URI="&revision;has"/>
+    </SubObjectPropertyOf>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;M"/>
+    </ClassAssertion>
+    <TransitiveObjectProperty>
+        <ObjectProperty URI="&revision;has_Ancestor"/>
+    </TransitiveObjectProperty>
+    <SubClassOf>
+        <OWLClass URI="&revision;Network"/>
+        <OWLClass URI="&owl;Thing"/>
+    </SubClassOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty URI="&revision;has_Child"/>
+        <OWLClass URI="&revision;Node"/>
+    </ObjectPropertyDomain>
+    <DataPropertyRange>
+        <DataProperty URI="&revision;has_Value"/>
+        <Datatype URI="&xsd;float"/>
+    </DataPropertyRange>
+    <ClassAssertion>
+        <OWLClass URI="&revision;Amino_Acid"/>
+        <Individual URI="&revision;A"/>
+    </ClassAssertion>
+</Ontology>

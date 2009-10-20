@@ -1,0 +1,63 @@
+.TH "Logger" 3 "26 May 2006" "Version 2" "C++ Logging Facility" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Logger \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <Logger.hpp>\fP
+.PP
+Inherited by \fBCLogger\fP, \fBCppLogger\fP, and \fBSysLogger\fP.
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBLogger\fP (int logLevel)"
+.br
+.ti -1c
+.RI "virtual \fB~Logger\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBlog\fP (int level=ERROR_MESSAGES_LR, const string &message='') const =0"
+.br
+.ti -1c
+.RI "void \fBchangeLevel\fP (const int nLevel)"
+.br
+.in -1c
+.SS "Protected Attributes"
+
+.in +1c
+.ti -1c
+.RI "int \fBlogLevel_\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Logger defines a the variable verbosity logging mechanism.
+.PP
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "virtual Logger::~Logger ()\fC [inline, virtual]\fP"
+.PP
+Currently does nothing since the Logger does not allocate resources to itself.
+.SH "Member Function Documentation"
+.PP 
+.SS "void Logger::changeLevel (const int nLevel)\fC [inline]\fP"
+.PP
+Changes the reporting level of the logger. It is recommended that the client use one of the provided named constants, but an arbitrary integer will work.
+.SS "virtual void Logger::log (int level = \fCERROR_MESSAGES_LR\fP, const string & message = \fC''\fP) const\fC [pure virtual]\fP"
+.PP
+Tests the log level of the message and reports the message if it has a high enough priority otherwise the message is suppressed.
+.PP
+Implemented in \fBCLogger\fP, and \fBSysLogger\fP.
+.SH "Member Data Documentation"
+.PP 
+.SS "int \fBLogger::logLevel_\fP\fC [protected]\fP"
+.PP
+Specifies the level that this instance will listen for. In the current implementation the level specified indicates the least serious message that the logger will report.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for C++ Logging Facility from the source code.

@@ -1,0 +1,44 @@
+Reading "TAXA" block...
+Reading "CHARACTERS" block...
+
+TAXA block contains 10 taxa
+	1	Arabidopsis thaliana AAD31363.1
+	2	Arabidopsis thaliana CAB79970.1
+	3	Oryza sativa BAB21282.1
+	4	Dictyostelium discoideum AAO51107.1
+	5	Caenorhabditis elegans CAA92686.1
+	6	Drosophila melanogaster AAF55117.1
+	7	Drosophila melanogaster AAF55115.1
+	8	Mus musculus BAB61955.1
+	9	Saccharomyces cerevisiae AAB68881.1
+	10	Schizosaccharomyces pombe CAB16373.1
+
+CHARACTERS block contains 10 taxa and 10 characters
+  Data type is "DNA"
+  Ignoring case
+  Data matrix entries are expected to be single symbols
+  Taxon labels are expected on left side of matrix
+  Matrix neither transposed nor interleaved
+  Missing data symbol is '?'
+  No match character specified
+  Gap character specified is '-'
+  Valid symbols are: ACGT
+  Equate macros in effect:
+    B = {CGT}
+    D = {AGT}
+    H = {ACT}
+    K = {GT}
+    M = {AC}
+    N = {ACGT}
+    R = {AG}
+    S = {CG}
+    V = {ACG}
+    W = {AT}
+    X = {ACGT}
+    Y = {CT}
+  No characters were eliminated
+  The following characters have been excluded:
+    (no characters excluded)
+  The following taxa have been deleted:
+    (no taxa deleted)
+  Data matrix:

@@ -1,0 +1,10 @@
+#NEXUS
+[ancestor3.nex]
+BEGIN TAXA;
+      dimensions ntax=4;
+      taxlabels A B C D;  
+END;
+
+BEGIN TREES;
+	tree my_unrooted_bush = [&U] ((A,B)AB,(C,D)CD)ABCD;
+END;

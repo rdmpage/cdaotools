@@ -1,0 +1,12 @@
+#NEXUS
+[ancestor2.nex]
+
+BEGIN TAXA;
+      dimensions ntax=4;
+      taxlabels A B C D;  
+END;
+
+BEGIN TREES;
+	tree my_rooted_ladder = [&R] (((A,B)AB,C)ABC,D)ABCD;
+END;
+

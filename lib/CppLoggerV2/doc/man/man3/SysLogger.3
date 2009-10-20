@@ -1,0 +1,48 @@
+.TH "SysLogger" 3 "26 May 2006" "Version 2" "C++ Logging Facility" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+SysLogger \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <SysLogger.hpp>\fP
+.PP
+Inherits \fBLogger\fP.
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBSysLogger\fP (const char *ident=NULL, int option=LOG_NDELAY, int facility=LOG_USER, int nLogLevel=ERROR_MESSAGES_LR)"
+.br
+.ti -1c
+.RI "virtual \fB~SysLogger\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBlog\fP (int level=ERROR_MESSAGES_LR, const string &message='') const "
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+This \fBLogger\fP provides an interface to the system logger.
+.PP
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "SysLogger::SysLogger (const char * ident = \fCNULL\fP, int option = \fCLOG_NDELAY\fP, int facility = \fCLOG_USER\fP, int nLogLevel = \fCERROR_MESSAGES_LR\fP)\fC [inline]\fP"
+.PP
+Allows the user to tune the logger.
+.SS "virtual SysLogger::~SysLogger ()\fC [inline, virtual]\fP"
+.PP
+Releases syslog connection.
+.SH "Member Function Documentation"
+.PP 
+.SS "void SysLogger::log (int level = \fCERROR_MESSAGES_LR\fP, const string & message = \fC''\fP) const\fC [virtual]\fP"
+.PP
+Handles receipt of preformatted messages.
+.PP
+Implements \fBLogger\fP.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for C++ Logging Facility from the source code.
