@@ -1,0 +1,42 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ(2.61)
+AC_INIT([CdaoTranslator], [0.2], bchisham@cs.nmsu.edu)
+AC_CONFIG_AUX_DIR(config)
+AC_CONFIG_SRCDIR([src])
+AC_CONFIG_HEADER([src/config.h])
+AM_INIT_AUTOMAKE(CdaoTranslator, 0.2)
+# Checks for programs.
+AC_PROG_CXX
+AC_PROG_CC
+AC_PROG_MAKE_SET
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_LIBTOOL
+AC_SUBST(LIBTOOL_DEPS)
+
+# Checks for libraries.
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS([float.h limits.h stdlib.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_SIZE_T
+
+# Checks for library functions.
+AC_CHECK_FUNCS([memmove strchr])
+
+AC_CONFIG_FILES([Makefile 
+                 src/Makefile
+                 src/codegen/Makefile
+                 src/grammar/Makefile
+                 src/grammar/nexus/Makefile
+                 lib/Makefile])
+AC_CONFIG_SUBDIRS([lib/ncl-2.0.02
+                   lib/CppLoggerV2])
+AC_OUTPUT

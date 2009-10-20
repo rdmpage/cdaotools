@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
+	<!ENTITY owl11 "http://www.w3.org/2006/12/owl11#">
+	<!ENTITY dc "http://purl.org/dc/elements/1.1/#">
+	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
+	<!ENTITY owl11xml "http://www.w3.org/2006/12/owl11-xml#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY cdao "http://www.cs.nmsu.edu/~epontell/CURRENT.owl#">
+	<!ENTITY amino-acid "http://www.co-ode.org/ontologies/amino-acid/2005/10/11/amino-acid.owl#">
+]>
+
+
+<rdf:RDF xmlns="http://www.cs.nmsu.edu/~epontell/stdout.owl#"
+	xml:base="http://www.cs.nmsu.edu/~epontell/stdout.owl#"
+	xmlns:owl11="http://www.w3.org/2006/12/owl11#"
+	xmlns:owl11xml="http://www.w3.org/2006/12/owl11-xml#"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:cdao="http://www.cs.nmsu.edu/~epontell/CURRENT.owl#"
+	xmlns:amino-acid="http://www.co-ode.org/ontologies/amino-acid/2005/10/11/amino-acid.owl#">
+	<owl:Ontology rdf:about="http://www.cs.nmsu.edu/~epontell/CURRENT.owl">
+		<owl:imports rdf:resource="http://www.cs.nmsu.edu/~epontell/CURRENT.owl"/>
+	</owl:Ontology>
+<cdao:Tree rdf:ID="my_unrooted_bush" />
+	<cdao:Lineage rdf:ID="Lineage_A">
+		<cdao:subtree_of rdf:resource="#my_unrooted_bush" />
+		<cdao:has_Lineage_node rdf:resource="#A" />
+		<cdao:has_Lineage_node rdf:resource="#AB" />
+		<cdao:has_Lineage_node rdf:resource="#ABCD" />
+	</cdao:Lineage>
+	<cdao:Lineage rdf:ID="Lineage_B">
+		<cdao:subtree_of rdf:resource="#my_unrooted_bush" />
+		<cdao:has_Lineage_node rdf:resource="#B" />
+		<cdao:has_Lineage_node rdf:resource="#AB" />
+		<cdao:has_Lineage_node rdf:resource="#ABCD" />
+	</cdao:Lineage>
+	<cdao:Lineage rdf:ID="Lineage_C">
+		<cdao:subtree_of rdf:resource="#my_unrooted_bush" />
+		<cdao:has_Lineage_node rdf:resource="#C" />
+		<cdao:has_Lineage_node rdf:resource="#CD" />
+		<cdao:has_Lineage_node rdf:resource="#ABCD" />
+	</cdao:Lineage>
+	<cdao:Lineage rdf:ID="Lineage_D">
+		<cdao:subtree_of rdf:resource="#my_unrooted_bush" />
+		<cdao:has_Lineage_node rdf:resource="#D" />
+		<cdao:has_Lineage_node rdf:resource="#CD" />
+		<cdao:has_Lineage_node rdf:resource="#ABCD" />
+	</cdao:Lineage>
+	<cdao:Character_State_Data_Matrix_Annotation rdf:ID="csdm_annotation_id" />
+	<cdao:Character_State_Data_Matrix rdf:ID="csdm_id">
+		<cdao:has rdf:resource="#csdm_annotation_id" />
+		<cdao:has_TU rdf:resource="#taxon_0" />
+		<cdao:has_TU rdf:resource="#taxon_1" />
+		<cdao:has_TU rdf:resource="#taxon_2" />
+		<cdao:has_TU rdf:resource="#taxon_3" />
+	</cdao:Character_State_Data_Matrix>
+	<cdao:TU rdf:ID="taxon_0">
+		<cdao:represented_by_Node rdf:resource="#A" />
+		<cdao:belongs_to_Character_State_Data_Matrix rdf:resource="#csdm_id" />
+	</cdao:TU>
+	<cdao:TU rdf:ID="taxon_1">
+		<cdao:represented_by_Node rdf:resource="#B" />
+		<cdao:belongs_to_Character_State_Data_Matrix rdf:resource="#csdm_id" />
+	</cdao:TU>
+	<cdao:TU rdf:ID="taxon_2">
+		<cdao:represented_by_Node rdf:resource="#C" />
+		<cdao:belongs_to_Character_State_Data_Matrix rdf:resource="#csdm_id" />
+	</cdao:TU>
+	<cdao:TU rdf:ID="taxon_3">
+		<cdao:represented_by_Node rdf:resource="#D" />
+		<cdao:belongs_to_Character_State_Data_Matrix rdf:resource="#csdm_id" />
+	</cdao:TU>
+	<cdao:Directed_Edge rdf:ID="AB_A">
+		<cdao:has_Child_Node rdf:resource="#A" />
+		<cdao:has_Parent_Node rdf:resource="#AB" />
+	</cdao:Directed_Edge>
+	<cdao:Node rdf:ID="A">
+		<cdao:represents_TU rdf:resource="#taxon_0" />
+		<cdao:has_Parent rdf:resource="#AB" />
+		<cdao:belongs_to_Edge_as_Child rdf:resource="#AB_A" />
+		<cdao:part_of rdf:resource="#Lineage_A" />
+		<cdao:part_of rdf:resource="#my_unrooted_bush" />
+	</cdao:Node>
+	<cdao:Directed_Edge rdf:ID="AB_B">
+		<cdao:has_Child_Node rdf:resource="#B" />
+		<cdao:has_Parent_Node rdf:resource="#AB" />
+	</cdao:Directed_Edge>
+	<cdao:Node rdf:ID="B">
+		<cdao:represents_TU rdf:resource="#taxon_1" />
+		<cdao:has_Parent rdf:resource="#AB" />
+		<cdao:belongs_to_Edge_as_Child rdf:resource="#AB_B" />
+		<cdao:part_of rdf:resource="#Lineage_B" />
+		<cdao:part_of rdf:resource="#my_unrooted_bush" />
+	</cdao:Node>
+	<cdao:Directed_Edge rdf:ID="ABCD_AB">
+		<cdao:has_Child_Node rdf:resource="#AB" />
+		<cdao:has_Parent_Node rdf:resource="#ABCD" />
+	</cdao:Directed_Edge>
+	<cdao:MRCA_Node rdf:ID="AB">
+		<cdao:has_Parent rdf:resource="#ABCD" />
+		<cdao:belongs_to_Edge_as_Child rdf:resource="#ABCD_AB" />
+		<cdao:has_Child rdf:resource="#A" />
+		<cdao:belongs_to_Edge_as_Parent rdf:resource="#AB_A" />
+		<cdao:part_of rdf:resource="#Lineage_A" />
+		<cdao:has_Child rdf:resource="#B" />
+		<cdao:belongs_to_Edge_as_Parent rdf:resource="#AB_B" />
+		<cdao:part_of rdf:resource="#Lineage_B" />
+		<cdao:nca_node_of rdf:resource="#Subtree_AB" />
+		<cdao:nca_node_of rdf:resource="#Subtree_A" />
+		<cdao:nca_node_of rdf:resource="#Subtree_B" />
+		<cdao:part_of rdf:resource="#my_unrooted_bush" />
+	</cdao:MRCA_Node>
+	<cdao:Directed_Edge rdf:ID="CD_C">
+		<cdao:has_Child_Node rdf:resource="#C" />
+		<cdao:has_Parent_Node rdf:resource="#CD" />
+	</cdao:Directed_Edge>
+	<cdao:Node rdf:ID="C">
+		<cdao:represents_TU rdf:resource="#taxon_2" />
+		<cdao:has_Parent rdf:resource="#CD" />
+		<cdao:belongs_to_Edge_as_Child rdf:resource="#CD_C" />
+		<cdao:part_of rdf:resource="#Lineage_C" />
+		<cdao:part_of rdf:resource="#my_unrooted_bush" />
+	</cdao:Node>
+	<cdao:Directed_Edge rdf:ID="CD_D">
+		<cdao:has_Child_Node rdf:resource="#D" />
+		<cdao:has_Parent_Node rdf:resource="#CD" />
+	</cdao:Directed_Edge>
+	<cdao:Node rdf:ID="D">
+		<cdao:represents_TU rdf:resource="#taxon_3" />
+		<cdao:has_Parent rdf:resource="#CD" />
+		<cdao:belongs_to_Edge_as_Child rdf:resource="#CD_D" />
+		<cdao:part_of rdf:resource="#Lineage_D" />
+		<cdao:part_of rdf:resource="#my_unrooted_bush" />
+	</cdao:Node>
+	<cdao:Directed_Edge rdf:ID="ABCD_CD">
+		<cdao:has_Child_Node rdf:resource="#CD" />
+		<cdao:has_Parent_Node rdf:resource="#ABCD" />
+	</cdao:Directed_Edge>
+	<cdao:MRCA_Node rdf:ID="CD">
+		<cdao:has_Parent rdf:resource="#ABCD" />
+		<cdao:belongs_to_Edge_as_Child rdf:resource="#ABCD_CD" />
+		<cdao:has_Child rdf:resource="#C" />
+		<cdao:belongs_to_Edge_as_Parent rdf:resource="#CD_C" />
+		<cdao:part_of rdf:resource="#Lineage_C" />
+		<cdao:has_Child rdf:resource="#D" />
+		<cdao:belongs_to_Edge_as_Parent rdf:resource="#CD_D" />
+		<cdao:part_of rdf:resource="#Lineage_D" />
+		<cdao:nca_node_of rdf:resource="#Subtree_CD" />
+		<cdao:nca_node_of rdf:resource="#Subtree_C" />
+		<cdao:nca_node_of rdf:resource="#Subtree_D" />
+		<cdao:part_of rdf:resource="#my_unrooted_bush" />
+	</cdao:MRCA_Node>
+	<cdao:MRCA_Node rdf:ID="ABCD">
+		<cdao:has_Child rdf:resource="#AB" />
+		<cdao:belongs_to_Edge_as_Parent rdf:resource="#ABCD_AB" />
+		<cdao:part_of rdf:resource="#Lineage_A" />
+		<cdao:part_of rdf:resource="#Lineage_B" />
+		<cdao:has_Child rdf:resource="#CD" />
+		<cdao:belongs_to_Edge_as_Parent rdf:resource="#ABCD_CD" />
+		<cdao:part_of rdf:resource="#Lineage_C" />
+		<cdao:part_of rdf:resource="#Lineage_D" />
+		<cdao:nca_node_of rdf:resource="#Subtree_ABCD" />
+		<cdao:nca_node_of rdf:resource="#Subtree_AB" />
+		<cdao:nca_node_of rdf:resource="#Subtree_CD" />
+		<cdao:part_of rdf:resource="#my_unrooted_bush" />
+	</cdao:MRCA_Node>
+	<cdao:Set_of_Nodes rdf:ID="Subtree_A">
+		<cdao:has_Element rdf:resource="#A" />
+	</cdao:Set_of_Nodes>
+	<cdao:Set_of_Nodes rdf:ID="Subtree_B">
+		<cdao:has_Element rdf:resource="#B" />
+	</cdao:Set_of_Nodes>
+	<cdao:Set_of_Nodes rdf:ID="Subtree_AB">
+		<cdao:has_Element rdf:resource="#A" />
+		<cdao:has_Element rdf:resource="#B" />
+		<cdao:has_Element rdf:resource="#AB" />
+	</cdao:Set_of_Nodes>
+	<cdao:Set_of_Nodes rdf:ID="Subtree_C">
+		<cdao:has_Element rdf:resource="#C" />
+	</cdao:Set_of_Nodes>
+	<cdao:Set_of_Nodes rdf:ID="Subtree_D">
+		<cdao:has_Element rdf:resource="#D" />
+	</cdao:Set_of_Nodes>
+	<cdao:Set_of_Nodes rdf:ID="Subtree_CD">
+		<cdao:has_Element rdf:resource="#C" />
+		<cdao:has_Element rdf:resource="#D" />
+		<cdao:has_Element rdf:resource="#CD" />
+	</cdao:Set_of_Nodes>
+	<cdao:Set_of_Nodes rdf:ID="Subtree_ABCD">
+		<cdao:has_Element rdf:resource="#A" />
+		<cdao:has_Element rdf:resource="#B" />
+		<cdao:has_Element rdf:resource="#AB" />
+		<cdao:has_Element rdf:resource="#C" />
+		<cdao:has_Element rdf:resource="#D" />
+		<cdao:has_Element rdf:resource="#CD" />
+		<cdao:has_Element rdf:resource="#ABCD" />
+	</cdao:Set_of_Nodes>
+</rdf:RDF>

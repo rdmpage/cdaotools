@@ -1,0 +1,31 @@
+#Brandon Chisham
+#Description: Build script for the reader and tree parser.
+
+#Specifies location of the project-wide include directories.
+#Critically for the NCL library
+PROJ_INCLUDE_DIR=../../../include
+INCLUDES=-I. -I../../ -I$(PROJ_INCLUDE_DIR)
+#Set complier and flags
+CXX=g++
+CXXFLAGS=-Wall -g $(INCLUDES)
+#Specify objects needed to compile the test program
+TESTOBJS=tree_description_scanner.o tree_description_parser.o ../../util.o
+
+all:
+	make nexus_reader.o test_tree_parser test_tree_scanner
+#Build the reader library
+nexus_reader.o: nexus_reader.cpp nexus_reader.hpp tree_description_parser.o
+	$(CXX)  $(CXXFLAGS) -c nexus_reader.cpp
+#Build the parser test program
+test_tree_parser: test_tree_parser.cpp tree_description_parser.o
+	$(CXX) $(CXXFLAGS) -otest_tree_parser test_tree_parser.cpp $(TESTOBJS)
+test_tree_scanner: test_tree_scanner.cpp tree_description_scanner.o
+	$(CXX) $(CXXFLAGS) -otest_tree_scanner test_tree_scanner.cpp tree_description_scanner.o
+#Build the parser library
+tree_description_parser.o: tree_description_parser.cpp tree_description_parser.hpp tree_description_scanner.o
+	$(CXX) $(CXXFLAGS) -c tree_description_parser.cpp 
+#Build the scanner library
+tree_description_scanner.o: tree_description_scanner.hpp tree_description_scanner.cpp
+	$(CXX) $(CXXFLAGS) -c tree_description_scanner.cpp
+clean:
+	rm  -f *.o

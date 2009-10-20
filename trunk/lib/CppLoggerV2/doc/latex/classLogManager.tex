@@ -1,0 +1,74 @@
+\section{Log\-Manager Class Reference}
+\label{classLogManager}\index{LogManager@{LogManager}}
+{\tt \#include $<$Log\-Manager.hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+{\bf $\sim$Log\-Manager} ()
+\item 
+void {\bf register\-Listener} (const {\bf Logger} $\ast$n\-Log)
+\item 
+void {\bf log} (int level=ERROR\_\-MESSAGES\_\-LR, const string \&message=\char`\"{}\char`\"{}) const 
+\item 
+void {\bf log} (int level=ERROR\_\-MESSAGES\_\-LR, const list$<$ {\bf Loggable} $\ast$ $>$ \&message\-Tokens=list$<$ {\bf Loggable} $\ast$ $>$()) const 
+\item 
+bool {\bf get\-Continue} ()\label{classLogManager_a4}
+
+\item 
+void {\bf stop\-Logger} ()\label{classLogManager_a5}
+
+\end{CompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{CompactItemize}
+\item 
+static {\bf Log\-Manager} \& {\bf get\-Instance} ()\label{classLogManager_e0}
+
+\end{CompactItemize}
+\subsection*{Protected Member Functions}
+\begin{CompactItemize}
+\item 
+{\bf Log\-Manager} ()
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Log\-Mangager specifies an flexible singleton, publisher/subscriber patterned logging facility. Loggers subscribe with it and are then informed when log events occur.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{LogManager@{Log\-Manager}!LogManager@{LogManager}}
+\index{LogManager@{LogManager}!LogManager@{Log\-Manager}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}Log\-Manager::Log\-Manager ()\hspace{0.3cm}{\tt  [protected]}}\label{classLogManager_b0}
+
+
+Creates a default logger with no listeners.\index{LogManager@{Log\-Manager}!~LogManager@{$\sim$LogManager}}
+\index{~LogManager@{$\sim$LogManager}!LogManager@{Log\-Manager}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}Log\-Manager::$\sim$Log\-Manager ()\hspace{0.3cm}{\tt  [inline]}}\label{classLogManager_a0}
+
+
+Releases the mutex and heap space to the system when the last handle to the Log\-Manager instance has gone out of scope.
+
+\subsection{Member Function Documentation}
+\index{LogManager@{Log\-Manager}!log@{log}}
+\index{log@{log}!LogManager@{Log\-Manager}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Log\-Manager::log (int {\em level} = {\tt ERROR\_\-MESSAGES\_\-LR}, const list$<$ {\bf Loggable} $\ast$ $>$ \& {\em message\-Tokens} = {\tt list$<$~{\bf Loggable}~$\ast$~$>$()}) const}\label{classLogManager_a3}
+
+
+Broadcasts the specified message tokens to all subscribed loggers.\index{LogManager@{Log\-Manager}!log@{log}}
+\index{log@{log}!LogManager@{Log\-Manager}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Log\-Manager::log (int {\em level} = {\tt ERROR\_\-MESSAGES\_\-LR}, const string \& {\em message} = {\tt \char`\"{}\char`\"{}}) const}\label{classLogManager_a2}
+
+
+Broadcasts the specified string to all subscribed loggers.\index{LogManager@{Log\-Manager}!registerListener@{registerListener}}
+\index{registerListener@{registerListener}!LogManager@{Log\-Manager}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Log\-Manager::register\-Listener (const {\bf Logger} $\ast$ {\em n\-Log})}\label{classLogManager_a1}
+
+
+Adds a new log listener to the system.
+
+The documentation for this class was generated from the following files:\begin{CompactItemize}
+\item 
+Log\-Manager.hpp\item 
+Log\-Manager.cpp\end{CompactItemize}

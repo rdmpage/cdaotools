@@ -1,0 +1,73 @@
+.TH "LogManager" 3 "26 May 2006" "Version 2" "C++ Logging Facility" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+LogManager \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <LogManager.hpp>\fP
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fB~LogManager\fP ()"
+.br
+.ti -1c
+.RI "void \fBregisterListener\fP (const \fBLogger\fP *nLog)"
+.br
+.ti -1c
+.RI "void \fBlog\fP (int level=ERROR_MESSAGES_LR, const string &message='') const "
+.br
+.ti -1c
+.RI "void \fBlog\fP (int level=ERROR_MESSAGES_LR, const list< \fBLoggable\fP * > &messageTokens=list< \fBLoggable\fP * >()) const "
+.br
+.ti -1c
+.RI "bool \fBgetContinue\fP ()"
+.br
+.ti -1c
+.RI "void \fBstopLogger\fP ()"
+.br
+.in -1c
+.SS "Static Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "static \fBLogManager\fP & \fBgetInstance\fP ()"
+.br
+.in -1c
+.SS "Protected Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBLogManager\fP ()"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+LogMangager specifies an flexible singleton, publisher/subscriber patterned logging facility. Loggers subscribe with it and are then informed when log events occur.
+.PP
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "LogManager::LogManager ()\fC [protected]\fP"
+.PP
+Creates a default logger with no listeners.
+.SS "LogManager::~LogManager ()\fC [inline]\fP"
+.PP
+Releases the mutex and heap space to the system when the last handle to the LogManager instance has gone out of scope.
+.SH "Member Function Documentation"
+.PP 
+.SS "void LogManager::log (int level = \fCERROR_MESSAGES_LR\fP, const list< \fBLoggable\fP * > & messageTokens = \fClist< \fBLoggable\fP * >()\fP) const"
+.PP
+Broadcasts the specified message tokens to all subscribed loggers.
+.SS "void LogManager::log (int level = \fCERROR_MESSAGES_LR\fP, const string & message = \fC''\fP) const"
+.PP
+Broadcasts the specified string to all subscribed loggers.
+.SS "void LogManager::registerListener (const \fBLogger\fP * nLog)"
+.PP
+Adds a new log listener to the system.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for C++ Logging Facility from the source code.

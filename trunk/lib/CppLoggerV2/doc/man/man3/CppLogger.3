@@ -1,0 +1,49 @@
+.TH "CppLogger" 3 "26 May 2006" "Version 2" "C++ Logging Facility" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+CppLogger \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <CppLogger.hpp>\fP
+.PP
+Inherits \fBLogger\fP.
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBCppLogger\fP (const \fBCppLogger\fP &rhs)"
+.br
+.ti -1c
+.RI "\fBCppLogger\fP (ostream &log=cerr, int nLogLevel=0)"
+.br
+.ti -1c
+.RI "virtual \fB~CppLogger\fP ()"
+.br
+.ti -1c
+.RI "virtual void \fBlog\fP (int level=ERROR_MESSAGES_LR, const std::string &message='') const "
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Provides a ofstream interface to the \fBLogger\fP system.
+.PP
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "CppLogger::CppLogger (const \fBCppLogger\fP & rhs)\fC [inline]\fP"
+.PP
+Description: Copies an existing logger.
+.SS "virtual CppLogger::~CppLogger ()\fC [inline, virtual]\fP"
+.PP
+Description: Currently does nothing since the \fBLogger\fP does not allocate resources to itself.
+.SH "Member Function Documentation"
+.PP 
+.SS "virtual void CppLogger::log (int level = \fCERROR_MESSAGES_LR\fP, const std::string & message = \fC''\fP) const\fC [virtual]\fP"
+.PP
+Description: Tests the log level of the message and reports the message if it has a high enough priority otherwise the message is suppressed.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for C++ Logging Facility from the source code.

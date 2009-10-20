@@ -1,0 +1,9 @@
+# tests of ancestor concept using input file ancestor3.nex (unrooted bush tree)
+1	unknown	AB is ancestor_of A;
+2	unknown	AB is ancestor_of B;
+3	unknown	ABCD is ancestor_of A; 
+4	unknown	ABCD is ancestor_of CD; 
+5	unknown	A is ancestor_of B; 
+6	unknown	A is ancestor_of AB;
+7	unknown	AB is ancestor_of CD; 
+8	unknown	AB is ancestor_of ABCD;

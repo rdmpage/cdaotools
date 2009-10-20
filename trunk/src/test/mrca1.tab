@@ -1,0 +1,9 @@
+# tests of mrca concept using input file mrca1.nex (rooted bush tree)
+1	true	AB is mrca_of (A,B);
+2	true	CD is mrca_of (D,C);
+3	true	ABCD is mrca_of (A,C); 
+4	true	ABCD is mrca_of (B,D); 
+5	false	ABCD is mrca_of (B,A); 
+6	false	ABCD is mrca_of (C,D);
+7	false	AB is mrca_of (C,D); 
+8	false	AB is mrca_of (A,C);

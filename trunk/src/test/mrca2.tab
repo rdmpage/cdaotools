@@ -1,0 +1,9 @@
+# tests of mrca concept using input file mrca2.nex (rooted ladder tree)
+1	true	AB is mrca_of (A,B);
+2	true	ABC is mrca_of (A,C);
+3	true	ABCD is mrca_of (B,D); 
+4	true	ABCD is mrca_of (A,D); 
+5	false	ABCD is mrca_of (A,B); 
+6	false	ABC is mrca_of (A,B);
+7	false	ABC is mrca_of (A,D); 
+8	false	AB is mrca_of (C,D);

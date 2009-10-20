@@ -1,0 +1,28 @@
+#Author: Brandon Chisham
+#Date: Dec. 15, 2005
+#Copyright (c) 2006 
+#This file is licensed under the terms of the LGPL, see the
+#file ../COPYING
+LIB_DIR =../lib
+SRC_DIR =./
+DOC_DIR =../doc
+BIN_DIR =../bin
+CXX =g++
+all:
+	make lib doc
+CppLogger.o: Logger.hpp CppLogger.cpp CppLogger.hpp
+	${CXX} -c CppLogger.cpp
+CLogger.o: Logger.hpp CLogger.cpp CLogger.hpp
+	${CXX}  -c CLogger.cpp
+SysLogger.o: Logger.hpp SysLogger.cpp SysLogger.hpp
+	${CXX}  -c SysLogger.cpp
+LogManager.o: Logger.hpp LogManager.cpp LogManager.hpp
+	${CXX} -c LogManager.cpp
+lib: CppLogger.o CLogger.o SysLogger.o LogManager.o
+	ar crsv ${LIB_DIR}/libCppLog.a CppLogger.o CLogger.o SysLogger.o LogManager.o 
+doc:
+	doxygen doxygen.conf *.hpp
+demo: ${LIB_DIR}/libCppLog.a demoApp.cpp
+	g++ -o ${BIN_DIR}/demoApp.bin demoApp.cpp ${LIB_DIR}/libCppLog.a -lpthread
+clean: 
+	rm -f *.o *~

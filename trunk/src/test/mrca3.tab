@@ -1,0 +1,9 @@
+# tests of mrca concept using input file mrca3.nex (unrooted bush tree)
+1	unknown	AB is mrca_of (A,B);
+2	unknown	CD is mrca_of (D,C);
+3	unknown	ABCD is mrca_of (A,C); 
+4	unknown	ABCD is mrca_of (B,D); 
+5	unknown	ABCD is mrca_of (B,A); 
+6	unknown	ABCD is mrca_of (C,D);
+7	unknown	AB is mrca_of (C,D); 
+8	unknown	AB is mrca_of (A,C);

@@ -1,0 +1,9 @@
+# tests of ancestor concept using input file ancestor2.nex (rooted ladder tree)
+1	true	AB is ancestor_of A;
+2	true	AB is ancestor_of B;
+3	true	ABCD is ancestor_of A; 
+4	true	ABCD is ancestor_of ABC; 
+5	false	A is ancestor_of B; 
+6	false	A is ancestor_of AB;
+7	false	ABC is ancestor_of ABCD; 
+8	false	AB is ancestor_of ABC;

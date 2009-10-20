@@ -1,0 +1,4 @@
+all:
+	(cd nexus && make)
+clean:
+	(cd nexus && make clean)

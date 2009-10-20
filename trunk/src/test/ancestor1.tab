@@ -1,0 +1,9 @@
+# tests of ancestor concept using input file ancestor1.nex (rooted bush tree)
+1	true	AB is ancestor_of A;
+2	true	AB is ancestor_of B;
+3	true	ABCD is ancestor_of A; 
+4	true	ABCD is ancestor_of CD; 
+5	false	A is ancestor_of B; 
+6	false	A is ancestor_of AB;
+7	false	AB is ancestor_of CD; 
+8	false	AB is ancestor_of ABCD;
