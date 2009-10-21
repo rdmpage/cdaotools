@@ -19,8 +19,8 @@ using namespace std;
 using namespace CDAO::Codegen;
 namespace CDAO {
   
-  static const string CSDM_ANNOTATION_ID = "csdm_annotation_id";
-  static const string CSDM_ID            = "csdm_id";
+  //static const string CSDM_ANNOTATION_ID = "csdm_annotation_id";
+  //static const string CSDM_ID            = "csdm_id";
   //converts the data type code into unknown, nucleotide, or amino acid
   static int dataTypeTranslationPosition[] = { 0,0,1,1,1,2 };
   /*
@@ -210,18 +210,18 @@ namespace CDAO {
       for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
 	out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_DATUM << " " << Builtins::RESOURCE << "=\"#trait_" << trait << "_taxon_" << taxon << "\" />" << endl;  
       }
-      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_CSDM << " " << Builtins::RESOURCE << "=\"#" << CSDM_ID << "\" />" << endl;
+      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_CSDM << " " << Builtins::RESOURCE << "=\"#" << model->getMatrixLabel() << "\" />" << endl;
       out << "\t</" << dtype_tag << ">" << endl;
     }
   }
   //write character state matrix annotation definion.
   void writeCharacterStateMatrixAnnotation(ostream& out, const DataRepresentation* model){
-    out << "\t<" << NSDefs::CDAO <<":" << Classes::CSDM_ANNOTATION << " " << Builtins::ID << "=\"" << CSDM_ANNOTATION_ID << "\" />" << endl;
+    out << "\t<" << NSDefs::CDAO <<":" << Classes::CSDM_ANNOTATION << " " << Builtins::ID << "=\"" << model->getMatrixLabel() + "_annotation_id" << "\" />" << endl;
   }
   //write character state matrix definition.
   void writeCharacterStateMatrix(ostream& out, const DataRepresentation* model){
-    out << "\t<" << NSDefs::CDAO << ":" << Classes::CSDM << " " << Builtins::ID << "=\"" << CSDM_ID << "\">" << endl;
-    out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS << " " << Builtins::RESOURCE << "=\"#" << CSDM_ANNOTATION_ID << "\" />" << endl;
+    out << "\t<" << NSDefs::CDAO << ":" << Classes::CSDM << " " << Builtins::ID << "=\"" << model->getMatrixLabel() << "\">" << endl;
+    out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS << " " << Builtins::RESOURCE << "=\"#" << model->getMatrixLabel() + "_annotation_id" << "\" />" << endl;
     //include references for each taxon in the dataset.
     for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
       out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_TU << " " << Builtins::RESOURCE << "=\"#" << "taxon_" << taxon << "\" />" << endl;
@@ -261,23 +261,26 @@ namespace CDAO {
   /*
    */
   void writeTree( ostream& out, const DataRepresentation* model){
-    out << "<" << NSDefs::CDAO << ":" << Classes::TREE << " " << Builtins::ID << "=\"" << XMLizeName( model->getTreeLabel( 0 ) ) << "\" />" << endl;
+    for (unsigned i = 0; i < model->getNumTrees(); ++i ){
+        out << "<" << NSDefs::CDAO << ":" << Classes::TREE << " " << Builtins::ID << "=\"" << XMLizeName( model->getTreeLabel( 0 ) ) << "\" />" << endl;
+    }
   }
   
   void writeLineages( ostream& out, const DataRepresentation* model){
     assert( model );
-    vector< const Node* > leaves = model->getParseTree()->getLeaves( model->getParseTree() );
-    for (vector< const Node* >::const_iterator i = leaves.begin(); i != leaves.end(); ++i){
-      out << "\t<" << NSDefs::CDAO << ":" << Classes::LINEAGE << " " << Builtins::ID << "=\"Lineage_" << XMLizeName( (*i)->getLabel() ) << "\">" << endl;
-      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::SUBTREE_OF << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( model->getTreeLabel( 0 ) ) << "\" />" << endl;
-      vector< const Node* > ancestors = (*i)->getAncestors();
-      //add the current node to it's own lineage
-      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_LINEAGE_NODE << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( (*i)->getLabel() ) << "\" />" << endl;
-      for ( vector< const Node* >::const_iterator j = ancestors.begin(); j != ancestors.end(); ++j){
-	out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_LINEAGE_NODE << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( (*j)->getLabel() ) << "\" />" << endl;
+    if (model->getNumTrees()){
+      vector< const Node* > leaves = model->getParseTree()->getLeaves( model->getParseTree() );
+      for (vector< const Node* >::const_iterator i = leaves.begin(); i != leaves.end(); ++i){
+        out << "\t<" << NSDefs::CDAO << ":" << Classes::LINEAGE << " " << Builtins::ID << "=\"Lineage_" << XMLizeName( (*i)->getLabel() ) << "\">" << endl;
+        out << "\t\t<" << NSDefs::CDAO << ":" << Properties::SUBTREE_OF << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( model->getTreeLabel( 0 ) ) << "\" />" << endl;
+        vector< const Node* > ancestors = (*i)->getAncestors();
+        //add the current node to it's own lineage
+        out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_LINEAGE_NODE << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( (*i)->getLabel() ) << "\" />" << endl;
+        for ( vector< const Node* >::const_iterator j = ancestors.begin(); j != ancestors.end(); ++j){
+	  out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_LINEAGE_NODE << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( (*j)->getLabel() ) << "\" />" << endl;
+        }
+        out << "\t</" << NSDefs::CDAO << ":" << Classes::LINEAGE << ">" << endl;
       }
-      out << "\t</" << NSDefs::CDAO << ":" << Classes::LINEAGE << ">" << endl;
-
     }
     return;
   }
@@ -333,7 +336,7 @@ namespace CDAO {
       out << "\t<" << NSDefs::CDAO << ":" << Classes::TU << " " << Builtins::ID << "=\"" << "taxon_" << taxon << "\">" << endl;
       //reference the corresponding node.
       out << "\t\t<" << NSDefs::CDAO << ":" << Properties::REPRESENTED_BY_NODE << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( model->getTaxonLabel( taxon )) << "\" />" << endl;
-      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_CSDM << " " << Builtins::RESOURCE << "=\"#" << CSDM_ID << "\" />" << endl;
+      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_CSDM << " " << Builtins::RESOURCE << "=\"#" << model->getMatrixLabel() << "\" />" << endl;
       out << "\t</" << NSDefs::CDAO << ":" << Classes::TU << ">" << endl;
     }
     //write the tree structure using the ProcessTUDelegate.
