@@ -4,17 +4,20 @@ CXX=g++
 CXXFLAGS=-g 
 LIBS=-ll
 
-treebase: main.cpp codegen.o parser.o scanner.o treebase-node.o
-	$(CXX) $(CXXFLAGS) -o treebase codegen.o parser.o scanner.o treebase-node.o main.cpp $(LIBS)
+treebase: main.cpp codegen.o parser.o scanner.o treebase-node.o cdao-importer.o
+	$(CXX) $(CXXFLAGS) -o treebase codegen.o parser.o scanner.o treebase-node.o cdao-importer.o main.cpp $(LIBS)
+
+cdao-importer.o: cdao-importer.cpp cdao-importer.hpp
+	$(CXX) $(CXXFLAGS) -c -o cdao-importer.o cdao-importer.cpp
 
 codgen.o: codegen.cpp codegen.hpp treebase-node.o
-	$(CXX) $(CXXFLAGS) -o codegen.o -c codegen.cpp
+	$(CXX) $(CXXFLAGS) -c -o codegen.o codegen.cpp
 
 parser.o: parser.cpp
-	$(CXX) $(CXXFLAGS) -o parser.o -c parser.cpp
+	$(CXX) $(CXXFLAGS) -c -o parser.o parser.cpp
 
 scanner.o: scanner.cpp
-	$(CXX) $(CXXFLAGS) -o scanner.o -c scanner.cpp
+	$(CXX) $(CXXFLAGS) -c -o scanner.o scanner.cpp
 
 scanner.cpp: parser.cpp scanner.l
 	$(FLEX) -o scanner.cpp scanner.l

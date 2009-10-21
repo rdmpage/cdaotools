@@ -48,6 +48,7 @@ ostream* out;
 
 //Logger* logger;
 
+string input_file = "";
 
 int main(int argc, char** argv, char** env){
   //setup environment
@@ -57,6 +58,7 @@ int main(int argc, char** argv, char** env){
   lmgr.log(INFO_MESSAGES_LR, "Preparing to parse the input file\n");
   //parse the input stream
   DataRepresentation* data = nexusparse();
+  data->setMatrixLabel( input_file  );
   lmgr.log(INFO_MESSAGES_LR, "Parsed the input file\n");
   lmgr.log(INFO_MESSAGES_LR, "Preparing to generate output\n");
   //configure the output generator
@@ -80,7 +82,9 @@ void processArgs(int argc, char** argv, char** env){
   //NexusState::setErrorfile( &cerr );
   for (int i = 1; i < argc  - 1; ++i){
     if ( argv[ i ] == INFILE_ARG){
-	ifstream* inf = new ifstream( argv[ i+1 ]);
+	input_file = argv[ i + 1 ];
+        ifstream* inf = new ifstream( input_file.c_str() );
+        
 	NexusState::setInfile( in =  dynamic_cast<istream*>(inf) );
     }
     else if ( argv[ i ] == OUTFILE_ARG ){

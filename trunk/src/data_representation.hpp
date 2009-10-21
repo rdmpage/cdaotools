@@ -36,6 +36,8 @@ namespace CDAO {
      */
     virtual const std::string  getTaxonLabel( const unsigned int i )const=0;
     virtual const std::string  getTreeLabel( const unsigned int i)const=0;
+    virtual const std::string  getMatrixLabel()const=0;
+    virtual void setMatrixLabel(const std::string& )=0;
     /*
      * Get the state of a character for the specified taxon.
      */
@@ -56,6 +58,10 @@ namespace CDAO {
      * Get the dataset's type.
      */
     virtual const unsigned int getDataType()const=0;
+    /**
+     * Get number of trees
+     */
+    virtual const unsigned int getNumTrees()const=0;
     /*
      * There is a gap for the given trait for some taxon.
      */
@@ -123,6 +129,10 @@ namespace CDAO {
       assert(  trees_  );
       return trees_->GetTreeName( i );
     }
+
+    virtual const std::string getMatrixLabel()const{ return matrix_label_; }
+    virtual void setMatrixLabel( const std::string& label){ matrix_label_ = label;}
+
     /*
      * Get the state of a particular trait for a particular taxon.
      */
@@ -176,8 +186,11 @@ namespace CDAO {
     virtual const bool isGap( const char ch )const{ return characters_->IsEmpty() ? false : characters_->GetGapSymbol() == ch; }
     
     virtual const bool isMissing( const char ch )const{ return characters_->IsEmpty()? false : characters_->GetMissingSymbol() == ch; }
+
+    virtual const unsigned int getNumTrees()const{ return trees_->GetNumTrees(); }
   private:
     const Node* findNode(const string& key, const Node* current )const;
+    std::string matrix_label_;
     Node* parse_tree_;
     NxsTaxaBlock* taxa_;
     NxsTreesBlock* trees_;
