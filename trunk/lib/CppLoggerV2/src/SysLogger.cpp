@@ -17,14 +17,14 @@ void SysLogger::log(int level, const string& message)const{
 
 #define MAX_LEN_  8192
 
-#ifndef strnlen
-size_t strnlen( const char* str, size_t max );
-size_t strnlen( const char* str, size_t max ){
-    size_t ret = 0;
-    for (const char*  i = str; i && *i && ret < max; ++ret, ++i);
-    return ret;
-}
-#endif
+//#ifndef strnlen
+//size_t strnlen( const char* str, size_t max );
+//size_t strnlen( const char* str, size_t max ){
+ //   size_t ret = 0;
+//    for (const char*  i = str; i && *i && ret < max; ++ret, ++i);
+//    return ret;
+//}
+//#endif
 
 char* initBuff(unsigned int size = SysLogger::BUFF_ENTRY_SIZE_){ return  (char*)calloc(size + 1, sizeof(char)); }
 void  freeBuff(char* buff){ free( buff );  }
