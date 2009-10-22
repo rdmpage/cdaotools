@@ -57,7 +57,7 @@ int main(int argc, char** argv, char** env){
   processArgs( argc, argv, env );
   //Logger has been configured.
 //  LogManager lmgr = LogManager::getInstance();
-  unsigned long int file_no = 0;
+  unsigned long int file_no = 1;
   ifstream* in;
   ofstream* out;
   DataRepresentation* data;
@@ -68,26 +68,26 @@ int main(int argc, char** argv, char** env){
       NexusState::setInfile( in );
       NexusState::setOutfile( out );
       
-      cerr << "Finished initialization\n";
+      //cerr << "Finished initialization\n";
       //lmgr.log(INFO_MESSAGES_LR, "Preparing to parse the input file\n");
  
       cerr << "Processing (" << file_no << "/" << input_files.size() << " : " << 100*(double)file_no/input_files.size() << "%):" << *i << endl;
 
       //parse the input stream
       data = nexusparse();
-      cerr << "Parsed: " << *i << endl;
+      //cerr << "Parsed: " << *i << endl;
       data->setMatrixLabel( *i  );
       //lmgr.log(INFO_MESSAGES_LR, "Parsed the input file\n");
       //lmgr.log(INFO_MESSAGES_LR, "Preparing to generate output\n");
       //configure the output generator
       CodeGenerator outputFormatter( data );
       
-      cerr << "Initialized output formatter\n";
+      //cerr << "Initialized output formatter\n";
 
       //write the output
       outputFormatter.generate( *out );
 
-      cerr << "Generated output\n";
+      //cerr << "Generated output\n";
       //lmgr.log(INFO_MESSAGES_LR, "Generated output\n");
   
       in->close();
@@ -96,7 +96,7 @@ int main(int argc, char** argv, char** env){
       delete out;
       delete data;
       
-      cerr << "Finished Cleanip\n";
+      //cerr << "Finished Cleanip\n";
   }
 
    
