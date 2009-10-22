@@ -69,7 +69,7 @@ namespace CDAO {
 //     cerr << "Reporting Characters:" << "\n";
 // 	characters->Report( cerr );
 
-//   }
+  // }
 //   if (! distances->IsEmpty() ){
 //     cerr << "Reporting Distances:" << "\n";
 // 	distances->Report( cerr );
