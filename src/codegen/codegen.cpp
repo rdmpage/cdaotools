@@ -123,21 +123,24 @@ namespace CDAO {
    * Write ontology to the specified stream.
    */
   void CodeGenerator::generate( ostream& out ){
-    /* Setup order writing will happen and which functions will do it. */
-    matrix_op_t writers[] = { writeTree,
-			      writeLineages,
+    
+    if ( data_model_ ){
+      /* Setup order writing will happen and which functions will do it. */
+      matrix_op_t writers[] = { writeTree,
+  			      writeLineages,
 			      writeCharacterStateMatrixAnnotation, 
 			      writeCharacterStateMatrix, 
 			      writeCharacters, 
 			      writeCharacterStates, 
 			      writeTUS };
-    writeHeaderBoilerPlate( out );
-    /* Invoke the writer delegates */
-    for (unsigned int i = 0; i < sizeof(writers)/sizeof(writers[0]); ++i ){
-      (*writers[i])( out, data_model_ );
+      writeHeaderBoilerPlate( out );
+      /* Invoke the writer delegates */
+      for (unsigned int i = 0; i < sizeof(writers)/sizeof(writers[0]); ++i ){
+        (*writers[i])( out, data_model_ );
+      }
+      //writeTUS( out, data_model_ );
+      writeClosing( out );
     }
-    //writeTUS( out, data_model_ );
-    writeClosing( out );
     return;
   }
   
@@ -197,7 +200,7 @@ namespace CDAO {
    * Write characters representation.
    */
   void writeCharacters( ostream& out, const DataRepresentation* model){
-    assert( model );
+    assert( NULL != model );
     //character tags.
     static const string dataTypeTranslation[] = {NSDefs::CDAO + ":" + Classes::UKN,
 					   NSDefs::CDAO + ":" + Classes::NUC_CHARACTER , 
@@ -216,23 +219,27 @@ namespace CDAO {
   }
   //write character state matrix annotation definion.
   void writeCharacterStateMatrixAnnotation(ostream& out, const DataRepresentation* model){
-    out << "\t<" << NSDefs::CDAO <<":" << Classes::CSDM_ANNOTATION << " " << Builtins::ID << "=\"" << model->getMatrixLabel() + "_annotation_id" << "\" />" << endl;
+    if ( model ){
+       out << "\t<" << NSDefs::CDAO <<":" << Classes::CSDM_ANNOTATION << " " << Builtins::ID << "=\"" << model->getMatrixLabel() + "_annotation_id" << "\" />" << endl; 
+    }
   }
   //write character state matrix definition.
   void writeCharacterStateMatrix(ostream& out, const DataRepresentation* model){
-    out << "\t<" << NSDefs::CDAO << ":" << Classes::CSDM << " " << Builtins::ID << "=\"" << model->getMatrixLabel() << "\">" << endl;
-    out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS << " " << Builtins::RESOURCE << "=\"#" << model->getMatrixLabel() + "_annotation_id" << "\" />" << endl;
-    //include references for each taxon in the dataset.
-    for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
-      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_TU << " " << Builtins::RESOURCE << "=\"#" << "taxon_" << taxon << "\" />" << endl;
-    }
-    for (unsigned int trait = 0; trait < model->getNTraits(); ++trait){
-      //  for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
-      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_CHARACTER << " " << Builtins::RESOURCE << "=\"#" << "trait_" << trait 
-	/*<< "_taxon_" << taxon */ << "\" />" << endl; 
+    if ( model ){
+       out << "\t<" << NSDefs::CDAO << ":" << Classes::CSDM << " " << Builtins::ID << "=\"" << model->getMatrixLabel() << "\">" << endl;
+       out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS << " " << Builtins::RESOURCE << "=\"#" << model->getMatrixLabel() + "_annotation_id" << "\" />" << endl;
+      //include references for each taxon in the dataset.
+      for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
+        out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_TU << " " << Builtins::RESOURCE << "=\"#" << "taxon_" << taxon << "\" />" << endl;
+      }
+      for (unsigned int trait = 0; trait < model->getNTraits(); ++trait){
+        //  for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
+        out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_CHARACTER << " " << Builtins::RESOURCE << "=\"#" << "trait_" << trait 
+	  /*<< "_taxon_" << taxon */ << "\" />" << endl; 
 	   //  }
+      }
+      out << "\t</" << NSDefs::CDAO << ":" << Classes::CSDM << ">" << endl;
     }
-    out << "\t</" << NSDefs::CDAO << ":" << Classes::CSDM << ">" << endl;
   }
   /*
    * Create a state instance for each taxon and trait.
@@ -242,44 +249,49 @@ namespace CDAO {
     static string dataTypeTranslation[] = {NSDefs::CDAO + ":" + Classes::UKN,
 					   NSDefs::CDAO + ":" + Classes::NUC_DATUM , 
 					   NSDefs::CDAO + ":" + Classes::AA_DATUM };
-    //selects the particular state tag needed for this set.
-    const string dtype_tag = dataTypeTranslation[ dataTypeTranslationPosition[ model->getDataType() ] ];
-    //write state for each trait and taxon.
-    for (unsigned int trait = 0; trait < model->getNTraits(); ++trait){
-      for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
-	out << "\t<" <<dtype_tag  << " " << Builtins::ID << "=\"" << "trait_" << trait << "_taxon_" << taxon << "\">" << endl;
-	//identify which TU this trait state belongs to.
-	out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_TU << " " << Builtins::RESOURCE << "=\"#" << /*XMLizeName( model->getTaxonLabel( taxon ))*/ "taxon_" << taxon << "\" />" << endl;
-	out << "\t\t<" << NSDefs::CDAO << ":" << Properties::PART_OF << " " << Builtins::RESOURCE << "=\"#" << /*XMLizeName( model->getTaxonLabel( taxon ))*/ "trait_" << trait << "\" />" << endl;
-	//write the state value.
-	writeState( out, model,  model->getDataType(),  model->getTraitState( taxon, trait ) );
-	out << "\t</" << dtype_tag << ">" << endl;
+    if ( model ){
+      //selects the particular state tag needed for this set.
+      const string dtype_tag = dataTypeTranslation[ dataTypeTranslationPosition[ model->getDataType() ] ];
+      //write state for each trait and taxon.
+      for (unsigned int trait = 0; trait < model->getNTraits(); ++trait){
+        for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
+	  out << "\t<" <<dtype_tag  << " " << Builtins::ID << "=\"" << "trait_" << trait << "_taxon_" << taxon << "\">" << endl;
+	  //identify which TU this trait state belongs to.
+	  out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_TU << " " << Builtins::RESOURCE << "=\"#" << /*XMLizeName( model->getTaxonLabel( taxon ))*/ "taxon_" << taxon << "\" />" << endl;
+	  out << "\t\t<" << NSDefs::CDAO << ":" << Properties::PART_OF << " " << Builtins::RESOURCE << "=\"#" << /*XMLizeName( model->getTaxonLabel( taxon ))*/ "trait_" << trait << "\" />" << endl;
+	  //write the state value.
+	  writeState( out, model,  model->getDataType(),  model->getTraitState( taxon, trait ) );
+	  out << "\t</" << dtype_tag << ">" << endl;
+        }
       }
     }
-    
   }
   /*
    */
   void writeTree( ostream& out, const DataRepresentation* model){
-    for (unsigned i = 0; i < model->getNumTrees(); ++i ){
-        out << "<" << NSDefs::CDAO << ":" << Classes::TREE << " " << Builtins::ID << "=\"" << XMLizeName( model->getTreeLabel( 0 ) ) << "\" />" << endl;
+    if ( model ){
+      for (unsigned i = 0; i < model->getNumTrees(); ++i ){
+          out << "<" << NSDefs::CDAO << ":" << Classes::TREE << " " << Builtins::ID << "=\"" << XMLizeName( model->getTreeLabel( i ) ) << "\" />" << endl;
+      }
     }
+    return;
   }
   
   void writeLineages( ostream& out, const DataRepresentation* model){
-    assert( model );
-    if (model->getNumTrees()){
-      vector< const Node* > leaves = model->getParseTree()->getLeaves( model->getParseTree() );
-      for (vector< const Node* >::const_iterator i = leaves.begin(); i != leaves.end(); ++i){
-        out << "\t<" << NSDefs::CDAO << ":" << Classes::LINEAGE << " " << Builtins::ID << "=\"Lineage_" << XMLizeName( (*i)->getLabel() ) << "\">" << endl;
-        out << "\t\t<" << NSDefs::CDAO << ":" << Properties::SUBTREE_OF << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( model->getTreeLabel( 0 ) ) << "\" />" << endl;
-        vector< const Node* > ancestors = (*i)->getAncestors();
-        //add the current node to it's own lineage
-        out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_LINEAGE_NODE << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( (*i)->getLabel() ) << "\" />" << endl;
-        for ( vector< const Node* >::const_iterator j = ancestors.begin(); j != ancestors.end(); ++j){
-	  out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_LINEAGE_NODE << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( (*j)->getLabel() ) << "\" />" << endl;
+    if( model ){
+      if (model->getNumTrees()){
+        vector< const Node* > leaves = model->getParseTree()->getLeaves( model->getParseTree() );
+        for (vector< const Node* >::const_iterator i = leaves.begin(); i != leaves.end(); ++i){
+          out << "\t<" << NSDefs::CDAO << ":" << Classes::LINEAGE << " " << Builtins::ID << "=\"Lineage_" << XMLizeName( (*i)->getLabel() ) << "\">" << endl;
+          out << "\t\t<" << NSDefs::CDAO << ":" << Properties::SUBTREE_OF << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( model->getTreeLabel( 0 ) ) << "\" />" << endl;
+          vector< const Node* > ancestors = (*i)->getAncestors();
+          //add the current node to it's own lineage
+          out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_LINEAGE_NODE << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( (*i)->getLabel() ) << "\" />" << endl;
+          for ( vector< const Node* >::const_iterator j = ancestors.begin(); j != ancestors.end(); ++j){
+	    out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_LINEAGE_NODE << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( (*j)->getLabel() ) << "\" />" << endl;
+          }
+          out << "\t</" << NSDefs::CDAO << ":" << Classes::LINEAGE << ">" << endl;
         }
-        out << "\t</" << NSDefs::CDAO << ":" << Classes::LINEAGE << ">" << endl;
       }
     }
     return;
@@ -292,28 +304,32 @@ namespace CDAO {
      const unsigned int AA_TYPE  = 2;
     static string dataTypeTranslation[] = {"",
     					    Properties::HAS_NUC_STATE , 
-    					    Properties::HAS_AA_STATE };
-    //select the appropriate tag.
-    const string dtype_tag = dataTypeTranslation[ dataTypeTranslationPosition[ data_type ] ];
-    //the character is a gap for this taxon.
-    if ( model->isGap( state_code ) ){
-      out << "\t\t<"   << NSDefs::CDAO  << ":" << dtype_tag << " " << Builtins::RESOURCE << "=\"" << Imports::CDAO_DEF_URI << "#"   << Classes::GAP << "\"" <<  " />" << endl;
-    }
-    //the character is missing for this taxon.
-    else if( model->isMissing( state_code ) ){
-      out << "\t\t<"   << NSDefs::CDAO << ":" << dtype_tag << " " << Builtins::RESOURCE << "=\"" << Imports::CDAO_DEF_URI << "#"   << Classes::ABSENT << "\"" << " />" << endl;
-    }
-    //reference the amino-acid or nucleotide instance.
-    else {
-      //cerr << "Data type: " << data_type << " translation: " << dataTypeTranslationPosition[ data_type ] << endl;
-      if ( NUC_TYPE == dataTypeTranslationPosition[ data_type ] ){
-	out << "\t\t<" << NSDefs::CDAO << ":" << dtype_tag << " " << Builtins::RESOURCE << "=\"" << Imports::CDAO_DEF_URI << "#"  << "d" << (char)toupper(state_code) << "\"" << " />" << endl;
-      } 
-      else if ( AA_TYPE == dataTypeTranslationPosition[ data_type ] ){
-	out << "\t\t<" << NSDefs::CDAO << ":" << dtype_tag << " " << Builtins::RESOURCE << "=\"" << Imports::AMINO_ACID << "#" << (char)toupper(state_code) << "\"" << " />" << endl;
+    				            Properties::HAS_AA_STATE };
+      if (model && model->getNTraits() && model->getNTax()){
+      //select the appropriate tag.
+      const string dtype_tag = dataTypeTranslation[ dataTypeTranslationPosition[ data_type ] ];
+      //the character is a gap for this taxon.
+      if ( model->isGap( state_code ) ){
+        out << "\t\t<"   << NSDefs::CDAO  << ":" << dtype_tag << " " << Builtins::RESOURCE << "=\"" << Imports::CDAO_DEF_URI << "#"   << Classes::GAP << "\"" <<  " />" << endl;
       }
-      else { cerr << "Unrecognized data type: " << dataTypeTranslationPosition[ data_type ] << endl; exit( 1 ); }
+      //the character is missing for this taxon.
+      else if( model->isMissing( state_code ) ){
+        out << "\t\t<"   << NSDefs::CDAO << ":" << dtype_tag << " " << Builtins::RESOURCE << "=\"" << Imports::CDAO_DEF_URI << "#"   << Classes::ABSENT << "\"" << " />" << endl;
+      }
+      //reference the amino-acid or nucleotide instance.
+      else {
+        //cerr << "Data type: " << data_type << " translation: " << dataTypeTranslationPosition[ data_type ] << endl;
+        if ( NUC_TYPE == dataTypeTranslationPosition[ data_type ] ){
+	  out << "\t\t<" << NSDefs::CDAO << ":" << dtype_tag << " " << Builtins::RESOURCE << "=\"" << Imports::CDAO_DEF_URI << "#"  << "d" << (char)toupper(state_code) << "\"" << " />" << endl;
+        } 
+        else if ( AA_TYPE == dataTypeTranslationPosition[ data_type ] ){
+	  out << "\t\t<" << NSDefs::CDAO << ":" << dtype_tag << " " << Builtins::RESOURCE << "=\"" << Imports::AMINO_ACID << "#" << (char)toupper(state_code) << "\"" << " />" << endl;
+        }
+        else { cerr << "Unrecognized data type: " << dataTypeTranslationPosition[ data_type ] << endl; /*exit( 1 );*/ }
+      
+      }
     }
+    return;
   }
 
   string character_reference_string( const unsigned int trait){
@@ -329,35 +345,39 @@ namespace CDAO {
    * 
    */
   void writeTUS( ostream& out, const DataRepresentation* model){
-    ProcessTUDelegate* del = new ProcessTUDelegate( out, model, writeTU);
-    ProcessTUDelegate* subTrees = new ProcessTUDelegate( out, model, writeSubtrees);
-    //write TU definitions
-    for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
-      out << "\t<" << NSDefs::CDAO << ":" << Classes::TU << " " << Builtins::ID << "=\"" << "taxon_" << taxon << "\">" << endl;
-      //reference the corresponding node.
-      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::REPRESENTED_BY_NODE << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( model->getTaxonLabel( taxon )) << "\" />" << endl;
-      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_CSDM << " " << Builtins::RESOURCE << "=\"#" << model->getMatrixLabel() << "\" />" << endl;
-      out << "\t</" << NSDefs::CDAO << ":" << Classes::TU << ">" << endl;
+    if ( model ){
+      ProcessTUDelegate* del = new ProcessTUDelegate( out, model, writeTU);
+      ProcessTUDelegate* subTrees = new ProcessTUDelegate( out, model, writeSubtrees);
+      //write TU definitions
+      for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
+        out << "\t<" << NSDefs::CDAO << ":" << Classes::TU << " " << Builtins::ID << "=\"" << "taxon_" << taxon << "\">" << endl;
+        //reference the corresponding node.
+        out << "\t\t<" << NSDefs::CDAO << ":" << Properties::REPRESENTED_BY_NODE << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( model->getTaxonLabel( taxon )) << "\" />" << endl;
+        out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_CSDM << " " << Builtins::RESOURCE << "=\"#" << model->getMatrixLabel() << "\" />" << endl;
+        out << "\t</" << NSDefs::CDAO << ":" << Classes::TU << ">" << endl;
+      }
+      //write the tree structure using the ProcessTUDelegate.
+      model->getParseTree()->postOrderTraversal( del );
+      model->getParseTree()->postOrderTraversal( subTrees );
+      delete del;
+      delete subTrees;
     }
-    //write the tree structure using the ProcessTUDelegate.
-    model->getParseTree()->postOrderTraversal( del );
-    model->getParseTree()->postOrderTraversal( subTrees );
-    delete del;
     return;
   }
   
   void writeSubtrees( ostream& out, const DataRepresentation* model, const Node* current){
-    assert( model );
-    assert( current );
+    if ( model ){
+      if ( current ){
     
-    out << "\t<" << NSDefs::CDAO << ":" << Classes::NODE_SET << " " << Builtins::ID << "=\"Subtree_" << XMLizeName( current->getLabel() ) << "\">" << endl;
-    vector< const Node* > elements = current->getAllDescendants();
-    //elements.push_back( current );
-    for (vector< const Node* >::const_iterator i = elements.begin(); i != elements.end(); ++i){
-      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_ELEMENT << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( (*i)->getLabel() ) << "\" />" << endl;
+        out << "\t<" << NSDefs::CDAO << ":" << Classes::NODE_SET << " " << Builtins::ID << "=\"Subtree_" << XMLizeName( current->getLabel() ) << "\">" << endl;
+       vector< const Node* > elements = current->getAllDescendants();
+       //elements.push_back( current );
+       for (vector< const Node* >::const_iterator i = elements.begin(); i != elements.end(); ++i){
+         out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_ELEMENT << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( (*i)->getLabel() ) << "\" />" << endl;
+      }
+       out << "\t</" << NSDefs::CDAO << ":" << Classes::NODE_SET  << ">" << endl;
+      }
     }
-    out << "\t</" << NSDefs::CDAO << ":" << Classes::NODE_SET  << ">" << endl;
-    
     return;
   }
   
@@ -428,43 +448,51 @@ namespace CDAO {
   }
 
   void writeChildConnections( ostream& out, const Node* current,  const vector< const Node* >& children){
-    //vector< const Node* > children = current->getDescendants();
-    for (vector< const Node* >::const_iterator it = children.begin(); it != children.end(); ++it){
-      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_CHILD << " " 
-	  << Builtins::RESOURCE << "=\"#" << XMLizeName( (*it)->getLabel() ) << "\" />" << endl;
-      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_EDGE_PR << " "
-	  << Builtins::RESOURCE << "=\"#" << XMLizeName( current->getLabel() ) << "_" <<  XMLizeName( (*it)->getLabel() ) << "\" />" << endl; 
+    
+   if ( current ){
+
+      //vector< const Node* > children = current->getDescendants();
+      for (vector< const Node* >::const_iterator it = children.begin(); it != children.end(); ++it){
+        out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_CHILD << " " 
+	    << Builtins::RESOURCE << "=\"#" << XMLizeName( (*it)->getLabel() ) << "\" />" << endl;
+        out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_EDGE_PR << " "
+	    << Builtins::RESOURCE << "=\"#" << XMLizeName( current->getLabel() ) << "_" <<  XMLizeName( (*it)->getLabel() ) << "\" />" << endl; 
       
-      writeLineageConnections( out, current, (*it)->getLeaves( *it ) );
-      //vector< const Node*> leaves = (*it)->getLeaves( *it );
-    }
+        writeLineageConnections( out, current, (*it)->getLeaves( *it ) );
+        //vector< const Node*> leaves = (*it)->getLeaves( *it );
+      }
+   }
     return;
   }
 
   void writeLineageConnections( ostream& out, const Node* current,  const vector< const Node* >& leaves ){
-    for (vector< const Node* >::const_iterator i = leaves.begin(); i != leaves.end(); ++i){
-      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::PART_OF << " " << Builtins::RESOURCE << "=\"#Lineage_" << XMLizeName( (*i)->getLabel(  ) ) << "\" />" << endl;    
+    if ( current ){
+      for (vector< const Node* >::const_iterator i = leaves.begin(); i != leaves.end(); ++i){
+        out << "\t\t<" << NSDefs::CDAO << ":" << Properties::PART_OF << " " << Builtins::RESOURCE << "=\"#Lineage_" << XMLizeName( (*i)->getLabel(  ) ) << "\" />" << endl;    
+      }
     }
     return;
   }
   
   void writeNcaInfo( ostream& out, const Node* current, const vector< const Node* >& nca_of ){
-    set < const Node* > ncas_written = set< const Node* >();
-    ncas_written.insert( current );
-    out << "\t\t<" << NSDefs::CDAO << ":" << Properties::NCA_OF << " " << Builtins::RESOURCE << "=\"#Subtree_" << XMLizeName( current->getLabel() ) << "\" />" << endl;
-    for ( vector< const Node* >::const_iterator i = nca_of.begin(); i != nca_of.end(); ++i){
-      for ( vector< const Node* >::const_iterator j = nca_of.begin(); j != nca_of.end(); ++j){
-	if ( *i != *j){
-	  const Node* mrca_node = (*i)->getMrca( *j );
-	  //cerr << "Comparing: *i:" << (*i)->getLabel() << " to:" << (*j)->getLabel() << endl;
-	  if (  mrca_node && mrca_node == current && ncas_written.find( *i  ) == ncas_written.end() && ncas_written.find( *j ) == ncas_written.end() ){
-	    //cerr << "\tMrca is: " << mrca_node->getLabel() << endl; 
-	    out << "\t\t<" << NSDefs::CDAO << ":" << Properties::NCA_OF << " " << Builtins::RESOURCE << "=\"#Subtree_" << XMLizeName( (*i)->getLabel() ) << "\" />" << endl;
-	    out << "\t\t<" << NSDefs::CDAO << ":" << Properties::NCA_OF << " " << Builtins::RESOURCE << "=\"#Subtree_" << XMLizeName( (*j)->getLabel() ) << "\" />" << endl;
-	    ncas_written.insert( *i );
-	    ncas_written.insert( *j ); 
+    if ( current ){
+      set < const Node* > ncas_written = set< const Node* >();
+      ncas_written.insert( current );
+      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::NCA_OF << " " << Builtins::RESOURCE << "=\"#Subtree_" << XMLizeName( current->getLabel() ) << "\" />" << endl;
+      for ( vector< const Node* >::const_iterator i = nca_of.begin(); i != nca_of.end(); ++i){
+        for ( vector< const Node* >::const_iterator j = nca_of.begin(); j != nca_of.end(); ++j){
+	  if ( *i != *j){
+	    const Node* mrca_node = (*i)->getMrca( *j );
+	    //cerr << "Comparing: *i:" << (*i)->getLabel() << " to:" << (*j)->getLabel() << endl;
+	    if (  mrca_node && mrca_node == current && ncas_written.find( *i  ) == ncas_written.end() && ncas_written.find( *j ) == ncas_written.end() ){
+	      //cerr << "\tMrca is: " << mrca_node->getLabel() << endl; 
+	      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::NCA_OF << " " << Builtins::RESOURCE << "=\"#Subtree_" << XMLizeName( (*i)->getLabel() ) << "\" />" << endl;
+	      out << "\t\t<" << NSDefs::CDAO << ":" << Properties::NCA_OF << " " << Builtins::RESOURCE << "=\"#Subtree_" << XMLizeName( (*j)->getLabel() ) << "\" />" << endl;
+	      ncas_written.insert( *i );
+	      ncas_written.insert( *j ); 
+	    }
 	  }
-	}
+        }
       }
     }
     return;
