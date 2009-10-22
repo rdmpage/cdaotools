@@ -30,7 +30,7 @@ namespace CDAO {
     /*
      * Get the tree topology.
      */
-    virtual const Node* getParseTree()const=0;
+    virtual const Node* getParseTree(unsigned int i)const=0;
     /*
      * Extract a particular taxon label.
      */
@@ -73,7 +73,7 @@ namespace CDAO {
     /*
      * Find the node associated with the taxon number.
      */
-    virtual  const Node* findNode( const unsigned int taxon  )const=0;
+    virtual  const Node* findNode( const unsigned int taxon, const unsigned int tree  )const=0;
     /*
      * Find the taxon number associated with a name.
      */
@@ -92,7 +92,7 @@ namespace CDAO {
     /*
      * Builds a nexus data representation.
      */
-    NexusDataRepresentation(Node* parse_tree, 
+    NexusDataRepresentation(std::vector<const Node* > parse_tree, 
 			    NxsTaxaBlock* taxa, 
 			    NxsTreesBlock* trees, 
 			    NxsAssumptionsBlock* assumptions,
@@ -112,22 +112,22 @@ namespace CDAO {
     /*
      * Retrieve the parse tree. 
      */
-    virtual const Node* getParseTree()const{ return parse_tree_; }
+    virtual const Node* getParseTree(const unsigned int i = 0)const{ return parse_tree_.at( i ); }
     /*
      * Retrieve the taxon label
      */
     virtual const std::string getTaxonLabel( const unsigned int i)const{ 
-      assert( taxa_ ); 
+      //assert( taxa_ ); 
       //string label;
       //try { label =  return label; }
       //catch (NxsX_NoSuchTaxon e){
       //	cerr << "No Taxon: " << e.getContents() << "\n";
       //}
-      return taxa_->GetTaxonLabel( i );
+      return taxa_ && !taxa_->IsEmpty() ? taxa_->GetTaxonLabel( i ) : "";
     }
     virtual const std::string  getTreeLabel( const unsigned int i)const{
-      assert(  trees_  );
-      return trees_->GetTreeName( i );
+      //assert(  trees_  );
+      return trees_ && !trees_->IsEmpty() && i < trees_->GetNumTrees() ? trees_->GetTreeName( i ) : "" ;;
     }
 
     virtual const std::string getMatrixLabel()const{ return matrix_label_; }
@@ -167,7 +167,7 @@ namespace CDAO {
     /*
      * Finds the node associated with the specifed taxon number. 
      */
-    virtual const Node* findNode( const unsigned int taxon  )const;
+    virtual const Node* findNode( const unsigned int taxon, const unsigned int tree  )const;
     /*
      * Finds the taxon number associated with the specified label.
      */
@@ -185,15 +185,15 @@ namespace CDAO {
        }
       return ret;
     }
-    virtual const bool isGap( const char ch )const{ return characters_->IsEmpty() ? false : characters_->GetGapSymbol() == ch; }
+    virtual const bool isGap( const char ch )const{ return !characters_ || characters_->IsEmpty() ? false : characters_->GetGapSymbol() == ch; }
     
-    virtual const bool isMissing( const char ch )const{ return characters_->IsEmpty()? false : characters_->GetMissingSymbol() == ch; }
+    virtual const bool isMissing( const char ch )const{ return !characters_ || characters_->IsEmpty() ? false : characters_->GetMissingSymbol() == ch; }
 
-    virtual const unsigned int getNumTrees()const{ return trees_->GetNumTrees(); }
+    virtual const unsigned int getNumTrees()const{ return trees_ && !trees_->IsEmpty() ? trees_->GetNumTrees() : 0; }
   private:
     const Node* findNode(const string& key, const Node* current )const;
     std::string matrix_label_;
-    Node* parse_tree_;
+    std::vector<const Node* > parse_tree_;
     NxsTaxaBlock* taxa_;
     NxsTreesBlock* trees_;
     NxsAssumptionsBlock* assumptions_;

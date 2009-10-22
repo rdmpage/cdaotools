@@ -5,19 +5,18 @@ namespace CDAO {
    * Extract the trait state for the given trand and taxon.
    */
   const char NexusDataRepresentation::getTraitState( const unsigned int taxon, const unsigned int trait)const{
-    
-    assert( characters_ );
-    
-    int state = characters_->GetInternalRepresentation( taxon, trait, 0  );
-    char ret;
-    if (NXS_GAP == state){
-      ret = characters_->GetGapSymbol();
-    }
-    else if (NXS_MISSING == state){
-      ret = characters_->GetMissingSymbol();
-    }
-    else {
-      ret = characters_->GetState( taxon, trait, 0);
+    char ret = '?';
+    if ( characters_ && !characters_->IsEmpty() ){ 
+       int state = characters_->GetInternalRepresentation( taxon, trait, 0  );
+       if (NXS_GAP == state){
+         ret = characters_->GetGapSymbol();
+       }
+       else if (NXS_MISSING == state){
+         ret = characters_->GetMissingSymbol();
+       }
+       else {
+         ret = characters_->GetState( taxon, trait, 0);
+       }
     }
     return ret;
     
@@ -26,9 +25,11 @@ namespace CDAO {
    * True if a gap has been observed for some taxon for the given trait.
    */
   const bool NexusDataRepresentation::hasGap( const unsigned int trait)const{
-    for ( unsigned int taxon = 0; taxon < this->getNTax(); ++taxon ){
-      if ( characters_->GetInternalRepresentation(taxon, trait, 0) == NXS_GAP  ){
-	return true;
+    if ( characters_ && !characters_->IsEmpty() && trait < this->getNTraits() ){
+      for ( unsigned int taxon = 0; taxon < this->getNTax(); ++taxon ){
+        if ( characters_->GetInternalRepresentation(taxon, trait, 0) == NXS_GAP  ){
+	  return true;
+        }
       }
     }
     return false;
@@ -36,11 +37,11 @@ namespace CDAO {
   /*
    * Find the node corresponding to the given taxon number.
    */
-  const Node* NexusDataRepresentation::findNode( const unsigned int taxon  )const{
+  const Node* NexusDataRepresentation::findNode( const unsigned int taxon, const unsigned int tree  )const{
     assert ( taxa_ );
     string label = taxa_->GetTaxonLabel( taxon );
     
-    return findNode(label, parse_tree_);
+    return findNode(label, parse_tree_.at( tree  ));
     
   }
   /*

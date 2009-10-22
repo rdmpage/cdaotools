@@ -282,8 +282,8 @@ namespace CDAO {
   
   void writeLineages( ostream& out, const DataRepresentation* model){
     if( model ){
-      if (model->getNumTrees()){
-        vector< const Node* > leaves = model->getParseTree()->getLeaves( model->getParseTree() );
+      for (unsigned int tree = 0; tree < model->getNumTrees(); ++tree){
+        vector< const Node* > leaves = model->getParseTree( tree )->getLeaves( model->getParseTree( tree ) );
         for (vector< const Node* >::const_iterator i = leaves.begin(); i != leaves.end(); ++i){
           out << "\t<" << NSDefs::CDAO << ":" << Classes::LINEAGE << " " << Builtins::ID << "=\"Lineage_" << XMLizeName( (*i)->getLabel() ) << "\">" << endl;
           out << "\t\t<" << NSDefs::CDAO << ":" << Properties::SUBTREE_OF << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( model->getTreeLabel( 0 ) ) << "\" />" << endl;
@@ -365,10 +365,12 @@ namespace CDAO {
           out << "\t</" << NSDefs::CDAO << ":" << Classes::TU << ">" << endl;
         }
         //write the tree structure using the ProcessTUDelegate.
-        const Node* tree = model->getParseTree();
-        if ( tree ){
-          tree->postOrderTraversal( del );
-          tree->postOrderTraversal( subTrees );
+        for ( unsigned i = 0; i < model->getNumTrees(); ++i){
+          const Node* tree = model->getParseTree( i );
+          if ( tree ){
+            tree->postOrderTraversal( del );
+            tree->postOrderTraversal( subTrees );
+          }
         }
         delete del;
         delete subTrees;

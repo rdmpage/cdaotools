@@ -1,5 +1,6 @@
 #include "nexus_reader.hpp"
 #include <iostream>
+#include <vector>
 #include "tree_description_parser.hpp"
 
 using namespace std;
@@ -11,7 +12,7 @@ namespace CDAO {
   DataRepresentation*  nexusparse(){
 
   //cerr << "nexusparse()\n";
-    OntNexusReader nread(  *(NexusState::getInfile()), *(NexusState::getOutfile()), *(NexusState::getErrorfile()) );
+  OntNexusReader nread(  *(NexusState::getInfile()), *(NexusState::getOutfile()), *(NexusState::getErrorfile()) );
   //cerr << "Initialized the reader\n";
   NxsTaxaBlock* taxa               = new NxsTaxaBlock();
   NxsAssumptionsBlock* assumptions = new NxsAssumptionsBlock( taxa );
@@ -37,21 +38,25 @@ namespace CDAO {
 
   nread.Execute( token );
   
-  string tree_description = "";
+  vector< string > tree_description = vector< string >();
   if ( ! trees->IsEmpty() ){
-    if ( trees->GetNumTrees() > 0 ){
-      tree_description  = trees->GetTreeDescription( 0 );
-    }
-    else {
-      //cerr << "No Trees!" << endl;
+    for (unsigned i = 0; i < trees->GetNumTrees(); ++i ){
+      tree_description.push_back( trees->GetTreeDescription( i ) );
     }
   }
+  else {
+      //cerr << "No Trees!" << endl;
+  }
+ 
   
   //cerr << "tree_description: " << tree_description << endl;
+  vector< const Node* > parsed_trees = vector< const Node* >();
+  for (vector< string >::iterator i = tree_description.begin(); i < tree_description.end(); ++i){
+    TreeDescriptionParser  treeParser( *i );
+    parsed_trees.push_back( treeParser.getParseTree() ); 
+  }
   
-  TreeDescriptionParser treeParser( tree_description ); 
-  
-  NexusDataRepresentation* ret = new NexusDataRepresentation( treeParser.getParseTree(), taxa, trees, assumptions, characters, data, distances );
+  NexusDataRepresentation* ret = new NexusDataRepresentation( parsed_trees, taxa, trees, assumptions, characters, data, distances );
 
   //cerr << "Executed the read\n";
 
@@ -70,6 +75,13 @@ namespace CDAO {
 // 	characters->Report( cerr );
 
   // }
+
+  //   if (! data->IsEmpty() ){
+  //     cerr << "Reporting Data: " << "\n";
+  //     data->Report( cerr );
+  //   }
+
+
 //   if (! distances->IsEmpty() ){
 //     cerr << "Reporting Distances:" << "\n";
 // 	distances->Report( cerr );
