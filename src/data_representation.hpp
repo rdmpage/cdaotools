@@ -140,19 +140,19 @@ namespace CDAO {
     /*
      * True if all taxa have the same state for the given trait.
      */
-    virtual const bool  isTrait( const unsigned int character)const{ assert(characters_ && !characters_->IsEmpty() ); return characters_->GetObsNumStates( character ) == 1;  }
+    virtual const bool  isTrait( const unsigned int character)const{ return characters_ && !characters_->IsEmpty() ? characters_->GetObsNumStates( character ) == 1 : false;  }
     /*
      * Returns the number of taxa in the set.
      */
-    virtual const unsigned int getNTax()const{ assert( taxa_ && !taxa_->IsEmpty() ); return taxa_->GetNumTaxonLabels(); }
+    virtual const unsigned int getNTax()const{ return taxa_ && !taxa_->IsEmpty() ? taxa_->GetNumTaxonLabels() : 0; }
     /*
      * Returns the number of characters/traits in the set.
      */
-    virtual const unsigned int getNTraits()const{ assert( characters_ ); return  characters_->IsEmpty()? 0 : characters_->GetNumMatrixCols(); }
+    virtual const unsigned int getNTraits()const{ return  characters_ &&  !characters_->IsEmpty() ? characters_->GetNumMatrixCols() : 0; }
     /*
      * Returns the datatype of the set.
      */
-    virtual const unsigned int getDataType()const{ assert( characters_ ); return characters_->IsEmpty()? 0: characters_->GetDataType();  }
+    virtual const unsigned int getDataType()const{ return characters_ && !characters_->IsEmpty() ? characters_->GetDataType() : 0 ;  }
     /*
      * True if some taxon has a gap for the specified trait.
      */
@@ -161,8 +161,8 @@ namespace CDAO {
      * True of the specified taxon and traic is in a gap state.
      */
     virtual const bool isGap( const unsigned int taxon, const unsigned int trait)const{ 
-      assert( characters_ && !characters_->IsEmpty() ); 
-      return NXS_GAP == characters_->GetInternalRepresentation( taxon, trait, 0);  
+      return characters_ && !characters_->IsEmpty() && taxon < this->getNTax() && trait < this->getNTraits()?
+          NXS_GAP == characters_->GetInternalRepresentation( taxon, trait, 0) : false;  
     }
     /*
      * Finds the node associated with the specifed taxon number. 
@@ -172,16 +172,18 @@ namespace CDAO {
      * Finds the taxon number associated with the specified label.
      */
     virtual const unsigned int getTaxonNumber( const string& label)const{ 
-      assert( taxa_ && !taxa_->IsEmpty() ); 
-      int ret;
-      try {
-	ret = taxa_->FindTaxon( NxsString(label.c_str()) ); 
-	return ret;
-      } catch (NxsTaxaBlock::NxsX_NoSuchTaxon e){
-	//cerr << "No taxon: " << label << "\n";
-	return NO_TAXON;
+      int ret = NO_TAXON;
+      if ( taxa_ && !taxa_->IsEmpty() ){ 
+        try {
+	  ret = taxa_->FindTaxon( NxsString(label.c_str()) ); 
+	  return ret;
+        } catch (NxsTaxaBlock::NxsX_NoSuchTaxon e){
+	  //cerr << "No taxon: " << label << "\n";
+	  //return NO_TAXON;
 	//exit ( 1 );
-      }
+        }
+       }
+      return ret;
     }
     virtual const bool isGap( const char ch )const{ return characters_->IsEmpty() ? false : characters_->GetGapSymbol() == ch; }
     
