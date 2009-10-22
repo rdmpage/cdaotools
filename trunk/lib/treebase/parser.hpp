@@ -111,7 +111,7 @@ typedef union YYSTYPE
     Treebase::ListNode<Treebase::OutputTreeNode>* output_tree_list;
     Treebase::ListNode<Treebase::AnalysisNode>* analysis_list;
 }
-/* Line 2616 of glr.c.  */
+/* Line 2604 of glr.c.  */
 #line 116 "parser.hpp"
 	YYSTYPE;
 # define YYSTYPE_IS_DECLARED 1
