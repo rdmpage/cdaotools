@@ -105,7 +105,7 @@ Logger& SysLogger::operator<<(const double& in){
 }
 
 Logger& SysLogger::operator<<(const char*& in){ 
-  size_t len = strnlen(in, MAX_LEN_);  
+  size_t len = strlen(in/*, MAX_LEN_*/);  
   char* nbuff = initBuff(len); 
   strncpy(nbuff, in, len); 
   buff_.push_back( nbuff );  
