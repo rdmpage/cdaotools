@@ -5,6 +5,12 @@
 using namespace std;
 namespace CDAO {
 
+  Node::~Node(){
+     for (vector< const Node* >::iterator i = descendants_.begin(); i != descendants_.end(); ++i){
+         delete *i;
+     }
+  }
+
   void Node::printTree(unsigned int level,  std::ostream& out  )const{
     for (unsigned int i = 0; i < level; ++i ){ out << "  ";}
     out <<"Name:" << this->getLabel() <<" Weight:" << this->getWeight() <<"\n";
