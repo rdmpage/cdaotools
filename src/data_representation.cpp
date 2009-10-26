@@ -1,6 +1,20 @@
 #include "data_representation.hpp"
 
 namespace CDAO {
+  
+  NexusDataRepresentation::~NexusDataRepresentation(){
+      delete taxa_;
+      delete trees_;
+      delete assumptions_;
+      delete characters_;
+      delete data_;
+      delete distances_;
+
+      for (vector< const Node* >::iterator i = parse_tree_.begin(); i != parse_tree_.end(); ++i ){
+          delete *i;
+      }
+  }
+  
   /*
    * Extract the trait state for the given trand and taxon.
    */
