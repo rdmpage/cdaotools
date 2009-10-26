@@ -2,13 +2,13 @@
 #Automake rules for the cdao translator.
 #April 15, 2008
 
-INCLUDES=-I. -I$(top_builddir) -I$(top_builddir)/src/grammar/nexus -I$(top_builddir)/lib/ncl-2.0.02/ncl -I$(top_builddir)/lib/CppLoggerV2/src
+INCLUDES=-I. -I$(top_builddir) -I$(top_builddir)/src/grammar/nexus -I$(top_builddir)/lib/ncl-2.1.06/ -I$(top_builddir)/lib/CppLoggerV2/src
 AM_CXXFLAGS=-Wall -g
 
 NEXDIR=grammar/nexus
 CODEGEN=codegen
 LIBDIR=$(top_builddir)/lib
-NCLV=2.0.02
+NCLV=2.1.06
 
 bin_PROGRAMS=cdao-import cdao-mass-import
 

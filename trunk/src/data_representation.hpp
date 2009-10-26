@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <cassert>
-#include <ncl.h>
+#include <ncl/ncl.h>
 #include <climits>
 #include "grammar/nexus/tree_description_parser.hpp"
 #include "grammar/nexus/nexus_reader.hpp"
