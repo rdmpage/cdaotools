@@ -13,16 +13,16 @@
 void* logger_thread_start(void*);
 
 //<--------Declare Storage for Static Class Members----------->
-std::list<thread_safe_ptr<Logger> > LogManager::listeners_ = std::list<thread_safe_ptr<Logger> >();
-pthread_mutex_t LogManager::lock_;
+std::list<Logger* > LogManager::listeners_ = std::list<Logger* >();
+pthread_mutex_t LogManager::lock_ = PTHREAD_MUTEX_INITIALIZER;
 LogManager* LogManager::instance_ = NULL;
 sem_t LogManager::referenceCount_;
 bool LogManager::continue_ = true;
 pthread_t LogManager::loggerThread_;
 //<----------------------------------------------------------->
 LogManager::LogManager(){    
-  pthread_mutex_init(&lock_, NULL);
-  sem_init(&referenceCount_,0,1);
+  //pthread_mutex_init(&lock_, NULL);
+ // sem_init(&referenceCount_,0,1);
   //start the logger thread.
   pthread_create(&loggerThread_, NULL, logger_thread_start,NULL );
   //put don't synchronize with the thread on completion.
@@ -32,7 +32,7 @@ LogManager::LogManager(){
 /**
  * Adds a new listener to the subscriber list.
  */
-void LogManager::registerListener(thread_safe_ptr<Logger> nLog){
+void LogManager::registerListener(Logger* nLog){
   pthread_mutex_lock(&lock_);
   listeners_.push_back(nLog);
   pthread_mutex_unlock(&lock_);
@@ -45,7 +45,7 @@ void LogManager::log(level_t level, const string& message)const{
  //block access to the subscriber list while the message is being sent.
   pthread_mutex_lock(&lock_);
   if (listeners_.size()){
-    for(list<thread_safe_ptr<Logger> >::const_iterator i = listeners_.begin() ; i != listeners_.end(); ++i){
+    for(list<Logger* >::const_iterator i = listeners_.begin() ; i != listeners_.end(); ++i){
       (*i)->log(level, message);
     }
   }
@@ -55,7 +55,7 @@ void LogManager::log(level_t level, const string& message)const{
 
 void LogManager::startMultiPartMessage( level_t level ){
   if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       (*i)->enterSection( level );
     }
   }
@@ -64,7 +64,7 @@ void LogManager::startMultiPartMessage( level_t level ){
 
 void LogManager::endMultiPartMessage(){
    if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       (*i)->leaveSection( );
     }
   }
@@ -73,7 +73,7 @@ void LogManager::endMultiPartMessage(){
   
 LogManager& LogManager::operator<<(const char& in){
    if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       **i << in;
     }
   }
@@ -81,7 +81,7 @@ LogManager& LogManager::operator<<(const char& in){
 }
 LogManager& LogManager::operator<<(const unsigned char& in){
  if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       **i << in;
     }
   }
@@ -89,7 +89,7 @@ LogManager& LogManager::operator<<(const unsigned char& in){
 } 
 LogManager& LogManager::operator<<(const short& in){
  if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       **i << in;
     }
   }
@@ -97,7 +97,7 @@ LogManager& LogManager::operator<<(const short& in){
 }
 LogManager& LogManager::operator<<(const unsigned short& in){
  if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       **i << in;
     }
   }
@@ -105,7 +105,7 @@ LogManager& LogManager::operator<<(const unsigned short& in){
 }
 LogManager& LogManager::operator<<(const int& in){
  if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
      **i << in;
     }
   }
@@ -113,7 +113,7 @@ LogManager& LogManager::operator<<(const int& in){
 }
 LogManager& LogManager::operator<<(const unsigned int& in){
  if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       **i << in;
     }
   }
@@ -121,7 +121,7 @@ LogManager& LogManager::operator<<(const unsigned int& in){
 }
 LogManager& LogManager::operator<<(const long& in){
  if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       **i << in;
     }
   }
@@ -129,7 +129,7 @@ LogManager& LogManager::operator<<(const long& in){
 }
 LogManager& LogManager::operator<<(const unsigned long& in){
  if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       **i << in;
     }
   }
@@ -138,7 +138,7 @@ LogManager& LogManager::operator<<(const unsigned long& in){
 LogManager& LogManager::operator<<(const long long& in)
 {
  if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       **i << in;
     }
   }
@@ -146,7 +146,7 @@ LogManager& LogManager::operator<<(const long long& in)
 }
 LogManager& LogManager::operator<<(const float& in){
  if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       **i << in;
     }
   }
@@ -154,7 +154,7 @@ LogManager& LogManager::operator<<(const float& in){
 }
 LogManager& LogManager::operator<<(const double& in){
    if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       **i << in;
     }
   }
@@ -162,7 +162,7 @@ LogManager& LogManager::operator<<(const double& in){
 }
 LogManager& LogManager::operator<<(const char*& in){
    if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       **i << in;
     }
   }
@@ -170,7 +170,7 @@ LogManager& LogManager::operator<<(const char*& in){
 }
 LogManager& LogManager::operator<<(const std::string& in){
    if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       **i << in;
     }
   }
@@ -178,7 +178,7 @@ LogManager& LogManager::operator<<(const std::string& in){
 }
 LogManager& LogManager::operator<<(const void*& in){
    if (listeners_.size()){
-    for (list< thread_safe_ptr<Logger> >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
+    for (list< Logger* >::iterator i = listeners_.begin(); i != listeners_.end(); ++i){
       **i << in;
     }
   }
@@ -193,6 +193,6 @@ void* logger_thread_start(void*){
   //get a local handle to the LogManager..
   LogManager lmgr = LogManager::getInstance();
   //run until the logger receives a stop message from another thread.
-  while (lmgr.getContinue());
+  while (lmgr.getContinue()){ usleep(500);  }
   return NULL;
 }

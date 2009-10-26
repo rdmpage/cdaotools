@@ -16,7 +16,7 @@
 #include <iostream>
 #include <Logger.hpp>
 #include <SysLogger.hpp>
-#include <thread_safe_pointer.hpp>
+//#include <thread_safe_pointer.hpp>
 #include <pthread.h>
 //Used to implement reference-counting.
 #include <semaphore.h>
@@ -54,7 +54,7 @@ public:
   /**
    * Adds a new log listener to the system. 
    */
-  void registerListener(thread_safe_ptr<Logger> nLog);
+  void registerListener(Logger* nLog);
   /**
    * Broadcasts the specified string to all subscribed loggers.
    */
@@ -86,7 +86,7 @@ private:
   /**
    * Stores the subscribers.
    */
-  static std::list<thread_safe_ptr<Logger> > listeners_;
+  static std::list<Logger* > listeners_;
   /**
    * Used to provide thread-safe access to the subscriber list.
    */
@@ -107,18 +107,18 @@ private:
 
 class LoggerFactory {
 public:
-  static thread_safe_ptr< Logger > getLogger( FILE* file, level_t level ){ return thread_safe_ptr< Logger> (new Logger( *StreamFactory::getOutputInstance(file), level  ));  }
-  static thread_safe_ptr< Logger >  getLogger( ofstream& file, level_t level ){ return thread_safe_ptr< Logger >( new Logger( *StreamFactory::getOutputInstance(file), level ));  }
-  static thread_safe_ptr< Logger >  getLogger( int file, level_t level ){ return thread_safe_ptr< Logger > (new Logger( *StreamFactory::getOutputInstance(file),level )); }
-  static thread_safe_ptr< Logger > getLogger( TypedOutputStream& file, level_t level ){ return thread_safe_ptr< Logger >( new Logger( file, level ) ); }
-  static thread_safe_ptr< Logger > getLogger(const char* ident, 
+  static  Logger*  getLogger( FILE* file, level_t level ){ return  new Logger( *StreamFactory::getOutputInstance(file), level  );  }
+  static  Logger*  getLogger( ofstream& file, level_t level ){ return   new Logger( *StreamFactory::getOutputInstance(file), level );  }
+  static  Logger*  getLogger( int file, level_t level ){ return  new Logger( *StreamFactory::getOutputInstance(file),level ); }
+  static  Logger*  getLogger( TypedOutputStream& file, level_t level ){ return  new Logger( file, level ) ; }
+  static  Logger*  getLogger(const char* ident, 
 			   int option, 
 			   int facility, 
-			   level_t level){ return thread_safe_ptr< Logger > (new SysLogger( *StreamFactory::getOutputInstance( std::cerr ), 
+			   level_t level){ return  new SysLogger( *StreamFactory::getOutputInstance( std::cerr ), 
 								 ident, 
 								 option, 
 								 facility, 
-								 level )); }
+								 level ); }
 
 };
 
