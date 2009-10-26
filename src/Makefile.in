@@ -209,12 +209,12 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-INCLUDES = -I. -I$(top_builddir) -I$(top_builddir)/src/grammar/nexus -I$(top_builddir)/lib/ncl-2.0.02/ncl -I$(top_builddir)/lib/CppLoggerV2/src
+INCLUDES = -I. -I$(top_builddir) -I$(top_builddir)/src/grammar/nexus -I$(top_builddir)/lib/ncl-2.1.06/ -I$(top_builddir)/lib/CppLoggerV2/src
 AM_CXXFLAGS = -Wall -g
 NEXDIR = grammar/nexus
 CODEGEN = codegen
 LIBDIR = $(top_builddir)/lib
-NCLV = 2.0.02
+NCLV = 2.1.06
 cdao_import_SOURCES = main.cpp \
                     util.cpp util.hpp \
                     node.cpp node.hpp \

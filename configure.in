@@ -37,6 +37,6 @@ AC_CONFIG_FILES([Makefile
                  src/grammar/Makefile
                  src/grammar/nexus/Makefile
                  lib/Makefile])
-AC_CONFIG_SUBDIRS([lib/ncl-2.0.02
+AC_CONFIG_SUBDIRS([lib/ncl-2.1.06
                    lib/CppLoggerV2])
 AC_OUTPUT

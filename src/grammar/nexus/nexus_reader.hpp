@@ -2,7 +2,7 @@
 #define NEXUS_READER_HPP_
 
 
-#include <ncl.h>
+#include <ncl/ncl.h>
 #include <iostream>
 #include <fstream>
 #include <data_representation.hpp>
