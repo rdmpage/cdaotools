@@ -108,7 +108,7 @@ namespace CDAO {
     /*
      * Tear down the nexus data representation.
      */
-    virtual ~NexusDataRepresentation(){}
+    virtual ~NexusDataRepresentation();
     /*
      * Retrieve the parse tree. 
      */
