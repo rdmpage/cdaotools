@@ -147,7 +147,7 @@ namespace CDAO {
   string XMLizeName(const string& in){
     string ret = "";
     for (unsigned int i = 0; i < in.size(); ++i){
-      if (isspace(in.at(i))){ ret+= "_";  }
+      if (isspace(in.at(i) || in.at(i)=='/' || in.at(i) == '.')){ ret+= "_";  }
       else { ret += in.at(i); }
     }
     return ret;
@@ -213,7 +213,7 @@ namespace CDAO {
         for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
 	  out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_DATUM << " " << Builtins::RESOURCE << "=\"#trait_" << trait << "_taxon_" << taxon << "\" />" << endl;  
         }
-        out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_CSDM << " " << Builtins::RESOURCE << "=\"#" << model->getMatrixLabel() << "\" />" << endl;
+        out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_CSDM << " " << Builtins::RESOURCE << "=\"#" << XMLizeName(model->getMatrixLabel()) << "\" />" << endl;
         out << "\t</" << dtype_tag << ">" << endl;
       }
     }
@@ -222,14 +222,14 @@ namespace CDAO {
   //write character state matrix annotation definion.
   void writeCharacterStateMatrixAnnotation(ostream& out, const DataRepresentation* model){
     if ( model && model->getNTraits() ){
-       out << "\t<" << NSDefs::CDAO <<":" << Classes::CSDM_ANNOTATION << " " << Builtins::ID << "=\"" << model->getMatrixLabel() + "_annotation_id" << "\" />" << endl; 
+       out << "\t<" << NSDefs::CDAO <<":" << Classes::CSDM_ANNOTATION << " " << Builtins::ID << "=\"" << XMLizeName( model->getMatrixLabel() ) + "_annotation_id" << "\" />" << endl; 
     }
   }
   //write character state matrix definition.
   void writeCharacterStateMatrix(ostream& out, const DataRepresentation* model){
     if ( model && model->getNTraits() ){
-       out << "\t<" << NSDefs::CDAO << ":" << Classes::CSDM << " " << Builtins::ID << "=\"" << model->getMatrixLabel() << "\">" << endl;
-       out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS << " " << Builtins::RESOURCE << "=\"#" << model->getMatrixLabel() + "_annotation_id" << "\" />" << endl;
+       out << "\t<" << NSDefs::CDAO << ":" << Classes::CSDM << " " << Builtins::ID << "=\"" << XMLizeName( model->getMatrixLabel() ) << "\">" << endl;
+       out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS << " " << Builtins::RESOURCE << "=\"#" <<XMLizeName( model->getMatrixLabel()) + "_annotation_id" << "\" />" << endl;
       //include references for each taxon in the dataset.
       for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
         out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_TU << " " << Builtins::RESOURCE << "=\"#" << "taxon_" << taxon << "\" />" << endl;
@@ -361,7 +361,7 @@ namespace CDAO {
           out << "\t<" << NSDefs::CDAO << ":" << Classes::TU << " " << Builtins::ID << "=\"" << "taxon_" << taxon << "\">" << endl;
           //reference the corresponding node.
           out << "\t\t<" << NSDefs::CDAO << ":" << Properties::REPRESENTED_BY_NODE << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( model->getTaxonLabel( taxon )) << "\" />" << endl;
-          out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_CSDM << " " << Builtins::RESOURCE << "=\"#" << model->getMatrixLabel() << "\" />" << endl;
+          out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_CSDM << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( model->getMatrixLabel() ) << "\" />" << endl;
           out << "\t</" << NSDefs::CDAO << ":" << Classes::TU << ">" << endl;
         }
         //write the tree structure using the ProcessTUDelegate.
