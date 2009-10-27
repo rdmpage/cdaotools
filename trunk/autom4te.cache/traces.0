@@ -582,9 +582,9 @@ m4trace:configure.in:34: -1- AC_CONFIG_FILES([Makefile
                  src/grammar/Makefile
                  src/grammar/nexus/Makefile
                  lib/Makefile])
-m4trace:configure.in:40: -1- AC_CONFIG_SUBDIRS([lib/ncl-2.0.02
+m4trace:configure.in:40: -1- AC_CONFIG_SUBDIRS([lib/ncl-2.1.06
                    lib/CppLoggerV2])
-m4trace:configure.in:40: -1- AC_SUBST([subdirs], ["$subdirs m4_normalize([lib/ncl-2.0.02
+m4trace:configure.in:40: -1- AC_SUBST([subdirs], ["$subdirs m4_normalize([lib/ncl-2.1.06
                    lib/CppLoggerV2])"])
 m4trace:configure.in:40: -1- AC_SUBST_TRACE([subdirs])
 m4trace:configure.in:40: -1- m4_pattern_allow([^subdirs$])
