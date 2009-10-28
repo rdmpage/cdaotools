@@ -1,12 +1,12 @@
 RawStream.lo: RawStream.cpp RawStream.hpp /usr/include/c++/4.3/cstdlib \
-  /usr/include/c++/4.3/i486-linux-gnu/bits/c++config.h \
-  /usr/include/c++/4.3/i486-linux-gnu/bits/os_defines.h \
+  /usr/include/c++/4.3/x86_64-linux-gnu/bits/c++config.h \
+  /usr/include/c++/4.3/x86_64-linux-gnu/bits/os_defines.h \
   /usr/include/features.h /usr/include/sys/cdefs.h \
   /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
-  /usr/include/gnu/stubs-32.h \
-  /usr/include/c++/4.3/i486-linux-gnu/bits/cpu_defines.h \
+  /usr/include/gnu/stubs-64.h \
+  /usr/include/c++/4.3/x86_64-linux-gnu/bits/cpu_defines.h \
   /usr/include/c++/4.3/cstddef \
-  /usr/lib/gcc/i486-linux-gnu/4.3.3/include/stddef.h \
+  /usr/lib/gcc/x86_64-linux-gnu/4.3.3/include/stddef.h \
   /usr/include/stdlib.h /usr/include/bits/waitflags.h \
   /usr/include/bits/waitstatus.h /usr/include/endian.h \
   /usr/include/bits/endian.h /usr/include/bits/byteswap.h \
@@ -33,16 +33,16 @@ RawStream.lo: RawStream.cpp RawStream.hpp /usr/include/c++/4.3/cstdlib \
   /usr/include/c++/4.3/bits/stl_iterator.h \
   /usr/include/c++/4.3/debug/debug.h /usr/include/c++/4.3/bits/postypes.h \
   /usr/include/c++/4.3/cwchar /usr/include/wchar.h /usr/include/stdio.h \
-  /usr/lib/gcc/i486-linux-gnu/4.3.3/include/stdarg.h \
+  /usr/lib/gcc/x86_64-linux-gnu/4.3.3/include/stdarg.h \
   /usr/include/bits/wchar.h /usr/include/bits/wchar2.h \
   /usr/include/stdint.h /usr/include/c++/4.3/cstdio /usr/include/libio.h \
   /usr/include/_G_config.h /usr/include/bits/stdio_lim.h \
   /usr/include/bits/sys_errlist.h /usr/include/bits/stdio.h \
   /usr/include/bits/stdio2.h /usr/include/c++/4.3/bits/allocator.h \
-  /usr/include/c++/4.3/i486-linux-gnu/bits/c++allocator.h \
+  /usr/include/c++/4.3/x86_64-linux-gnu/bits/c++allocator.h \
   /usr/include/c++/4.3/ext/new_allocator.h /usr/include/c++/4.3/new \
   /usr/include/c++/4.3/exception /usr/include/c++/4.3/bits/localefwd.h \
-  /usr/include/c++/4.3/i486-linux-gnu/bits/c++locale.h \
+  /usr/include/c++/4.3/x86_64-linux-gnu/bits/c++locale.h \
   /usr/include/c++/4.3/clocale /usr/include/locale.h \
   /usr/include/bits/locale.h /usr/include/c++/4.3/iosfwd \
   /usr/include/c++/4.3/cctype /usr/include/ctype.h \
@@ -52,14 +52,14 @@ RawStream.lo: RawStream.cpp RawStream.hpp /usr/include/c++/4.3/cstdlib \
   /usr/include/c++/4.3/backward/binders.h \
   /usr/include/c++/4.3/bits/basic_string.h \
   /usr/include/c++/4.3/ext/atomicity.h \
-  /usr/include/c++/4.3/i486-linux-gnu/bits/gthr.h \
-  /usr/include/c++/4.3/i486-linux-gnu/bits/gthr-default.h \
+  /usr/include/c++/4.3/x86_64-linux-gnu/bits/gthr.h \
+  /usr/include/c++/4.3/x86_64-linux-gnu/bits/gthr-default.h \
   /usr/include/pthread.h /usr/include/sched.h /usr/include/bits/sched.h \
   /usr/include/signal.h /usr/include/bits/setjmp.h /usr/include/unistd.h \
   /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
   /usr/include/bits/confname.h /usr/include/getopt.h \
   /usr/include/bits/unistd.h \
-  /usr/include/c++/4.3/i486-linux-gnu/bits/atomic_word.h \
+  /usr/include/c++/4.3/x86_64-linux-gnu/bits/atomic_word.h \
   /usr/include/c++/4.3/bits/basic_string.tcc /usr/include/errno.h \
   /usr/include/bits/errno.h /usr/include/linux/errno.h \
   /usr/include/asm/errno.h /usr/include/asm-generic/errno.h \
@@ -71,9 +71,9 @@ RawStream.hpp:
 
 /usr/include/c++/4.3/cstdlib:
 
-/usr/include/c++/4.3/i486-linux-gnu/bits/c++config.h:
+/usr/include/c++/4.3/x86_64-linux-gnu/bits/c++config.h:
 
-/usr/include/c++/4.3/i486-linux-gnu/bits/os_defines.h:
+/usr/include/c++/4.3/x86_64-linux-gnu/bits/os_defines.h:
 
 /usr/include/features.h:
 
@@ -83,13 +83,13 @@ RawStream.hpp:
 
 /usr/include/gnu/stubs.h:
 
-/usr/include/gnu/stubs-32.h:
+/usr/include/gnu/stubs-64.h:
 
-/usr/include/c++/4.3/i486-linux-gnu/bits/cpu_defines.h:
+/usr/include/c++/4.3/x86_64-linux-gnu/bits/cpu_defines.h:
 
 /usr/include/c++/4.3/cstddef:
 
-/usr/lib/gcc/i486-linux-gnu/4.3.3/include/stddef.h:
+/usr/lib/gcc/x86_64-linux-gnu/4.3.3/include/stddef.h:
 
 /usr/include/stdlib.h:
 
@@ -171,7 +171,7 @@ AbstractStream.hpp:
 
 /usr/include/stdio.h:
 
-/usr/lib/gcc/i486-linux-gnu/4.3.3/include/stdarg.h:
+/usr/lib/gcc/x86_64-linux-gnu/4.3.3/include/stdarg.h:
 
 /usr/include/bits/wchar.h:
 
@@ -195,7 +195,7 @@ AbstractStream.hpp:
 
 /usr/include/c++/4.3/bits/allocator.h:
 
-/usr/include/c++/4.3/i486-linux-gnu/bits/c++allocator.h:
+/usr/include/c++/4.3/x86_64-linux-gnu/bits/c++allocator.h:
 
 /usr/include/c++/4.3/ext/new_allocator.h:
 
@@ -205,7 +205,7 @@ AbstractStream.hpp:
 
 /usr/include/c++/4.3/bits/localefwd.h:
 
-/usr/include/c++/4.3/i486-linux-gnu/bits/c++locale.h:
+/usr/include/c++/4.3/x86_64-linux-gnu/bits/c++locale.h:
 
 /usr/include/c++/4.3/clocale:
 
@@ -231,9 +231,9 @@ AbstractStream.hpp:
 
 /usr/include/c++/4.3/ext/atomicity.h:
 
-/usr/include/c++/4.3/i486-linux-gnu/bits/gthr.h:
+/usr/include/c++/4.3/x86_64-linux-gnu/bits/gthr.h:
 
-/usr/include/c++/4.3/i486-linux-gnu/bits/gthr-default.h:
+/usr/include/c++/4.3/x86_64-linux-gnu/bits/gthr-default.h:
 
 /usr/include/pthread.h:
 
@@ -257,7 +257,7 @@ AbstractStream.hpp:
 
 /usr/include/bits/unistd.h:
 
-/usr/include/c++/4.3/i486-linux-gnu/bits/atomic_word.h:
+/usr/include/c++/4.3/x86_64-linux-gnu/bits/atomic_word.h:
 
 /usr/include/c++/4.3/bits/basic_string.tcc:
 
