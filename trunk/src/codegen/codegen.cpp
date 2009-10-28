@@ -63,11 +63,11 @@ namespace CDAO {
   /*
    * Write basic document header info.
    */
-  void writeHeaderBoilerPlate( ostream& out );
+  void writeHeaderBoilerPlate( ostream& out, const DataRepresentation* model );
   /*
    * Write document closing info.  
    */
-  void writeClosing( ostream& out );
+  void writeClosing( ostream& out, const DataRepresentation* model );
   /*
    * Write characters to the specifed stream.
    */
@@ -126,20 +126,23 @@ namespace CDAO {
     
     if ( data_model_ ){
       /* Setup order writing will happen and which functions will do it. */
-      matrix_op_t writers[] = { writeTree,
+      matrix_op_t writers[] = {
+                              writeHeaderBoilerPlate, 
+                              writeTree,
   			      writeLineages,
 			      writeCharacterStateMatrixAnnotation, 
 			      writeCharacterStateMatrix, 
 			      writeCharacters, 
 			      writeCharacterStates, 
-			      writeTUS };
-      writeHeaderBoilerPlate( out );
+			      writeTUS,
+                              writeClosing };
+      //writeHeaderBoilerPlate( out );
       /* Invoke the writer delegates */
       for (unsigned int i = 0; i < sizeof(writers)/sizeof(writers[0]); ++i ){
         (*writers[i])( out, data_model_ );
       }
       //writeTUS( out, data_model_ );
-      writeClosing( out );
+      //writeClosing( out );
     }
     return;
   }
@@ -147,8 +150,8 @@ namespace CDAO {
   string XMLizeName(const string& in){
     string ret = "";
     for (unsigned int i = 0; i < in.size(); ++i){
-      if (isspace(in.at(i) || in.at(i)=='/' || in.at(i) == '.')){ ret+= "_";  }
-      else { ret += in.at(i); }
+      if (isalnum(in.at(i))){ ret+= in.at(i);  }
+      else { ret += "_"; }
     }
     return ret;
   }
@@ -160,7 +163,7 @@ namespace CDAO {
   /*
    * Write basic header information.
    */
-  void writeHeaderBoilerPlate( ostream& out ){
+  void writeHeaderBoilerPlate( ostream& out, const DataRepresentation* model ){
     out << "<?xml version=\"1.0\"?>" << endl << endl << endl
 	<< "<!DOCTYPE "  << NSDefs::RDF      << ":RDF [" << endl
 	<< "\t<!ENTITY " << NSDefs::OWL      << " \""    << Imports::OWL_URI << "#\">" << endl
@@ -174,7 +177,7 @@ namespace CDAO {
 	<< "\t<!ENTITY " << NSDefs::AMINO_ACID << " \""  << Imports::AMINO_ACID << "#\">" << endl
 	<< "]>" << endl << endl << endl;
     
-    out << "<"        << Builtins::RDF    <<" xmlns=\"" << Imports::BASE_URI   << "#\"" << endl
+    out << "<"        << Builtins::RDF    <<" xmlns=\"" << Imports::BASE_URI_PREFIX << model->getMatrixLabel()   << "#\"" << endl
 	<< "\txml:"   <<  NSDefs::BASE     <<"=\""      << Imports::BASE_URI        << "#\"" << endl
 	<< "\txmlns:" << NSDefs::OWL11    <<"=\""      << Imports::OWL11_URI       << "#\"" << endl
 	<< "\txmlns:" << NSDefs::OWL11XML <<"=\""      << Imports::OWL11XML_URI    << "#\"" << endl
@@ -192,7 +195,7 @@ namespace CDAO {
   /*
    * Write basic closing information.
    */
-  void writeClosing( ostream& out ){ 
+  void writeClosing( ostream& out, const DataRepresentation* model ){ 
     out << "</" << Builtins::RDF  <<  ">" << endl;
     return;
   }
@@ -409,7 +412,7 @@ namespace CDAO {
 
         //write the node definition.
         out << "\t<" << NSDefs::CDAO << ":" <<  NODE_TYPE[ current->hasChildren() ]  << " " 
-	    << Builtins::ID << "=\"" << current->getLabel() << "\">" << endl;
+	    << Builtins::ID << "=\"" << XMLizeName( current->getLabel() )<< "\">" << endl;
         if (model->getTaxonNumber( current->getLabel()) != NO_TAXON){
   	//connect the node to this corresponding TU.
   	  out << "\t\t<" << NSDefs::CDAO << ":" << Properties::REPRESENTS_TU << " " 
@@ -418,7 +421,7 @@ namespace CDAO {
         //if the node has an ancestor connect the node to it.
         if (current->getAncestor()){
 	  out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_PARENT << " " 
-	      << Builtins::RESOURCE << "=\"#" << current->getAncestor()->getLabel()  << "\" />" << endl;
+	      << Builtins::RESOURCE << "=\"#" << XMLizeName( current->getAncestor()->getLabel() )  << "\" />" << endl;
 	  out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_EDGE_CH << " "
 	      << Builtins::RESOURCE << "=\"#" << XMLizeName( current->getAncestor()->getLabel()  ) << "_" << XMLizeName( current->getLabel() ) << "\" />" << endl;
         } 
@@ -446,7 +449,7 @@ namespace CDAO {
     static vector< string > edgesWritten = vector< string >();
     
     if (parent && child ){
-      string edge_name = parent->getLabel() + "_" + child->getLabel() ;
+      string edge_name = XMLizeName( parent->getLabel() ) + "_" + XMLizeName( child->getLabel() );
       
 
       if (find( edgesWritten.begin(), edgesWritten.end(), edge_name  ) == edgesWritten.end()){
