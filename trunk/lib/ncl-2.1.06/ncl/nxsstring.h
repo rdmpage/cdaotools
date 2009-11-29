@@ -26,7 +26,7 @@
 #include <ostream>
 #include <string>
 #include "ncl/nxsdefs.h"
-
+#include <cstdio>
 class IndexSet;
 
 /*----------------------------------------------------------------------------------------------------------------------
