@@ -178,7 +178,7 @@ namespace CDAO {
 	<< "]>" << endl << endl << endl;
     
     out << "<"        << Builtins::RDF    <<" xmlns=\"" << Imports::BASE_URI_PREFIX << model->getMatrixLabel()   << "#\"" << endl
-	<< "\txml:"   <<  NSDefs::BASE     <<"=\""      << Imports::BASE_URI        << "#\"" << endl
+	<< "\txml:"   <<  NSDefs::BASE     <<"=\""      << Imports::BASE_URI_PREFIX << model->getMatrixLabel()        << "#\"" << endl
 	<< "\txmlns:" << NSDefs::OWL11    <<"=\""      << Imports::OWL11_URI       << "#\"" << endl
 	<< "\txmlns:" << NSDefs::OWL11XML <<"=\""      << Imports::OWL11XML_URI    << "#\"" << endl
 	<< "\txmlns:" << NSDefs::XSD      <<"=\""      << Imports::XSD_URI         << "#\""  << endl
