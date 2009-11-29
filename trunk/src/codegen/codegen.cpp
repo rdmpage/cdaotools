@@ -136,6 +136,7 @@ namespace CDAO {
 			      writeCharacterStates, 
 			      writeTUS,
                               writeClosing };
+      Imports::setBaseURI( Imports::BASE_URI_PREFIX + data_model_->getMatrixLabel() );
       //writeHeaderBoilerPlate( out );
       /* Invoke the writer delegates */
       for (unsigned int i = 0; i < sizeof(writers)/sizeof(writers[0]); ++i ){
