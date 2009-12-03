@@ -34,7 +34,7 @@ namespace CDAO {
   };
 
 
-  DataRepresentation* phylipparse();
+  DataRepresentation* phylipparse(PhylipEnvironment* env);
 
 }
 #endif
