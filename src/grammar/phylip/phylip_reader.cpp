@@ -32,12 +32,12 @@ DataRepresentation* phylipparse(PhylipEnvironment* env){
      unsigned ntraits = getntaxtrait( env->getinput() );
      
      if ( env->isInterleaved() ){
-         readinterleaved( in, taxons, data, ntax, ntraits );
+         readinterleaved( env->getinput(), taxons, data, ntax, ntraits );
      }
      else {
-         readstandard(in, taxons, data, ntax, ntraits );
+         readstandard( env->getinput(), taxons, data, ntax, ntraits );
      }
-
+     model = new PhylipDataRepresentation( data, taxons );
    }
    return model;
 }
@@ -101,3 +101,8 @@ string getdataline( istream& in, unsigned ntraits ){
    return ret;
 }
 
+const unsigned int PhylipDataRepresentation::getTaxonNumber( const string& label )const{
+    unsigned int ret = 0;
+    for (; ret < taxon_labels_.size() && taxon_labels_.at( ret ) != label; ++ret);
+    return ret;
+}
