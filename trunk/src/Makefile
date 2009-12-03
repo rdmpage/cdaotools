@@ -56,7 +56,7 @@ am_cdao_import_OBJECTS = main.$(OBJEXT) util.$(OBJEXT) node.$(OBJEXT) \
 	data_representation.$(OBJEXT) \
 	tree_description_scanner.$(OBJEXT) \
 	tree_description_parser.$(OBJEXT) nexus_reader.$(OBJEXT) \
-	codegen.$(OBJEXT)
+	phylip_reader.$(OBJEXT) codegen.$(OBJEXT)
 cdao_import_OBJECTS = $(am_cdao_import_OBJECTS)
 cdao_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
@@ -64,7 +64,7 @@ am_cdao_mass_import_OBJECTS = main2.$(OBJEXT) util.$(OBJEXT) \
 	node.$(OBJEXT) data_representation.$(OBJEXT) \
 	tree_description_scanner.$(OBJEXT) \
 	tree_description_parser.$(OBJEXT) nexus_reader.$(OBJEXT) \
-	codegen.$(OBJEXT)
+	phylip_reader.$(OBJEXT) codegen.$(OBJEXT)
 cdao_mass_import_OBJECTS = $(am_cdao_mass_import_OBJECTS)
 cdao_mass_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
@@ -213,9 +213,10 @@ target_alias =
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
-INCLUDES = -I. -I$(top_builddir) -I$(top_builddir)/src/grammar/nexus -I$(top_builddir)/lib/ncl-2.1.06/ -I$(top_builddir)/lib/CppLoggerV2/src
+INCLUDES = -I. -I$(top_builddir) -I$(top_builddir)/src/grammar/nexus -I$(top_builddir)/src/grammar/phylip -I$(top_builddir)/lib/ncl-2.1.06/ -I$(top_builddir)/lib/CppLoggerV2/src
 AM_CXXFLAGS = -Wall -g
 NEXDIR = grammar/nexus
+PHYDIR = grammar/phylip
 CODEGEN = codegen
 LIBDIR = $(top_builddir)/lib
 NCLV = 2.1.06
@@ -226,6 +227,7 @@ cdao_import_SOURCES = main.cpp \
 		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
 		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
                     $(NEXDIR)/nexus_reader.cpp $(NEXDIR)/nexus_reader.hpp \
+                    $(PHYDIR)/phylip_reader.cpp $(PHYDIR)/phylip_reader.hpp \
 		    $(CODEGEN)/constants.hpp \
                     $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 
@@ -237,7 +239,8 @@ cdao_mass_import_SOURCES = main2.cpp \
 		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
 		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
                     $(NEXDIR)/nexus_reader.cpp $(NEXDIR)/nexus_reader.hpp \
-		    $(CODEGEN)/constants.hpp \
+	            $(PHYDIR)/phylip_reader.cpp $(PHYDIR)/phylip_reader.hpp \
+         	    $(CODEGEN)/constants.hpp \
                     $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 
 cdao_mass_import_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
@@ -355,6 +358,7 @@ include ./$(DEPDIR)/main.Po
 include ./$(DEPDIR)/main2.Po
 include ./$(DEPDIR)/nexus_reader.Po
 include ./$(DEPDIR)/node.Po
+include ./$(DEPDIR)/phylip_reader.Po
 include ./$(DEPDIR)/tree_description_parser.Po
 include ./$(DEPDIR)/tree_description_scanner.Po
 include ./$(DEPDIR)/util.Po
@@ -421,6 +425,20 @@ nexus_reader.obj: $(NEXDIR)/nexus_reader.cpp
 #	source='$(NEXDIR)/nexus_reader.cpp' object='nexus_reader.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o nexus_reader.obj `if test -f '$(NEXDIR)/nexus_reader.cpp'; then $(CYGPATH_W) '$(NEXDIR)/nexus_reader.cpp'; else $(CYGPATH_W) '$(srcdir)/$(NEXDIR)/nexus_reader.cpp'; fi`
+
+phylip_reader.o: $(PHYDIR)/phylip_reader.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT phylip_reader.o -MD -MP -MF $(DEPDIR)/phylip_reader.Tpo -c -o phylip_reader.o `test -f '$(PHYDIR)/phylip_reader.cpp' || echo '$(srcdir)/'`$(PHYDIR)/phylip_reader.cpp
+	$(am__mv) $(DEPDIR)/phylip_reader.Tpo $(DEPDIR)/phylip_reader.Po
+#	source='$(PHYDIR)/phylip_reader.cpp' object='phylip_reader.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o phylip_reader.o `test -f '$(PHYDIR)/phylip_reader.cpp' || echo '$(srcdir)/'`$(PHYDIR)/phylip_reader.cpp
+
+phylip_reader.obj: $(PHYDIR)/phylip_reader.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT phylip_reader.obj -MD -MP -MF $(DEPDIR)/phylip_reader.Tpo -c -o phylip_reader.obj `if test -f '$(PHYDIR)/phylip_reader.cpp'; then $(CYGPATH_W) '$(PHYDIR)/phylip_reader.cpp'; else $(CYGPATH_W) '$(srcdir)/$(PHYDIR)/phylip_reader.cpp'; fi`
+	$(am__mv) $(DEPDIR)/phylip_reader.Tpo $(DEPDIR)/phylip_reader.Po
+#	source='$(PHYDIR)/phylip_reader.cpp' object='phylip_reader.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o phylip_reader.obj `if test -f '$(PHYDIR)/phylip_reader.cpp'; then $(CYGPATH_W) '$(PHYDIR)/phylip_reader.cpp'; else $(CYGPATH_W) '$(srcdir)/$(PHYDIR)/phylip_reader.cpp'; fi`
 
 codegen.o: $(CODEGEN)/codegen.cpp
 	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT codegen.o -MD -MP -MF $(DEPDIR)/codegen.Tpo -c -o codegen.o `test -f '$(CODEGEN)/codegen.cpp' || echo '$(srcdir)/'`$(CODEGEN)/codegen.cpp
