@@ -43,7 +43,19 @@ DataRepresentation* phylipparse(PhylipEnvironment* env){
 }
 
 void readinterleaved( istream& in, vector< string >& taxons, vector< string >& data, unsigned ntax, unsigned ntraits  ){
+    unsigned current_taxon = 0;
+    while (!in.eof()){
+         ++current_taxon;
+         if (taxons.size() < ntax){
+               taxons.push_back( gettaxon( in ) );
+               data.push_back( getdataline( in, ntraits ) );
+         }
+         else {
+               data[ current_taxon % ntax ] += getdataline( in, ntraits );
+         }
 
+
+    }
 }
 
 void readstandard( istream& in, vector< string >& taxons, vector< string >& data, unsigned ntax, unsigned ntraits ){
