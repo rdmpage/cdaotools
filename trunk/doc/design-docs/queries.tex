@@ -1,0 +1,80 @@
+\documentclass[10pt]{article}
+%imports extra math symbols
+\usepackage{amssymb}
+%used for doublespace text
+\usepackage{setspace}
+% uncomment the next line to use graphics
+%\usepackage{graphicx}
+%shortnames for common commands
+\newcommand{\BD}{\begin{doublespace}}
+\newcommand{\ED}{\end{doublespace}}
+\newcommand{\BE}{\begin{enumerate}}
+\newcommand{\EE}{\end{enumerate}}
+\newcommand{\BI}{\begin{itemize}}
+\newcommand{\EI}{\end{itemize}}
+\newcommand{\BT}{\begin{tabular}}
+\newcommand{\ET}{\end{tabular}}
+\newcommand{\BV}{\begin{verbatim}}
+\newcommand{\EV}{\end{verbatim}}
+\newcommand{\BM}{\begin{displaymath}}
+\newcommand{\EM}{\end{displaymath}}
+\newcommand{\BC}{\begin{center}}
+\newcommand{\EC}{\end{center}}
+\newcommand{\BFR}{\begin{flushright}}
+\newcommand{\EFR}{\end{flushright}}
+\newcommand{\BFL}{\begin{flushleft}}
+\newcommand{\EFL}{\end{flushleft}}
+%Stretches out the page
+\setlength{\oddsidemargin}{-0.50in}
+\setlength{\evensidemargin}{-0.50in}
+\setlength{\textwidth}{7.0in}
+\setlength{\topmargin}{0.0in}
+\setlength{\textheight}{9.0in}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{0ex}
+\pagestyle{empty}
+%Sets title page information
+\author{Brandon Chisham}
+\title{Queries of Interest}
+\date{\today}
+\begin{document}
+%Generates the title page
+\maketitle
+%uncomment the next line to generate a table of contents
+%\tableofcontents
+
+\section{Bibe03 Paper}
+ \BE
+   \item  Given a set \textit{S} of taxa, find a minimum spanning clade
+   \item  Given three sets of taxa $S_1$, $S_2$, and $S_3$  and based
+             on all the phylogenies in the DB find the relationship between the
+             specified taxa.
+   \item  Given a set of taxa $S$ return all the phylogenies that contain $S$.
+   \item  Given a phylogenetic method $M$ find all phylogenies that were
+             reconstructed using $M$.
+   \item: Given an integer $n$, representing a number of taxa find all phylogenies
+             on a set of taxa $S$ such that $\vert S \vert \approx F(n).$
+   \item: Retrieve phylogenies based on date or author.
+   \item  Given some characteristic $l$ find phylogenies with that characteristic.
+             Characteristics include shortest edge, longest edge, tree diameter, and tree width.
+   \item  Given a datatype return all trees built using a dataset of that type.
+   \item  Given a phylogeny $T$ and a measure $M$ and a quality $c$ find all phylogenies that are
+             $c$ units from $T$ using $M$.
+   \item  Return all phylogenies created using some specified model of evolution.
+   \item  Given some measures return stats about the database with regard to the specified measures. 
+ \EE
+
+\section{VoCamp}
+ \BE
+  \item Linked Data. At the meeting a variety of the use cases involved linking data from separate sources 
+        especially relating organisms with some character state to a particular place. Or given a particular
+        place return the organisms found there, along with the states of some characters of interest.
+  \item Given a set of taxa find the MRCA of them.
+ \EE
+
+\section{VoCamp Followup Conference Call}
+ \BE
+  \item Given a set of organisms defining a clade return all subtrees containing the organisms in the set.
+ \EE
+\end{document}
+
