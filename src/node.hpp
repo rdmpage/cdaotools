@@ -38,6 +38,7 @@ namespace CDAO {
 
     Node(const std::string label="", 
 	 const Node* ancestor = NULL):label_(label),
+                                weight_(0.0),
     			        ancestor_(ancestor){ descendants_ = std::vector<const Node*>( 0 ); }
     ~Node();
     /*
