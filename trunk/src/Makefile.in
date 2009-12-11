@@ -38,7 +38,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = cdao-import$(EXEEXT) cdao-mass-import$(EXEEXT)
+bin_PROGRAMS = cdao-import$(EXEEXT) cdao-mass-import$(EXEEXT) \
+	cdao-tree-import$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/config.h.in
@@ -68,6 +69,13 @@ am_cdao_mass_import_OBJECTS = main2.$(OBJEXT) util.$(OBJEXT) \
 cdao_mass_import_OBJECTS = $(am_cdao_mass_import_OBJECTS)
 cdao_mass_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
+am_cdao_tree_import_OBJECTS = main3.$(OBJEXT) util.$(OBJEXT) \
+	node.$(OBJEXT) data_representation.$(OBJEXT) \
+	tree_description_scanner.$(OBJEXT) \
+	tree_description_parser.$(OBJEXT) codegen.$(OBJEXT)
+cdao_tree_import_OBJECTS = $(am_cdao_tree_import_OBJECTS)
+cdao_tree_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
+	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -90,8 +98,10 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(cdao_import_SOURCES) $(cdao_mass_import_SOURCES)
-DIST_SOURCES = $(cdao_import_SOURCES) $(cdao_mass_import_SOURCES)
+SOURCES = $(cdao_import_SOURCES) $(cdao_mass_import_SOURCES) \
+	$(cdao_tree_import_SOURCES)
+DIST_SOURCES = $(cdao_import_SOURCES) $(cdao_mass_import_SOURCES) \
+	$(cdao_tree_import_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -244,6 +254,16 @@ cdao_mass_import_SOURCES = main2.cpp \
                     $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 
 cdao_mass_import_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
+cdao_tree_import_SOURCES = main3.cpp \
+                    util.cpp util.hpp \
+                    node.cpp node.hpp \
+		    data_representation.cpp data_representation.hpp \
+		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
+		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
+         	    $(CODEGEN)/constants.hpp \
+                    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
+
+cdao_tree_import_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -345,6 +365,9 @@ cdao-import$(EXEEXT): $(cdao_import_OBJECTS) $(cdao_import_DEPENDENCIES)
 cdao-mass-import$(EXEEXT): $(cdao_mass_import_OBJECTS) $(cdao_mass_import_DEPENDENCIES) 
 	@rm -f cdao-mass-import$(EXEEXT)
 	$(CXXLINK) $(cdao_mass_import_OBJECTS) $(cdao_mass_import_LDADD) $(LIBS)
+cdao-tree-import$(EXEEXT): $(cdao_tree_import_OBJECTS) $(cdao_tree_import_DEPENDENCIES) 
+	@rm -f cdao-tree-import$(EXEEXT)
+	$(CXXLINK) $(cdao_tree_import_OBJECTS) $(cdao_tree_import_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -356,6 +379,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/data_representation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main2.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main3.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nexus_reader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/node.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/phylip_reader.Po@am__quote@

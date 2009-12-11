@@ -11,7 +11,7 @@ CODEGEN=codegen
 LIBDIR=$(top_builddir)/lib
 NCLV=2.1.06
 
-bin_PROGRAMS=cdao-import cdao-mass-import
+bin_PROGRAMS=cdao-import cdao-mass-import cdao-tree-import
 
 cdao_import_SOURCES=main.cpp \
                     util.cpp util.hpp \
@@ -37,3 +37,14 @@ cdao_mass_import_SOURCES=main2.cpp \
          	    $(CODEGEN)/constants.hpp \
                     $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 cdao_mass_import_LDADD=$(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
+
+cdao_tree_import_SOURCES=main3.cpp \
+                    util.cpp util.hpp \
+                    node.cpp node.hpp \
+		    data_representation.cpp data_representation.hpp \
+		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
+		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
+         	    $(CODEGEN)/constants.hpp \
+                    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
+cdao_tree_import_LDADD=$(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
+
