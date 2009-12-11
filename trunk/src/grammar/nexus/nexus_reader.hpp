@@ -6,8 +6,8 @@
 #include <iostream>
 #include <fstream>
 #include <data_representation.hpp>
-#include <Logger.hpp>
-#include <LogManager.hpp>
+//#include <Logger.hpp>
+//#include <LogManager.hpp>
 
 
 namespace CDAO {
@@ -40,10 +40,10 @@ private:
     bool EnteringBlock(NxsString blockName){ /*outf <<"Entering: " << blockName << endl;*/  return true;}
     void SkippingBlock(NxsString blockName){ /*outf << "Leaving: " << blockName << endl;*/ return;}
     void NexusError(NxsString msg, file_pos pos, long line, long col){
-      LogManager lmgr = LogManager::getInstance();
-      lmgr.startMultiPartMessage( ALL_MESSAGES_LR  );
-      lmgr << "Pos:"<< pos << " line:" << line << " col: " << col << " " << (std::string) msg << "\n";
-      lmgr.endMultiPartMessage( );
+     // LogManager lmgr = LogManager::getInstance();
+     // lmgr.startMultiPartMessage( ALL_MESSAGES_LR  );
+     // lmgr << "Pos:"<< pos << " line:" << line << " col: " << col << " " << (std::string) msg << "\n";
+     // lmgr.endMultiPartMessage( );
       return;
     }
     istream& inf;

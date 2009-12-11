@@ -7,10 +7,12 @@
 #include <cassert>
 #include <iostream>
 #include <string>
+#include <util.hpp>
+#include <node.hpp>
 /* Enforce assertions here */
-#ifdef NDEGUG
-#define NDBUG_WAS_SET NDEBUG
-#undef NDEGUG
+#ifdef NDEBUG
+#define NDEBUG_WAS_SET NDEBUG
+#undef NDEBUG
 #endif
 /*
  * Print the tree topology.
@@ -21,7 +23,7 @@ namespace CDAO {
    * Start point parse the tree from the beginning.
    */
   void TreeDescriptionParser::parse(){
-    parsetree_ = new Node();
+    parsetree_ = new Node( "tree" );
     //cerr << "parse()\n";
     consume_tree( parsetree_ );
     //cerr << "exiting: parse()\n";
@@ -89,7 +91,7 @@ namespace CDAO {
     //cerr << "Expecting type: START_TREE: " << START_TREE << " or LABEL: " << LABEL << "\n"; 
     
     if (next_token.getType() == START_TREE){
-      Node* subtree = new Node();
+      Node* subtree = new Node( labelMaker( "node" ) );
       consume_tree( subtree );
       subtree->setAncestor( current );
       current->addDescendant( subtree );
