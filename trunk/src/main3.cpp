@@ -27,6 +27,7 @@ DataRepresentation* populate_model( vector< string > TUs, map< string, Node* > t
 int main( int argc, char** argv ){
   if (argc > 1 ){
      processArgs( argc, argv, NULL );
+     //cerr << "Extracting tress from: " << getInputFile() << endl;
      do_extraction( getInputFile() );       
   }
 
@@ -35,17 +36,17 @@ int main( int argc, char** argv ){
 
 
 DataRepresentation* do_extraction( const string& nfp ){
-  const string extractor_script = "grammar/nexus/extract_trees.pl";
+  const string extractor_script = "extract_trees.pl";
   const int READ_END = 0;
   const int WRITE_END = 1;
-  pid_t extractor = fork();
   int pipefd[2];
   int pipe_err = pipe( pipefd );
-  if ( 0 == extractor ){
+  pid_t extractor = fork();
+      if ( 0 == extractor ){
      /* child code */
      if (close( pipefd[ READ_END ] ) > -1 ){
        if ( dup2( pipefd[ WRITE_END ], STDOUT_FILENO ) > -1 ){
-         if(  execlp( extractor_script.c_str(), extractor_script.c_str(), nfp.c_str(), (char*)NULL ) <0 ){
+         if(  execlp( extractor_script.c_str(), extractor_script.c_str(), nfp.c_str(), (char*)NULL ) < 0 ){
             perror("exec failed");
             exit( 1 );
          }
@@ -59,12 +60,14 @@ DataRepresentation* do_extraction( const string& nfp ){
       if (0 == writer){
           /* child code */
           if (dup2( pipefd[READ_END], STDIN_FILENO ) > -1){
-              if (execlp("cdao-read-tree", "cdao-read-tree", nfp.c_str(), (char*)NULL) < 0 ){
+              if ( execlp("cdao-read-tree", "cdao-read-tree", "-i", nfp.c_str(), "-o", getOutputFile().c_str(), (char*)NULL) < 0 ){
                 perror("Exec Failed");
               }
           }
       }
       close(pipefd[READ_END]);
+      waitpid( extractor, NULL, 0 );
+      waitpid( writer, NULL, 0 );
   }
   else { perror( "close failed" ); exit( 1 ); }
   return NULL;

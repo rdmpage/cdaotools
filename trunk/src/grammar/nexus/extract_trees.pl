@@ -13,7 +13,7 @@ my $title;
 my $tree_title;
 my $tree_description;
 my $infile = $ARGV[0];
-open TREEIN, "<$infile" or die "Unable to open input file:$!\n";
+open TREEIN, "<$infile" or die "Unable to open input file ($infile): $!\n";
 
 while (<TREEIN>){
 
