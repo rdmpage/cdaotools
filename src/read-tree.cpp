@@ -94,7 +94,7 @@ void read_input( vector< string >& taxa, map< string, Node* >& trees ){
         trees[ tree_name ] = TreeDescriptionParser( newick_data ).getParseTree();
      }
      else {
-        cerr << "Unrecognized command: " << command << endl;
+        cerr << "Unrecognized command: \"" << command << "\"" << endl;
         //pin.close();
         exit( 1 );
      }

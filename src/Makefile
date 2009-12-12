@@ -20,6 +20,7 @@
 #April 15, 2008
 
 
+
 pkgdatadir = $(datadir)/CdaoTranslator
 pkgincludedir = $(includedir)/CdaoTranslator
 pkglibdir = $(libdir)/CdaoTranslator
@@ -39,7 +40,8 @@ POST_UNINSTALL = :
 build_triplet = x86_64-unknown-linux-gnu
 host_triplet = x86_64-unknown-linux-gnu
 bin_PROGRAMS = cdao-import$(EXEEXT) cdao-mass-import$(EXEEXT) \
-	cdao-tree-import$(EXEEXT) cdao-read-tree$(EXEEXT)
+	cdao-tree-import$(EXEEXT) cdao-read-tree$(EXEEXT) \
+	extract_trees.pl$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/config.h.in
@@ -51,7 +53,7 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__installdirs = "$(DESTDIR)$(bindir)"
+am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_cdao_import_OBJECTS = main.$(OBJEXT) util.$(OBJEXT) node.$(OBJEXT) \
 	data_representation.$(OBJEXT) \
@@ -83,19 +85,35 @@ am_cdao_tree_import_OBJECTS = main3.$(OBJEXT) util.$(OBJEXT) \
 cdao_tree_import_OBJECTS = $(am_cdao_tree_import_OBJECTS)
 cdao_tree_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
+extract_trees_pl_SOURCES = extract_trees.c
+extract_trees_pl_OBJECTS = extract_trees.$(OBJEXT)
+extract_trees_pl_LDADD = $(LDADD)
+am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
+am__vpath_adj = case $$p in \
+    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
+    *) f=$$p;; \
+  esac;
+am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
+am__install_max = 40
+am__nobase_strip_setup = \
+  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
+am__nobase_strip = \
+  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
+am__nobase_list = $(am__nobase_strip_setup); \
+  for p in $$list; do echo "$$p $$p"; done | \
+  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
+  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
+    if (++n[$$2] == $(am__install_max)) \
+      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
+    END { for (dir in files) print dir, files[dir] }'
+am__base_list = \
+  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
+  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
+SCRIPTS = $(bin_SCRIPTS)
 DEFAULT_INCLUDES = -I.
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
-CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
-LTCXXCOMPILE = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
-CXXLD = $(CXX)
-CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
@@ -105,10 +123,21 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+LTCXXCOMPILE = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+CXXLD = $(CXX)
+CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
 SOURCES = $(cdao_import_SOURCES) $(cdao_mass_import_SOURCES) \
-	$(cdao_read_tree_SOURCES) $(cdao_tree_import_SOURCES)
+	$(cdao_read_tree_SOURCES) $(cdao_tree_import_SOURCES) \
+	extract_trees.c
 DIST_SOURCES = $(cdao_import_SOURCES) $(cdao_mass_import_SOURCES) \
-	$(cdao_read_tree_SOURCES) $(cdao_tree_import_SOURCES)
+	$(cdao_read_tree_SOURCES) $(cdao_tree_import_SOURCES) \
+	extract_trees.c
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -237,55 +266,56 @@ PHYDIR = grammar/phylip
 CODEGEN = codegen
 LIBDIR = $(top_builddir)/lib
 NCLV = 2.1.06
+bin_SCRIPTS = extract_trees.pl
 cdao_import_SOURCES = main.cpp \
-                    util.cpp util.hpp \
-                    node.cpp node.hpp \
+		    util.cpp util.hpp \
+		    node.cpp node.hpp \
 		    data_representation.cpp data_representation.hpp \
 		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
 		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
-                    $(NEXDIR)/nexus_reader.cpp $(NEXDIR)/nexus_reader.hpp \
-                    $(PHYDIR)/phylip_reader.cpp $(PHYDIR)/phylip_reader.hpp \
+		    $(NEXDIR)/nexus_reader.cpp $(NEXDIR)/nexus_reader.hpp \
+		    $(PHYDIR)/phylip_reader.cpp $(PHYDIR)/phylip_reader.hpp \
 		    $(CODEGEN)/constants.hpp \
-                    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
+		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 
 cdao_import_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 cdao_mass_import_SOURCES = main2.cpp \
-                    util.cpp util.hpp \
-                    node.cpp node.hpp \
+		    util.cpp util.hpp \
+		    node.cpp node.hpp \
 		    data_representation.cpp data_representation.hpp \
 		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
 		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
-                    $(NEXDIR)/nexus_reader.cpp $(NEXDIR)/nexus_reader.hpp \
-	            $(PHYDIR)/phylip_reader.cpp $(PHYDIR)/phylip_reader.hpp \
-         	    $(CODEGEN)/constants.hpp \
-                    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
+		    $(NEXDIR)/nexus_reader.cpp $(NEXDIR)/nexus_reader.hpp \
+		    $(PHYDIR)/phylip_reader.cpp $(PHYDIR)/phylip_reader.hpp \
+	 	    $(CODEGEN)/constants.hpp \
+		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 
 cdao_mass_import_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 cdao_tree_import_SOURCES = main3.cpp \
-                    util.cpp util.hpp \
-                    node.cpp node.hpp \
+		    util.cpp util.hpp \
+		    node.cpp node.hpp \
 		    data_representation.cpp data_representation.hpp \
 		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
 		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
-         	    $(CODEGEN)/constants.hpp \
-                    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
+	 	    $(CODEGEN)/constants.hpp \
+		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 
 cdao_tree_import_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 cdao_read_tree_SOURCES = read-tree.cpp \
-                    util.cpp util.hpp \
-                    node.cpp node.hpp \
+		    util.cpp util.hpp \
+		    node.cpp node.hpp \
 		    data_representation.cpp data_representation.hpp \
 		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
 		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
-         	    $(CODEGEN)/constants.hpp \
-                    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
+	 	    $(CODEGEN)/constants.hpp \
+		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 
 cdao_read_tree_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
-.SUFFIXES: .cpp .lo .o .obj
+.SUFFIXES: .c .cpp .lo .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -388,6 +418,40 @@ cdao-read-tree$(EXEEXT): $(cdao_read_tree_OBJECTS) $(cdao_read_tree_DEPENDENCIES
 cdao-tree-import$(EXEEXT): $(cdao_tree_import_OBJECTS) $(cdao_tree_import_DEPENDENCIES) 
 	@rm -f cdao-tree-import$(EXEEXT)
 	$(CXXLINK) $(cdao_tree_import_OBJECTS) $(cdao_tree_import_LDADD) $(LIBS)
+install-binSCRIPTS: $(bin_SCRIPTS)
+	@$(NORMAL_INSTALL)
+	test -z "$(bindir)" || $(MKDIR_P) "$(DESTDIR)$(bindir)"
+	@list='$(bin_SCRIPTS)'; test -n "$(bindir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
+	done | \
+	sed -e 'p;s,.*/,,;n' \
+	    -e 'h;s|.*|.|' \
+	    -e 'p;x;s,.*/,,;$(transform)' | sed 'N;N;N;s,\n, ,g' | \
+	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1; } \
+	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
+	    if ($$2 == $$4) { files[d] = files[d] " " $$1; \
+	      if (++n[d] == $(am__install_max)) { \
+		print "f", d, files[d]; n[d] = 0; files[d] = "" } } \
+	    else { print "f", d "/" $$4, $$1 } } \
+	  END { for (d in files) print "f", d, files[d] }' | \
+	while read type dir files; do \
+	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
+	     test -z "$$files" || { \
+	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(bindir)$$dir'"; \
+	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
+	     } \
+	; done
+
+uninstall-binSCRIPTS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(bin_SCRIPTS)'; test -n "$(bindir)" || exit 0; \
+	files=`for p in $$list; do echo "$$p"; done | \
+	       sed -e 's,.*/,,;$(transform)'`; \
+	test -n "$$list" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(bindir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(bindir)" && rm -f $$files
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -397,6 +461,7 @@ distclean-compile:
 
 include ./$(DEPDIR)/codegen.Po
 include ./$(DEPDIR)/data_representation.Po
+include ./$(DEPDIR)/extract_trees.Po
 include ./$(DEPDIR)/main.Po
 include ./$(DEPDIR)/main2.Po
 include ./$(DEPDIR)/main3.Po
@@ -407,6 +472,27 @@ include ./$(DEPDIR)/read-tree.Po
 include ./$(DEPDIR)/tree_description_parser.Po
 include ./$(DEPDIR)/tree_description_scanner.Po
 include ./$(DEPDIR)/util.Po
+
+.c.o:
+	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+#	source='$<' object='$@' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(COMPILE) -c $<
+
+.c.obj:
+	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+#	source='$<' object='$@' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(COMPILE) -c `$(CYGPATH_W) '$<'`
+
+.c.lo:
+	$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+#	source='$<' object='$@' libtool=yes \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(LTCOMPILE) -c -o $@ $<
 
 .cpp.o:
 	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -589,9 +675,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS) config.h
+all-am: Makefile $(PROGRAMS) $(SCRIPTS) config.h
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)"; do \
+	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -647,7 +733,7 @@ install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am: install-binPROGRAMS
+install-exec-am: install-binPROGRAMS install-binSCRIPTS
 
 install-html: install-html-am
 
@@ -687,7 +773,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS
+uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS
 
 .MAKE: all install-am install-strip
 
@@ -695,16 +781,20 @@ uninstall-am: uninstall-binPROGRAMS
 	clean-generic clean-libtool ctags distclean distclean-compile \
 	distclean-generic distclean-hdr distclean-libtool \
 	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-am install-binPROGRAMS install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
+	install install-am install-binPROGRAMS install-binSCRIPTS \
+	install-data install-data-am install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-binPROGRAMS
+	tags uninstall uninstall-am uninstall-binPROGRAMS \
+	uninstall-binSCRIPTS
 
+
+extract_trees.pl: $(NEXDIR)/extract_trees.pl
+	cp $(NEXDIR)/extract_trees.pl .
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
