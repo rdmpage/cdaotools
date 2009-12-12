@@ -5,9 +5,6 @@
 
 using namespace std;
 namespace CDAO {
-  istream* NexusState::in_ = NULL;
-  ostream* NexusState::out_ = NULL;
-  ostream* NexusState::err_ = &std::cerr;
 
   DataRepresentation*  nexusparse(){
 

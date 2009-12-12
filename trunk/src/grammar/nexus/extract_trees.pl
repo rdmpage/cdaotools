@@ -49,4 +49,4 @@ foreach my $key ( keys %taxon_ids ){
 foreach my $tree ( keys %trees ){
     print "TREE $tree $isRooted{ $tree } $trees{ $tree };\n";
 }
-print "END;";
+#print "END;";
