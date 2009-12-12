@@ -1,6 +1,9 @@
 #include "phylip_reader.hpp"
 #include <cassert>
 #include <fstream>
+#include <Logger.hpp>
+#include <LogManager.hpp>
+#include <util.hpp>
 
 using namespace std;
 using namespace CDAO;
@@ -22,24 +25,25 @@ static void readstandard( istream& in, vector< string >& taxons, vector< string 
 
 static const int TAXON_LABEL_SIZE = 10;
 
-
-DataRepresentation* phylipparse(PhylipEnvironment* env){
+namespace CDAO {
+DataRepresentation* phylipparse(){
    DataRepresentation* model=NULL;
-   if ( env ){
+   //if ( env ){
      vector< string > data = vector< string >();
      vector< string > taxons = vector< string >();
-     unsigned ntax = getntaxtrait( env->getinput() );
-     unsigned ntraits = getntaxtrait( env->getinput() );
+     unsigned ntax = getntaxtrait( *(GlobalState::getInfile()) );
+     unsigned ntraits = getntaxtrait( *(GlobalState::getInfile()) );
      
-     if ( env->isInterleaved() ){
-         readinterleaved( env->getinput(), taxons, data, ntax, ntraits );
+     if ( GlobalState::isInterleaved() ){
+         readinterleaved( *(GlobalState::getInfile()), taxons, data, ntax, ntraits );
      }
      else {
-         readstandard( env->getinput(), taxons, data, ntax, ntraits );
+         readstandard( *(GlobalState::getInfile()), taxons, data, ntax, ntraits );
      }
      model = new PhylipDataRepresentation( data, taxons );
-   }
+   //}
    return model;
+}
 }
 
 void readinterleaved( istream& in, vector< string >& taxons, vector< string >& data, unsigned ntax, unsigned ntraits  ){

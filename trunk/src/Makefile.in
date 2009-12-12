@@ -41,7 +41,7 @@ build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = cdao-import$(EXEEXT) cdao-mass-import$(EXEEXT) \
 	cdao-tree-import$(EXEEXT) cdao-read-tree$(EXEEXT) \
-	extract_trees.pl$(EXEEXT)
+	extract_trees.pl$(EXEEXT) cdao-phylip-import$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/config.h.in
@@ -70,6 +70,14 @@ am_cdao_mass_import_OBJECTS = main2.$(OBJEXT) util.$(OBJEXT) \
 	phylip_reader.$(OBJEXT) codegen.$(OBJEXT)
 cdao_mass_import_OBJECTS = $(am_cdao_mass_import_OBJECTS)
 cdao_mass_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
+	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
+am_cdao_phylip_import_OBJECTS = main4.$(OBJEXT) util.$(OBJEXT) \
+	node.$(OBJEXT) data_representation.$(OBJEXT) \
+	tree_description_scanner.$(OBJEXT) \
+	tree_description_parser.$(OBJEXT) nexus_reader.$(OBJEXT) \
+	phylip_reader.$(OBJEXT) codegen.$(OBJEXT)
+cdao_phylip_import_OBJECTS = $(am_cdao_phylip_import_OBJECTS)
+cdao_phylip_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 am_cdao_read_tree_OBJECTS = read-tree.$(OBJEXT) util.$(OBJEXT) \
 	node.$(OBJEXT) data_representation.$(OBJEXT) \
@@ -133,11 +141,11 @@ CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(cdao_import_SOURCES) $(cdao_mass_import_SOURCES) \
-	$(cdao_read_tree_SOURCES) $(cdao_tree_import_SOURCES) \
-	extract_trees.c
+	$(cdao_phylip_import_SOURCES) $(cdao_read_tree_SOURCES) \
+	$(cdao_tree_import_SOURCES) extract_trees.c
 DIST_SOURCES = $(cdao_import_SOURCES) $(cdao_mass_import_SOURCES) \
-	$(cdao_read_tree_SOURCES) $(cdao_tree_import_SOURCES) \
-	extract_trees.c
+	$(cdao_phylip_import_SOURCES) $(cdao_read_tree_SOURCES) \
+	$(cdao_tree_import_SOURCES) extract_trees.c
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -311,6 +319,18 @@ cdao_read_tree_SOURCES = read-tree.cpp \
 		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 
 cdao_read_tree_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
+cdao_phylip_import_SOURCES = main4.cpp \
+		    util.cpp util.hpp \
+		    node.cpp node.hpp \
+		    data_representation.cpp data_representation.hpp \
+		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
+		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
+		    $(NEXDIR)/nexus_reader.cpp $(NEXDIR)/nexus_reader.hpp \
+		    $(PHYDIR)/phylip_reader.cpp $(PHYDIR)/phylip_reader.hpp \
+	 	    $(CODEGEN)/constants.hpp \
+		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
+
+cdao_phylip_import_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -412,6 +432,9 @@ cdao-import$(EXEEXT): $(cdao_import_OBJECTS) $(cdao_import_DEPENDENCIES)
 cdao-mass-import$(EXEEXT): $(cdao_mass_import_OBJECTS) $(cdao_mass_import_DEPENDENCIES) 
 	@rm -f cdao-mass-import$(EXEEXT)
 	$(CXXLINK) $(cdao_mass_import_OBJECTS) $(cdao_mass_import_LDADD) $(LIBS)
+cdao-phylip-import$(EXEEXT): $(cdao_phylip_import_OBJECTS) $(cdao_phylip_import_DEPENDENCIES) 
+	@rm -f cdao-phylip-import$(EXEEXT)
+	$(CXXLINK) $(cdao_phylip_import_OBJECTS) $(cdao_phylip_import_LDADD) $(LIBS)
 cdao-read-tree$(EXEEXT): $(cdao_read_tree_OBJECTS) $(cdao_read_tree_DEPENDENCIES) 
 	@rm -f cdao-read-tree$(EXEEXT)
 	$(CXXLINK) $(cdao_read_tree_OBJECTS) $(cdao_read_tree_LDADD) $(LIBS)
@@ -465,6 +488,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main3.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main4.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nexus_reader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/node.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/phylip_reader.Po@am__quote@

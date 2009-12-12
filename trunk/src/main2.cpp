@@ -89,22 +89,22 @@ void processArgs(int argc, char** argv, char** env){
   //logger = new CppLogger( cerr, default_log_level );
   in = &cin;
   out = &cout;
-  NexusState::setInfile( &cin );
-  NexusState::setOutfile( &cout );
+  GlobalState::setInfile( &cin );
+  GlobalState::setOutfile( &cout );
   input_files = vector< string >();
   output_files = vector< string >();
   //LogManager lmgr = LogManager::getInstance();
-  //NexusState::setErrorfile( &cerr );
+  //GlobalState::setErrorfile( &cerr );
   for (int i = 1; i < argc  - 1; ++i){
     if ( argv[ i ] == INFILE_ARG){
 	input_files.push_back( argv[ i + 1 ] );
         //ifstream* inf = new ifstream( input_file.c_str() );
         
-	//NexusState::setInfile( in =  dynamic_cast<istream*>(inf) );
+	//GlobalState::setInfile( in =  dynamic_cast<istream*>(inf) );
     }
     else if ( argv[ i ] == OUTFILE_ARG ){
 	//ofstream* outf = new ofstream( argv[ i + 1 ]  );
-      	//NexusState::setOutfile( out =  dynamic_cast<ostream*>(outf) );
+      	//GlobalState::setOutfile( out =  dynamic_cast<ostream*>(outf) );
 	//Codegen::Imports::setBaseURI( argv[ i + 1 ] );
         output_files.push_back( argv[ i + 1 ] );
     }
@@ -188,8 +188,8 @@ void doCompressedOutput( const string& inname, const string& outname ){
         if (close( pipe_descriptors[ READ_END ]) > -1 ){
           if (dup2( pipe_descriptors[ WRITE_END ], STDOUT_FILENO) > -1){
             in = new ifstream( inname.c_str() );
-            NexusState::setInfile( in );
-            NexusState::setOutfile( &cout );
+            GlobalState::setInfile( in );
+            GlobalState::setOutfile( &cout );
 
             data = nexusparse();
 
@@ -235,8 +235,8 @@ void doNormalOutput( const string& inname, const string& outname ){
   in = new ifstream( inname.c_str() );
   out = new ofstream( outname.c_str() );
 
-  NexusState::setInfile( in );
-  NexusState::setOutfile( out );
+  GlobalState::setInfile( in );
+  GlobalState::setOutfile( out );
   
   data = nexusparse();
 
