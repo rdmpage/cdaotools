@@ -27,21 +27,21 @@
 
 using namespace std;
 using namespace CDAO;
-static const string INFILE_ARG  = "-i";
-static const string OUTFILE_ARG = "-o";
-static const string COMPRESS_OUTPUT_ARG = "-z";
-static const string VERBOSE_1   = "-v";
-static const string VERBOSE_2   = "-vv";
-static const string VERBOSE_3   = "-vvv";
-static const string VERBOSE_4   = "-vvvv";
-static const string VERBOSE_5   = "-vvvvv";
+//static const string INFILE_ARG  = "-i";
+//static const string OUTFILE_ARG = "-o";
+//static const string COMPRESS_OUTPUT_ARG = "-z";
+//static const string VERBOSE_1   = "-v";
+//static const string VERBOSE_2   = "-vv";
+//static const string VERBOSE_3   = "-vvv";
+//static const string VERBOSE_4   = "-vvvv";
+//static const string VERBOSE_5   = "-vvvvv";
 
 //TypedOutputStream tocerr = *StreamFactory::getOutputInstance( cerr );
 
 /*
  * Process the argument list and setup the environment.
  */
-void processArgs(int argc, char** argv, char** env);
+//void processArgs(int argc, char** argv, char** env);
 
 void doCompressedOutput( const string& inname, const string& outname );
 void doNormalOutput( const string& inname, const string& outname );
@@ -82,7 +82,7 @@ int main(int argc, char** argv, char** env){
   return 0;
 
 }
-
+/*
 void processArgs(int argc, char** argv, char** env){
  // cerr << "processArgs( argc:"  << argc << ", argv:" << argv << ", env: " << env << ")\n";
   //int default_log_level = NO_MESSAGES_LR;
@@ -130,6 +130,7 @@ void processArgs(int argc, char** argv, char** env){
  // cerr << "exiting processArgs()\n";
   return;
 }
+*/
 
 //void initLog(LogManager& lmgr, const char* out, const int level){
 

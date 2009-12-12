@@ -14,21 +14,6 @@ namespace CDAO {
 
 class DataRepresentation;
 
-class NexusState {
-public:
-  //static init(std::istream* in=&std::cin, std::istream* out=&std::cout):in_(in), out_(out){}
-  static void setInfile( std::istream* infile){ in_ = infile;  }
-  static void setOutfile( std::ostream* outfile){ out_ = outfile; }
-  static void setErrorfile( std::ostream* errorfile ){ err_ = errorfile; }
-  static std::istream* getInfile(){return in_; } 
-  static std::ostream* getOutfile(){ return out_;}
-  static std::ostream* getErrorfile(){ return err_; }
-private:
-  static std::istream* in_;
-  static std::ostream* out_;
-  static std::ostream* err_;
-  
-};
   
   class OntNexusReader : public NxsReader, public NxsBlock {
   public:

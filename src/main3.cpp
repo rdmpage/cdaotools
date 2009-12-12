@@ -1,5 +1,6 @@
 #include "grammar/nexus/tree_description_parser.hpp"
 #include "data_representation.hpp"
+#include <RawStream.hpp>
 
 #include "util.hpp"
 #include "node.hpp"
@@ -25,7 +26,8 @@ DataRepresentation* populate_model( vector< string > TUs, map< string, Node* > t
 
 int main( int argc, char** argv ){
   if (argc > 1 ){
-     do_extraction( argv[1] );       
+     processArgs( argc, argv, NULL );
+     do_extraction( getInputFile() );       
   }
 
   return 0;
@@ -42,7 +44,7 @@ DataRepresentation* do_extraction( const string& nfp ){
   if ( 0 == extractor ){
      /* child code */
      if (close( pipefd[ READ_END ] ) > -1 ){
-       if ( dup2( STDOUT_FILENO, pipefd[ WRITE_END ] ) > -1 ){
+       if ( dup2( pipefd[ WRITE_END ], STDOUT_FILENO ) > -1 ){
          if(  execlp( extractor_script.c_str(), extractor_script.c_str(), nfp.c_str(), (char*)NULL ) <0 ){
             perror("exec failed");
             exit( 1 );
@@ -53,38 +55,21 @@ DataRepresentation* do_extraction( const string& nfp ){
      else { perror("close failed"); exit(1); }
   }
   if ( close( pipefd[ WRITE_END ] ) > -1){
-   if ( dup2( STDIN_FILENO, pipefd[READ_END] ) > -1 ){
-      string command;
-      string taxon_name;
-      string tree_name;
-      string rooted;
-      string newick_data;
-      vector< string > taxa(0);
-      map< string, Node* > trees = map< string, Node* >();
-      while (!cin.eof()){
-        cin >> command;
-        if (command == "TU"){
-           cin >> taxon_name;
-           taxa.push_back( taxon_name );
-        }
-        else if ( command == "TREE"){
-           cin >> tree_name;
-           cin >> rooted;
-           cin >> newick_data;
-           trees[ tree_name ] = TreeDescriptionParser( newick_data ).getParseTree();
-        }
-        else {
-            cerr << "Unrecognized command: " << command << endl;
-            exit( 1 );
-        }
+      pid_t writer = fork();
+      if (0 == writer){
+          /* child code */
+          if (dup2( pipefd[READ_END], STDIN_FILENO ) > -1){
+              if (execlp("cdao-read-tree", "cdao-read-tree", nfp.c_str(), (char*)NULL) < 0 ){
+                perror("Exec Failed");
+              }
+          }
       }
-   }
-   else { perror( "dup failed" ); exit( 1 ); }
+      close(pipefd[READ_END]);
   }
   else { perror( "close failed" ); exit( 1 ); }
   return NULL;
 }
 
 Node* parse_description( const string& newick ){
-    
+  return NULL;  
 }
