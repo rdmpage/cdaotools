@@ -3,11 +3,8 @@
 #include <vector>
 #include <string>
 #include <data_representation.hpp>
-#include <Logger.hpp>
-#include <LogManager.hpp>
-
 namespace CDAO {
-  
+  /*
   class PhylipEnvironment {
     public:
       PhylipEnvironment(istream& in, bool intl ):in_(in), interleaved_(intl){}
@@ -17,7 +14,7 @@ namespace CDAO {
     private:
       istream& in_;
       bool interleaved_;
-  };
+  };*/
 
   class PhylipDataRepresentation : public DataRepresentation {
      public:
@@ -55,7 +52,7 @@ namespace CDAO {
   };
 
 
-  DataRepresentation* phylipparse(PhylipEnvironment* env);
+  DataRepresentation* phylipparse();
 
 }
 #endif

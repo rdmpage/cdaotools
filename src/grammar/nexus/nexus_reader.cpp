@@ -9,7 +9,7 @@ namespace CDAO {
   DataRepresentation*  nexusparse(){
 
   //cerr << "nexusparse()\n";
-  OntNexusReader nread(  *(NexusState::getInfile()), *(NexusState::getOutfile()), *(NexusState::getErrorfile()) );
+  OntNexusReader nread(  *(GlobalState::getInfile()), *(GlobalState::getOutfile()), *(GlobalState::getErrorfile()) );
   //cerr << "Initialized the reader\n";
   NxsTaxaBlock* taxa               = new NxsTaxaBlock();
   NxsAssumptionsBlock* assumptions = new NxsAssumptionsBlock( taxa );

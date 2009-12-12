@@ -17,10 +17,10 @@
 using namespace std;
 namespace CDAO {
 
-  istream* NexusState::in_ = NULL;
-  ostream* NexusState::out_ = NULL;
-  ostream* NexusState::err_ = &std::cerr;
-
+  istream* GlobalState::in_ = NULL;
+  ostream* GlobalState::out_ = NULL;
+  ostream* GlobalState::err_ = &std::cerr;
+  bool GlobalState::interleaved_ = false;
 
 static std::string input_file = "";
 static std::string output_file = "";
@@ -62,22 +62,25 @@ void processArgs(int argc, char** argv, char** env){
   //logger = new CppLogger( cerr, default_log_level );
   in = &cin;
   out = &cout;
-  NexusState::setInfile( &cin );
-  NexusState::setOutfile( &cout );
+  GlobalState::setInfile( &cin );
+  GlobalState::setOutfile( &cout );
   LogManager lmgr = LogManager::getInstance();
-  //NexusState::setErrorfile( &cerr );
+  //GlobalState::setErrorfile( &cerr );
   for (int i = 1; i < argc  - 1; ++i){
     if ( argv[ i ] == INFILE_ARG){
 	input_file = argv[ i + 1 ];
         ifstream* inf = new ifstream( input_file.c_str() );
         
-	NexusState::setInfile( in =  dynamic_cast<istream*>(inf) );
+	GlobalState::setInfile( in =  dynamic_cast<istream*>(inf) );
     }
     else if ( argv[ i ] == OUTFILE_ARG ){
 	ofstream* outf = new ofstream( argv[ i + 1 ]  );
         output_file = argv[ i + 1 ];
-      	NexusState::setOutfile( out =  dynamic_cast<ostream*>(outf) );
+      	GlobalState::setOutfile( out =  dynamic_cast<ostream*>(outf) );
 	Codegen::Imports::setBaseURI( argv[ i + 1 ] );
+    }
+    else if (argv[ i ] == INTERLEAVED_ARG){
+        GlobalState::setInterleaved( true );
     }
     else if ( argv[ i ] == VERBOSE_1){
       initLog( lmgr, argv[ i + 1], ALERT_MESSAGES_LR ); 
