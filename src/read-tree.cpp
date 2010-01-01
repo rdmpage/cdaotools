@@ -85,19 +85,26 @@ void read_input( vector< string >& taxa, map< string, Node* >& trees ){
      //cout << command;
      if (command == "TU"){
         cin >> taxon_name;
+        //cerr << "read taxon id: " << taxon_name << endl;
         taxa.push_back( taxon_name );
+        taxon_name = "";
      }
      else if ( command == "TREE"){
         cin >> tree_name;
         cin >> rooted;
         cin >> newick_data;
         trees[ tree_name ] = TreeDescriptionParser( newick_data ).getParseTree();
+
+       // cerr << "read tree: " << tree_name << " rooted: " << rooted << " description: " << newick_data << endl;
+        tree_name = rooted = newick_data = "";
      }
+     else if ( command == "" ){/* skip empty line */}
      else {
         cerr << "Unrecognized command: \"" << command << "\"" << endl;
         //pin.close();
         exit( 1 );
      }
+     command = "";
    }
       //pin.close();
      // for (unsigned i = 0; i < taxa.size(); ++i){

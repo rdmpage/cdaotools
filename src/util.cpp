@@ -28,16 +28,16 @@ static std::string output_file = "";
    /*
     * Input and output streams.
     */
-static istream* in;
-static ostream* out;
+//static istream* in;
+//static ostream* out;
 TypedOutputStream tocerr = *StreamFactory::getOutputInstance( cerr );
 
 
 string getInputFile(){ return input_file; }
 string getOutputFile(){ return output_file;}
 
-istream* getInputStream(){ return in; }
-ostream* getOutputStream(){ return out; }
+istream* getInputStream(){ return GlobalState::getInfile(); }
+ostream* getOutputStream(){ return GlobalState::getOutfile(); }
 
 
 string labelMaker(  string tag_type ){
@@ -60,8 +60,8 @@ void processArgs(int argc, char** argv, char** env){
  // cerr << "processArgs( argc:"  << argc << ", argv:" << argv << ", env: " << env << ")\n";
   //int default_log_level = NO_MESSAGES_LR;
   //logger = new CppLogger( cerr, default_log_level );
-  in = &cin;
-  out = &cout;
+  //in = &cin;
+  //out = &cout;
   GlobalState::setInfile( &cin );
   GlobalState::setOutfile( &cout );
   LogManager lmgr = LogManager::getInstance();
@@ -71,12 +71,12 @@ void processArgs(int argc, char** argv, char** env){
 	input_file = argv[ i + 1 ];
         ifstream* inf = new ifstream( input_file.c_str() );
         
-	GlobalState::setInfile( in =  dynamic_cast<istream*>(inf) );
+	GlobalState::setInfile( dynamic_cast<istream*>(inf) );
     }
     else if ( argv[ i ] == OUTFILE_ARG ){
 	ofstream* outf = new ofstream( argv[ i + 1 ]  );
         output_file = argv[ i + 1 ];
-      	GlobalState::setOutfile( out =  dynamic_cast<ostream*>(outf) );
+      	GlobalState::setOutfile( dynamic_cast<ostream*>(outf) );
 	Codegen::Imports::setBaseURI( argv[ i + 1 ] );
     }
     else if (argv[ i ] == INTERLEAVED_ARG){
