@@ -17,7 +17,7 @@ public:
   static void setOutfile( std::ostream* outfile){ out_ = outfile; }
   static void setErrorfile( std::ostream* errorfile ){ err_ = errorfile; }
   static void setInterleaved( bool i ){ interleaved_ = i; }
-  static std::istream* getInfile(){return in_; } 
+  static std::istream* getInfile(){return in_; }
   static std::ostream* getOutfile(){ return out_;}
   static std::ostream* getErrorfile(){ return err_; }
   static bool isInterleaved(){ return interleaved_; }
