@@ -22,5 +22,7 @@ def query_store( configString, default_graph_uri, namespace_bindings, queryStrin
         else:
                 assert rt == VALID_STORE, "The underlying store is not valid"
 
-        graph = Graph(store, identifier = URIRef( default_graph_uri ))
+        #graph = Graph(store, identifier = URIRef( default_graph_uri ))
+        graph = Graph( identifier = URIRef( default_graph_uri ) )
+        graph.parse("http://www.cs.nmsu.edu/~bchisham/S996A3196.tre.cdao")
         return graph.query( queryString, initNs = namespace_bindings)
