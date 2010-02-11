@@ -31,5 +31,8 @@ fileNameSpace=fileURI + "#"
 cdaoURI= "http://www.evolutionaryontology.org/cdao.owl"
 cdaoNS= "http://www.evolutionaryontology.org/cdao.owl#"
 rdfNS="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-for row in query_store( configString, default_graph_uri = fileURI, namespace_bindings=dict(cdao=Namespace(cdaoNS), rdf=Namespace(rdfNS), fileNS=Namespace(fileNameSpace)), queryString = sparqlQuery ):
+owlNS="http://www.w3.org/2002/07/owl#"
+nsdict=dict(owl=Namespace(owlNS), cdao=Namespace(cdaoNS), rdf=Namespace(rdfNS), fileNS=Namespace(fileNameSpace))
+
+for row in query_store( configString, default_graph_uri = fileURI, namespace_bindings=nsdict, queryString = sparqlQuery ):
         print formatString % row
