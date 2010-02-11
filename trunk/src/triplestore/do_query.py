@@ -23,7 +23,13 @@ from urllib import unquote
 from sparql import query_store
 from html import start_html, head, open_div, anchor, end_div, open_body, par, anchor ,end_body, end_html, heading_h1
 
+configString = sys.argv[1]
+sparqlQuery = sys.argv[2]
+formatString= sys.argv[3]
+fileURI = sys.argv[4]
+fileNameSpace=fileURI + "#"
 cdaoURI= "http://www.evolutionaryontology.org/cdao.owl"
+cdaoNS= "http://www.evolutionaryontology.org/cdao.owl#"
 rdfNS="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-for row in query_store( sys.argv[1], default_graph_uri = cdaoURI, namespace_bindings=dict(cdao=Namespace(cdaoURI+"#"), rdf=Namespace(rdfNS)), queryString = sys.argv[2] ):
-        print sys.argv[3] % row
+for row in query_store( configString, default_graph_uri = fileURI, namespace_bindings=dict(cdao=Namespace(cdaoNS), rdf=Namespace(rdfNS), fileNS=Namespace(fileNameSpace)), queryString = sparqlQuery ):
+        print formatString % row
