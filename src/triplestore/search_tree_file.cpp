@@ -8,7 +8,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string>
-#include <curses.h>
+#include <ncurses.h>
 #include <unistd.h>
 #include <strings.h>
 
@@ -32,16 +32,18 @@ int main(int argc, char** argv){
   keypad(stdscr, TRUE);
   //read until there's a space or end of file.
   while (  (ch = getch()) != EOF && !isspace( ch )){
-      //if ( ch != ERR ){
-        //pipe( pfd );
-        clear();
-        search += (char)ch;
-        results = getmatches( search, argv[1] );
-        printw( "%s\n%s",search.c_str(), results.c_str());
-        move(0, search.size() );
-       // cout << results << endl;
-        //cout << search;
-     //}
+      if ( ch == KEY_BACKSPACE ){ 
+           int r = search.size() - 1; 
+           search = search.substr(0, r > 0 ? r : 0 ); 
+      }
+
+     else {     
+           search += (char)ch;
+     }
+     results = getmatches( search, argv[1] );
+     clear(); 
+     printw( "%s\n%s",search.c_str(), results.c_str());
+     move(0, search.size() );
   }
   //curses clean-up
   endwin();
