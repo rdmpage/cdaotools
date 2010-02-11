@@ -9,8 +9,8 @@ echo "<?xml version=\"1.0\"?>"
 echo "<files>"
 for i in $(ls *.tre); 
 do 
-        echo "<file id=\"$URL/$i\">"; 
-        grep "^TREE" $i | sed 's/TREE //' | perl -p -n -e 's/([a-zA-Z0-9]+)/<tree id=\"$1\" /' |sed 's/\[&R\]/ type=\"directional\" /' | sed 's/\[&U\]/type=\"undirectional\" /' | sed 's/END;//' | sed 's/= //g' | sed 's/  / /g' | perl -p -n -e 's/ (\(.*\)(?:[_a-zA-Z0-9]+)?);/\/>/g'; 
+        echo "<file id=\"$i\">"; 
+        grep "^TREE" $i | sed 's/TREE //' | sed 's/=//' | perl -p -n -e 's/([_a-zA-Z0-9]+)/<tree id=\"$1\" /' |sed 's/\[&R\]/ type=\"directional\" /' | sed 's/\[&U\]/type=\"undirectional\" /' | sed 's/END;//' | sed 's/  / /g' | perl -p -n -e " s/ (?:extinct_\d+=)?(\(.*\)(?:[-_ \'a-zA-Z0-9]+)?);/\/>/g"; 
         echo "</file>"
 done
 #Use to add actual tree data as "newick" attribute
