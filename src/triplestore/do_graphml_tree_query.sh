@@ -14,7 +14,7 @@
 export cdao="http://www.evolutionaryontology.org/cdao.owl"
 
 export NODE_QUERY="SELECT ?node WHERE { ?node <$cdao#part_of> <$2>.  ?node rdf:type <$cdao#Node> . }"
-export EDGE_QUERY="SELECT ?edge ?src ?dest WHERE { ?edge rdf:type <$cdao#DirectedEdge>. ?edge <$cdao#has_Child_Node> ?dest . ?edge <$cdao#has_Parent_Node> ?src. ?dest <$cdao#part_of> <$2>. ?src <$cdao#part_of> <$2>. }"
+export EDGE_QUERY="SELECT ?edge ?src ?dest WHERE { ?dest <$cdao#part_of> <$2>. ?src <$cdao#part_of> <$2>. ?edge <$cdao#has_Child_Node> ?dest . ?edge <$cdao#has_Parent_Node> ?src. }"
 
 cat << EOM
 <?xml version="1.0" encoding="UTF-8"?>
