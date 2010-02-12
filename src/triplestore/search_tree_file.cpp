@@ -11,6 +11,7 @@
 #include <ncurses.h>
 #include <unistd.h>
 #include <strings.h>
+#include <fstream>
 
 using namespace std;
 /*
@@ -22,6 +23,11 @@ int main(int argc, char** argv){
   int ch =0;
   string search = "";
   string results = "";
+   string results_file = "/dev/null";
+
+  if ( argc > 2){
+       results_file = argv[2];
+  }
   //int pfd[2];
   //curses init
   initscr();
@@ -49,6 +55,10 @@ int main(int argc, char** argv){
   endwin();
   //display final result list
   cout << results;
+  ofstream resultf( results_file.c_str());
+  //resultf.open( );
+  resultf << results;
+  resultf.close();
   return 0;
 }
 /*
