@@ -38,11 +38,11 @@ int main(int argc, char** argv){
   keypad(stdscr, TRUE);
   //read until there's a space or end of file.
   while (  (ch = getch()) != EOF && !isspace( ch )){
-      if ( ch == KEY_BACKSPACE ){ 
+     if ( ch == KEY_BACKSPACE || ch == KEY_DC ){ 
            int r = search.size() - 1; 
            search = search.substr(0, r > 0 ? r : 0 ); 
-      }
-
+     }
+     else if ( ch == KEY_DL ){ search = "";  }
      else {     
            search += (char)ch;
      }

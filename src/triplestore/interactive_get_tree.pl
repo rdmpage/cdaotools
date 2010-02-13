@@ -36,8 +36,9 @@ foreach my $line ( @tree_lines ){
    my @split_line = split / /, $line;
    my $xml_base = $BASE_URI . "/" . $split_line[0];
    my $tree_name = $xml_base . "#" .$split_line[1];
+   my $edge_type = $split_line[2];
    my $out_name = $split_line[1] . $suffix{$oformat};
-   my $command = "./do_" . $oformat . "_tree_query.sh  \"$ARGV[0]\" \"$tree_name\" \"$xml_base\" > $out_name";
+   my $command = "./do_" . $oformat . "_tree_query.sh  \"$ARGV[0]\" \"$tree_name\" \"$xml_base\" \"$edge_type\" > $out_name";
    print "running query: $command\n";
    system( $command );
    print "Saving results for tree: $tree_name in: $out_name\n";
