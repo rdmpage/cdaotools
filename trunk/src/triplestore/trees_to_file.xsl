@@ -9,6 +9,8 @@
                         <xsl:value-of select="../@id" />
                         <xsl:text> </xsl:text>
                         <xsl:value-of select="@id" />
+                        <xsl:text> </xsl:text>
+                        <xsl:value-of select="@type"/>
                         <xsl:text>&#10;</xsl:text>
                 </xsl:for-each>
         </xsl:template>
