@@ -13,8 +13,8 @@
 
 export cdao="http://www.evolutionaryontology.org/cdao.owl"
 
-export NODE_QUERY="SELECT ?node WHERE { ?node <$cdao#part_of> <$2>.  ?node rdf:type <$cdao#Node> . }"
-export EDGE_QUERY="SELECT ?edge ?src ?dest WHERE { ?dest <$cdao#part_of> <$2>. ?src <$cdao#part_of> <$2>. ?edge <$cdao#has_Child_Node> ?dest . ?edge <$cdao#has_Parent_Node> ?src. }"
+export NODE_QUERY=`./do_node_query_construct.sh "$2"`
+export EDGE_QUERY=`./do_edge_query_construct.sh "$2"`
 
 
 cat << EOM
