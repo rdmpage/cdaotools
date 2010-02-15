@@ -13,8 +13,8 @@
 
 export cdao="http://www.evolutionaryontology.org/cdao.owl"
 
-export NODE_QUERY=`./do_node_query_construct.sh "$2"`
-export EDGE_QUERY=`./do_edge_query_construct.sh "$2"`
+export NODE_QUERY=`do_node_query_construct.sh "$2"`
+export EDGE_QUERY=`do_edge_query_construct.sh "$2"`
 
 
 cat << EOM
@@ -34,9 +34,8 @@ echo "<!-- EDGE_QUERY: $EDGE_QUERY -->"
 
 echo "<graph id=\"$2\" edgedefault=\"$4\">"
 #Query to get the nodes.
-./do_query.py "$1" "$NODE_QUERY" "<node id=\"%s\"/>" "$3"
-
-./do_query.py "$1" "$EDGE_QUERY" "<edge id=\"%s\" source=\"%s\" target=\"%s\"/>" "$3"
+do_query.py "$1" "$NODE_QUERY" "<node id=\"%s\"/>" "$3"
+do_query.py "$1" "$EDGE_QUERY" "<edge id=\"%s\" source=\"%s\" target=\"%s\"/>" "$3"
 
 
 echo "</graph>"
