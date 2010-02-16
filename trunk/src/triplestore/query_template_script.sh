@@ -41,7 +41,7 @@ cat << EOM
       xmlns:cdao="http://www.evolutionaryontology.org/cdao.owl#"
       xml:lang="en">
  <head profile="http://www.w3.org/1999/xhtml/vocab">
- <title>Triples Query System</title>
+ <title>Cdao Store Query System</title>
       <link rel="stylesheet" type="text/css" href="../../style.css"/>
       <link rel="SHORTCUT ICON" href="../../cdao-store-favicon.ico" />
  </head>
