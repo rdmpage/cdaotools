@@ -43,10 +43,11 @@ cat << EOM
  <head profile="http://www.w3.org/1999/xhtml/vocab">
  <title>Triples Query System</title>
       <link rel="stylesheet" type="text/css" href="../../style.css"/>
+      <link rel="SHORTCUT ICON" href="../../cdao-store-favicon.ico" />
  </head>
  <body>
    <div class="main-content">
-    <h1>Triplestore Query System</h1>
+    <h1>Cdao Store Query System</h1>
 EOM
 }
 
@@ -59,6 +60,9 @@ cat << EOM
        <p>Tree: <input type="text" class="text" about="cdao:Tree" id="tree" name="tree" value="" />
          <input class="button" type="submit" value="Submit" />
          <input class="button" type="reset" value="Reset"/></p>
+       <p>
+         <img src="../../cdao-triplestore-logo.jpg" alt="Cdao Store Logo" />
+       </p>
  </form>
 <p about=""
      resource="http://www.w3.org/TR/rdfa-syntax"

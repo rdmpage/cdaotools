@@ -15,7 +15,7 @@ EDGE_QUERY=`do_edge_query_construct.sh "$2"`
 
 cat << EOM
 <?xml version="1.0" encoding="UTF-8"?>
-<nexml generator="CDAO Triplestore Query System" 
+<nexml generator="CDAO Cdao Store Query System" 
        version="0.8" 
        xmlns="http://www.nexml.org/1.0" 
        xmlns:nex="http://www.nexml.org/1.0" 
