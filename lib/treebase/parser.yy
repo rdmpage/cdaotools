@@ -5,6 +5,9 @@
 extern int yylex();
 void yyerror( const char* );
 
+using namespace std;
+using namespace Treebase;
+
 %}
 %error-verbose
 %glr-parser

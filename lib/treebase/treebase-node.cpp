@@ -19,7 +19,7 @@ QuotedStringNode::QuotedStringNode( const QuotedStringNode& rhs ):Node(QUOTED_ST
 //Nothing to do here
 QuotedStringNode::~QuotedStringNode(){ /*cerr << "~QuotedStringNode() contents_:" << contents_ << "\n";*/}
 //Make a deep copy of the node
-QuotedStringNode* QuotedStringNode::copy()const{ /*cerr << "QuotedStringNode::copy()\n"; return new QuotedStringNode(this->getcontents());*/ }
+QuotedStringNode* QuotedStringNode::copy()const{ /*cerr << "QuotedStringNode::copy()\n";*/ return new QuotedStringNode(this->getcontents()); }
 //Return the contents of the string
 string QuotedStringNode::getcontents()const{ return contents_; }
 //initialize the constant with the specified value
@@ -29,7 +29,7 @@ ConstNode::ConstNode( const ConstNode& rhs ):Node(CONST), value_(rhs.value_){}
 //Nothing to do here
 ConstNode::~ConstNode(){ /*cerr << "~ConstNode()\n";*/}
 //Make a deep copy of the node
-ConstNode* ConstNode::copy()const{ /*cerr << "ConstNode::copy()\n"; return new ConstNode( this->getvalue() );*/ }
+ConstNode* ConstNode::copy()const{ /*cerr << "ConstNode::copy()\n";*/ return new ConstNode( this->getvalue() ); }
 //Extract the node's value.
 unsigned long int ConstNode::getvalue()const{ return value_; }
 //Initialize the output tree.
