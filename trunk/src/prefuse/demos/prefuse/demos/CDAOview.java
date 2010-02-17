@@ -2,446 +2,460 @@ package prefuse.demos;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JComponent;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-import prefuse.Constants;
 import prefuse.Display;
 import prefuse.Visualization;
-import prefuse.action.Action;
 import prefuse.action.ActionList;
-import prefuse.action.ItemAction;
 import prefuse.action.RepaintAction;
-import prefuse.action.animate.ColorAnimator;
-import prefuse.action.animate.LocationAnimator;
-import prefuse.action.animate.QualityControlAnimator;
-import prefuse.action.animate.VisibilityAnimator;
 import prefuse.action.assignment.ColorAction;
-import prefuse.action.assignment.FontAction;
-import prefuse.action.filter.FisheyeTreeFilter;
-import prefuse.action.layout.CollapsedSubtreeLayout;
-import prefuse.action.layout.graph.NodeLinkTreeLayout;
-import prefuse.activity.SlowInSlowOutPacer;
-import prefuse.controls.ControlAdapter;
+import prefuse.action.filter.GraphDistanceFilter;
+import prefuse.action.layout.graph.ForceDirectedLayout;
+import prefuse.activity.Activity;
+import prefuse.controls.DragControl;
 import prefuse.controls.FocusControl;
+import prefuse.controls.NeighborHighlightControl;
 import prefuse.controls.PanControl;
 import prefuse.controls.WheelZoomControl;
 import prefuse.controls.ZoomControl;
 import prefuse.controls.ZoomToFitControl;
-import prefuse.data.Edge;
 import prefuse.data.Graph;
-import prefuse.data.Node;
-import prefuse.data.Tree;
+import prefuse.data.Table;
 import prefuse.data.Tuple;
 import prefuse.data.event.TupleSetListener;
+import prefuse.data.io.DataIOException;
 import prefuse.data.io.GraphMLReader;
-import prefuse.data.io.TreeMLReader;
-import prefuse.data.search.PrefixSearchTupleSet;
 import prefuse.data.tuple.TupleSet;
 import prefuse.render.DefaultRendererFactory;
-import prefuse.render.EdgeRenderer;
-import prefuse.render.AbstractShapeRenderer;
 import prefuse.render.LabelRenderer;
 import prefuse.util.ColorLib;
-import prefuse.util.FontLib;
-import prefuse.util.ui.JFastLabel;
-import prefuse.util.ui.JSearchPanel;
+import prefuse.util.GraphLib;
+import prefuse.util.GraphicsLib;
+import prefuse.util.display.DisplayLib;
+import prefuse.util.display.ItemBoundsListener;
+import prefuse.util.force.ForceSimulator;
+import prefuse.util.io.IOLib;
+import prefuse.util.ui.JForcePanel;
+import prefuse.util.ui.JValueSlider;
+import prefuse.util.ui.UILib;
+import prefuse.visual.VisualGraph;
 import prefuse.visual.VisualItem;
-import prefuse.visual.expression.InGroupPredicate;
-import prefuse.visual.sort.TreeDepthItemSorter;
 
 /**
- * Demonstration of a node-link tree viewer
- *
- * @version 1.0
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
-public class CDAOview extends Display {
+public class CDAOview extends JPanel {
 
-    public static final String TREE_CHI = "Tree3099.graphml";
-    
-    private static final String tree = "tree";
-    private static final String treeNodes = "tree.nodes";
-    private static final String treeEdges = "tree.edges";
-    
-    
-    private LabelRenderer m_nodeRenderer;
-    private EdgeRenderer m_edgeRenderer;
-    
-    private String m_label = "label";
-    private int m_orientation = Constants.ORIENT_LEFT_RIGHT;
-    
-    public CDAOview(Graph t, String label) {
-        super(new Visualization());
-        m_label = label;
+    private static final String graph = "graph";
+    private static final String nodes = "graph.nodes";
+    private static final String edges = "graph.edges";
 
-        int ec = t.getEdgeCount();
-        int nc = t.getNodeCount();
+    private Visualization m_vis;
+    
+    public CDAOview(Graph g, String label) {
+    	super(new BorderLayout());
+    	
+        // create a new, empty visualization for our data
+        m_vis = new Visualization();
         
-        for(int i = 0; i < ec; i++)
-        {
-        	Edge e = t.getEdge(i);
-        	System.out.println("Edge "+i+": "+ e.toString());
-        	
-        }
+        // --------------------------------------------------------------------
+        // set up the renderers
         
-        System.out.println("Number of nodes=" + nc);
+        LabelRenderer tr = new LabelRenderer();
+        tr.setRoundedCorner(8, 8);
+        m_vis.setRendererFactory(new DefaultRendererFactory(tr));
+
+        // --------------------------------------------------------------------
+        // register the data with a visualization
         
-        for(int i = 0; i < nc; i++)
-        {
-          Node n = t.getNode(i);
-          System.out.println("Node "+i+": "+ n.toString());
-        }
+        // adds graph to visualization and sets renderer label field
+        setGraph(g, label);
         
-        
-        
-        
-        
-        m_vis.add(tree, t);//new Tree(t.getNodeTable(), t.getEdgeTable(), t.DEFAULT_NODE_KEY, t.DEFAULT_SOURCE_KEY, t.DEFAULT_TARGET_KEY));
-        
-        m_nodeRenderer = new LabelRenderer(m_label);
-        m_nodeRenderer.setRenderType(AbstractShapeRenderer.RENDER_TYPE_FILL);
-        m_nodeRenderer.setHorizontalAlignment(Constants.LEFT);
-        m_nodeRenderer.setRoundedCorner(8,8);
-        m_edgeRenderer = new EdgeRenderer(Constants.EDGE_TYPE_CURVE);
-        
-        DefaultRendererFactory rf = new DefaultRendererFactory(m_nodeRenderer);
-        rf.add(new InGroupPredicate(treeNodes), m_nodeRenderer);
-        rf.add(new InGroupPredicate(treeEdges), m_edgeRenderer);
-        m_vis.setRendererFactory(rf);
-               
-        // colors
-        ItemAction nodeColor = new NodeColorAction(treeNodes);
-        ItemAction textColor = new ColorAction(treeNodes,
-                VisualItem.TEXTCOLOR, ColorLib.rgb(0,0,0));
-        m_vis.putAction("textColor", textColor);
-        
-        ItemAction edgeColor = new ColorAction(treeEdges,
-                VisualItem.STROKECOLOR, ColorLib.rgb(200,200,200));
-        
-        // quick repaint
-        ActionList repaint = new ActionList();
-        repaint.add(nodeColor);
-        repaint.add(new RepaintAction());
-        m_vis.putAction("repaint", repaint);
-        
-        // full paint
-        ActionList fullPaint = new ActionList();
-        fullPaint.add(nodeColor);
-        m_vis.putAction("fullPaint", fullPaint);
-        
-        // animate paint change
-        ActionList animatePaint = new ActionList(400);
-        animatePaint.add(new ColorAnimator(treeNodes));
-        animatePaint.add(new RepaintAction());
-        m_vis.putAction("animatePaint", animatePaint);
-        
-        // create the tree layout action
-        NodeLinkTreeLayout treeLayout = new NodeLinkTreeLayout(tree,
-                m_orientation, 50, 0, 8);
-        treeLayout.setLayoutAnchor(new Point2D.Double(25,300));
-        m_vis.putAction("treeLayout", treeLayout);
-        
-        CollapsedSubtreeLayout subLayout = 
-            new CollapsedSubtreeLayout(tree, m_orientation);
-        m_vis.putAction("subLayout", subLayout);
-        
-        AutoPanAction autoPan = new AutoPanAction();
-        
-        // create the filtering and layout
-        ActionList filter = new ActionList();
-        filter.add(new FisheyeTreeFilter(tree, 2));
-        filter.add(new FontAction(treeNodes, FontLib.getFont("Tahoma", 16)));
-        filter.add(treeLayout);
-        filter.add(subLayout);
-        filter.add(textColor);
-        filter.add(nodeColor);
-        filter.add(edgeColor);
-        m_vis.putAction("filter", filter);
-        
-        // animated transition
-        ActionList animate = new ActionList(1000);
-        animate.setPacingFunction(new SlowInSlowOutPacer());
-        animate.add(autoPan);
-        animate.add(new QualityControlAnimator());
-        animate.add(new VisibilityAnimator(tree));
-        animate.add(new LocationAnimator(treeNodes));
-        animate.add(new ColorAnimator(treeNodes));
-        animate.add(new RepaintAction());
-        m_vis.putAction("animate", animate);
-        m_vis.alwaysRunAfter("filter", "animate");
-        
-        // create animator for orientation changes
-        ActionList orient = new ActionList(2000);
-        orient.setPacingFunction(new SlowInSlowOutPacer());
-        orient.add(autoPan);
-        orient.add(new QualityControlAnimator());
-        orient.add(new LocationAnimator(treeNodes));
-        orient.add(new RepaintAction());
-        m_vis.putAction("orient", orient);
-        
-        // ------------------------------------------------
-        
-        // initialize the display
-        setSize(700,600);
-        setItemSorter(new TreeDepthItemSorter());
-        addControlListener(new ZoomToFitControl());
-        addControlListener(new ZoomControl());
-        addControlListener(new WheelZoomControl());
-        addControlListener(new PanControl());
-        addControlListener(new FocusControl(1, "filter"));
-        
-        registerKeyboardAction(
-            new OrientAction(Constants.ORIENT_LEFT_RIGHT),
-            "left-to-right", KeyStroke.getKeyStroke("ctrl 1"), WHEN_FOCUSED);
-        registerKeyboardAction(
-            new OrientAction(Constants.ORIENT_TOP_BOTTOM),
-            "top-to-bottom", KeyStroke.getKeyStroke("ctrl 2"), WHEN_FOCUSED);
-        registerKeyboardAction(
-            new OrientAction(Constants.ORIENT_RIGHT_LEFT),
-            "right-to-left", KeyStroke.getKeyStroke("ctrl 3"), WHEN_FOCUSED);
-        registerKeyboardAction(
-            new OrientAction(Constants.ORIENT_BOTTOM_TOP),
-            "bottom-to-top", KeyStroke.getKeyStroke("ctrl 4"), WHEN_FOCUSED);
-        
-        // ------------------------------------------------
-        
-        // filter graph and perform layout
-        setOrientation(m_orientation);
-        m_vis.run("filter");
-        
-        TupleSet search = new PrefixSearchTupleSet(); 
-        m_vis.addFocusGroup(Visualization.SEARCH_ITEMS, search);
-        search.addTupleSetListener(new TupleSetListener() {
-            public void tupleSetChanged(TupleSet t, Tuple[] add, Tuple[] rem) {
-                m_vis.cancel("animatePaint");
-                m_vis.run("fullPaint");
-                m_vis.run("animatePaint");
+        // fix selected focus nodes
+        TupleSet focusGroup = m_vis.getGroup(Visualization.FOCUS_ITEMS); 
+        focusGroup.addTupleSetListener(new TupleSetListener() {
+            public void tupleSetChanged(TupleSet ts, Tuple[] add, Tuple[] rem)
+            {
+                for ( int i=0; i<rem.length; ++i )
+                    ((VisualItem)rem[i]).setFixed(false);
+                for ( int i=0; i<add.length; ++i ) {
+                    ((VisualItem)add[i]).setFixed(false);
+                    ((VisualItem)add[i]).setFixed(true);
+                }
+                if ( ts.getTupleCount() == 0 ) {
+                    ts.addTuple(rem[0]);
+                    ((VisualItem)rem[0]).setFixed(false);
+                }
+                m_vis.run("draw");
             }
         });
+        
+        
+        
+        // --------------------------------------------------------------------
+        // create actions to process the visual data
+
+        int hops = 30;
+        final GraphDistanceFilter filter = new GraphDistanceFilter(graph, hops);
+
+        ColorAction fill = new ColorAction(nodes, 
+                VisualItem.FILLCOLOR, ColorLib.rgb(200,200,255));
+        fill.add(VisualItem.FIXED, ColorLib.rgb(255,100,100));
+        fill.add(VisualItem.HIGHLIGHT, ColorLib.rgb(255,200,125));
+        
+        ActionList draw = new ActionList();
+        draw.add(filter);
+        draw.add(fill);
+        draw.add(new ColorAction(nodes, VisualItem.STROKECOLOR, 0));
+        draw.add(new ColorAction(nodes, VisualItem.TEXTCOLOR, ColorLib.rgb(0,0,0)));
+        draw.add(new ColorAction(edges, VisualItem.FILLCOLOR, ColorLib.gray(200)));
+        draw.add(new ColorAction(edges, VisualItem.STROKECOLOR, ColorLib.gray(200)));
+        
+        ActionList animate = new ActionList(Activity.INFINITY);
+        animate.add(new ForceDirectedLayout(graph));
+        animate.add(fill);
+        animate.add(new RepaintAction());
+        
+        // finally, we register our ActionList with the Visualization.
+        // we can later execute our Actions by invoking a method on our
+        // Visualization, using the name we've chosen below.
+        m_vis.putAction("draw", draw);
+        m_vis.putAction("layout", animate);
+
+        m_vis.runAfter("draw", "layout");
+        
+        
+        // --------------------------------------------------------------------
+        // set up a display to show the visualization
+        
+        Display display = new Display(m_vis);
+        display.setSize(700,700);
+        display.pan(350, 350);
+        display.setForeground(Color.GRAY);
+        display.setBackground(Color.WHITE);
+        
+        // main display controls
+        display.addControlListener(new FocusControl(1));
+        display.addControlListener(new DragControl());
+        display.addControlListener(new PanControl());
+        display.addControlListener(new ZoomControl());
+        display.addControlListener(new WheelZoomControl());
+        display.addControlListener(new ZoomToFitControl());
+        display.addControlListener(new NeighborHighlightControl());
+
+        // overview display
+//        Display overview = new Display(vis);
+//        overview.setSize(290,290);
+//        overview.addItemBoundsListener(new FitOverviewListener());
+        
+        display.setForeground(Color.GRAY);
+        display.setBackground(Color.WHITE);
+        
+        // --------------------------------------------------------------------        
+        // launch the visualization
+        
+        // create a panel for editing force values
+        /*ForceSimulator fsim = ((ForceDirectedLayout)animate.get(0)).getForceSimulator();
+        JForcePanel fpanel = new JForcePanel(fsim);
+        
+//        JPanel opanel = new JPanel();
+//        opanel.setBorder(BorderFactory.createTitledBorder("Overview"));
+//        opanel.setBackground(Color.WHITE);
+//        opanel.add(overview);
+        
+        final JValueSlider slider = new JValueSlider("Distance", 0, hops, hops);
+        slider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                filter.setDistance(slider.getValue().intValue());
+                m_vis.run("draw");
+            }
+        });
+        slider.setBackground(Color.WHITE);
+        slider.setPreferredSize(new Dimension(300,30));
+        slider.setMaximumSize(new Dimension(300,30));
+        
+        Box cf = new Box(BoxLayout.Y_AXIS);
+        cf.add(slider);
+        cf.setBorder(BorderFactory.createTitledBorder("Connectivity Filter"));
+        //fpanel.add(cf);
+*/
+        //fpanel.add(opanel);
+        
+        //fpanel.add(Box.createVerticalGlue());
+        
+        // create a new JSplitPane to present the interface
+        //JSplitPane split = new JSplitPane();
+        //split.  //Component(display);
+        //split.setRightComponent(fpanel);
+        //split.setOneTouchExpandable(true);
+        //split.setContinuousLayout(false);
+        //split.setDividerLocation(700);
+        
+        // now we run our action list
+        m_vis.run("draw");
+        
+        add(display);
+    }
+    
+    public void setGraph(Graph g, String label) {
+        // update labeling
+        DefaultRendererFactory drf = (DefaultRendererFactory)
+                                                m_vis.getRendererFactory();
+        ((LabelRenderer)drf.getDefaultRenderer()).setTextField(label);
+        
+        // update graph
+        m_vis.removeGroup(graph);
+        VisualGraph vg = m_vis.addGraph(graph, g);
+        m_vis.setValue(edges, null, VisualItem.INTERACTIVE, Boolean.FALSE);
+        VisualItem f = (VisualItem)vg.getNode(0);
+        m_vis.getGroup(Visualization.FOCUS_ITEMS).setTuple(f);
+        f.setFixed(false);
     }
     
     // ------------------------------------------------------------------------
+    // Main and demo methods
     
-    public void setOrientation(int orientation) {
-        NodeLinkTreeLayout rtl 
-            = (NodeLinkTreeLayout)m_vis.getAction("treeLayout");
-        CollapsedSubtreeLayout stl
-            = (CollapsedSubtreeLayout)m_vis.getAction("subLayout");
-        switch ( orientation ) {
-        case Constants.ORIENT_LEFT_RIGHT:
-            m_nodeRenderer.setHorizontalAlignment(Constants.LEFT);
-            m_edgeRenderer.setHorizontalAlignment1(Constants.RIGHT);
-            m_edgeRenderer.setHorizontalAlignment2(Constants.LEFT);
-            m_edgeRenderer.setVerticalAlignment1(Constants.CENTER);
-            m_edgeRenderer.setVerticalAlignment2(Constants.CENTER);
-            break;
-        case Constants.ORIENT_RIGHT_LEFT:
-            m_nodeRenderer.setHorizontalAlignment(Constants.RIGHT);
-            m_edgeRenderer.setHorizontalAlignment1(Constants.LEFT);
-            m_edgeRenderer.setHorizontalAlignment2(Constants.RIGHT);
-            m_edgeRenderer.setVerticalAlignment1(Constants.CENTER);
-            m_edgeRenderer.setVerticalAlignment2(Constants.CENTER);
-            break;
-        case Constants.ORIENT_TOP_BOTTOM:
-            m_nodeRenderer.setHorizontalAlignment(Constants.CENTER);
-            m_edgeRenderer.setHorizontalAlignment1(Constants.CENTER);
-            m_edgeRenderer.setHorizontalAlignment2(Constants.CENTER);
-            m_edgeRenderer.setVerticalAlignment1(Constants.BOTTOM);
-            m_edgeRenderer.setVerticalAlignment2(Constants.TOP);
-            break;
-        case Constants.ORIENT_BOTTOM_TOP:
-            m_nodeRenderer.setHorizontalAlignment(Constants.CENTER);
-            m_edgeRenderer.setHorizontalAlignment1(Constants.CENTER);
-            m_edgeRenderer.setHorizontalAlignment2(Constants.CENTER);
-            m_edgeRenderer.setVerticalAlignment1(Constants.TOP);
-            m_edgeRenderer.setVerticalAlignment2(Constants.BOTTOM);
-            break;
-        default:
-            throw new IllegalArgumentException(
-                "Unrecognized orientation value: "+orientation);
-        }
-        m_orientation = orientation;
-        rtl.setOrientation(orientation);
-        stl.setOrientation(orientation);
-    }
-    
-    public int getOrientation() {
-        return m_orientation;
-    }
-    
-    // ------------------------------------------------------------------------
-    
-    public static void main(String argv[]) {
-        String infile = TREE_CHI;
-        String label = "name";
-        if ( argv.length > 1 ) {
-            infile = argv[0];
-            label = argv[1];
+    public static void main(String[] args) {
+        UILib.setPlatformLookAndFeel();
+        
+        // create graphview
+        String datafile = "Tree3099.graphml";
+        String label = "IdLabel";
+        if ( args.length > 1 ) {
+            datafile = args[0];
+            label = args[1];
         }
         
-        System.out.println("infile="+infile+"label="+label+" \n");
-        JComponent treeview = demo(infile, label);
-        
-        JFrame frame = new JFrame("p r e f u s e  |  C D A O v i e w");
+        JFrame frame = demo(datafile, label);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(treeview);
+    }
+    
+    public static JFrame demo() {
+        return demo((String)null, "label");
+    }
+    
+    public static JFrame demo(String datafile, String label) {
+        Graph g = null;
+        if ( datafile == null ) {
+            g = GraphLib.getGrid(15,15);
+            label = "label";
+        } else {
+            try {
+                g = new GraphMLReader().readGraph(datafile);
+            } catch ( Exception e ) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+        return demo(g, label);
+    }
+    
+    public static JFrame demo(Graph g, String label) {
+        final CDAOview view = new CDAOview(g, label);
+        
+        // set up menu
+        JMenu dataMenu = new JMenu("Data");
+        dataMenu.add(new OpenGraphAction(view));
+        JMenuBar menubar = new JMenuBar();
+        menubar.add(dataMenu);
+        
+        // launch window
+        JFrame frame = new JFrame("p r e f u s e  |  C D A O v i e w");
+        //frame.setJMenuBar(menubar);
+        frame.setContentPane(view);
         frame.pack();
         frame.setVisible(true);
-    }
-    
-    public static JComponent demo() {
-        return demo(TREE_CHI, "name");
-    }
-    
-    public static JComponent demo(String datafile, final String label) {
-        Color BACKGROUND = Color.WHITE;
-        Color FOREGROUND = Color.BLACK;
-        
-        Graph t = null;
-        try {
-            t = (Graph)new GraphMLReader().readGraph(datafile);
-        } catch ( Exception e ) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-        
-        // create a new treemap
-        final CDAOview tview = new CDAOview(t, label);
-        tview.setBackground(BACKGROUND);
-        tview.setForeground(FOREGROUND);
-        
-        // create a search panel for the tree map
-        /*JSearchPanel search = new JSearchPanel(tview.getVisualization(),
-            treeNodes, Visualization.SEARCH_ITEMS, label, true, true);
-        search.setShowResultCount(true);
-        search.setBorder(BorderFactory.createEmptyBorder(5,5,4,0));
-        search.setFont(FontLib.getFont("Tahoma", Font.PLAIN, 11));
-        search.setBackground(BACKGROUND);
-        search.setForeground(FOREGROUND);
-        */
-        final JFastLabel title = new JFastLabel("                 ");
-        title.setPreferredSize(new Dimension(350, 20));
-        title.setVerticalAlignment(SwingConstants.BOTTOM);
-        title.setBorder(BorderFactory.createEmptyBorder(3,0,0,0));
-        title.setFont(FontLib.getFont("Tahoma", Font.PLAIN, 16));
-        title.setBackground(BACKGROUND);
-        title.setForeground(FOREGROUND);
-        
-        tview.addControlListener(new ControlAdapter() {
-            public void itemEntered(VisualItem item, MouseEvent e) {
-                if ( item.canGetString(label) )
-                    title.setText(item.getString(label));
+        view.setGraph(g, label);
+        //view.m_vis.runAfter("draw", "layout");
+        //view.m_vis.run("layout");
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowActivated(WindowEvent e) {
+                view.m_vis.run("layout");
             }
-            public void itemExited(VisualItem item, MouseEvent e) {
-                title.setText(null);
+            public void windowDeactivated(WindowEvent e) {
+                view.m_vis.cancel("layout");
             }
         });
         
-        Box box = new Box(BoxLayout.X_AXIS);
-        box.add(Box.createHorizontalStrut(10));
-        box.add(title);
-        box.add(Box.createHorizontalGlue());
-        //box.add(search);
-        box.add(Box.createHorizontalStrut(3));
-        box.setBackground(BACKGROUND);
-        
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(BACKGROUND);
-        panel.setForeground(FOREGROUND);
-        panel.add(tview, BorderLayout.CENTER);
-        panel.add(box, BorderLayout.SOUTH);
-        return panel;
+
+        return frame;
     }
+    
     
     // ------------------------------------------------------------------------
-   
-    public class OrientAction extends AbstractAction {
-        private int orientation;
-        
-        public OrientAction(int orientation) {
-            this.orientation = orientation;
+    
+    /**
+     * Swing menu action that loads a graph into the graph viewer.
+     */
+    public abstract static class GraphMenuAction extends AbstractAction {
+        private CDAOview m_view;
+        public GraphMenuAction(String name, String accel, CDAOview view) {
+            m_view = view;
+            this.putValue(AbstractAction.NAME, name);
+            this.putValue(AbstractAction.ACCELERATOR_KEY,
+                          KeyStroke.getKeyStroke(accel));
         }
-        public void actionPerformed(ActionEvent evt) {
-            setOrientation(orientation);
-            getVisualization().cancel("orient");
-            getVisualization().run("treeLayout");
-            getVisualization().run("orient");
+        public void actionPerformed(ActionEvent e) {
+            m_view.setGraph(getGraph(), "label");
+        }
+        protected abstract Graph getGraph();
+    }
+    
+    public static class OpenGraphAction extends AbstractAction {
+        private CDAOview m_view;
+
+        public OpenGraphAction(CDAOview view) {
+            m_view = view;
+            this.putValue(AbstractAction.NAME, "Open File...");
+            this.putValue(AbstractAction.ACCELERATOR_KEY,
+                          KeyStroke.getKeyStroke("ctrl O"));
+        }
+        public void actionPerformed(ActionEvent e) {
+            Graph g = new Graph();
+			try {
+				g = new GraphMLReader().readGraph("Tree3099.graphml");
+			} catch (DataIOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+            if ( g == null ) return;
+            String label1 = "IdLabel";
+            String label2 = getLabel(m_view, g);
+            
+            System.out.println("label1 = (" + label1+") and label2=(" + label2+")");
+            
+            if ( label2 != null ) {
+                m_view.setGraph(g, label2);
+            }
+        }
+        public static String getLabel(Component c, Graph g) {
+            // get the column names
+            Table t = g.getNodeTable();
+            int  cc = t.getColumnCount();
+            String[] names = new String[cc];
+            for ( int i=0; i<cc; ++i )
+                names[i] = t.getColumnName(i);
+            
+            // where to store the result
+            final String[] label = new String[1];
+
+            // -- build the dialog -----
+            // we need to get the enclosing frame first
+            while ( c != null && !(c instanceof JFrame) ) {
+                c = c.getParent();
+            }
+            final JDialog dialog = new JDialog(
+                    (JFrame)c, "Choose Label Field", true);
+            
+            // create the ok/cancel buttons
+            final JButton ok = new JButton("OK");
+            ok.setEnabled(false);
+            ok.addActionListener(new ActionListener() {
+               public void actionPerformed(ActionEvent e) {
+                   dialog.setVisible(false);
+               }
+            });
+            JButton cancel = new JButton("Cancel");
+            cancel.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    label[0] = null;
+                    dialog.setVisible(false);
+                }
+            });
+            
+            // build the selection list
+            final JList list = new JList(names);
+            list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            list.getSelectionModel().addListSelectionListener(
+            new ListSelectionListener() {
+                public void valueChanged(ListSelectionEvent e) {
+                    int sel = list.getSelectedIndex(); 
+                    if ( sel >= 0 ) {
+                        ok.setEnabled(true);
+                        label[0] = (String)list.getModel().getElementAt(sel);
+                    } else {
+                        ok.setEnabled(false);
+                        label[0] = null;
+                    }
+                }
+            });
+            JScrollPane scrollList = new JScrollPane(list);
+            
+            JLabel title = new JLabel("Choose a field to use for node labels:");
+            
+            // layout the buttons
+            Box bbox = new Box(BoxLayout.X_AXIS);
+            bbox.add(Box.createHorizontalStrut(5));
+            bbox.add(Box.createHorizontalGlue());
+            bbox.add(ok);
+            bbox.add(Box.createHorizontalStrut(5));
+            bbox.add(cancel);
+            bbox.add(Box.createHorizontalStrut(5));
+            
+            // put everything into a panel
+            JPanel panel = new JPanel(new BorderLayout());
+            panel.add(title, BorderLayout.NORTH);
+            panel.add(scrollList, BorderLayout.CENTER);
+            panel.add(bbox, BorderLayout.SOUTH);
+            panel.setBorder(BorderFactory.createEmptyBorder(5,2,2,2));
+            
+            // show the dialog
+            dialog.setContentPane(panel);
+            dialog.pack();
+            dialog.setLocationRelativeTo(c);
+            dialog.setVisible(true);
+            dialog.dispose();
+            
+            // return the label field selection
+            return label[0];
         }
     }
     
-    public class AutoPanAction extends Action {
-        private Point2D m_start = new Point2D.Double();
-        private Point2D m_end   = new Point2D.Double();
-        private Point2D m_cur   = new Point2D.Double();
-        private int     m_bias  = 150;
-        
-        public void run(double frac) {
-            TupleSet ts = m_vis.getFocusGroup(Visualization.FOCUS_ITEMS);
-            if ( ts.getTupleCount() == 0 )
-                return;
+    public static class FitOverviewListener implements ItemBoundsListener {
+        private Rectangle2D m_bounds = new Rectangle2D.Double();
+        private Rectangle2D m_temp = new Rectangle2D.Double();
+        private double m_d = 15;
+        public void itemBoundsChanged(Display d) {
+            d.getItemBounds(m_temp);
+            GraphicsLib.expand(m_temp, 25/d.getScale());
             
-            if ( frac == 0.0 ) {
-                int xbias=0, ybias=0;
-                switch ( m_orientation ) {
-                case Constants.ORIENT_LEFT_RIGHT:
-                    xbias = m_bias;
-                    break;
-                case Constants.ORIENT_RIGHT_LEFT:
-                    xbias = -m_bias;
-                    break;
-                case Constants.ORIENT_TOP_BOTTOM:
-                    ybias = m_bias;
-                    break;
-                case Constants.ORIENT_BOTTOM_TOP:
-                    ybias = -m_bias;
-                    break;
-                }
-
-                VisualItem vi = (VisualItem)ts.tuples().next();
-                m_cur.setLocation(getWidth()/2, getHeight()/2);
-                getAbsoluteCoordinate(m_cur, m_start);
-                m_end.setLocation(vi.getX()+xbias, vi.getY()+ybias);
-            } else {
-                m_cur.setLocation(m_start.getX() + frac*(m_end.getX()-m_start.getX()),
-                                  m_start.getY() + frac*(m_end.getY()-m_start.getY()));
-                panToAbs(m_cur);
+            double dd = m_d/d.getScale();
+            double xd = Math.abs(m_temp.getMinX()-m_bounds.getMinX());
+            double yd = Math.abs(m_temp.getMinY()-m_bounds.getMinY());
+            double wd = Math.abs(m_temp.getWidth()-m_bounds.getWidth());
+            double hd = Math.abs(m_temp.getHeight()-m_bounds.getHeight());
+            if ( xd>dd || yd>dd || wd>dd || hd>dd ) {
+                m_bounds.setFrame(m_temp);
+                DisplayLib.fitViewToBounds(d, m_bounds, 0);
             }
         }
     }
     
-    public static class NodeColorAction extends ColorAction {
-        
-        public NodeColorAction(String group) {
-            super(group, VisualItem.FILLCOLOR);
-        }
-        
-        public int getColor(VisualItem item) {
-            if ( m_vis.isInGroup(item, Visualization.SEARCH_ITEMS) )
-                return ColorLib.rgb(255,190,190);
-            else if ( m_vis.isInGroup(item, Visualization.FOCUS_ITEMS) )
-                return ColorLib.rgb(198,229,229);
-            else if ( item.getDOI() > -1 )
-                return ColorLib.rgb(164,193,193);
-            else
-                return ColorLib.rgba(255,255,255,0);
-        }
-        
-    } // end of inner class TreeMapColorAction
-    
-    
-} // end of class TreeMap
-
+} // end of class GraphView
