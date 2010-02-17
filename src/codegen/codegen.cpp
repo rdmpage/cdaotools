@@ -278,7 +278,7 @@ namespace CDAO {
   void writeTree( ostream& out, const DataRepresentation* model){
     if ( model ){
       for (unsigned i = 0; i < model->getNumTrees(); ++i ){
-          out << "<" << NSDefs::CDAO << ":" << Classes::TREE << " " << Builtins::ID << "=\"" << XMLizeName( model->getTreeLabel( i ) ) << "\" />" << endl;
+          out << "<" << NSDefs::CDAO << ":" << Classes::TREE << " " << Builtins::ID << "=\"node_" << XMLizeName( model->getTreeLabel( i ) ) << "\" />" << endl;
       }
     }
     return;
@@ -290,12 +290,12 @@ namespace CDAO {
         vector< const Node* > leaves = model->getParseTree( tree )->getLeaves( model->getParseTree( tree ) );
         for (vector< const Node* >::const_iterator i = leaves.begin(); i != leaves.end(); ++i){
           out << "\t<" << NSDefs::CDAO << ":" << Classes::LINEAGE << " " << Builtins::ID << "=\"Lineage_" << XMLizeName( (*i)->getLabel() ) << "\">" << endl;
-          out << "\t\t<" << NSDefs::CDAO << ":" << Properties::SUBTREE_OF << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( model->getTreeLabel( 0 ) ) << "\" />" << endl;
+          out << "\t\t<" << NSDefs::CDAO << ":" << Properties::SUBTREE_OF << " " << Builtins::RESOURCE << "=\"#node_" << XMLizeName( model->getTreeLabel( 0 ) ) << "\" />" << endl;
           vector< const Node* > ancestors = (*i)->getAncestors();
           //add the current node to it's own lineage
-          out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_LINEAGE_NODE << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( (*i)->getLabel() ) << "\" />" << endl;
+          out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_LINEAGE_NODE << " " << Builtins::RESOURCE << "=\"#node_" << XMLizeName( (*i)->getLabel() ) << "\" />" << endl;
           for ( vector< const Node* >::const_iterator j = ancestors.begin(); j != ancestors.end(); ++j){
-	    out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_LINEAGE_NODE << " " << Builtins::RESOURCE << "=\"#" << XMLizeName( (*j)->getLabel() ) << "\" />" << endl;
+	    out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_LINEAGE_NODE << " " << Builtins::RESOURCE << "=\"#node_" << XMLizeName( (*j)->getLabel() ) << "\" />" << endl;
           }
           out << "\t</" << NSDefs::CDAO << ":" << Classes::LINEAGE << ">" << endl;
         }
@@ -413,7 +413,7 @@ namespace CDAO {
 
         //write the node definition.
         out << "\t<" << NSDefs::CDAO << ":" <<  NODE_TYPE[ current->hasChildren() ]  << " " 
-	    << Builtins::ID << "=\"" << XMLizeName( current->getLabel() )<< "\">" << endl;
+	    << Builtins::ID << "=\"node_" << XMLizeName( current->getLabel() )<< "\">" << endl;
         if (model->getTaxonNumber( current->getLabel()) != NO_TAXON){
   	//connect the node to this corresponding TU.
   	  out << "\t\t<" << NSDefs::CDAO << ":" << Properties::REPRESENTS_TU << " " 
@@ -422,9 +422,9 @@ namespace CDAO {
         //if the node has an ancestor connect the node to it.
         if (current->getAncestor()){
 	  out << "\t\t<" << NSDefs::CDAO << ":" << Properties::HAS_PARENT << " " 
-	      << Builtins::RESOURCE << "=\"#" << XMLizeName( current->getAncestor()->getLabel() )  << "\" />" << endl;
+	      << Builtins::RESOURCE << "=\"#node_" << XMLizeName( current->getAncestor()->getLabel() )  << "\" />" << endl;
 	  out << "\t\t<" << NSDefs::CDAO << ":" << Properties::BELONGS_TO_EDGE_CH << " "
-	      << Builtins::RESOURCE << "=\"#" << XMLizeName( current->getAncestor()->getLabel()  ) << "_" << XMLizeName( current->getLabel() ) << "\" />" << endl;
+	      << Builtins::RESOURCE << "=\"#node_" << XMLizeName( current->getAncestor()->getLabel()  ) << "_" << XMLizeName( current->getLabel() ) << "\" />" << endl;
         } 
         //if the node has children connect it to them.
         if (current->hasChildren()){

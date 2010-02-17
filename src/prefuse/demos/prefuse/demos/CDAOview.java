@@ -41,7 +41,9 @@ import prefuse.controls.PanControl;
 import prefuse.controls.WheelZoomControl;
 import prefuse.controls.ZoomControl;
 import prefuse.controls.ZoomToFitControl;
+import prefuse.data.Edge;
 import prefuse.data.Graph;
+import prefuse.data.Node;
 import prefuse.data.Tree;
 import prefuse.data.Tuple;
 import prefuse.data.event.TupleSetListener;
@@ -61,7 +63,6 @@ import prefuse.visual.VisualItem;
 import prefuse.visual.expression.InGroupPredicate;
 import prefuse.visual.sort.TreeDepthItemSorter;
 
-
 /**
  * Demonstration of a node-link tree viewer
  *
@@ -70,11 +71,12 @@ import prefuse.visual.sort.TreeDepthItemSorter;
  */
 public class CDAOview extends Display {
 
-    public static final String TREE_CHI = "/Tree2827.gml";
+    public static final String TREE_CHI = "Tree3099.graphml";
     
     private static final String tree = "tree";
     private static final String treeNodes = "tree.nodes";
     private static final String treeEdges = "tree.edges";
+    
     
     private LabelRenderer m_nodeRenderer;
     private EdgeRenderer m_edgeRenderer;
@@ -86,7 +88,29 @@ public class CDAOview extends Display {
         super(new Visualization());
         m_label = label;
 
-        m_vis.add(tree, t);
+        int ec = t.getEdgeCount();
+        int nc = t.getNodeCount();
+        
+        for(int i = 0; i < ec; i++)
+        {
+        	Edge e = t.getEdge(i);
+        	System.out.println("Edge "+i+": "+ e.toString());
+        	
+        }
+        
+        System.out.println("Number of nodes=" + nc);
+        
+        for(int i = 0; i < nc; i++)
+        {
+          Node n = t.getNode(i);
+          System.out.println("Node "+i+": "+ n.toString());
+        }
+        
+        
+        
+        
+        
+        m_vis.add(tree, t);//new Tree(t.getNodeTable(), t.getEdgeTable(), t.DEFAULT_NODE_KEY, t.DEFAULT_SOURCE_KEY, t.DEFAULT_TARGET_KEY));
         
         m_nodeRenderer = new LabelRenderer(m_label);
         m_nodeRenderer.setRenderType(AbstractShapeRenderer.RENDER_TYPE_FILL);
@@ -95,6 +119,7 @@ public class CDAOview extends Display {
         m_edgeRenderer = new EdgeRenderer(Constants.EDGE_TYPE_CURVE);
         
         DefaultRendererFactory rf = new DefaultRendererFactory(m_nodeRenderer);
+        rf.add(new InGroupPredicate(treeNodes), m_nodeRenderer);
         rf.add(new InGroupPredicate(treeEdges), m_edgeRenderer);
         m_vis.setRendererFactory(rf);
                
@@ -267,9 +292,11 @@ public class CDAOview extends Display {
             infile = argv[0];
             label = argv[1];
         }
+        
+        System.out.println("infile="+infile+"label="+label+" \n");
         JComponent treeview = demo(infile, label);
         
-        JFrame frame = new JFrame("p r e f u s e  |  t r e e v i e w");
+        JFrame frame = new JFrame("p r e f u s e  |  C D A O v i e w");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(treeview);
         frame.pack();
@@ -298,14 +325,14 @@ public class CDAOview extends Display {
         tview.setForeground(FOREGROUND);
         
         // create a search panel for the tree map
-        JSearchPanel search = new JSearchPanel(tview.getVisualization(),
+        /*JSearchPanel search = new JSearchPanel(tview.getVisualization(),
             treeNodes, Visualization.SEARCH_ITEMS, label, true, true);
         search.setShowResultCount(true);
         search.setBorder(BorderFactory.createEmptyBorder(5,5,4,0));
         search.setFont(FontLib.getFont("Tahoma", Font.PLAIN, 11));
         search.setBackground(BACKGROUND);
         search.setForeground(FOREGROUND);
-        
+        */
         final JFastLabel title = new JFastLabel("                 ");
         title.setPreferredSize(new Dimension(350, 20));
         title.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -328,7 +355,7 @@ public class CDAOview extends Display {
         box.add(Box.createHorizontalStrut(10));
         box.add(title);
         box.add(Box.createHorizontalGlue());
-        box.add(search);
+        //box.add(search);
         box.add(Box.createHorizontalStrut(3));
         box.setBackground(BACKGROUND);
         
