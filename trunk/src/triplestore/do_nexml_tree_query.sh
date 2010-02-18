@@ -9,9 +9,15 @@
 #----->$3 xml base.
 #----->$4 directed/undirected
 
-TU_QUERY=`do_tu_query_construct.sh "$2"`
-NODE_QUERY=`do_node_query_construct.sh "$2"`
-EDGE_QUERY=`do_edge_query_construct.sh "$2"`
+export GRAPH_CONFIG="$1"
+export TREE_NAME="$2"
+export XMLNS="$3"
+export TYPE="$4"
+
+
+TU_QUERY=`do_tu_query_construct.sh "$XMLNS$TREE_NAME"`
+NODE_QUERY=`do_node_query_construct.sh "$XMLNS$TREE_NAME"`
+EDGE_QUERY=`do_edge_query_construct.sh "$XMLNS$TREE_NAME"`
 
 cat << EOM
 <?xml version="1.0" encoding="UTF-8"?>
@@ -19,7 +25,9 @@ cat << EOM
        version="0.8" 
        xmlns="http://www.nexml.org/1.0" 
        xmlns:nex="http://www.nexml.org/1.0" 
-       xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns" 
+       xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns"
+       xmlns:cdao="http://www.evolutionaryontology.org/cdao.owl#"
+       xmlns:data="$XMLNS" 
        xmlns:xml="http://www.w3.org/XML/1998/namespace" 
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
        xsi:schemaLocation="http://www.nexml.org/1.0 http://www.nexml.org/1.0/nexml.xsd">
@@ -33,14 +41,13 @@ cat << EOM
        -->      
 EOM
 
-echo "  <otus id=\"$3otus\">"
+echo "  <otus id=\"'$XMLNS'otus\">"
 do_query.py "$1" "$TU_QUERY" "    <!-- %s --><otu id=\"%s\" />" "$3"
 echo "  </otus>"
 
-echo "  <trees id=\"$3trees\">"
-echo "    <tree id=\"$2\">"
- do_query.py "$1" "$NODE_QUERY" "     <node id=\"%s\"/>" "$3"
- do_query.py "$1" "$EDGE_QUERY" "     <edge id=\"%s\" source=\"%s\" target=\"%s\"/>" "$3"
+echo "  <trees id=\"'$XMLNS$TREE_NAME'trees\">"
+echo "    <tree id=\"$XMLNS$TREE_NAME\">"
+ do_query.py "$GRAPH_CONFIG" "$XMLNS" "$NODE_QUERY" "     <node id=\"%s\" label=\"%s\"/>" "$EDGE_QUERY" "     <edge id=\"%s\" source=\"%s\" target=\"%s\"/>"
 echo "    </tree>"
 echo "   </trees>"
 echo "</nexml>"

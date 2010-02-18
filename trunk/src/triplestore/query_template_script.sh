@@ -1,26 +1,26 @@
 #!/bin/bash
 
 #Brandon Chisham.
-#Script to export graphml format results from the triplestore
+#Script to export results from the triplestore
 
 ##########Setup the Environment###############
+#This is the URL prefix used by the cdao-import tool for id's declared in translated files.
 export XML_BASE="http://www.cs.nmsu.edu/~epontell"
+#This file contains file names and the tree names they contain.
 export TREE_DAT_FILE="tree_to_file.dat"
-
+#Extract parameters from the request
 export TREE=`echo "$QUERY_STRING" | sed -n 's/^.*tree=\([^&]*\).*$/\1/p' | sed "s/%20/ /g" | sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g"`;
 export TFILE=`echo "$QUERY_STRING" | sed -n 's/^.*file=\([^&]*\).*$/\1/p' | sed "s/%20/ /g" | sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g"`;
 export TREE_TYPE=`echo "$QUERY_STRING" | sed -n 's/^.*type=\([^&]*\).*$/\1/p' | sed "s/%20/ /g" | sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g"`;
-
+#Support rest style request's extract the format type from the url
 export RESPONSE_TYPE=`echo "$REQUEST_URI" | perl -p -e 's/^.*\/(prolog|graphml|nexml).*$/$1/'`;
-
+#Extract query type from the url
 export QUERY_TYPE=`echo "$REQUEST_URI" | perl -p -e 's/^.*\/(tree|tu)\/(prolog|graphml|nexml).*$/$1/'`;
-
-
-
+#Load the db connection string.
 if [[ "$TRIPLESTORE_CONFIG_STRING" == "" ]]; then
      source ~bchisham/triplestorerc
 fi
-
+#Setup the local python path if it's not done already
 if [[ "$PYTHONPATH" == "" ]]; then
     source "~bchisham/.bashrc"
 fi
