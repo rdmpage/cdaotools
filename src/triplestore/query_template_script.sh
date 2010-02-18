@@ -56,14 +56,15 @@ EOM
 function printform {
 
 cat << EOM
+  <p>
+    <a href="../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao Store Logo" style="border: 0px;" /></a>
+  </p>
+
  <form id="TreeForm" method="get" action="$REQUEST_URI" enctype="application/x-www-form-urlencoded">
        <p>Tree: <input type="text" class="text" about="cdao:Tree" id="tree" name="tree" value="" />
          <input class="button" type="submit" value="Submit" />
          <input class="button" type="reset" value="Reset"/></p>
-       <p>
-         <img src="../../cdao-triplestore-logo.jpg" alt="Cdao Store Logo" />
-       </p>
- </form>
+        </form>
 <p about=""
      resource="http://www.w3.org/TR/rdfa-syntax"
           rel="dct:conformsTo" xmlns:dc="http://purl.org/dc/terms/">
