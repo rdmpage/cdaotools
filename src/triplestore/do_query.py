@@ -20,19 +20,28 @@ import sys
 #cgitb.enable()
 #form = cgi.FieldStorage()
 from urllib import unquote
-from sparql import query_store
+from sparql import get_graph
 from html import start_html, head, open_div, anchor, end_div, open_body, par, anchor ,end_body, end_html, heading_h1
 
 configString = sys.argv[1]
-sparqlQuery = sys.argv[2]
-formatString= sys.argv[3]
-fileURI = sys.argv[4]
-fileNameSpace=fileURI + "#"
+fileURI = sys.argv[2]
+
+sparqlQuery = sys.argv[3::2]
+formatString = sys.argv[4::2]
+
+
+#sparqlQuery = sys.argv[3]
+#formatString= sys.argv[4]
+#fileNameSpace=fileURI + "#"
 cdaoURI= "http://www.evolutionaryontology.org/cdao.owl"
 cdaoNS= "http://www.evolutionaryontology.org/cdao.owl#"
 rdfNS="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 owlNS="http://www.w3.org/2002/07/owl#"
 nsdict=dict(owl=Namespace(owlNS), cdao=Namespace(cdaoNS), rdf=Namespace(rdfNS), data=Namespace(fileNameSpace))
 
-for row in query_store( configString, default_graph_uri = fileURI, namespace_bindings=nsdict, queryString = sparqlQuery ):
-        print formatString % row
+for i in range(len(sparqlQuery)):
+        for row in graph.query( sparqlQuery[i], initNs = nsdict ):
+                print formatString[i] % row
+
+#for row in query_store( configString, default_graph_uri = fileURI, namespace_bindings=nsdict, queryString = sparqlQuery ):
+ #       print formatString % row
