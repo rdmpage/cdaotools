@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "SELECT ?node
+echo -e "SELECT ?node ?node
       WHERE {
               {
                 ?node cdao:part_of <$1>.  

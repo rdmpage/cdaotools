@@ -123,7 +123,7 @@ if [[ "$TREE" != "" ]]; then
    fi
   responseheader;
 #  echo "<p>running query:<br/>$SPARQL_QUERY</p>"
-  ssh vm1 "cd public_html/cgi-bin && do_'$RESPONSE_TYPE'_'$QUERY_TYPE'_query.sh \"$TRIPLESTORE_CONFIG_STRING\" \"$XML_BASE/$TFILE#$TREE\" \"$XML_BASE/$TFILE#\" \"$TREE_TYPE\""
+  ssh vm1 "cd public_html/cgi-bin && do_'$RESPONSE_TYPE'_'$QUERY_TYPE'_query.sh \"$TRIPLESTORE_CONFIG_STRING\" \"$TREE\" \"$XML_BASE/$TFILE#\" \"$TREE_TYPE\""
   responsefooter
 else
 

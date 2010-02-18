@@ -14,7 +14,7 @@ from rdflib import Namespace
 from rdflib import Literal
 from rdflib import URIRef
 
-def query_store( configString, default_graph_uri, namespace_bindings, queryString ):
+def get_graph( configString, default_graph_uri ):
         store = plugin.get( 'MySQL', Store)('rdflib')
         rt = store.open(configString, create=False)
         if rt == NO_STORE:
@@ -23,6 +23,7 @@ def query_store( configString, default_graph_uri, namespace_bindings, queryStrin
                 assert rt == VALID_STORE, "The underlying store is not valid"
 
         graph = Graph(store, identifier = URIRef( default_graph_uri ))
- #       graph = Graph( identifier = URIRef( default_graph_uri ) )
-#        graph.parse("http://www.cs.nmsu.edu/~bchisham/S996A3196.tre.cdao")
+        return graph
+
+def query_store( graph, namespace_bindings, queryString ):
         return graph.query( queryString, initNs = namespace_bindings)
