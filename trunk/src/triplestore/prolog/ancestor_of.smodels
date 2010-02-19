@@ -1,0 +1,19 @@
+%Common Ancestor Script
+%Brandon Chisham
+%Feb. 18, 2010
+
+%Parent can directly be concluded from the edge relationships
+parent_of( P, C ):- edge( T, 'directed', E, P, C).
+%The parent is also an ancestor.
+ancestor_of( P, C ):- parent_of( P, C ).
+%The ancestor is a parent of an ancestor of a descendant.
+ancestor_of( A, D ):- parent_of( A, I), ancestor_of(I, D).
+%N1 and N2 have a common ancestor A, if it is an ancestor of both N1 and N2.
+common_ancestor_of( A, N1, N2 ):- ancestor_of( A, N1 ), ancestor_of( A, N2 ).
+
+%common_ancestor_of( A, N1, N2, N3 ):- ancestor_of(A, N1), ancestor_of(A, N2), ancestof( A, N3 ).
+
+
+nearest_common_ancestor_of( A, N1, N2 ):- common_ancestor_of( A, N1, N2 ).
+
+:- common_ancestor_of( A, N1, N2 ), common_ancestor_of( B, N1, N2 ), ancestor_of( B, A ).

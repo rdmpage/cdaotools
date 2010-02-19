@@ -44,6 +44,7 @@ cat << EOM
  <title>Cdao Store Query System</title>
       <link rel="stylesheet" type="text/css" href="../../style.css"/>
       <link rel="SHORTCUT ICON" href="../../cdao-store-favicon.ico" />
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  </head>
  <body>
    <div class="main-content">
