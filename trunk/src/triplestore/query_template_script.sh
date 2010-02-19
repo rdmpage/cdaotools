@@ -7,22 +7,26 @@
 #This is the URL prefix used by the cdao-import tool for id's declared in translated files.
 export XML_BASE="http://www.cs.nmsu.edu/~epontell"
 #This file contains file names and the tree names they contain.
-export TREE_DAT_FILE="tree_to_file.dat"
+export TREE_DAT_FILE=~bchisham/bin/tree_to_file.dat
 #Extract parameters from the request
-export TREE=`echo "$QUERY_STRING" | sed -n 's/^.*tree=\([^&]*\).*$/\1/p' | sed "s/%20/ /g" | sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g"`;
-export TFILE=`echo "$QUERY_STRING" | sed -n 's/^.*file=\([^&]*\).*$/\1/p' | sed "s/%20/ /g" | sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g"`;
-export TREE_TYPE=`echo "$QUERY_STRING" | sed -n 's/^.*type=\([^&]*\).*$/\1/p' | sed "s/%20/ /g" | sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g"`;
+export TREE=`echo "$QUERY_STRING" | sed -n 's/^.*tree=\([^&]*\).*$/\1/p' | sed "s/%20/ /g" | sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g" | sed "s/%23/#/g" `;
+#export TFILE=`echo "$QUERY_STRING" | sed -n 's/^.*file=\([^&]*\).*$/\1/p' | sed "s/%20/ /g" | sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g" | sed "s/%23/#/g"`;
+#export TREE_TYPE=`echo "$QUERY_STRING" | sed -n 's/^.*type=\([^&]*\).*$/\1/p' | sed "s/%20/ /g" | sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g" | sed "s/%23/#/g"`;
+export NODE_SET=`echo "$QUERY_STRING" | sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g" | sed "s/%23/#/g" | grep -oE "(^|[?&])node=[^&]+" | sed "s/%20/ /g"  | cut -f 2 -d "="`
 #Support rest style request's extract the format type from the url
-export RESPONSE_TYPE=`echo "$REQUEST_URI" | perl -p -e 's/^.*\/(prolog|graphml|nexml).*$/$1/'`;
+export RESPONSE_TYPE=`echo "$REQUEST_URI" | perl -p -n -e 's/^.*\/(prolog|html|graphml|nexml).*$/$1/'`;
 #Extract query type from the url
-export QUERY_TYPE=`echo "$REQUEST_URI" | perl -p -e 's/^.*\/(tree|tu)\/(prolog|graphml|nexml).*$/$1/'`;
+export QUERY_TYPE=`echo "$REQUEST_URI" | perl -p -n -e 's/^.*\/(tree|tu|nca)\/(prolog|html|graphml|nexml).*$/$1/'`;
+
+
+
 #Load the db connection string.
 if [[ "$TRIPLESTORE_CONFIG_STRING" == "" ]]; then
      source ~bchisham/triplestorerc
 fi
 #Setup the local python path if it's not done already
 if [[ "$PYTHONPATH" == "" ]]; then
-    source "~bchisham/.bashrc"
+    source "~bchisham/.bashrc";
 fi
 
 #Print out the header information for the user form.
@@ -94,7 +98,11 @@ if [[ "$RESPONSE_TYPE" == "prolog" ]]; then
   echo -e -n "Content-type: text/plain; charset=utf-8\n\n";
 #  echo $RESPONSE_TYPE
 else
-  echo -e -n "Content-type: text/xml; charset=utf-8\n\n";
+  if [[ "$RESPONSE_TYPE" == "html" ]]; then
+     echo -e -n "Content-type: text/html; charset=utf-8\n\n";
+  else  
+     echo -e -n "Content-type: text/xml; charset=utf-8\n\n";
+  fi
 fi
 }
 
@@ -124,8 +132,9 @@ if [[ "$TREE" != "" ]]; then
        export TREE_TYPE=$( grep "$TREE" "$TREE_DAT_FILE" | cut -d' ' --fields=3 ); 
    fi
   responseheader;
+ # echo $NODE_SET
 #  echo "<p>running query:<br/>$SPARQL_QUERY</p>"
-  ssh vm1 "cd public_html/cgi-bin && do_'$RESPONSE_TYPE'_'$QUERY_TYPE'_query.sh \"$TRIPLESTORE_CONFIG_STRING\" \"$TREE\" \"$XML_BASE/$TFILE#\" \"$TREE_TYPE\""
+  ssh vm1.cs.nmsu.edu "cd public_html/cgi-bin && do_'$RESPONSE_TYPE'_'$QUERY_TYPE'_query.sh \"$TRIPLESTORE_CONFIG_STRING\" \"$TREE\" \"$XML_BASE/$TFILE#\" \"$TREE_TYPE\" \"$NODE_SET\""
   responsefooter
 else
 
