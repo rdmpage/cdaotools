@@ -29,7 +29,7 @@ using namespace std;
 using namespace CDAO;
 //static const string INFILE_ARG  = "-i";
 //static const string OUTFILE_ARG = "-o";
-//static const string COMPRESS_OUTPUT_ARG = "-z";
+static const string COMPRESS_OUTPUT_ARG = "-z";
 //static const string VERBOSE_1   = "-v";
 //static const string VERBOSE_2   = "-vv";
 //static const string VERBOSE_3   = "-vvv";
@@ -41,7 +41,7 @@ using namespace CDAO;
 /*
  * Process the argument list and setup the environment.
  */
-//void processArgs(int argc, char** argv, char** env);
+void myprocessArgs(int argc, char** argv, char** env);
 
 void doCompressedOutput( const string& inname, const string& outname );
 void doNormalOutput( const string& inname, const string& outname );
@@ -66,7 +66,7 @@ bool compress_output = false;
 
 int main(int argc, char** argv, char** env){
   //setup environment
-  processArgs( argc, argv, env );
+  myprocessArgs( argc, argv, env );
   //Logger has been configured.
 //  LogManager lmgr = LogManager::getInstance();
   unsigned long int file_no = 1;     
@@ -82,8 +82,8 @@ int main(int argc, char** argv, char** env){
   return 0;
 
 }
-/*
-void processArgs(int argc, char** argv, char** env){
+
+void myprocessArgs(int argc, char** argv, char** env){
  // cerr << "processArgs( argc:"  << argc << ", argv:" << argv << ", env: " << env << ")\n";
   //int default_log_level = NO_MESSAGES_LR;
   //logger = new CppLogger( cerr, default_log_level );
@@ -130,7 +130,6 @@ void processArgs(int argc, char** argv, char** env){
  // cerr << "exiting processArgs()\n";
   return;
 }
-*/
 
 //void initLog(LogManager& lmgr, const char* out, const int level){
 

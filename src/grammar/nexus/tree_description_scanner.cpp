@@ -82,6 +82,7 @@ Token_t lookAheadString( int pos, const string& target ){
         lookupTable[ '.' ] = LABEL;
         lookupTable[ '_' ] = LABEL;
         lookupTable[ '-' ] = LABEL;
+        lookupTable[ '\'' ] = LABEL;
         //lookupTable[ ':' ] = LABEL;
         //lookupTable[ '[' ] = LABEL;
         //lookupTable[ ']' ] = LABEL;
