@@ -10,18 +10,22 @@ import sys
 cgitb.enable()
 #form = cgi.FieldStorage()
 from urllib import unquote
-from store import store_ontology
+from store import connect_store store_ontology
 from html import start_html, head, open_div, anchor, end_div, open_body, par, anchor ,end_body, end_html, heading_h1
 
+import_list = sys.argv[2::1]
 
 print start_html()
 print head("Triples Storage System")
 print open_body()
 print open_div("", "main-content")
-print heading_h1("Triples Storage System") 
-print par( "Processing Your submission url: " + anchor( unquote( sys.argv[2] ), unquote( sys.argv[2] ) ) ) 
-store_ontology( sys.argv[1], unquote( sys.argv[2] ) )
-print par("Imported Graph " + anchor( unquote( sys.argv[1] ), unquote( sys.argv[1] ) ) )
+print heading_h1("Triples Storage System")
+print par( "Connecting to the store..." )
+graph = connect_store( sys.argv[1], sys.argv[2] )
+for guri in import_list:
+        print par( "Processing Your submission url: " + anchor( unquote( guri ), unquote( guri ) ) )
+        store_ontology( graph, unquote( guri ) )
+        print par("Imported Graph " + anchor( unquote( guri ), guri ) ) )
 print par( anchor( "http://www.cs.nmsu.edu/~bchisham/cgi-bin/import", "Import another url" ) )
 print end_div()
 print end_body() 

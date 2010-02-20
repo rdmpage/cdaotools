@@ -15,8 +15,7 @@ from rdflib import Namespace
 from rdflib import Literal
 from rdflib import URIRef
 
-
-def store_ontology( configString, default_graph_uri ):
+def connect_store( configString, default_graph_uri ):
         store = plugin.get( 'MySQL', Store)('rdflib')
         rt = store.open(configString, create=False)
         if rt == NO_STORE:
@@ -25,6 +24,9 @@ def store_ontology( configString, default_graph_uri ):
                 assert rt == VALID_STORE, "The underlying store is not valid"
 
         graph = Graph(store, identifier = URIRef( default_graph_uri ))
-        graph.parse( default_graph_uri );
+        return graph 
+
+def store_ontology( graph, default_graph_uri ):
+       graph.parse( default_graph_uri );
         graph.commit()
         return len( graph )

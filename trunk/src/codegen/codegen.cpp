@@ -289,7 +289,7 @@ namespace CDAO {
       for (unsigned int tree = 0; tree < model->getNumTrees(); ++tree){
         vector< const Node* > leaves = model->getParseTree( tree )->getLeaves( model->getParseTree( tree ) );
         for (vector< const Node* >::const_iterator i = leaves.begin(); i != leaves.end(); ++i){
-          out << "\t<" << NSDefs::CDAO << ":" << Classes::LINEAGE << " " << Builtins::ID << "=\"Lineage_" << XMLizeName( (*i)->getLabel() ) << "\">" << endl;
+          out << "\t<" << NSDefs::CDAO << ":" << Classes::LINEAGE << " " << Builtins::ID << "=\"Lineage_" << XMLizeName( model->getTreeLabel( tree ) ) << XMLizeName( (*i)->getLabel() ) << "\">" << endl;
           out << "\t\t<" << NSDefs::CDAO << ":" << Properties::SUBTREE_OF << " " << Builtins::RESOURCE << "=\"#node_" << XMLizeName( model->getTreeLabel( 0 ) ) << "\" />" << endl;
           vector< const Node* > ancestors = (*i)->getAncestors();
           //add the current node to it's own lineage
