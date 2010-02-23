@@ -34,7 +34,7 @@ namespace CDAO {
      * Consume a single tree.
      * TREE -> ( TREE_LIST ) LABEL
      */
-    void consume_tree(  Node* current );
+    void consume_tree(  Node* current, unsigned level = 0 );
     /*
      * Consume a list of trees.
      * TREE_LIST -> TREE
@@ -42,12 +42,12 @@ namespace CDAO {
      *           -> TREE , TREE_LIST
      *           -> LABEL, TREE_LIST
      */
-    void consume_tree_list( Node* current );
+    void consume_tree_list( Node* current, unsigned level = 0 );
     /*
      * Consume a single label.
      * LABEL->[a-zA-Z0-9]+
      */
-    void consume_label(  Node* current);
+    void consume_label(  Node* current, unsigned level = 0);
     /*
      * Consume a start tree token.
      * START_TREE -> '('

@@ -160,7 +160,7 @@ namespace CDAO {
   /*
    * Return a standardized reference to a wchar_tacter. 
    */
-  wstring wchar_tacter_reference_wstring(  unsigned int trait );
+  wstring chartacter_reference_string(  unsigned int trait );
   /*
    * Write basic header information.
    */
@@ -170,28 +170,28 @@ namespace CDAO {
 	<< L"\t<!ENTITY " << NSDefs::OWL      << L" \""    << Imports::OWL_URI << L"#\">" << endl
         << L"\t<!ENTITY " << NSDefs::OWL11    << L" \""    << Imports::OWL11_URI  << L"#\">" <<endl
         << L"\t<!ENTITY " << NSDefs::DC       << L" \""    << Imports::DC         << L"#\">" << endl
-      	<< L"\t<!ENTITY " << NSDefs::XSD      << L" \""    << Imports::XSD_URI  <<"#\">" << endl
-      	<< L"\t<!ENTITY " << NSDefs::OWL11XML << L" \""    << Imports::OWL11XML_URI  <<"#\">" <<endl
+      	<< L"\t<!ENTITY " << NSDefs::XSD      << L" \""    << Imports::XSD_URI  << L"#\">" << endl
+      	<< L"\t<!ENTITY " << NSDefs::OWL11XML << L" \""    << Imports::OWL11XML_URI  <<L"#\">" <<endl
 	<< L"\t<!ENTITY " << NSDefs::RDFS     << L" \""    << Imports::RDFS_URI << L"#\">" << endl
 	<< L"\t<!ENTITY " << NSDefs::RDF      << L" \""    << Imports::RDF_URI  <<"#\">"  <<endl
 	<< L"\t<!ENTITY " << NSDefs::CDAO     << L" \""    << Imports::CDAO_DEF_URI << L"#\">" << endl
 	<< L"\t<!ENTITY " << NSDefs::AMINO_ACID << L" \""  << Imports::AMINO_ACID << L"#\">" << endl
 	<< L"]>" << endl << endl << endl;
     
-    out << L"<"        << Builtins::RDF    <<" xmlns=\"" << Imports::BASE_URI_PREFIX << model->getMatrixLabel()   << L"#\"" << endl
-	<< L"\txml:"   <<  NSDefs::BASE     <<"=\""      << Imports::BASE_URI_PREFIX << model->getMatrixLabel()        << L"#\"" << endl
-	<< L"\txmlns:" << NSDefs::OWL11    <<"=\""      << Imports::OWL11_URI       << L"#\"" << endl
-	<< L"\txmlns:" << NSDefs::OWL11XML <<"=\""      << Imports::OWL11XML_URI    << L"#\"" << endl
-	<< L"\txmlns:" << NSDefs::XSD      <<"=\""      << Imports::XSD_URI         << L"#\""  << endl
-	<< L"\txmlns:" << NSDefs::RDFS     <<"=\""      << Imports::RDFS_URI        << L"#\""  << endl
-	<< L"\txmlns:" << NSDefs::RDF      <<"=\""      << Imports::RDF_URI         << L"#\""  << endl
-	<< L"\txmlns:" << NSDefs::OWL      <<"=\""      << Imports::OWL_URI         << L"#\""  << endl
-	<< L"\txmlns:" << NSDefs::CDAO     <<"=\""      << Imports::CDAO_DEF_URI    << L"#\""  << endl
+    out << L"<"        << Builtins::RDF    <<L" xmlns=\"" << Imports::BASE_URI_PREFIX << model->getMatrixLabel()   << L"#\"" << endl
+	<< L"\txml:"   <<  NSDefs::BASE     <<L"=\""      << Imports::BASE_URI_PREFIX << model->getMatrixLabel()        << L"#\"" << endl
+	<< L"\txmlns:" << NSDefs::OWL11    <<L"=\""      << Imports::OWL11_URI       << L"#\"" << endl
+	<< L"\txmlns:" << NSDefs::OWL11XML <<L"=\""      << Imports::OWL11XML_URI    << L"#\"" << endl
+	<< L"\txmlns:" << NSDefs::XSD      <<L"=\""      << Imports::XSD_URI         << L"#\""  << endl
+	<< L"\txmlns:" << NSDefs::RDFS     <<L"=\""      << Imports::RDFS_URI        << L"#\""  << endl
+	<< L"\txmlns:" << NSDefs::RDF      <<L"=\""      << Imports::RDF_URI         << L"#\""  << endl
+	<< L"\txmlns:" << NSDefs::OWL      <<L"=\""      << Imports::OWL_URI         << L"#\""  << endl
+	<< L"\txmlns:" << NSDefs::CDAO     <<L"=\""      << Imports::CDAO_DEF_URI    << L"#\""  << endl
       
-	<< L"\txmlns:" << NSDefs::AMINO_ACID << L"=\""   << Imports::AMINO_ACID      <<"#\">" << endl;
-    out << L"\t<"   << Builtins::ONT     <<  L" " << Builtins::ABOUT  <<"=\"" << Imports::CDAO_DEF_URI  <<"\">" << endl
-	<< L"\t\t<" << Builtins::IMPORTS <<  L" " << Builtins::RESOURCE <<"=\"" << Imports::CDAO_DEF_URI  <<  L"\"/>" << endl
-	<< L"\t</"  << Builtins::ONT     <<">"   << endl;
+	<< L"\txmlns:" << NSDefs::AMINO_ACID << L"=\""   << Imports::AMINO_ACID      <<L"#\">" << endl;
+    out << L"\t<"   << Builtins::ONT     <<  L" " << Builtins::ABOUT  <<L"=\"" << Imports::CDAO_DEF_URI  <<L"\">" << endl
+	<< L"\t\t<" << Builtins::IMPORTS <<  L" " << Builtins::RESOURCE <<L"=\"" << Imports::CDAO_DEF_URI  <<  L"\"/>" << endl
+	<< L"\t</"  << Builtins::ONT     <<L">"   << endl;
   }
   /*
    * Write basic closing information.
@@ -226,7 +226,7 @@ namespace CDAO {
   //write wchar_tacter state matrix annotation definion.
   void writeCharacterStateMatrixAnnotation(wostream& out, const DataRepresentation* model){
     if ( model && model->getNTraits() ){
-       out << L"\t<" << NSDefs::CDAO <<":" << Classes::CSDM_ANNOTATION << L" L" << Builtins::ID << L"=\"" << XMLizeName( model->getMatrixLabel() ) + L"_annotation_id" << L"\" />" << endl; 
+       out << L"\t<" << NSDefs::CDAO <<":" << Classes::CSDM_ANNOTATION << L" " << Builtins::ID << L"=\"" << XMLizeName( model->getMatrixLabel() ) + L"_annotation_id" << L"\" />" << endl; 
     }
   }
   //write wchar_tacter state matrix definition.
@@ -264,8 +264,8 @@ namespace CDAO {
         for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
 	  out << L"\t<" <<dtype_tag  << L" L" << Builtins::ID << L"=\"" << L"trait_" << trait << L"_taxon_" << taxon << L"\">" << endl;
 	  //identify which TU this trait state belongs to.
-	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::BELONGS_TO_TU << L" L" << Builtins::RESOURCE << L"=\"#" << /*XMLizeName( model->getTaxonLabel( taxon ))*/ L"taxon_" << taxon << L"\" />" << endl;
-	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::PART_OF << L" L" << Builtins::RESOURCE << L"=\"#" << /*XMLizeName( model->getTaxonLabel( taxon ))*/ L"trait_" << trait << L"\" />" << endl;
+	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::BELONGS_TO_TU << L" " << Builtins::RESOURCE << L"=\"#" << /*XMLizeName( model->getTaxonLabel( taxon ))*/ L"taxon_" << taxon << L"\" />" << endl;
+	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::PART_OF << L" " << Builtins::RESOURCE << L"=\"#" << /*XMLizeName( model->getTaxonLabel( taxon ))*/ L"trait_" << trait << L"\" />" << endl;
 	  //write the state value.
 	  writeState( out, model,  model->getDataType(),  model->getTraitState( taxon, trait ) );
 	  out << L"\t</" << dtype_tag << L">" << endl;
@@ -278,7 +278,7 @@ namespace CDAO {
   void writeTree( wostream& out, const DataRepresentation* model){
     if ( model ){
       for (unsigned i = 0; i < model->getNumTrees(); ++i ){
-          out << L"<" << NSDefs::CDAO << L":" << Classes::TREE << L" L" << Builtins::ID << L"=\"node_" << XMLizeName( model->getTreeLabel( i ) ) << L"\" />" << endl;
+          out << L"<" << NSDefs::CDAO << L":" << Classes::TREE << L" " << Builtins::ID << L"=\"node_" << XMLizeName( model->getTreeLabel( i ) ) << L"\" />" << endl;
       }
     }
     return;
@@ -289,13 +289,13 @@ namespace CDAO {
       for (unsigned int tree = 0; tree < model->getNumTrees(); ++tree){
         vector< const Node* > leaves = model->getParseTree( tree )->getLeaves( model->getParseTree( tree ) );
         for (vector< const Node* >::const_iterator i = leaves.begin(); i != leaves.end(); ++i){
-          out << L"\t<" << NSDefs::CDAO << L":" << Classes::LINEAGE << L" L" << Builtins::ID << L"=\"Lineage_" << XMLizeName( model->getTreeLabel( tree ) ) << L"_" << XMLizeName( (*i)->getLabel() ) << L"\">" << endl;
-          out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::SUBTREE_OF << L" L" << Builtins::RESOURCE << L"=\"#node_" << XMLizeName( model->getTreeLabel( 0 ) ) << L"\" />" << endl;
+          out << L"\t<" << NSDefs::CDAO << L":" << Classes::LINEAGE << L" " << Builtins::ID << L"=\"Lineage_" << XMLizeName( model->getTreeLabel( tree ) ) << L"_" << XMLizeName( (*i)->getLabel() ) << L"\">" << endl;
+          out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::SUBTREE_OF << L" " << Builtins::RESOURCE << L"=\"#node_" << XMLizeName( model->getTreeLabel( 0 ) ) << L"\" />" << endl;
           vector< const Node* > ancestors = (*i)->getAncestors();
           //add the current node to it's own lineage
-          out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::HAS_LINEAGE_NODE << L" L" << Builtins::RESOURCE << L"=\"#node_" << XMLizeName( (*i)->getLabel() ) << L"\" />" << endl;
+          out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::HAS_LINEAGE_NODE << L" " << Builtins::RESOURCE << L"=\"#node_" << XMLizeName( (*i)->getLabel() ) << L"\" />" << endl;
           for ( vector< const Node* >::const_iterator j = ancestors.begin(); j != ancestors.end(); ++j){
-	    out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::HAS_LINEAGE_NODE << L" L" << Builtins::RESOURCE << L"=\"#node_" << XMLizeName( (*j)->getLabel() ) << L"\" />" << endl;
+	    out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::HAS_LINEAGE_NODE << L" " << Builtins::RESOURCE << L"=\"#node_" << XMLizeName( (*j)->getLabel() ) << L"\" />" << endl;
           }
           out << L"\t</" << NSDefs::CDAO << L":" << Classes::LINEAGE << L">" << endl;
         }
@@ -317,20 +317,20 @@ namespace CDAO {
       const wstring dtype_tag = dataTypeTranslation[ dataTypeTranslationPosition[ data_type ] ];
       //the wchar_tacter is a gap for this taxon.
       if ( model->isGap( state_code ) ){
-        out << L"\t\t<"   << NSDefs::CDAO  << L":" << dtype_tag << L" L" << Builtins::RESOURCE << L"=\"" << Imports::CDAO_DEF_URI << L"#"   << Classes::GAP << L"\"" <<  L" />" << endl;
+        out << L"\t\t<"   << NSDefs::CDAO  << L":" << dtype_tag << L" " << Builtins::RESOURCE << L"=\"" << Imports::CDAO_DEF_URI << L"#"   << Classes::GAP << L"\"" <<  L" />" << endl;
       }
       //the wchar_tacter is missing for this taxon.
       else if( model->isMissing( state_code ) ){
-        out << L"\t\t<"   << NSDefs::CDAO << L":" << dtype_tag << L" L" << Builtins::RESOURCE << L"=\"" << Imports::CDAO_DEF_URI << L"#"   << Classes::ABSENT << L"\"" << L" />" << endl;
+        out << L"\t\t<"   << NSDefs::CDAO << L":" << dtype_tag << L" " << Builtins::RESOURCE << L"=\"" << Imports::CDAO_DEF_URI << L"#"   << Classes::ABSENT << L"\"" << L" />" << endl;
       }
       //reference the amino-acid or nucleotide instance.
       else {
         //cerr << L"Data type: L" << data_type << L" translation: L" << dataTypeTranslationPosition[ data_type ] << endl;
         if ( NUC_TYPE == dataTypeTranslationPosition[ data_type ] ){
-	  out << L"\t\t<" << NSDefs::CDAO << L":" << dtype_tag << L" L" << Builtins::RESOURCE << L"=\"" << Imports::CDAO_DEF_URI << L"#"  << L"d" << (wchar_t)toupper(state_code) << L"\"" << L" />" << endl;
+	  out << L"\t\t<" << NSDefs::CDAO << L":" << dtype_tag << L" " << Builtins::RESOURCE << L"=\"" << Imports::CDAO_DEF_URI << L"#"  << L"d" << (wchar_t)toupper(state_code) << L"\"" << L" />" << endl;
         } 
         else if ( AA_TYPE == dataTypeTranslationPosition[ data_type ] ){
-	  out << L"\t\t<" << NSDefs::CDAO << L":" << dtype_tag << L" L" << Builtins::RESOURCE << L"=\"" << Imports::AMINO_ACID << L"#" << (wchar_t)toupper(state_code) << L"\"" << L" />" << endl;
+	  out << L"\t\t<" << NSDefs::CDAO << L":" << dtype_tag << L" " << Builtins::RESOURCE << L"=\"" << Imports::AMINO_ACID << L"#" << (wchar_t)toupper(state_code) << L"\"" << L" />" << endl;
         }
         else { 
           
@@ -341,7 +341,7 @@ namespace CDAO {
     return;
   }
 
-  wstring wchar_tacter_reference_wstring( const unsigned int trait){
+  wstring chartacter_reference_string( const unsigned int trait){
     return  number_to_wstring( trait );
   }
   
@@ -362,7 +362,7 @@ namespace CDAO {
 
         //write TU definitions
         for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
-          out << L"\t<" << NSDefs::CDAO << L":" << Classes::TU << L" L" << Builtins::ID << L"=\"" << L"taxon_" << taxon << L"\">" << endl;
+          out << L"\t<" << NSDefs::CDAO << L":" << Classes::TU << L" " << Builtins::ID << L"=\"" << L"taxon_" << taxon << L"\">" << endl;
           //reference the corresponding node.
           out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::REPRESENTED_BY_NODE << L" " << Builtins::RESOURCE << L"=\"#" << XMLizeName( model->getTaxonLabel( taxon )) << L"\" />" << endl;
           out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::BELONGS_TO_CSDM << L" " << Builtins::RESOURCE << L"=\"#" << XMLizeName( model->getMatrixLabel() ) << L"\" />" << endl;
@@ -498,6 +498,7 @@ namespace CDAO {
   
   void writeNcaInfo( wostream& out, const Node* current, const vector< const Node* >& nca_of ){
     if ( current ){
+      /*
       set < const Node* > ncas_written = set< const Node* >();
       ncas_written.insert( current );
       out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::NCA_OF << L" " << Builtins::RESOURCE << L"=\"#Subtree_" << XMLizeName( current->getLabel() ) << L"\" />" << endl;
@@ -516,6 +517,7 @@ namespace CDAO {
 	  }
         }
       }
+      */
     }
     return;
   }

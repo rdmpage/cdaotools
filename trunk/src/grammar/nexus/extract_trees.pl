@@ -25,7 +25,7 @@ while (<TREEIN>){
       $taxon_ids{ $1 } = $2;
 #print "taxon id: $1 taxon name: $2\n";
   }
-  elsif (/TREE\W+([-a-zA-Z0-9_]+)\W+=\W+(\[&[R|U]\])\W+(\(.*\));/){
+  elsif (/TREE\W+([-a-zA-Z0-9_]+)\W+=\W+(\[&[R|U]\])\W+(\(.*\));END;$/){
     $tree_title = $1;
     $isRooted{ $tree_title }   = $2;
     $tree_description = $3;
@@ -47,6 +47,7 @@ foreach my $key ( keys %taxon_ids ){
 }
 #Print the list of Trees.
 foreach my $tree ( keys %trees ){
+    #my $quoted_strings_removed =~ s/\'(.*)\'/$1/g;
     print "TREE $tree $isRooted{ $tree } $trees{ $tree };\n";
 }
 #print "END;";

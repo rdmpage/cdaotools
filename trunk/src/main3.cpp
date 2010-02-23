@@ -27,17 +27,17 @@ void do_extraction( const string& nexus_tree_file_path );
 int main( int argc, char** argv ){
   if (argc > 1 ){
 
-    wcerr << L"Preparing to process argument list\n";
+    //wcerr << L"Preparing to process argument list\n";
 
      processArgs( argc, argv, NULL );
 
-     wcerr << L"Processed argument list\nPreparing to extract tree information\n";
+     //wcerr << L"Processed argument list\nPreparing to extract tree information\n";
      //static_cast< ifstream* >( GlobalState::getNarrowInfile() )->close();
      //static_cast< ofstream* >( GlobalState::getNarrowOutfile() )->close();
      //cerr << L"Extracting tress from: L" << getInputFile() << endl;
      do_extraction( getInputFile() );  
 
-     wcerr << L"Extracted tree information!\n";
+     //wcerr << L"Extracted tree information!\n";
   }
 
   return 0;

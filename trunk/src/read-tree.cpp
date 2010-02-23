@@ -56,28 +56,28 @@ int main( int argc, char** argv ){
    vector< wstring > taxa = vector< wstring >();
    map< wstring, Node* > trees = map< wstring, Node* >();
    
- //  wcerr << "Read tree processing args\n";
+   //wcerr << "Read tree processing args\n";
 
    processArgs(argc, argv, NULL);
 
-  // wcerr << "Read tree processed args\n";
+   //wcerr << "Read tree processed args\n";
 
 
    read_input( taxa, trees );
    
-  // wcerr << "Read tree read input\n";
+   //wcerr << "Read tree read input\n";
 
    DataRepresentation* model = populate_model( taxa, trees );
    
-  // wcerr << "Read tree populated model\n";
+   //wcerr << "Read tree populated model\n";
    
    model->setMatrixLabel( CDAO::str_to_wstr( getInputFile() ) );
 
-  // wcerr << "Read tree set matrix label\n";
+   //wcerr << "Read tree set matrix label\n";
 
    CodeGenerator gen( model );
 
-  // wcerr << "Read tee initialized output formatter\n";
+   //wcerr << "Read tee initialized output formatter\n";
 
    gen.generate( *(GlobalState::getOutfile()) );
 
@@ -107,22 +107,27 @@ void read_input( vector< wstring >& taxa, map< wstring, Node* >& trees ){
      //cout << (wchar_t)pin.get();
      wcin >> command;
 
-    // wcerr << "Read command: \"" << command << "\"\n";
+     //wcerr << "Read command: \"" << command << "\"\n";
 
      //cout << command;
      if (command == L"TU"){
        wcin >> taxon_name;
-        //cerr << L"read taxon id: L" << taxon_name << endl;
+       // wcerr << L"read taxon id: " << taxon_name << endl;
         taxa.push_back( taxon_name );
         taxon_name = L"";
      }
      else if ( command == L"TREE"){
         wcin >> tree_name;
         wcin >> rooted;
-        wcin >> newick_data;
+        int ch;
+        while (!wcin.eof() && (ch =wcin.get()) != ';' ){
+            newick_data += (wchar_t)ch;
+        }
+        //wcerr << L"Newick data: " << newick_data << endl;
+
         trees[ tree_name ] = TreeDescriptionParser( newick_data ).getParseTree();
 
-       // cerr << L"read tree: L" << tree_name << L" rooted: L" << rooted << L" description: L" << newick_data << endl;
+        //wcerr << L"read tree: " << tree_name << L" rooted: " << rooted << L" description: " << newick_data << endl;
         tree_name = rooted = newick_data = L"";
      }
      else if ( command == L"" ){/* skip empty line */}

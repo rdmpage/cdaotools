@@ -2,6 +2,7 @@
 #define TREE_DESCRIPTION_SCANNER_HPP_
 
 #include <string>
+#include <limits.h>
 /*
  * Brandon Chisham
  * Created: 3-26-08
@@ -10,6 +11,10 @@
  *                   added public look ahead capability.
  */
 namespace CDAO {
+
+  //const unsigned TAB_SIZE = (unsigned)pow( 2, sizeof(wchar_t) );
+
+
   typedef enum {
     UNDEFINED  = 0,
     START_TREE = '(',
@@ -23,7 +28,7 @@ namespace CDAO {
     QUOTED_STRING_MARKER   = '\'',
     LABEL = 510,
     END   = 511,
-    TOKENS_SIZE = 512
+    TOKENS_SIZE = USHRT_MAX 
   } Token_t;
   /*
    * A token package combines a token's type and value into a single object. 
