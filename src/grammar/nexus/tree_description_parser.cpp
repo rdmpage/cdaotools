@@ -18,6 +18,9 @@
  * Print the tree topology.
  */
 using namespace std;
+
+static void indent( wostream& out, unsigned level );
+
 namespace CDAO {  
   /*
    * Start point parse the tree from the beginning.
@@ -35,39 +38,50 @@ namespace CDAO {
   void print_parse_error_message( wstring error_token  );
   
   /*
-   * Parse a substee.
+   * Parse a subtree.
    * Cases:
    * TREE -> ( TREE_LIST ) LABEL
    * TREE -> ( TREE_LIST ) 
    */
-  void  TreeDescriptionParser::consume_tree(  Node* current ){
+  void  TreeDescriptionParser::consume_tree(  Node* current, unsigned level ){
     
     assert( current );
-    //cerr << L"consume_tree( current: L" << current << L")\n";
+    //indent( wcerr, level );
+    //wcerr << L"consume_tree( current: " << current << L", level" << level << L")\n";
     /* Expect ( */
     TokenPackage start_tree = scanner.lookAhead();
+
+   
     if (start_tree.getType() == START_TREE){
       consume_start_tree( current );
       /*Found ( */
       /* Expect TREE_LIST */
-      consume_tree_list( current ) ;
+      consume_tree_list( current, level+1 ) ;
       /* Found TREE_LIST */
       /* Expect ) */
       consume_end_tree( current );
       /* Found ) */
-      if ( scanner.lookAhead().getType() == LABEL ){
+      if ( scanner.lookAhead().getType() == LABEL || scanner.lookAhead().getType() == QUOTED_STRING_MARKER ){
 	/* Expect LABEL */
-	consume_label( current );
+	consume_label( current, level+1 );
       }
-      else if (scanner.lookAhead().getType() == END){
+      else if (scanner.lookAhead().getType() == DELIMITER){
+         //skip and pass up to caller
+      }
+      else if (scanner.lookAhead().getType() == END_TREE){
 	//make up a name for the tree if it's not supplied
 	current->setLabel( labelMaker( L"tree" ) );
       }
-      //else {
-      //  print_parse_error_message( scanner.lookAhead().getContents() );
-      //}
+      else if (scanner.lookAhead().getType() == END){
+        //we're done parsing the tree YAY!
+      }
+      else {
+        //indent( wcerr, level );
+        print_parse_error_message( L"consume_tree: " + scanner.lookAhead().getContents() );
+      }
     }
-    //cerr << L"exiting consume_tree( L" << current << L")\n";
+    //indent( wcerr, level );
+    //wcerr << L"exiting consume_tree( " << current << L", level: " << level << L")\n";
     return;
   }
   
@@ -79,20 +93,21 @@ namespace CDAO {
    *           -> TREE , TREE_LIST
    *           -> LABEL, TREE_LIST  
    */
-  void TreeDescriptionParser::consume_tree_list( Node* current ){
+  void TreeDescriptionParser::consume_tree_list( Node* current, unsigned level ){
     assert( current );
-    
-    //cerr << L"consume_tree_list( current: L" << current << L")\n";
+    //indent( wcerr, level );
+    //wcerr << L"consume_tree_list( current: " << current << L" level:" << level <<  L")\n";
     
     /* Expect TREE or LABEL */
     TokenPackage next_token = scanner.lookAhead();
-    
-    //cerr << L"Next Token is type: L" << next_token.getType() << L" has contents: \"" << next_token.getContents() << L"\"\n";
-    //cerr << L"Expecting type: START_TREE: L" << START_TREE << L" or LABEL: L" << LABEL << L"\n"; 
+    //indent(wcerr, level );
+    //wcerr << L"Next Token is type: " << next_token.getType() << L" has contents: \"" << next_token.getContents() << L"\"\n";
+    //indent( wcerr, level );
+    //wcerr << L"Expecting type: START_TREE or LABEL" << L"\n"; 
     
     if (next_token.getType() == START_TREE){
       Node* subtree = new Node( labelMaker( L"node" ) );
-      consume_tree( subtree );
+      consume_tree( subtree, level +1 );
       subtree->setAncestor( current );
       current->addDescendant( subtree );
       /* Found TREE  */
@@ -100,18 +115,19 @@ namespace CDAO {
       TokenPackage continue_list_or_end_tree = scanner.lookAhead();
       if (continue_list_or_end_tree.getType() == DELIMITER){
 	consume_delimiter( current );
-        consume_tree_list( current );
+        consume_tree_list( current, level+1 );
       }
       else if (continue_list_or_end_tree.getType() == END_TREE){
      	/* Found TREE_LIST */
       }
       else {
-	print_parse_error_message( continue_list_or_end_tree.getContents()  );
+        //indent( wcerr, level );
+	print_parse_error_message( L"consume_tree_list:" + continue_list_or_end_tree.getContents()  );
       }
     }
-    else if ( next_token.getType() == LABEL){
+    else if ( next_token.getType() == LABEL || next_token.getType() == QUOTED_STRING_MARKER){
       Node* subtree = new Node();
-      consume_label( subtree );
+      consume_label( subtree, level );
       current->addDescendant( subtree );
       subtree->setAncestor( current );
       /* Found LABEL */
@@ -120,20 +136,21 @@ namespace CDAO {
       if(continue_list_or_end_tree.getType() == DELIMITER){
 	consume_delimiter( current );
 	/* Found ....LABEL, TREE_LIST */
-	consume_tree_list( current );
+	consume_tree_list( current, level+1 );
       }
       else if (continue_list_or_end_tree.getType() == END_TREE){
-	/* FOUND ...LABEL */
+          //indent(wcerr,level);
+          //wcerr << "End of sub-tree level: " << level << "\n";
       }
       else {
-        print_parse_error_message( continue_list_or_end_tree.getContents() );
-      }
-  }
+        print_parse_error_message( L"expected LABEL or \'LABEL\': " + continue_list_or_end_tree.getContents() );
+       }
+    }
     else {
       print_parse_error_message( next_token.getContents() );
     }
-    
-    //cerr << L"exiting consume_tree_list( L" << current << L" )\n";
+    //indent( wcerr, level );
+    //wcerr << L"exiting consume_tree_list( " << current << L", level: " << level << L" )\n";
     
   }
   
@@ -144,12 +161,35 @@ namespace CDAO {
    * LABEL -> [a-zA-Z0-9]+ EXTENDED_META
    *       | ' LABEL '
  */
-  void  TreeDescriptionParser::consume_label(  Node* current ){
+  void  TreeDescriptionParser::consume_label(  Node* current, unsigned level ){
     assert( current );
-    //cerr << L"consume_label( L" << current << L" )\n";
+    //indent( wcerr, level );
+    //wcerr << L"consume_label( " << current << L" )\n";
     TokenPackage label = scanner.lex();
-    assert( label.getType() == LABEL );
-    current->setLabel( label.getContents()  );
+    if ( label.getType() == LABEL ){
+     // indent( wcerr, level );
+     // wcerr << "consumed a label: \"" <<  label.getContents()<<  "\n";
+        current->setLabel( label.getContents()  );
+    }
+    else if (label.getType() == QUOTED_STRING_MARKER){
+        label = scanner.lex();
+        wstring current_label = L"";
+        while ( label.getType() == LABEL ){
+          //indent( wcerr, level );
+         // wcerr << "consumed a quoted label\n";
+          current_label += label.getContents() + L"_";
+          //indent( wcerr, level );
+          //wcerr << "contents: \"" << label.getContents()  << "\" current_label \"" << current_label << "\n";
+           //current->setLabel( label.getContents() );
+           label = scanner.lex();
+        }
+        if (current_label.size()){current_label = current_label.substr(0, current_label.size() -1 );}
+        current->setLabel( current_label );
+        //indent( wcerr, level );
+        //wcerr << "consumed a label: \"" <<  label.getContents()<<  "\"\n";
+
+        assert( label.getType() == QUOTED_STRING_MARKER );
+    }
     consume_extended_meta( current );
     //cerr << L"exiting: consume_label( L" << current << L" )\n";
   return ;
@@ -227,11 +267,17 @@ namespace CDAO {
   }
 
 void print_parse_error_message( wstring error_token  ){
-	cerr << L"Unexpected Token \"" << wstr_to_str( error_token )<< L"\" in the input.\n";  
+	wcerr << L"Unexpected Token \"" << error_token << L"\" in the input.\n";  
 	exit( 1 );
 
 }
 }
+
+void indent( wostream& out, unsigned level ){
+    //for (unsigned i = 0; i < level; ++i){ out << "  "; }
+    return;
+}
+
 #ifdef NDEBUG_WAS_SET
 #define NDEBUG NDEBUG_WAS_SET
 #undef NDEBUG_WAS_SET
