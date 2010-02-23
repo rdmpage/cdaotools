@@ -18,14 +18,14 @@ using namespace CDAO;
 
 class TreeRepresentation : public DataRepresentation {
   public:
-    TreeRepresentation( vector< string > taxa, map< string, Node* > trees);
+    TreeRepresentation( vector< wstring > taxa, map< wstring, Node* > trees);
     virtual ~TreeRepresentation();
     virtual const Node* getParseTree( unsigned int i ) const;
-    virtual const std::string getTaxonLabel(unsigned int) const;
-    virtual const std::string getTreeLabel(unsigned int) const;
-    virtual const std::string getMatrixLabel() const;
-    virtual void setMatrixLabel(const std::string&);
-    virtual const char getTraitState(unsigned int, unsigned int) const;
+    virtual const std::wstring getTaxonLabel(unsigned int) const;
+    virtual const std::wstring getTreeLabel(unsigned int) const;
+    virtual const std::wstring getMatrixLabel() const;
+    virtual void setMatrixLabel(const std::wstring&);
+    virtual const wchar_t getTraitState(unsigned int, unsigned int) const;
     virtual const bool isTrait(unsigned int) const;
     virtual const unsigned int getNTax() const;
     virtual const unsigned int getNTraits() const;
@@ -34,108 +34,135 @@ class TreeRepresentation : public DataRepresentation {
     virtual const bool hasGap(unsigned int) const;
     virtual const bool isGap(unsigned int, unsigned int) const;
     virtual const Node* findNode(unsigned int, unsigned int) const;
-    virtual const unsigned int getTaxonNumber(const std::string&) const;
-    virtual const bool isGap(char) const;
-    virtual const bool isMissing(char) const;
+    virtual const unsigned int getTaxonNumber(const std::wstring&) const;
+    virtual const bool isGap(wchar_t) const;
+    virtual const bool isMissing(wchar_t) const;
 
   private:
-    string matrix_label_;
-    vector< string > taxa_;
-    vector< string > tree_names_;
-    map< string, Node* > trees_;
+    wstring matrix_label_;
+    vector< wstring > taxa_;
+    vector< wstring > tree_names_;
+    map< wstring, Node* > trees_;
 
 };
 
 
-DataRepresentation* populate_model( vector< string >& TUs, map< string, Node* >& trees );
+DataRepresentation* populate_model( vector< wstring >& TUs, map< wstring, Node* >& trees );
 
-void read_input( vector< string >& taxa, map< string, Node* >& trees );
+void read_input( vector< wstring >& taxa, map< wstring, Node* >& trees );
 
 int main( int argc, char** argv ){
+   
+   vector< wstring > taxa = vector< wstring >();
+   map< wstring, Node* > trees = map< wstring, Node* >();
+   
+ //  wcerr << "Read tree processing args\n";
 
-   vector< string > taxa = vector< string >();
-   map< string, Node* > trees = map< string, Node* >();
    processArgs(argc, argv, NULL);
+
+  // wcerr << "Read tree processed args\n";
+
+
    read_input( taxa, trees );
+   
+  // wcerr << "Read tree read input\n";
+
    DataRepresentation* model = populate_model( taxa, trees );
-   model->setMatrixLabel( getInputFile() );
+   
+  // wcerr << "Read tree populated model\n";
+   
+   model->setMatrixLabel( CDAO::str_to_wstr( getInputFile() ) );
+
+  // wcerr << "Read tree set matrix label\n";
+
    CodeGenerator gen( model );
-   gen.generate( *(getOutputStream()) );
+
+  // wcerr << "Read tee initialized output formatter\n";
+
+   gen.generate( *(GlobalState::getOutfile()) );
+
+   //wcerr << "Read tree generated output\n";
 
   return 0;
 }
 
-DataRepresentation* populate_model( vector< string >& TUs, map< string, Node* >& trees ){
+DataRepresentation* populate_model( vector< wstring >& TUs, map< wstring, Node* >& trees ){
 
   return new TreeRepresentation( TUs, trees );
 }
 
-void read_input( vector< string >& taxa, map< string, Node* >& trees ){
+void read_input( vector< wstring >& taxa, map< wstring, Node* >& trees ){
    //TypedRawInputStream pin( pipefd[ READ_END ] );
-   string command;
-   string taxon_name;
-   string tree_name;
-   string rooted;
-   string newick_data;
-  // vector< string > taxa(0);
-   //map< string, Node* > trees = map< string, Node* >();
-   while (!cin.eof()){
-     //cout << (char)pin.get();
-     cin >> command;
+   wstring command;
+   wstring taxon_name;
+   wstring tree_name;
+   wstring rooted;
+   wstring newick_data;
+
+  // vector< wstring > taxa(0);
+   //map< wstring, Node* > trees = map< wstring, Node* >();
+   while (!wcin.eof()){
+     
+    // wcerr << "Preparing to read the command\n";
+     //cout << (wchar_t)pin.get();
+     wcin >> command;
+
+    // wcerr << "Read command: \"" << command << "\"\n";
+
      //cout << command;
-     if (command == "TU"){
-        cin >> taxon_name;
-        //cerr << "read taxon id: " << taxon_name << endl;
+     if (command == L"TU"){
+       wcin >> taxon_name;
+        //cerr << L"read taxon id: L" << taxon_name << endl;
         taxa.push_back( taxon_name );
-        taxon_name = "";
+        taxon_name = L"";
      }
-     else if ( command == "TREE"){
-        cin >> tree_name;
-        cin >> rooted;
-        cin >> newick_data;
+     else if ( command == L"TREE"){
+        wcin >> tree_name;
+        wcin >> rooted;
+        wcin >> newick_data;
         trees[ tree_name ] = TreeDescriptionParser( newick_data ).getParseTree();
 
-       // cerr << "read tree: " << tree_name << " rooted: " << rooted << " description: " << newick_data << endl;
-        tree_name = rooted = newick_data = "";
+       // cerr << L"read tree: L" << tree_name << L" rooted: L" << rooted << L" description: L" << newick_data << endl;
+        tree_name = rooted = newick_data = L"";
      }
-     else if ( command == "" ){/* skip empty line */}
+     else if ( command == L"" ){/* skip empty line */}
      else {
-        cerr << "Unrecognized command: \"" << command << "\"" << endl;
+        wcerr << L"Unrecognized command: \"" << command << L"\"" << endl;
         //pin.close();
         exit( 1 );
      }
-     command = "";
+     command = L"";
    }
       //pin.close();
      // for (unsigned i = 0; i < taxa.size(); ++i){
-     //    cout << "<cdao:TU rdf:ID=\"" + taxa.at( i ) + "\"/>\n";
+     //    cout << L"<cdao:TU rdf:ID=\"" + taxa.at( i ) + L"\"/>\n";
      // }
    return;
 }
 
-TreeRepresentation::TreeRepresentation( vector< string > taxa, map< string, Node* > trees ):taxa_(taxa), trees_(trees){
-  tree_names_ = vector< string >();
-  for (map< string, Node* >::const_iterator i = trees_.begin(); i != trees_.end(); ++i){
+TreeRepresentation::TreeRepresentation( vector< wstring > taxa, map< wstring, Node* > trees ):taxa_(taxa), trees_(trees){
+  tree_names_ = vector< wstring >();
+  for (map< wstring, Node* >::const_iterator i = trees_.begin(); i != trees_.end(); ++i){
       tree_names_.push_back( i->first );
   }
 
 }
 TreeRepresentation::~TreeRepresentation(){
-  for ( map< string, Node* >::iterator i = trees_.begin(); i != trees_.end(); ++i ){
+  for ( map< wstring, Node* >::iterator i = trees_.begin(); i != trees_.end(); ++i ){
      delete (i->second);
   }
 }
 const CDAO::Node* TreeRepresentation::getParseTree( unsigned int i ) const{
-   map< string, Node* >::const_iterator  ret = trees_.find( tree_names_.at( i ) );
+   map< wstring, Node* >::const_iterator  ret = trees_.find( tree_names_.at( i ) );
    return ret == trees_.end() ? NULL : ret->second;
 }
-const std::string TreeRepresentation::getTaxonLabel(unsigned int i) const{
+const std::wstring TreeRepresentation::getTaxonLabel(unsigned int i) const{
    return taxa_.at( i );  
 }
-const std::string TreeRepresentation::getTreeLabel( unsigned int i ) const{ return tree_names_.at( i ); }
-const std::string TreeRepresentation::getMatrixLabel() const{ return matrix_label_; }
-void TreeRepresentation::setMatrixLabel(const std::string& l){ matrix_label_ = l; }
-const char TreeRepresentation::getTraitState(unsigned int, unsigned int) const{ return '\0'; }
+const std::wstring TreeRepresentation::getTreeLabel( unsigned int i ) const{ return tree_names_.at( i ); }
+const std::wstring TreeRepresentation::getMatrixLabel() const{ return matrix_label_; }
+void TreeRepresentation::setMatrixLabel(const std::wstring& l){ matrix_label_ = l; }
+const wchar_t TreeRepresentation::getTraitState(unsigned int, unsigned int) const{ return '\0'; }
 const bool TreeRepresentation::isTrait(unsigned int) const{ return false; }
 const unsigned int TreeRepresentation::getNTax() const{ return taxa_.size(); }
 const unsigned int TreeRepresentation::getNTraits() const{ return 0; }
@@ -144,11 +171,11 @@ const unsigned int TreeRepresentation::getNumTrees() const{ return tree_names_.s
 const bool TreeRepresentation::hasGap(unsigned int) const{ return false; }
 const bool TreeRepresentation::isGap(unsigned int, unsigned int) const{ return false; }
 const CDAO::Node* TreeRepresentation::findNode(unsigned int, unsigned int) const{ return NULL; }
-const unsigned int TreeRepresentation::getTaxonNumber(const std::string& target) const{ 
+const unsigned int TreeRepresentation::getTaxonNumber(const std::wstring& target) const{ 
         unsigned int ret = 0;
         for (; ret < taxa_.size() && taxa_.at( ret ) != target; ++ret );
         return ret;
 }
-const bool TreeRepresentation::isGap(char) const{ return false; }
-const bool TreeRepresentation::isMissing(char) const{ return false; }
+const bool TreeRepresentation::isGap(wchar_t) const{ return false; }
+const bool TreeRepresentation::isMissing(wchar_t) const{ return false; }
 

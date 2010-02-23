@@ -34,11 +34,17 @@ def connect_store( store, default_graph_uri ):
         graph = Graph(store, identifier = URIRef( default_graph_uri ))
 	return graph
 
-def store_ontology( graph, default_graph_uri ):
-        graph.parse( default_graph_uri )
-        print "Committing Graph to database\n"
-        graph.commit()
-        print "Saved Graph to database\n"
+def store_ontology( graph, guri ):
+	try:
+		graph.parse( guri )
+		graph.commit()
+	except rdflib.exceptions.ParserError as exp:
+		print "Error processing %s", guri
+		print exp
+	except xml.sax._exceptions.SAXParseException as exp:
+		print "Error processing %s", guri
+		print exp
+
  
 def store_ontology( default_graph_uri ):
       #  graph_local = Graph( identifier = URIRef( default_graph_uri ) )

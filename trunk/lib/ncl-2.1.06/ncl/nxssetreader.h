@@ -50,21 +50,21 @@ class NxsSetReader
 	{
 		static unsigned InterpretTokenAsIndices(NxsToken &t, 
 								 const NxsLabelToIndicesMapper &, 
-								 const char * setType, 
-								 const char * cmd, 
+								 const wchar_t* setType, 
+								 const wchar_t* cmd, 
 								 NxsUnsignedSet * destination);
 		static void AddRangeToSet(unsigned first, unsigned last, unsigned stride, NxsUnsignedSet * destination, const NxsUnsignedSet * taboo, NxsToken &t);
 	public:
 		static void ReadSetDefinition(NxsToken &t, 
 								 const NxsLabelToIndicesMapper &, 
-								 const char * setType, 
-								 const char * cmd, 
+								 const wchar_t* setType, 
+								 const wchar_t* cmd, 
 								 NxsUnsignedSet * destination,
 								 const NxsUnsignedSet * taboo = NULL);
-		static void	WriteSetAsNexusValue(const NxsUnsignedSet	&, std::ostream & out);
-		static std::string	GetSetAsNexusString(const NxsUnsignedSet &s)
+		static void	WriteSetAsNexusValue(const NxsUnsignedSet	&, std::wostream & out);
+		static std::wstring	GetSetAsNexusString(const NxsUnsignedSet &s)
 			{
-			std::stringstream os;
+			std::wstringstream os;
 			NxsSetReader::WriteSetAsNexusValue(s, os);
 			//os << ' ';
 			return os.str();
@@ -80,7 +80,7 @@ class NxsSetReader
 						NxsSetReader(NxsToken &t, unsigned maxValue, NxsUnsignedSet &iset, NxsBlock &nxsblk, unsigned type);
 
 		bool			Run();
-		void			WriteAsNexusValue(std::ostream & out) const
+		void			WriteAsNexusValue(std::wostream & out) const
 			{
 			WriteSetAsNexusValue(nxsset, out);
 			}

@@ -34,9 +34,9 @@ unsigned NxsTaxaBlock::GetMaxIndex() const
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns the number (1-based) of the taxon with label of `label` (not case-sensitive). 
 */
-unsigned NxsTaxaBlock::TaxLabelToNumber(const std::string &label) const
+unsigned NxsTaxaBlock::TaxLabelToNumber(const std::wstring &label) const
 	{
-	std::string r(label.c_str());
+	std::wstring r(label.c_str());
 	NxsString::to_upper(r);
 	return CapitalizedTaxLabelToNumber(r);
 	}
@@ -46,7 +46,7 @@ unsigned NxsTaxaBlock::TaxLabelToNumber(const std::string &label) const
 | of items that would be added to *inds if inds points to an empty set).
 */
 
-unsigned NxsTaxaBlock::GetIndicesForLabel(const std::string &label, NxsUnsignedSet *inds) const
+unsigned NxsTaxaBlock::GetIndicesForLabel(const std::wstring &label, NxsUnsignedSet *inds) const
 	{
 	NxsString emsg;
 	const unsigned numb = TaxLabelToNumber(label);
@@ -56,10 +56,10 @@ unsigned NxsTaxaBlock::GetIndicesForLabel(const std::string &label, NxsUnsignedS
 			inds->insert(numb - 1);
 		return 1;
 		}
-	return GetIndicesFromSetOrAsNumber(label, inds, taxSets, GetMaxIndex(), "taxon");
+	return GetIndicesFromSetOrAsNumber(label, inds, taxSets, GetMaxIndex(), L"taxon");
 	}
 
-bool NxsTaxaBlock::AddNewIndexSet(const std::string &label, const NxsUnsignedSet & inds)
+bool NxsTaxaBlock::AddNewIndexSet(const std::wstring &label, const NxsUnsignedSet & inds)
 	{
 	NxsString nlab(label.c_str());
 	const bool replaced = taxSets.count(nlab) > 0;
@@ -69,7 +69,7 @@ bool NxsTaxaBlock::AddNewIndexSet(const std::string &label, const NxsUnsignedSet
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns true if this set replaces an older definition.
 */
-bool NxsTaxaBlock::AddNewPartition(const std::string &label, const NxsPartition & inds)
+bool NxsTaxaBlock::AddNewPartition(const std::wstring &label, const NxsPartition & inds)
 	{
 	NxsString ls(label.c_str());
 	bool replaced = taxPartitions.count(ls) > 0;
@@ -83,7 +83,7 @@ bool NxsTaxaBlock::AddNewPartition(const std::string &label, const NxsPartition 
 NxsTaxaBlock::NxsTaxaBlock()
   	{
 	dimNTax	= 0;
-	id		= "TAXA";
+	id		= L"TAXA";
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -104,7 +104,7 @@ void NxsTaxaBlock::Read(
 	isEmpty				= false;
 	isUserSupplied		= true;
 
-	DemandEndSemicolon(token, "BEGIN TAXA");
+	DemandEndSemicolon(token, L"BEGIN TAXA");
 
 	for (;;)
 		{
@@ -114,21 +114,21 @@ void NxsTaxaBlock::Read(
 			return;
 		if (res != NxsBlock::NxsCommandResult(HANDLED_COMMAND))
 			{
-			if (token.Equals("DIMENSIONS"))
+			if (token.Equals(L"DIMENSIONS"))
 				{
 				token.GetNextToken(); 
-				if (!token.Equals("NTAX"))
+				if (!token.Equals(L"NTAX"))
 					{
-					errormsg = "Expecting NTAX keyword, but found ";
+					errormsg = L"Expecting NTAX keyword, but found ";
 					errormsg += token.GetToken();
-					errormsg += " instead";
+					errormsg += L" instead";
 					throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 					}
-				DemandEquals(token, "after NTAX");
-				dimNTax = DemandPositiveInt(token, "NTAX");
-				DemandEndSemicolon(token, "DIMENSIONS");
-				}	// if (token.Equals("DIMENSIONS"))
-			else if (token.Equals("TAXLABELS")) 
+				DemandEquals(token, L"after NTAX");
+				dimNTax = DemandPositiveInt(token, L"NTAX");
+				DemandEndSemicolon(token, L"DIMENSIONS");
+				}	// if (token.Equals(L"DIMENSIONS"))
+			else if (token.Equals(L"TAXLABELS")) 
 				HandleTaxLabels(token);
 			else
 				SkipCommand(token);
@@ -140,7 +140,7 @@ void NxsTaxaBlock::HandleTaxLabels(NxsToken &token)
 	{
 	if (dimNTax == 0) 
 		{
-		errormsg = "NTAX must be specified before TAXLABELS command";
+		errormsg = L"NTAX must be specified before TAXLABELS command";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 	taxLabels.clear();
@@ -158,52 +158,52 @@ void NxsTaxaBlock::HandleTaxLabels(NxsToken &token)
 			throw NxsException(x.msg, token);
 			}
 		}
-	DemandEndSemicolon(token, "TAXLABELS");
+	DemandEndSemicolon(token, L"TAXLABELS");
 	}
 /*----------------------------------------------------------------------------------------------------------------------
 |	This function outputs a brief report of the contents of this taxa block. Overrides the abstract virtual function in
 |	the base class.
 */
 void NxsTaxaBlock::Report(
-  std::ostream &out) NCL_COULD_BE_CONST /* the output stream to which to write the report */
+  std::wostream &out) NCL_COULD_BE_CONST /* the output stream to which to write the report */
 	{
 	out << endl;
-	out << id << " block contains ";
+	out << id << L" block contains ";
 	if (dimNTax == 0)
 		{
-		out << "no taxa" << endl;
+		out << L"no taxa" << endl;
 		return;
 		}
 	if (dimNTax == 1)
-		out << "1 taxon" << endl;
+		out << L"1 taxon" << endl;
 	else
-		out << dimNTax << " taxa" << endl;
+		out << dimNTax << L" taxa" << endl;
 	for (unsigned k = 0; k < dimNTax; k++)
-		out << "    " << (k+1) << "    " << GetTaxonLabel(k) << endl;
+		out << L"    " << (k+1) << L"    " << GetTaxonLabel(k) << endl;
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
 |	Writes contents of this block in NEXUS format to `out'.
 */
-void NxsTaxaBlock::WriteAsNexus(std::ostream &out) const
+void NxsTaxaBlock::WriteAsNexus(std::wostream &out) const
 	{
-	out << "BEGIN TAXA;\n";
+	out << L"BEGIN TAXA;\n";
 	WriteBasicBlockCommands(out);
-	out << "    DIMENSIONS NTax = " << dimNTax << ";\n";
+	out << L"    DIMENSIONS NTax = " << dimNTax << L";\n";
 	this->WriteTaxLabelsCommand(out);
 	WriteSkippedCommands(out);
-	out << "END;\n";
+	out << L"END;\n";
 	}
 
-void NxsTaxaBlock::WriteTaxLabelsCommand(std::ostream &out) const
+void NxsTaxaBlock::WriteTaxLabelsCommand(std::wostream &out) const
 	{
 	const unsigned nLabels = this->GetNumTaxonLabels();
 	if (nLabels > 0)
 		{
-		out << "    TAXLABELS";
+		out << L"    TAXLABELS";
 		for (NxsStringVector::const_iterator kIt = taxLabels.begin(); kIt != taxLabels.end(); ++kIt)
 			out << ' ' << NxsString::GetEscaped(*kIt);
-		out << ";\n";
+		out << L";\n";
 		}
 	}
 
@@ -226,11 +226,11 @@ void NxsTaxaBlock::Reset()
 |	added.
 */
 unsigned NxsTaxaBlock::AddTaxonLabel(
-  const std::string & rs)	/* the taxon label to add */
+  const std::wstring & rs)	/* the taxon label to add */
 	{
 	unsigned ind = (unsigned)taxLabels.size();
 	NxsString s(rs.c_str());
-	std::string x(rs.c_str());
+	std::wstring x(rs.c_str());
 	NxsString::to_upper(x);
 	CheckCapitalizedTaxonLabel(x);
 	taxLabels.push_back(s);
@@ -239,24 +239,24 @@ unsigned NxsTaxaBlock::AddTaxonLabel(
 	}
 
 void NxsTaxaBlock::CheckCapitalizedTaxonLabel(
-  const std::string &s) const
+  const std::wstring &s) const
   {
 	unsigned ind = (unsigned)taxLabels.size();
 	if (dimNTax <= ind)
 		{
-		NxsString e = "Number of stored labels exceeds the NTax specified.";
+		NxsString e = L"Number of stored labels exceeds the NTax specified.";
 		throw NxsException(e);
 		}
 	if (CapitalizedTaxLabelToNumber(s) != 0)
 		{
-		NxsString e = "TaxLabels cannot be repeated. The label ";
-		e << s << " has already been stored.";
+		NxsString e = L"TaxLabels cannot be repeated. The label ";
+		e << s << L" has already been stored.";
 		throw NxsException(e);
 		}
 	if (s.length() == 1 && NxsString::IsNexusPunctuation(s[0]))
 		{
-		NxsString e = "Illegal TaxLabel found:\n";
-		e << s << "\n TaxLabels cannot be punctuation.";
+		NxsString e = L"Illegal TaxLabel found:\n";
+		e << s << L"\n TaxLabels cannot be punctuation.";
 		throw NxsException(e);
 		}
 	}
@@ -265,16 +265,16 @@ void NxsTaxaBlock::CheckCapitalizedTaxonLabel(
 */
 void NxsTaxaBlock::ChangeTaxonLabel(
   unsigned i,	/* the taxon label number to change */
-  NxsString s)	/* the string used to replace label i */
+  NxsString s)	/* the wstring used to replace label i */
 	{
 	if (i >= (unsigned)taxLabels.size())
 		{
-		NxsString e = "The label for taxon ";
-		e << (i+1) << " cannot be changed, because the only " << (unsigned)taxLabels.size() << " taxlabel(s) have been assigned.";
+		NxsString e = L"The label for taxon ";
+		e << (i+1) << L" cannot be changed, because the only " << (unsigned)taxLabels.size() << L" taxlabel(s) have been assigned.";
 		throw NxsNCLAPIException(e);
 		}
 	RemoveTaxonLabel(i);
-	std::string x(s.c_str());
+	std::wstring x(s.c_str());
 	NxsString::to_upper(x);
 	CheckCapitalizedTaxonLabel(x);
 	taxLabels[i] = s;
@@ -284,7 +284,7 @@ void NxsTaxaBlock::ChangeTaxonLabel(
 void NxsTaxaBlock::RemoveTaxonLabel(
   unsigned i)	/* the taxon label number to remove */
 	{
-	std::string oldLabel(taxLabels[i].c_str());
+	std::wstring oldLabel(taxLabels[i].c_str());
 	NxsString::to_upper(oldLabel);
 	labelToIndex.erase(oldLabel);
 	taxLabels[i] = NxsString();
@@ -313,8 +313,8 @@ NxsString NxsTaxaBlock::GetTaxonLabel(unsigned i) const
 	{
 	if (i >= dimNTax)
 		{
-		NxsString e = "The  taxon index ";
-		e << i  << " is out of range.  Only " << dimNTax << " taxa in block.";
+		NxsString e = L"The  taxon index ";
+		e << i  << L" is out of range.  Only " << dimNTax << L" taxa in block.";
 		throw NxsNCLAPIException(e);
 		}
 	if (i < (unsigned)taxLabels.size())
@@ -338,7 +338,7 @@ bool NxsTaxaBlock::NeedsQuotes(
 |	Returns true if taxon label equal to 's' can be found in the taxonLabels list, and returns false otherwise.
 */
 bool NxsTaxaBlock::IsAlreadyDefined(
-  const std::string & s)	/* the s to attempt to find in the taxonLabels list */
+  const std::wstring & s)	/* the s to attempt to find in the taxonLabels list */
 	{
 	return (TaxLabelToNumber(s) != 0);
 	}
@@ -348,7 +348,7 @@ bool NxsTaxaBlock::IsAlreadyDefined(
 |	labels currently stored in the taxonLabels list, throws NxsX_NoSuchTaxon exception.
 */
 unsigned NxsTaxaBlock::FindTaxon(
-  const NxsString &s) const /* the string to attempt to find in the taxonLabels list */
+  const NxsString &s) const /* the wstring to attempt to find in the taxonLabels list */
 	{
 	unsigned k = TaxLabelToNumber(s);
 	if (k == 0)
@@ -379,9 +379,9 @@ void NxsTaxaBlock::SetNtax(
 		}
 	}
 
-NxsTaxaBlock *NxsTaxaBlockFactory::GetBlockReaderForID(const std::string & idneeded, NxsReader *reader, NxsToken *)
+NxsTaxaBlock *NxsTaxaBlockFactory::GetBlockReaderForID(const std::wstring & idneeded, NxsReader *reader, NxsToken *)
 	{
-	if (reader == NULL || idneeded != "TAXA")
+	if (reader == NULL || idneeded != L"TAXA")
 		return NULL;
 	NxsTaxaBlock * nb = new NxsTaxaBlock();
 	nb->SetImplementsLinkAPI(false);
@@ -400,7 +400,7 @@ void NxsTaxaBlockSurrogate::SetTaxaLinkStatus(NxsBlock::NxsBlockLinkStatus s)
 	{
 	if (taxaLinkStatus & NxsBlock::BLOCK_LINK_USED)
 		{
-		throw NxsNCLAPIException("Resetting a used taxaLinkStatus");
+		throw NxsNCLAPIException(L"Resetting a used taxaLinkStatus");
 		}
 	taxaLinkStatus = s;
 	}
@@ -416,8 +416,8 @@ void NxsTaxaBlockSurrogate::SetTaxaBlockPtr(NxsTaxaBlockAPI *c, NxsBlock::NxsBlo
 void NxsTaxaBlockSurrogate::HandleLinkTaxaCommand(NxsToken & token)
 	{
 	token.GetNextToken();
-	const std::map<std::string, std::string> kv = token.ProcessAsSimpleKeyValuePairs("LINK");
-	std::map<std::string, std::string>::const_iterator pairIt = kv.begin();
+	const std::map<std::wstring, std::wstring> kv = token.ProcessAsSimpleKeyValuePairs(L"LINK");
+	std::map<std::wstring, std::wstring>::const_iterator pairIt = kv.begin();
 	for (;pairIt != kv.end(); ++pairIt)
 		{
 		NxsTaxaBlockAPI *entryTaxa = taxa;
@@ -425,13 +425,13 @@ void NxsTaxaBlockSurrogate::HandleLinkTaxaCommand(NxsToken & token)
 		NxsString key(pairIt->first.c_str());
 		key.ToUpper();
 		NxsString value(pairIt->second.c_str());
-		if (key == "TAXA")
+		if (key == L"TAXA")
 			{
 			if (taxa && !taxa->GetID().EqualsCaseInsensitive(value))
 				{
 				if (GetTaxaLinkStatus() & NxsBlock::BLOCK_LINK_USED)
 					{
-					NxsString errormsg = "LINK to a Taxa block must occur before commands that use a taxa block";
+					NxsString errormsg = L"LINK to a Taxa block must occur before commands that use a taxa block";
 					throw NxsException(errormsg, token);
 					}
 				SetTaxaBlockPtr(NULL, NxsBlock::BLOCK_LINK_UNINITIALIZED);
@@ -440,15 +440,15 @@ void NxsTaxaBlockSurrogate::HandleLinkTaxaCommand(NxsToken & token)
 				{
 				if (!nxsReader)
 					{
-					NxsString errormsg =  "API Error: No nxsReader during parse in NxsTaxaBlockSurrogate::HandleLinkTaxaCommand";
+					NxsString errormsg =  L"API Error: No nxsReader during parse in NxsTaxaBlockSurrogate::HandleLinkTaxaCommand";
 					throw NxsNCLAPIException(errormsg, token);
 					}
 				NxsTaxaBlockAPI * cb = nxsReader->GetTaxaBlockByTitle(value.c_str(), NULL);
 				if (cb == NULL)
 					{
-					NxsString errormsg = "Unknown TAXA block (";
+					NxsString errormsg = L"Unknown TAXA block (";
 					errormsg += value;
-					errormsg +=") referred to in the LINK command";
+					errormsg +=L") referred to in the LINK command";
 					taxa = entryTaxa;
 					taxaLinkStatus = entryTaxaLinkStatus;
 					throw NxsException(errormsg, token);
@@ -458,20 +458,20 @@ void NxsTaxaBlockSurrogate::HandleLinkTaxaCommand(NxsToken & token)
 			}
 		else
 			{
-			NxsString errormsg = "Skipping unknown LINK subcommand: ";
+			NxsString errormsg = L"Skipping unknown LINK subcommand: ";
 			errormsg += pairIt->first.c_str();
 			nxsReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 			errormsg.clear(); //this token pos will be off a bit.
 			}
 		}
 	}
-void NxsTaxaBlockSurrogate::WriteLinkTaxaCommand(std::ostream &out) const
+void NxsTaxaBlockSurrogate::WriteLinkTaxaCommand(std::wostream &out) const
 	{
 	if (taxa && !(taxa->GetTitle().empty()))
-		out << "    LINK TAXA = " << NxsString::GetEscaped(taxa->GetTitle()) << ";\n";
+		out << L"    LINK TAXA = " << NxsString::GetEscaped(taxa->GetTitle()) << L";\n";
 	}
 
-void NxsTaxaBlockSurrogate::AssureTaxaBlock(bool allocBlock, NxsToken &token, const char *cmd)
+void NxsTaxaBlockSurrogate::AssureTaxaBlock(bool allocBlock, NxsToken &token, const wchar_t*cmd)
 	{
 	if (!allocBlock)
 		{
@@ -479,25 +479,25 @@ void NxsTaxaBlockSurrogate::AssureTaxaBlock(bool allocBlock, NxsToken &token, co
 			return;
 		if (!nxsReader)
 			{
-			NxsString  errormsg =  "API Error: No nxsReader during parse in NxsTaxaBlockSurrogate::AssureTaxaBlock";
+			NxsString  errormsg =  L"API Error: No nxsReader during parse in NxsTaxaBlockSurrogate::AssureTaxaBlock";
 			throw NxsNCLAPIException(errormsg, token);
 			}
 		unsigned nTb; 
 		NxsTaxaBlockAPI * cb = nxsReader->GetTaxaBlockByTitle(NULL, &nTb);
 		if (cb == NULL)
 			{
-			NxsString errormsg =  "TAXA Block has been not been read, but a ";
+			NxsString errormsg =  L"TAXA Block has been not been read, but a ";
 			if (cmd)
 				errormsg += cmd;
-			errormsg += " command (which requires a TAXA block) has been encountered. Either add a TAXA block or (for blocks other than the TREES block) you may use a \"DIMENSIONS NEWTAXA NTAX= ...\" command to introduces taxa.";
+			errormsg += L" command (which requires a TAXA block) has been encountered. Either add a TAXA block or (for blocks other than the TREES block) you may use a \"DIMENSIONS NEWTAXA NTAX= ...\" command to introduces taxa.";
 			throw NxsException(errormsg, token);
 			}
 		if (nTb > 1)
 			{
-			NxsString errormsg =  "Multiple TAXA Blocks have been read (or implied using NEWTAXA in other blocks) and a";
+			NxsString errormsg =  L"Multiple TAXA Blocks have been read (or implied using NEWTAXA in other blocks) and a";
 			if (cmd)
 				errormsg += cmd;
-			errormsg += " command (which requires a TAXA block) has been encountered.\nA \"LINK TAXA=<title here>;\" command must be used to specify which TAXA block is needed.";
+			errormsg += L" command (which requires a TAXA block) has been encountered.\nA \"LINK TAXA=<title here>;\" command must be used to specify which TAXA block is needed.";
 			cb->WarnDangerousContent(errormsg, token);
 			}
 		taxa = cb;
@@ -508,7 +508,7 @@ void NxsTaxaBlockSurrogate::AssureTaxaBlock(bool allocBlock, NxsToken &token, co
 		NxsTaxaBlockFactory * tbf = nxsReader->GetTaxaBlockFactory();
 		if (tbf)
 			{
-			std::string s("TAXA");
+			std::wstring s(L"TAXA");
 			taxa = tbf->GetBlockReaderForID(s, nxsReader, &token);
 			ownsTaxaBlock = true;
 			passedRefOfOwnedBlock = false;
@@ -578,8 +578,8 @@ void NxsTaxaBlockSurrogate::HandleTaxLabels(
 	{
 	if (!newtaxa || taxa == NULL)
 		{
-		NxsString errormsg = "NEWTAXA must have been specified in DIMENSIONS command to use the TAXLABELS command in a ";
-		errormsg << GetBlockName() << " block";
+		NxsString errormsg = L"NEWTAXA must have been specified in DIMENSIONS command to use the TAXLABELS command in a ";
+		errormsg << GetBlockName() << L" block";
 		throw NxsException(errormsg, token);
 		}
 	taxa->HandleTaxLabels(token);	

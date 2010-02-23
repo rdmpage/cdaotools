@@ -27,7 +27,7 @@ NxsDataBlock::NxsDataBlock(
   NxsAssumptionsBlockAPI *ab)	/* the assumptions block object for storing exsets */
   : NxsCharactersBlock(tb, ab)
 	{
-	id = "DATA";
+	id = L"DATA";
 	Reset();
 	}
 
@@ -52,9 +52,9 @@ void NxsDataBlock::TransferTo(
 	charactersblock.Consume((NxsCharactersBlock &)(*this));
 	}
 
-NxsDataBlock *NxsDataBlockFactory::GetBlockReaderForID(const std::string & idneeded, NxsReader *reader, NxsToken *)
+NxsDataBlock *NxsDataBlockFactory::GetBlockReaderForID(const std::wstring & idneeded, NxsReader *reader, NxsToken *)
 	{
-	if (reader == NULL || idneeded != "DATA")
+	if (reader == NULL || idneeded != L"DATA")
 		return NULL;
 	NxsDataBlock * nb = new NxsDataBlock(NULL, NULL);
 	nb->SetCreateImpliedBlock(true);

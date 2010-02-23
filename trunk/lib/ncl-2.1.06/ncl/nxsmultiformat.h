@@ -27,8 +27,8 @@
 
 class FileToCharBuffer
 {
-		char prevChar;
-		std::istream & inf;
+		wchar_t prevChar;
+		std::wistream & inf;
 		unsigned remaining;
 		unsigned pos;
 	public:
@@ -42,14 +42,14 @@ class FileToCharBuffer
 		length of the buffer.
 		*/
 
-		FileToCharBuffer(std::istream & instream);
+		FileToCharBuffer(std::wistream & instream);
 
 		/* reads at most maxLen characters from `inf` into the `buffer`
 		Returns false if no characters are read.
 		If true is returned then `maxLen` will indicate the number of characters read.
 		*/
 		bool refillBuffer(unsigned offset);
-		char current() const
+		wchar_t current() const
 			{
 			return buffer[pos];
 			}
@@ -62,7 +62,7 @@ class FileToCharBuffer
 				}
 			else
 				++pos;
-			const char c = current();
+			const wchar_t c = current();
 			if (c == 13)
 				{
 				++lineNumber;
@@ -76,7 +76,7 @@ class FileToCharBuffer
 				}
 			return true;
 			}
-		char prev() const
+		wchar_t prev() const
 			{
 			if (pos == 0)
 				return prevChar;
@@ -101,7 +101,7 @@ class FileToCharBuffer
 				return 0;
 			return p - prevNewlinePos;
 			}
-		char * buffer;
+		wchar_t * buffer;
 		unsigned inbuffer; 
 		
 };
@@ -109,7 +109,7 @@ class FileToCharBuffer
 class MultiFormatReader: public PublicNexusReader
 {
 	public:
-		static std::vector<std::string> getFormatNames();
+		static std::vector<std::wstring> getFormatNames();
 		enum DataFormatType
 			{
 				NEXUS_FORMAT,
@@ -136,27 +136,27 @@ class MultiFormatReader: public PublicNexusReader
 				RELAXED_PHYLIP_TREE_FORMAT,
 				UNSUPPORTED_FORMAT // keep this last
 			};
-		static DataFormatType formatNameToCode(const std::string &);
+		static DataFormatType formatNameToCode(const std::wstring &);
 		
 		
 		MultiFormatReader(const int blocksToRead = -1, NxsReader::WarningHandlingMode mode=NxsReader::WARNINGS_TO_STDERR)
 			:PublicNexusReader(blocksToRead, mode)
 			{}
 		virtual ~MultiFormatReader(){}
-		void ReadFilepath(const char * filepath, DataFormatType format);
-		void readFastaFile(std::istream & inf, NxsCharactersBlock::DataTypesEnum dt);
+		void ReadFilepath(const char* filepath, DataFormatType format);
+		void readFastaFile(std::wistream & inf, NxsCharactersBlock::DataTypesEnum dt);
 	private:
-		void addTaxaNames(const std::list<std::string> & taxaName, NxsTaxaBlockAPI * taxa);
-		void moveDataToDataBlock(const std::list<std::string> & taxaNames, std::list<NxsDiscreteStateRow> & matList, const unsigned nchar, NxsDataBlock * dataB);
+		void addTaxaNames(const std::list<std::wstring> & taxaName, NxsTaxaBlockAPI * taxa);
+		void moveDataToDataBlock(const std::list<std::wstring> & taxaNames, std::list<NxsDiscreteStateRow> & matList, const unsigned nchar, NxsDataBlock * dataB);
 		void moveDataToMatrix(std::list<NxsDiscreteStateRow> & matList,  NxsDiscreteStateMatrix &mat);
-		void moveDataToUnalignedBlock(const std::list<std::string> & taxaNames, std::list<NxsDiscreteStateRow> & matList, NxsUnalignedBlock * uB);
-		bool readFastaSequences(FileToCharBuffer & ftcb, const NxsDiscreteDatatypeMapper &dm, std::list<std::string> & taxaNames, std::list<NxsDiscreteStateRow> & matList, size_t & longest);
-		void readPhylipFile(std::istream & inf, NxsCharactersBlock::DataTypesEnum dt, bool relaxedNames, bool interleaved);
-		void readPhylipTreeFile(std::istream & inf, bool relaxedNames);
-		unsigned readPhylipHeader(std::istream & inf, unsigned & ntax, unsigned & nchar);
-		void readPhylipData(FileToCharBuffer & ftcb, const NxsDiscreteDatatypeMapper &dm, std::list<std::string> & taxaNames, std::list<NxsDiscreteStateRow> & matList, const unsigned n_taxa, const unsigned n_char, bool relaxedNames);
-		void readInterleavedPhylipData(FileToCharBuffer & ftcb, const NxsDiscreteDatatypeMapper &dm, std::list<std::string> & taxaNames, std::list<NxsDiscreteStateRow> & matList, const unsigned n_taxa, const unsigned n_char, bool relaxedNames);
-		std::string readPhylipName(FileToCharBuffer & ftcb, unsigned i, bool relaxedNames);
+		void moveDataToUnalignedBlock(const std::list<std::wstring> & taxaNames, std::list<NxsDiscreteStateRow> & matList, NxsUnalignedBlock * uB);
+		bool readFastaSequences(FileToCharBuffer & ftcb, const NxsDiscreteDatatypeMapper &dm, std::list<std::wstring> & taxaNames, std::list<NxsDiscreteStateRow> & matList, size_t & longest);
+		void readPhylipFile(std::wistream & inf, NxsCharactersBlock::DataTypesEnum dt, bool relaxedNames, bool interleaved);
+		void readPhylipTreeFile(std::wistream & inf, bool relaxedNames);
+		unsigned readPhylipHeader(std::wistream & inf, unsigned & ntax, unsigned & nchar);
+		void readPhylipData(FileToCharBuffer & ftcb, const NxsDiscreteDatatypeMapper &dm, std::list<std::wstring> & taxaNames, std::list<NxsDiscreteStateRow> & matList, const unsigned n_taxa, const unsigned n_char, bool relaxedNames);
+		void readInterleavedPhylipData(FileToCharBuffer & ftcb, const NxsDiscreteDatatypeMapper &dm, std::list<std::wstring> & taxaNames, std::list<NxsDiscreteStateRow> & matList, const unsigned n_taxa, const unsigned n_char, bool relaxedNames);
+		std::wstring readPhylipName(FileToCharBuffer & ftcb, unsigned i, bool relaxedNames);
 
 };
 

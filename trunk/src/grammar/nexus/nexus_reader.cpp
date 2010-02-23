@@ -2,106 +2,109 @@
 #include <iostream>
 #include <vector>
 #include "tree_description_parser.hpp"
+#include <cctype>
+#include <util.hpp>
 
 using namespace std;
 namespace CDAO {
 
   DataRepresentation*  nexusparse(){
 
-  //cerr << "nexusparse()\n";
+  //cerr << L"nexusparse()\n";
   OntNexusReader nread(  *(GlobalState::getInfile()), *(GlobalState::getOutfile()), *(GlobalState::getErrorfile()) );
-  //cerr << "Initialized the reader\n";
+  //cerr << L"Initialized the reader\n";
   NxsTaxaBlock* taxa               = new NxsTaxaBlock();
   NxsAssumptionsBlock* assumptions = new NxsAssumptionsBlock( taxa );
   NxsTreesBlock* trees             = new NxsTreesBlock( taxa );
-  NxsCharactersBlock* characters   = new NxsCharactersBlock( taxa, assumptions );
+  NxsCharactersBlock* wchar_tacters   = new NxsCharactersBlock( taxa, assumptions );
   NxsDataBlock* data               = new NxsDataBlock( taxa, assumptions );
   NxsDistancesBlock* distances     = new NxsDistancesBlock( taxa );
 
-  //cerr << "Initialized the blocks\n";
+  //cerr << L"Initialized the blocks\n";
 
   NxsToken token( nread.inf );
 
-  //cerr << "Initialized the token\n";
+  //cerr << L"Initialized the token\n";
 
   nread.Add(taxa);
   nread.Add(assumptions);
   nread.Add(trees);
-  nread.Add(characters);
+  nread.Add(wchar_tacters);
   nread.Add(data);
   nread.Add(distances);
   
-  //cerr << "Preparing to execute\n";
+  //cerr << L"Preparing to execute\n";
 
   nread.Execute( token );
   
-  vector< string > tree_description = vector< string >();
+  vector< wstring > tree_description = vector< wstring >();
   if ( ! trees->IsEmpty() ){
     for (unsigned i = 0; i < trees->GetNumTrees(); ++i ){
-      tree_description.push_back( trees->GetTreeDescription( i ) );
+      tree_description.push_back( trees->GetTreeDescription( i )  );
     }
   }
   else {
-      //cerr << "No Trees!" << endl;
+      //cerr << L"No Trees!" << endl;
   }
  
   
-  //cerr << "tree_description: " << tree_description << endl;
+  //cerr << L"tree_description: L" << tree_description << endl;
   vector< const Node* > parsed_trees = vector< const Node* >();
-  for (vector< string >::iterator i = tree_description.begin(); i < tree_description.end(); ++i){
+  for (vector< wstring >::iterator i = tree_description.begin(); i < tree_description.end(); ++i){
+    
     TreeDescriptionParser  treeParser( *i );
     parsed_trees.push_back( treeParser.getParseTree() ); 
   }
   
-  NexusDataRepresentation* ret = new NexusDataRepresentation( parsed_trees, taxa, trees, assumptions, characters, data, distances );
+  NexusDataRepresentation* ret = new NexusDataRepresentation( parsed_trees, taxa, trees, assumptions, wchar_tacters, data, distances );
 
-  //cerr << "Executed the read\n";
+  //cerr << L"Executed the read\n";
 
   //nread.Report( cout );
    
   // if (! taxa->IsEmpty()){
-//     cerr << "Reporting Taxa:" << "\n";
+//     cerr << L"Reporting Taxa:" << L"\n";
 // 	taxa->Report( cerr );
 //   }
 //   if (! trees->IsEmpty() ){
-//     cerr << "Reporting Trees:" << "\n";
+//     cerr << L"Reporting Trees:" << L"\n";
 // 	trees->Report( cerr );
 //   }
-//   if (! characters->IsEmpty() ){
-//     cerr << "Reporting Characters:" << "\n";
-// 	characters->Report( cerr );
+//   if (! wchar_tacters->IsEmpty() ){
+//     cerr << L"Reporting Characters:" << L"\n";
+// 	wchar_tacters->Report( cerr );
 
   // }
 
   //   if (! data->IsEmpty() ){
-  //     cerr << "Reporting Data: " << "\n";
+  //     cerr << L"Reporting Data: L" << L"\n";
   //     data->Report( cerr );
   //   }
 
 
 //   if (! distances->IsEmpty() ){
-//     cerr << "Reporting Distances:" << "\n";
+//     cerr << L"Reporting Distances:" << L"\n";
 // 	distances->Report( cerr );
 //   }
 //   if (! assumptions->IsEmpty() ){
-//     cerr << "Reporting Assumptions:" << "\n";
+//     cerr << L"Reporting Assumptions:" << L"\n";
 // 	assumptions->Report( cerr );
 //   }
   
-  //cout << "NTax: " << taxa->GetNumTaxonLabels() << "\n";
-  //cout << "NTrees: " << trees->GetNumTrees() << "\n";
+  //cout << L"NTax: L" << taxa->GetNumTaxonLabels() << L"\n";
+  //cout << L"NTrees: L" << trees->GetNumTrees() << L"\n";
   // for (int i = 0; i < taxa->GetNumTaxonLabels(); ++i ){
-//   	cout << "Taxon Label[ " << i << " ] " << taxa->GetTaxonLabel( i ) << "\n";
+//   	cout << L"Taxon Label[ L" << i << L" ] L" << taxa->GetTaxonLabel( i ) << L"\n";
 //   }
 
   //for (unsigned int i = 0; i < trees->GetNumTrees(); ++i){
-  //    cout << "Name: " << trees->GetTreeName( i ) << "\n";
-  //    cout << "Description: " << trees->GetTreeDescription( i ) << "\n";
+  //    cout << L"Name: L" << trees->GetTreeName( i ) << L"\n";
+  //    cout << L"Description: L" << trees->GetTreeDescription( i ) << L"\n";
   //    cout <<  trees->GetTreeDescription( i );
   //}
 
 
-  //cerr << "exiting: nexusparse()\n";
+  //cerr << L"exiting: nexusparse()\n";
   return ret;
 }
 
@@ -121,8 +124,8 @@ namespace CDAO {
   /*
    * Extract the trait state for the given trand and taxon.
    */
-  const char NexusDataRepresentation::getTraitState( const unsigned int taxon, const unsigned int trait)const{
-    char ret = '?';
+  const wchar_t NexusDataRepresentation::getTraitState( const unsigned int taxon, const unsigned int trait)const{
+    wchar_t ret = '?';
     if ( characters_ && !characters_->IsEmpty() ){ 
        int state = characters_->GetInternalRepresentation( taxon, trait, 0  );
        if (NXS_GAP == state){
@@ -156,7 +159,7 @@ namespace CDAO {
    */
   const Node* NexusDataRepresentation::findNode( const unsigned int taxon, const unsigned int tree  )const{
     assert ( taxa_ );
-    string label = taxa_->GetTaxonLabel( taxon );
+    wstring label =  taxa_->GetTaxonLabel( taxon ) ;
     
     return findNode(label, parse_tree_.at( tree  ));
     
@@ -167,7 +170,7 @@ namespace CDAO {
    * Post: The node will have been found if it is in the tree.
    * Cost: O(n)
    */
-  const Node* NexusDataRepresentation::findNode(const  string& key, const Node* current )const{
+  const Node* NexusDataRepresentation::findNode(const  wstring& key, const Node* current )const{
     const Node* ret = NULL;
   if ( current->getLabel() == key){ return current; }
   else {
@@ -176,7 +179,8 @@ namespace CDAO {
   }
   return ret;
   }
-  
-
+ 
 
 }
+
+

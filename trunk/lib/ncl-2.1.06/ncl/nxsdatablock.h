@@ -63,7 +63,7 @@ class NxsDataBlockFactory
 	:public NxsBlockFactory
 	{
 	public:
-		virtual NxsDataBlock  *	GetBlockReaderForID(const std::string & id, NxsReader *reader, NxsToken *token);
+		virtual NxsDataBlock  *	GetBlockReaderForID(const std::wstring & id, NxsReader *reader, NxsToken *token);
 	};
 
 #endif

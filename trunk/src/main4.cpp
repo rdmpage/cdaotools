@@ -31,7 +31,7 @@ int main( int argc, char** argv, char** env){
 
   processArgs( argc, argv, env );
   DataRepresentation* model = phylipparse();
-  model->setMatrixLabel( getInputFile() );
+  model->setMatrixLabel( CDAO::str_to_wstr( getInputFile()) );
   CodeGenerator formatter( model );
   formatter.generate( *(GlobalState::getOutfile()) );
   return 0;

@@ -37,7 +37,7 @@ class NxsStoreTokensBlockReader
 		/*---------------------------------------------------------------------------------------
 		| If the blockname is empty then, any block will be read by the instance
 		*/
-		NxsStoreTokensBlockReader(std::string blockName, bool storeTokenInfo)
+		NxsStoreTokensBlockReader(std::wstring blockName, bool storeTokenInfo)
 			:storeAllTokenInfo(storeTokenInfo),
 			tolerateEOFInBlock(false)
 			{
@@ -45,11 +45,11 @@ class NxsStoreTokensBlockReader
 			}
 		void Read(NxsToken &token);
 		void Reset();
-		void Report(std::ostream &out) NCL_COULD_BE_CONST 
+		void Report(std::wostream &out) NCL_COULD_BE_CONST 
 			{
 			ReportConst(out);
 			}
-		void WriteAsNexus(std::ostream &out) const;
+		void WriteAsNexus(std::wostream &out) const;
 		/*---------------------------------------------------------------------------------------
 		| Results in aliasing of the taxa, assumptionsBlock blocks!
 		*/
@@ -95,9 +95,9 @@ class NxsStoreTokensBlockReader
 			}
 	protected:
 		void ReadCommand(NxsToken &token);
-		void ReportConst(std::ostream &out) const;
+		void ReportConst(std::wostream &out) const;
 
-		typedef std::vector<std::string> VecString;
+		typedef std::vector<std::wstring> VecString;
 		typedef std::list<VecString> ListVecString;
 
 
@@ -128,7 +128,7 @@ class NxsDefaultPublicBlockFactory
 			:tokenizeUnknownBlocks(readUnknownBlocks),
 			storeTokenInfoArg(storeTokenInfo)
 			{}
-		virtual NxsBlock  *	GetBlockReaderForID(const std::string & id, NxsReader *reader, NxsToken *token);
+		virtual NxsBlock  *	GetBlockReaderForID(const std::wstring & id, NxsReader *reader, NxsToken *token);
 
 	protected:
 		NxsAssumptionsBlockFactory assumpBlockFact;
@@ -156,11 +156,11 @@ class NxsCloneBlockFactory
 		NxsCloneBlockFactory()
 			:defPrototype(NULL)
 			{}
-		virtual NxsBlock  *	GetBlockReaderForID(const std::string & id, NxsReader *, NxsToken *)
+		virtual NxsBlock  *	GetBlockReaderForID(const std::wstring & id, NxsReader *, NxsToken *)
 			{
-			std::string b(id.c_str());
+			std::wstring b(id.c_str());
 			NxsString::to_upper(b);
-			std::map<std::string , const NxsBlock *>::const_iterator pIt = prototypes.find(b);
+			std::map<std::wstring , const NxsBlock *>::const_iterator pIt = prototypes.find(b);
 			if (pIt == prototypes.end())
 				return (defPrototype ? defPrototype->Clone() : NULL);
 			return pIt->second->Clone();
@@ -172,9 +172,9 @@ class NxsCloneBlockFactory
 			defPrototype = exemplar;
 			return replaced;
 			}
-		bool AddPrototype(const NxsBlock * exemplar, const char * blockName = NULL)
+		bool AddPrototype(const NxsBlock * exemplar, const wchar_t* blockName = NULL)
 			{
-			std::string b;
+			std::wstring b;
 			if (blockName)
 				b.assign(blockName);
 			else 
@@ -191,7 +191,7 @@ class NxsCloneBlockFactory
 			}
 
 	protected:
-		std::map<std::string , const NxsBlock *> prototypes;
+		std::map<std::wstring , const NxsBlock *> prototypes;
 		const NxsBlock * defPrototype;
 	};
 
@@ -230,7 +230,7 @@ class PublicNexusReader: public ExceptionRaisingNxsReader
 		virtual ~PublicNexusReader();
 		
 		virtual void	Execute(NxsToken& token, bool notifyStartStop = true);
-		std::string GetErrorMessage()
+		std::wstring GetErrorMessage()
 			{
 			return errorMsg;
 			}
@@ -290,37 +290,37 @@ class PublicNexusReader: public ExceptionRaisingNxsReader
 		void AddReadAssumptionsBlock(NxsAssumptionsBlock * block) 
 			{
 			assumptionsBlockVec.push_back(block);
-			AddReadBlock("ASSUMPTIONS", block);
+			AddReadBlock(L"ASSUMPTIONS", block);
 			}
 		void AddReadCharactersBlock(NxsCharactersBlock * block) 
 			{
 			charactersBlockVec.push_back(block);
-			AddReadBlock("CHARACTERS", block);
+			AddReadBlock(L"CHARACTERS", block);
 			}
 		void AddReadDataBlock(NxsDataBlock * block) 
 			{
 			dataBlockVec.push_back(block);
-			AddReadBlock("CHARACTERS", block);
+			AddReadBlock(L"CHARACTERS", block);
 			}
 		void AddReadDistancesBlock(NxsDistancesBlock * block) 
 			{
 			distancesBlockVec.push_back(block);
-			AddReadBlock("DISTANCES", block);
+			AddReadBlock(L"DISTANCES", block);
 			}
 		void AddReadTaxaBlock(NxsTaxaBlock * block) 
 			{
 			taxaBlockVec.push_back(block);
-			AddReadBlock("TAXA", block);
+			AddReadBlock(L"TAXA", block);
 			}
 		void AddReadTreesBlock(NxsTreesBlock * block) 
 			{
 			treesBlockVec.push_back(block);
-			AddReadBlock("TREES", block);
+			AddReadBlock(L"TREES", block);
 			}
 		void AddReadUnalignedBlock(NxsUnalignedBlock * block) 
 			{
 			unalignedBlockVec.push_back(block);
-			AddReadBlock("UNKNOWN", block);
+			AddReadBlock(L"UNKNOWN", block);
 			}
 		void AddReadUnknownBlock(NxsStoreTokensBlockReader * block) 
 			{
@@ -350,7 +350,7 @@ class PublicNexusReader: public ExceptionRaisingNxsReader
 		std::vector<NxsTreesBlock *> treesBlockVec;
 		std::vector<NxsUnalignedBlock *> unalignedBlockVec;
 
-		std::string errorMsg;
+		std::wstring errorMsg;
 
 		
 	};

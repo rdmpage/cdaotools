@@ -60,8 +60,8 @@ class BASICFACTORY
 		void					NexusError(NxsString msg, file_pos pos, long line, long col);
 		void					PreprocessNextCommand();
 		void					PrintMessage(bool linefeed = true) NCL_COULD_BE_CONST ;
-		virtual void			Report(ostream &out) NCL_COULD_BE_CONST ;
-		void					Run(char *infile_name);
+		virtual void			Report(wostream &out) NCL_COULD_BE_CONST ;
+		void					Run(const char *infile_name);
 		void					SkippingBlock(NxsString blockName);
 		void					SkippingCommand(NxsString commandName);
 		void					SkippingDisabledBlock(NxsString blockName);
@@ -72,9 +72,9 @@ class BASICFACTORY
 		bool					inf_open;			/* true if `inf' is currently open */
 		bool					logf_open;			/* true if `logf' is currently open */
 		bool					quit_now;			/* set to false at beginning of Run and turns true only when QUIT command processed */
-		mutable ofstream		logf;				/* the log file output stream */
+		mutable wofstream		logf;				/* the log file output stream */
 		mutable NxsString		message;			/* workspace for composing output strings */
-		char *					next_command;		/* workspace for processing next command entered interactively by user */
+		wchar_t *					next_command;		/* workspace for processing next command entered interactively by user */
 
 		unsigned				CharLabelToNumber(NxsString s) NCL_COULD_BE_CONST;
 		bool					FileExists(const char* fn);
@@ -101,7 +101,7 @@ class MyNexusToken
   : public NxsToken
 	{
 	public:
-				MyNexusToken(istream &i);
+				MyNexusToken(wistream &i);
 
 		void	OutputComment(const NxsString &msg);
 	};

@@ -25,16 +25,16 @@
 #include <LogManager.hpp>
 
 
-using namespace std;
+//using namespace std;
 using namespace CDAO;
-//static const string INFILE_ARG  = "-i";
-//static const string OUTFILE_ARG = "-o";
-static const string COMPRESS_OUTPUT_ARG = "-z";
-//static const string VERBOSE_1   = "-v";
-//static const string VERBOSE_2   = "-vv";
-//static const string VERBOSE_3   = "-vvv";
-//static const string VERBOSE_4   = "-vvvv";
-//static const string VERBOSE_5   = "-vvvvv";
+//static const wstring INFILE_ARG  = L"-i";
+//static const wstring OUTFILE_ARG = L"-o";
+static const std::string COMPRESS_OUTPUT_ARG = "-z";
+//static const wstring VERBOSE_1   = L"-v";
+//static const wstring VERBOSE_2   = L"-vv";
+//static const wstring VERBOSE_3   = L"-vvv";
+//static const wstring VERBOSE_4   = L"-vvvv";
+//static const wstring VERBOSE_5   = L"-vvvvv";
 
 //TypedOutputStream tocerr = *StreamFactory::getOutputInstance( cerr );
 
@@ -43,24 +43,24 @@ static const string COMPRESS_OUTPUT_ARG = "-z";
  */
 void myprocessArgs(int argc, char** argv, char** env);
 
-void doCompressedOutput( const string& inname, const string& outname );
-void doNormalOutput( const string& inname, const string& outname );
+void doCompressedOutput( const std::string& inname, const std::string& outname );
+void doNormalOutput( const std::string& inname, const std::string& outname );
 
-inline bool isOption( const char* str){ return str ? *str == '-' : false; }
+inline bool isOption( const wchar_t* str){ return str ? *str == (wchar_t)'-' : false; }
 /*
  * Initializes the logging system. 
  */
-//void initLog(LogManager& lmgr, const char* out, const int level);
+//void initLog(LogManager& lmgr, const wchar_t* out, const int level);
 /*
  * Input and output streams.
  */
-istream* in;
-ostream* out;
+std::wistream* in;
+std::wostream* out;
 
 //Logger* logger;
 
-vector< string > input_files;
-vector< string > output_files;
+std::vector< std::string > input_files;
+std::vector< std::string > output_files;
 
 bool compress_output = false;
 
@@ -70,10 +70,10 @@ int main(int argc, char** argv, char** env){
   //Logger has been configured.
 //  LogManager lmgr = LogManager::getInstance();
   unsigned long int file_no = 1;     
-  for (vector< string >::iterator i = input_files.begin(); i != input_files.end(); ++i, ++file_no ){
-      in = new ifstream( i->c_str() );
+  for (std::vector< std::string >::iterator i = input_files.begin(); i != input_files.end(); ++i, ++file_no ){
+      in = new std::wifstream( (*i).c_str() );
       
-      cerr << "Processing (" << file_no << "/" << input_files.size() << " : " << 100*(double)file_no/input_files.size() << "%):" << *i << endl;
+      std::wcerr << L"Processing (" << file_no << L"/" << input_files.size() << L" : " << 100*(double)file_no/input_files.size() << L"%):" << CDAO::str_to_wstr( *i ) << std::endl;
 
       if (compress_output){ doCompressedOutput(*i, *i + ".cdao"); }
       else { doNormalOutput( *i, *i + ".cdao" ); }
@@ -84,20 +84,22 @@ int main(int argc, char** argv, char** env){
 }
 
 void myprocessArgs(int argc, char** argv, char** env){
- // cerr << "processArgs( argc:"  << argc << ", argv:" << argv << ", env: " << env << ")\n";
+ // cerr << L"processArgs( argc:"  << argc << L", argv:" << argv << L", env: L" << env << L")\n";
   //int default_log_level = NO_MESSAGES_LR;
   //logger = new CppLogger( cerr, default_log_level );
-  in = &cin;
-  out = &cout;
-  GlobalState::setInfile( &cin );
-  GlobalState::setOutfile( &cout );
-  input_files = vector< string >();
-  output_files = vector< string >();
+  in = &std::wcin;
+  out = &std::wcout;
+ 
+  GlobalState::setInfile( in );
+  GlobalState::setOutfile( out );
+
+  input_files = std::vector< std::string >();
+  output_files = std::vector< std::string >();
   //LogManager lmgr = LogManager::getInstance();
   //GlobalState::setErrorfile( &cerr );
   for (int i = 1; i < argc  - 1; ++i){
     if ( argv[ i ] == INFILE_ARG){
-	input_files.push_back( argv[ i + 1 ] );
+	input_files.push_back(  std::string( argv[ i + 1 ] )  );
         //ifstream* inf = new ifstream( input_file.c_str() );
         
 	//GlobalState::setInfile( in =  dynamic_cast<istream*>(inf) );
@@ -106,7 +108,7 @@ void myprocessArgs(int argc, char** argv, char** env){
 	//ofstream* outf = new ofstream( argv[ i + 1 ]  );
       	//GlobalState::setOutfile( out =  dynamic_cast<ostream*>(outf) );
 	//Codegen::Imports::setBaseURI( argv[ i + 1 ] );
-        output_files.push_back( argv[ i + 1 ] );
+        output_files.push_back(  std::string(argv[ i + 1 ])  );
     }
     else if ( argv[ i ] == COMPRESS_OUTPUT_ARG){
         compress_output = true;
@@ -127,11 +129,11 @@ void myprocessArgs(int argc, char** argv, char** env){
     //  initLog( lmgr, argv[ i + 1], ALL_MESSAGES_LR );
     //}
   }
- // cerr << "exiting processArgs()\n";
+ // cerr << L"exiting processArgs()\n";
   return;
 }
 
-//void initLog(LogManager& lmgr, const char* out, const int level){
+//void initLog(LogManager& lmgr, const wchar_t* out, const int level){
 
 //  if (isOption( out )){
     
@@ -143,8 +145,8 @@ void myprocessArgs(int argc, char** argv, char** env){
  // } 
 //}
 
-void doCompressedOutput( const string& inname, const string& outname ){
-  ifstream* in;
+void doCompressedOutput( const std::string& inname, const std::string& outname ){
+  std::wifstream* in;
   //ofstream* out;
   DataRepresentation* data;
   const unsigned int READ_END = 0;
@@ -163,7 +165,7 @@ void doCompressedOutput( const string& inname, const string& outname ){
                   execlp("gzip","gzip", (char*)NULL);
               }
               else {
-                perror("Unable to dup STDOUT_FILENO ");
+                perror("Unable to dup STDOUT_FILENO L");
                 exit( 1 );
               }
             }
@@ -173,7 +175,7 @@ void doCompressedOutput( const string& inname, const string& outname ){
             }
           }
           else {
-             perror("Unable to dup STDIN_FILENO ");
+             perror("Unable to dup STDIN_FILENO L");
              exit( 1 );
           }
 
@@ -186,20 +188,20 @@ void doCompressedOutput( const string& inname, const string& outname ){
       else {
         if (close( pipe_descriptors[ READ_END ]) > -1 ){
           if (dup2( pipe_descriptors[ WRITE_END ], STDOUT_FILENO) > -1){
-            in = new ifstream( inname.c_str() );
+            in = new wifstream( inname.c_str() );
             GlobalState::setInfile( in );
-            GlobalState::setOutfile( &cout );
+            GlobalState::setOutfile( &wcout );
 
             data = nexusparse();
 
-            cerr << "Parsed: " << inname << endl;
+            std::wcerr << L"Parsed: " << CDAO::str_to_wstr( inname ) << endl;
 
-            data->setMatrixLabel( inname );
+            data->setMatrixLabel(  CDAO::str_to_wstr( inname )  );
             CodeGenerator outputFormatter( data );
 
-            outputFormatter.generate( cout );
+            outputFormatter.generate( wcout );
         
-            cerr << "Wrote output" << endl;
+            std::wcerr << L"Wrote output" << endl;
 
             in->close();
             close( pipe_descriptors[ WRITE_END ] );
@@ -207,9 +209,9 @@ void doCompressedOutput( const string& inname, const string& outname ){
             delete in;
             delete data;
             int status; 
-            cerr << "Waiting for child to exit" << endl;
+            std::wcerr << L"Waiting for child to exit" << endl;
             waitpid(-1, &status, 0);
-            cerr << "Child Exited" << endl;
+            std::wcerr << L"Child Exited" << endl;
           }
           else { perror( "Unable to dup STDOUT_FILENO" ); }
         }
@@ -217,7 +219,7 @@ void doCompressedOutput( const string& inname, const string& outname ){
       }
   }
   else {
-      perror("Unable to open pipe: ");
+      perror("Unable to open pipe: L");
       exit( 1 );
 
   }
@@ -227,19 +229,19 @@ void doCompressedOutput( const string& inname, const string& outname ){
 
 void doNormalOutput( const string& inname, const string& outname ){
 
-  ifstream* in;
-  ofstream* out;
+  std::wifstream* in;
+  std::wofstream* out;
   DataRepresentation* data;
 
-  in = new ifstream( inname.c_str() );
-  out = new ofstream( outname.c_str() );
+  in = new std::wifstream(  inname.c_str() );
+  out = new std::wofstream(  outname.c_str() );
 
   GlobalState::setInfile( in );
   GlobalState::setOutfile( out );
   
   data = nexusparse();
 
-  data->setMatrixLabel( inname );
+  data->setMatrixLabel(  CDAO::str_to_wstr( inname ) );
 
   CodeGenerator outputFormatter( data );
 

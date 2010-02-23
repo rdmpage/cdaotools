@@ -27,7 +27,7 @@ class CodeGenerator {
      /*
       * Generate the output in ontology format.
       */
-     void generate( std::ostream& out );
+     void generate( std::wostream& out );
    private:
      const DataRepresentation* data_model_;
 };

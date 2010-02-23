@@ -34,7 +34,7 @@ class NxsTaxaBlockAPI;
 class NxsTreesBlockAPI;
 
 typedef std::list<NxsBlock *> BlockReaderList;
-typedef std::map<std::string, BlockReaderList> BlockTypeToBlockList;
+typedef std::map<std::wstring, BlockReaderList> BlockTypeToBlockList;
 
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -119,13 +119,13 @@ class NxsReader
 		void			Detach(NxsBlock *newBlock);
 		void			Reassign(NxsBlock *oldb, NxsBlock *newb);
 		virtual void	Execute(NxsToken& token, bool notifyStartStop = true);
-		void			ReadFilepath(const char *filename);
-		void			ReadFilestream(std::istream & inf);
+		void			ReadFilepath(const char* filename);
+		void			ReadFilestream(std::wistream & inf);
 		virtual void	DebugReportBlock(NxsBlock &nexusBlock);
 
-		const char		*NCLNameAndVersion();
-		const char		*NCLCopyrightNotice();
-		const char		*NCLHomePageURL();
+		const wchar_t		*NCLNameAndVersion();
+		const wchar_t		*NCLCopyrightNotice();
+		const wchar_t		*NCLHomePageURL();
 
 		virtual void	ExecuteStarting();
 		virtual void	ExecuteStopping();
@@ -138,7 +138,7 @@ class NxsReader
 			warnLevel >= PROBABLY_INCORRECT_CONTENT_WARNING 
 		 	and to ignore all other warnings.
 		*/
-		virtual void	NexusWarn(const std::string &s, NxsWarnLevel warnLevel, file_pos pos, long line, long col)
+		virtual void	NexusWarn(const std::wstring &s, NxsWarnLevel warnLevel, file_pos pos, long line, long col)
 			{
 			if (warnLevel >= PROBABLY_INCORRECT_CONTENT_WARNING)
 				{
@@ -146,11 +146,11 @@ class NxsReader
 				throw NxsException(e, pos, line, col);
 				}
 			}
-		void	NexusWarnToken(const std::string &m, NxsWarnLevel warnLevel, const ProcessedNxsToken &token)
+		void	NexusWarnToken(const std::wstring &m, NxsWarnLevel warnLevel, const ProcessedNxsToken &token)
 			{
 			NexusWarn(m , warnLevel, token.GetFilePosition(), token.GetLineNumber(), token.GetColumnNumber());
 			}
-		void	NexusWarnToken(const std::string &m, NxsWarnLevel warnLevel, const NxsToken &token)
+		void	NexusWarnToken(const std::wstring &m, NxsWarnLevel warnLevel, const NxsToken &token)
 			{
 			NexusWarn(m , warnLevel, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 			}
@@ -162,7 +162,7 @@ class NxsReader
 
 		
 		virtual void			ClearUsedBlockList();
-		NxsBlock 			   *CreateBlockFromFactories(const std::string & currBlockName, NxsToken &token, NxsBlockFactory **sourceOfBlock = NULL);
+		NxsBlock 			   *CreateBlockFromFactories(const std::wstring & currBlockName, NxsToken &token, NxsBlockFactory **sourceOfBlock = NULL);
 		BlockReaderList 		GetUsedBlocksInOrder();
 		BlockReaderList 		GetBlocksFromLastExecuteInOrder();
 		BlockTypeToBlockList 	GetUsedBlocks();
@@ -172,9 +172,9 @@ class NxsReader
 		NxsCharactersBlockAPI 	*GetLastStoredCharactersBlock();
 		NxsTreesBlockAPI 		*GetLastStoredTreesBlock();
 
-		NxsTaxaBlockAPI 		*GetTaxaBlockByTitle(const char *title, unsigned *nMatches);
-		NxsCharactersBlockAPI 	*GetCharBlockByTitle(const char *title, unsigned *nMatches);
-		NxsTreesBlockAPI 		*GetTreesBlockByTitle(const char *title, unsigned *nMatches);
+		NxsTaxaBlockAPI 		*GetTaxaBlockByTitle(const wchar_t*title, unsigned *nMatches);
+		NxsCharactersBlockAPI 	*GetCharBlockByTitle(const wchar_t*title, unsigned *nMatches);
+		NxsTreesBlockAPI 		*GetTreesBlockByTitle(const wchar_t*title, unsigned *nMatches);
 
 		NxsTaxaBlockFactory 	*GetTaxaBlockFactory();
 		//NxsCharactersBlockFactory 	*GetCharBlockFactory();
@@ -224,15 +224,15 @@ class NxsReader
 			{
 			this->destroyRepeatedTaxaBlocks = v;
 			}
-		std::vector<std::string> GetAllTitlesForBlock(const NxsBlock *b) const;
+		std::vector<std::wstring> GetAllTitlesForBlock(const NxsBlock *b) const;
 	protected:
-		static 			BlockReaderList parseFileWithReader(NxsReader & reader, const char *filepath, bool parsePrivateBlocks=true, bool storeTokenInfo=true);
+		static 			BlockReaderList parseFileWithReader(NxsReader & reader, const char*filepath, bool parsePrivateBlocks=true, bool storeTokenInfo=true);
 		bool 			BlockIsASingeltonReader(NxsBlock *) const ;
 		void 			BlockReadHook(const NxsString &currBlockName, NxsBlock *currBlock, NxsToken *token = NULL );
 		bool 			ExecuteBlock(NxsToken &token, const NxsString &currBlockName, NxsBlock *currBlock, NxsBlockFactory * sourceOfBlock);
 		bool			IsRepeatedTaxaBlock(const NxsTaxaBlockAPI *) const;
 		NxsTaxaBlockAPI * GetOriginalTaxaBlock(const NxsTaxaBlockAPI *) const;
-		void			RegisterAltTitle(const NxsBlock * b, std::string t);
+		void			RegisterAltTitle(const NxsBlock * b, std::wstring t);
 		virtual void 	PostBlockReadingHook(NxsBlock &);
 
 
@@ -244,20 +244,20 @@ class NxsReader
 		bool destroyRepeatedTaxaBlocks;
 		
 	private:
-		NxsBlock 		*FindBlockOfTypeByTitle(const std::string &btype, const char *title, unsigned *nMatches);
-		NxsBlock		*FindBlockByTitle(const BlockReaderList & chosenBlockList, const char *title, unsigned *nMatches);
-		NxsBlock 		*GetLastStoredBlockByID(const std::string &key);
-		void 			NewBlockTitleCheckHook(const std::string &blockname, NxsBlock *p, NxsToken *token);
-		void			AddBlockToUsedBlockList(const std::string &, NxsBlock *, NxsToken *);
-		bool 			ReadUntilEndblock(NxsToken &token, const std::string & currBlockName);
+		NxsBlock 		*FindBlockOfTypeByTitle(const std::wstring &btype, const wchar_t*title, unsigned *nMatches);
+		NxsBlock		*FindBlockByTitle(const BlockReaderList & chosenBlockList, const wchar_t*title, unsigned *nMatches);
+		NxsBlock 		*GetLastStoredBlockByID(const std::wstring &key);
+		void 			NewBlockTitleCheckHook(const std::wstring &blockname, NxsBlock *p, NxsToken *token);
+		void			AddBlockToUsedBlockList(const std::wstring &, NxsBlock *, NxsToken *);
+		bool 			ReadUntilEndblock(NxsToken &token, const std::wstring & currBlockName);
 		
 		BlockReaderList blocksInOrder;
 		BlockReaderList lastExecuteBlocksInOrder;
 		BlockTypeToBlockList blockTypeToBlockList;
-		typedef std::pair<unsigned, std::list<std::string> > NxsBlockTitleHistory;
-		typedef std::map<std::string, NxsBlockTitleHistory > NxsBlockTitleHistoryMap;
+		typedef std::pair<unsigned, std::list<std::wstring> > NxsBlockTitleHistory;
+		typedef std::map<std::wstring, NxsBlockTitleHistory > NxsBlockTitleHistoryMap;
 		NxsBlockTitleHistoryMap blockTitleHistoryMap;
-		std::map<const NxsBlock *, std::list<std::string> > blockTitleAliases; // to deal with culling blocks and then using the titles of culled copies
+		std::map<const NxsBlock *, std::list<std::wstring> > blockTitleAliases; // to deal with culling blocks and then using the titles of culled copies
 
 	};
 
@@ -271,7 +271,7 @@ class ExceptionRaisingNxsReader : public NxsReader
 			:warnMode(mode),
 			warningToErrorThreshold(PROBABLY_INCORRECT_CONTENT_WARNING)
 			{}
-		static BlockReaderList parseFileOrThrow(const char *filepath, 
+		static BlockReaderList parseFileOrThrow(const char*filepath, 
 												NxsReader::WarningHandlingMode mode = NxsReader::WARNINGS_TO_STDERR, 
 												bool parsePrivateBlocks=true, 
 												bool storeTokenInfo=true);
@@ -279,7 +279,7 @@ class ExceptionRaisingNxsReader : public NxsReader
 			{
 			throw NxsException(msg, pos, line, col);
 			}
-		virtual void NexusWarn(const std::string & msg, NxsWarnLevel level, file_pos pos, long line, long col);		
+		virtual void NexusWarn(const std::wstring & msg, NxsWarnLevel level, file_pos pos, long line, long col);		
 	
 		void SkippingBlock(NxsString blockName);
 		void SkippingDisabledBlock(NxsString blockName);
@@ -299,9 +299,9 @@ class ExceptionRaisingNxsReader : public NxsReader
 class DefaultErrorReportNxsReader : public NxsReader
 	{
 	public:
-		static BlockReaderList parseFile(const char *filepath, std::ostream * stdOutstream, std::ostream * errOutstream, bool parsePrivateBlocks=true, bool storeTokenInfo=true);
+		static BlockReaderList parseFile(const char* filepath, std::wostream * stdOutstream, std::wostream * errOutstream, bool parsePrivateBlocks=true, bool storeTokenInfo=true);
 
-		DefaultErrorReportNxsReader(std::ostream * stdOutstream, std::ostream * errOutstream)
+		DefaultErrorReportNxsReader(std::wostream * stdOutstream, std::wostream * errOutstream)
 			:NxsReader(),
 			stdOut(stdOutstream),
 			errOut(errOutstream)
@@ -319,7 +319,7 @@ class DefaultErrorReportNxsReader : public NxsReader
 			{
 			if (stdOut != 0L)
 				{
-				*stdOut << "[!Skipping unknown block (" << blockName << ")...]\n";
+				*stdOut << L"[!Skipping unknown block (" << blockName << L")...]\n";
 				stdOut->flush();
 				}
 			}
@@ -328,12 +328,12 @@ class DefaultErrorReportNxsReader : public NxsReader
 			{
 			if (stdOut != 0L)
 				{
-				*stdOut << "[!Skipping disabled block (" << blockName << ")...]\n";
+				*stdOut << L"[!Skipping disabled block (" << blockName << L")...]\n";
 				stdOut->flush();
 				}
 			}
 
-		void NexusWarn(const std::string & msg, NxsWarnLevel warnLevel, file_pos pos, long line, long col)
+		void NexusWarn(const std::wstring & msg, NxsWarnLevel warnLevel, file_pos pos, long line, long col)
 			{
 			if (warnLevel >= PROBABLY_INCORRECT_CONTENT_WARNING)
 				{
@@ -343,16 +343,16 @@ class DefaultErrorReportNxsReader : public NxsReader
 
 			if (errOut != 0)
 				{
-				*errOut << "\nWarning:  ";
+				*errOut << L"\nWarning:  ";
 				if (line >= 0)
-					*errOut << "at line " << line << ", column " << col << " (file position " << pos << "):\n";
+					*errOut << L"at line " << line << L", column " << col << L" (file position " << pos << L"):\n";
 				*errOut  << msg << std::endl;
 				}
 			else if (stdOut != 0L)
 				{
-				*stdOut << "\nWarning:  ";
+				*stdOut << L"\nWarning:  ";
 				if (line >= 0)
-					*stdOut << "at line " << line << ", column " << col << " (file position " << pos << "):\n";
+					*stdOut << L"at line " << line << L", column " << col << L" (file position " << pos << L"):\n";
 				*stdOut  << msg << std::endl;
 				}
 			}
@@ -363,8 +363,8 @@ class DefaultErrorReportNxsReader : public NxsReader
 			throw NxsException(msg, pos, line, col);
 			}
 
-		std::ostream * stdOut;
-		std::ostream * errOut;
+		std::wostream * stdOut;
+		std::wostream * errOut;
 	};
 
 /*----------------------------------------------------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 #include "node.hpp"
 #include <cassert>
 #include <utility>
+#include <util.hpp>
 
 using namespace std;
 namespace CDAO {
@@ -11,9 +12,9 @@ namespace CDAO {
      }
   }
 
-  void Node::printTree(unsigned int level,  std::ostream& out  )const{
-    for (unsigned int i = 0; i < level; ++i ){ out << "  ";}
-    out <<"Name:" << this->getLabel() <<" Weight:" << this->getWeight() <<"\n";
+  void Node::printTree(unsigned int level,  std::wostream& out  )const{
+    for (unsigned int i = 0; i < level; ++i ){ out << L"  L";}
+    out <<L"Name:" <<  this->getLabel() << L" Weight:" << this->getWeight() <<L"\n";
     for (unsigned int i = 0; i < descendants_.size(); ++i){
       descendants_[i]->printTree( level + 1, out);
     }

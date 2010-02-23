@@ -28,7 +28,7 @@ using namespace std;
 
 
 BlockReaderList ExceptionRaisingNxsReader::parseFileOrThrow(
-    const char *filepath, /* path of file to parse */
+    const char*filepath, /* path of file to parse */
     NxsReader::WarningHandlingMode mode, 
     bool parsePrivateBlocks, /* true to store the commands found in  private blocks */
     bool storeTokenInfo)
@@ -38,9 +38,9 @@ BlockReaderList ExceptionRaisingNxsReader::parseFileOrThrow(
     }
 
 BlockReaderList DefaultErrorReportNxsReader::parseFile(
-    const char *filepath, /* path of file to parse */
-    std::ostream * stdOutstream, 
-    std::ostream * errOutstream,
+    const char*filepath, /* path of file to parse */
+    std::wostream * stdOutstream, 
+    std::wostream * errOutstream,
     bool parsePrivateBlocks, /* true to store the commands found in  private blocks */
     bool storeTokenInfo)
     {
@@ -55,25 +55,30 @@ BlockReaderList DefaultErrorReportNxsReader::parseFile(
 */
 BlockReaderList NxsReader::parseFileWithReader(
     NxsReader & nexusReader,
-    const char *filepath, /* path of file to parse */
+    const char* filepath, /* path of file to parse */
     bool parsePrivateBlocks, /* true to store the commands found in  private blocks */
     bool storeTokenInfo) /* true for storage of full token info (such as file position) for private blocks */
     {
-    if (!filepath)
-        nexusReader.NexusError("Invalid (NULL) file specified to be parsed", 0, -1, -1);
-    ifstream inf(filepath, ios::binary);
+    if (!filepath){
+        nexusReader.NexusError(L"Invalid (NULL) file specified to be parsed", 0, -1, -1);
+    }
+    //std::string temp( filepath );
+    std::wstring fp = str_to_wstr( filepath );
+    //std::copy( temp.begin(), temp.end(), fp.begin() );
+
+    std::wifstream inf(filepath, ios::binary);
     if (!inf.good())
         {
         NxsString err;
-        err << "Could not parse the file \"" << filepath <<"\"";
+        err << L"Could not parse the file \"" << fp << L"\"";
         nexusReader.NexusError(err, 0, -1, -1);
         }
-    cerr << "Creating token" <<endl;
+    cerr << L"Creating token" <<endl;
 	NxsToken token(inf);	
 	NxsDefaultPublicBlockFactory factory(parsePrivateBlocks, storeTokenInfo);
 	nexusReader.AddFactory(&factory);
 	try {
-        cerr << "Executing" <<endl;
+        cerr << L"Executing" <<endl;
 	    nexusReader.Execute(token);
 	    }
 	catch(...) 
@@ -93,23 +98,23 @@ void NxsStoreTokensBlockReader::Reset()
 	commandsRead.clear();
 	}
 
-void NxsStoreTokensBlockReader::ReportConst(std::ostream &out) const
+void NxsStoreTokensBlockReader::ReportConst(std::wostream &out) const
 	{
-	out << id << " block contains ";
+	out << id << L" block contains ";
 	if (storeAllTokenInfo)
 		{
-		out << (unsigned)commandsRead.size() << " commands:\n";
+		out << (unsigned)commandsRead.size() << L" commands:\n";
 		for (std::list<ProcessedNxsCommand>::const_iterator cIt = commandsRead.begin(); cIt != commandsRead.end(); ++cIt)
 			{
 			const ProcessedNxsToken & t = (*cIt)[0];
-			out << "    " << t.GetToken() << "\n";
+			out << L"    " << t.GetToken() << L"\n";
 			}
 		}
 	else
 		{
-		out << (unsigned)justTokens.size() << " commands:\n";
+		out << (unsigned)justTokens.size() << L" commands:\n";
 		for (ListVecString::const_iterator cIt = justTokens.begin(); cIt != justTokens.end(); ++cIt)
-			out << "    " << cIt->at(0) << "\n";
+			out << L"    " << cIt->at(0) << L"\n";
 		}
 	}
 
@@ -126,7 +131,7 @@ void NxsStoreTokensBlockReader::ReadCommand(
 	else
 		{
 		VecString justString;
-		while (!token.Equals(";"))
+		while (!token.Equals(L";"))
 			{
 			justString.push_back(token.GetToken());
 			token.GetNextToken();
@@ -141,14 +146,14 @@ void NxsStoreTokensBlockReader::Read(
 	{
 	isEmpty = false;
 	isUserSupplied = true;
-	NxsString begcmd("BEGIN ");
+	NxsString begcmd(L"BEGIN ");
 	begcmd += this->id;
 	DemandEndSemicolon(token, begcmd.c_str());
 
 	for(;;)
 		{
 		token.GetNextToken();
-        if (token.Equals("END") || token.Equals("ENDBLOCK"))
+        if (token.Equals(L"END") || token.Equals(L"ENDBLOCK"))
             {
             HandleEndblock(token);
             return ;
@@ -157,9 +162,9 @@ void NxsStoreTokensBlockReader::Read(
 		}
 	}
 
-void NxsStoreTokensBlockReader::WriteAsNexus(std::ostream &out) const
+void NxsStoreTokensBlockReader::WriteAsNexus(std::wostream &out) const
 	{
-	out << "BEGIN " << NxsString::GetEscaped(this->id) << ";\n";
+	out << L"BEGIN " << NxsString::GetEscaped(this->id) << L";\n";
 	if (storeAllTokenInfo)
 		{
 		for (std::list<ProcessedNxsCommand>::const_iterator cIt = commandsRead.begin(); cIt != commandsRead.end(); ++cIt)
@@ -174,32 +179,32 @@ void NxsStoreTokensBlockReader::WriteAsNexus(std::ostream &out) const
 		for (ListVecString::const_iterator cIt = justTokens.begin(); cIt != justTokens.end(); ++cIt)
 			{
 			const VecString & t = *cIt;
-			out << "   ";
+			out << L"   ";
 			for (VecString::const_iterator wIt = t.begin(); wIt != t.end(); ++wIt)
 				out << ' ' << NxsString::GetEscaped(*wIt);
-			out << ";\n";
+			out << L";\n";
 			}
 		}
 	WriteSkippedCommands(out);
-	out << "END;\n";
+	out << L"END;\n";
 	}
 
 
-NxsBlock  *NxsDefaultPublicBlockFactory::GetBlockReaderForID(const std::string & id, NxsReader *reader, NxsToken *token)
+NxsBlock  *NxsDefaultPublicBlockFactory::GetBlockReaderForID(const std::wstring & id, NxsReader *reader, NxsToken *token)
 	{
-	if (id == "ASSUMPTIONS" || id == "SETS")
+	if (id == L"ASSUMPTIONS" || id == L"SETS")
 		return assumpBlockFact.GetBlockReaderForID(id, reader, token);
-	if (id == "CHARACTERS")
+	if (id == L"CHARACTERS")
 		return charBlockFact.GetBlockReaderForID(id, reader, token);
-	if (id == "DATA")
+	if (id == L"DATA")
 		return dataBlockFact.GetBlockReaderForID(id, reader, token);
-	if (id == "DISTANCES")
+	if (id == L"DISTANCES")
 		return distancesBlockFact.GetBlockReaderForID(id, reader, token);
-	if (id == "TAXA")
+	if (id == L"TAXA")
 		return taxaBlockFact.GetBlockReaderForID(id, reader, token);
-	if (id == "TREES")
+	if (id == L"TREES")
 		return treesBlockFact.GetBlockReaderForID(id, reader, token);
-	if (id == "UNALIGNED")
+	if (id == L"UNALIGNED")
 		return unalignedBlockFact.GetBlockReaderForID(id, reader, token);
 	if (tokenizeUnknownBlocks)
 		{
@@ -231,9 +236,9 @@ PublicNexusReader::PublicNexusReader(const int blocksToRead, NxsReader::WarningH
 		{
 		assumptionsBlockTemplate = new NxsAssumptionsBlock(0L);
 		assumptionsBlockTemplate->SetImplementsLinkAPI(true);
-		cloneFactory.AddPrototype(assumptionsBlockTemplate, "ASSUMPTIONS");
-		cloneFactory.AddPrototype(assumptionsBlockTemplate, "SETS");
-		cloneFactory.AddPrototype(assumptionsBlockTemplate, "CODONS");
+		cloneFactory.AddPrototype(assumptionsBlockTemplate, L"ASSUMPTIONS");
+		cloneFactory.AddPrototype(assumptionsBlockTemplate, L"SETS");
+		cloneFactory.AddPrototype(assumptionsBlockTemplate, L"CODONS");
 		}
 
 	if (blocksToRead & NEXUS_TREES_BLOCK_BIT)
@@ -259,8 +264,8 @@ PublicNexusReader::PublicNexusReader(const int blocksToRead, NxsReader::WarningH
 		dataBlockTemplate->SetImplementsLinkAPI(true);
 		dataBlockTemplate->SetSupportMixedDatatype(true);
 		dataBlockTemplate->SetConvertAugmentedToMixed(true);
-		cloneFactory.AddPrototype(charactersBlockTemplate, "CHARACTERS");
-		cloneFactory.AddPrototype(dataBlockTemplate, "DATA");
+		cloneFactory.AddPrototype(charactersBlockTemplate, L"CHARACTERS");
+		cloneFactory.AddPrototype(dataBlockTemplate, L"DATA");
 		}
 	if (blocksToRead & NEXUS_UNALIGNED_BLOCK_BIT)
 		{
@@ -278,7 +283,7 @@ PublicNexusReader::PublicNexusReader(const int blocksToRead, NxsReader::WarningH
 		}
 	if (blocksToRead & NEXUS_UNKNOWN_BLOCK_BIT)
 		{
-		std::string emptyString;
+		std::wstring emptyString;
 		storerBlockTemplate = new NxsStoreTokensBlockReader(emptyString, true);
 		storerBlockTemplate->SetImplementsLinkAPI(false);
 		cloneFactory.AddDefaultPrototype(storerBlockTemplate);
@@ -297,20 +302,20 @@ void PublicNexusReader::PostExecuteHook()
 	for (BlockReaderList::const_iterator bIt = blocks.begin(); bIt != blocks.end(); ++bIt)
 		{
 		NxsBlock * b = *bIt;
-		const std::string id = b->GetID();
-		const std::string capId = NxsString::get_upper(id);
-		const char * capIdP = capId.c_str();
-		if (strcmp(capIdP, "TAXA") == 0)
+		const std::wstring id = b->GetID();
+		const std::wstring capId = NxsString::get_upper(id);
+		const wchar_t* capIdP = capId.c_str();
+		if (wcscmp(capIdP, L"TAXA") == 0)
 			taxaBlockVec.push_back(static_cast<NxsTaxaBlock *>(b));
-		else if (strcmp(capIdP, "TREES") == 0)
+		else if (wcscmp(capIdP, L"TREES") == 0)
 			treesBlockVec.push_back(static_cast<NxsTreesBlock *>(b));
-		else if ((strcmp(capIdP, "CHARACTERS") == 0) || (strcmp(capIdP, "DATA") == 0))
+		else if ((wcscmp(capIdP, L"CHARACTERS") == 0) || (wcscmp(capIdP, L"DATA") == 0))
 			charactersBlockVec.push_back(static_cast<NxsCharactersBlock *>(b));
-		else if ((strcmp(capIdP, "ASSUMPTIONS") == 0) || (strcmp(capIdP, "SETS") == 0) || (strcmp(capIdP, "CODONS") == 0))
+		else if ((wcscmp(capIdP, L"ASSUMPTIONS") == 0) || (wcscmp(capIdP, L"SETS") == 0) || (wcscmp(capIdP, L"CODONS") == 0))
 			assumptionsBlockVec.push_back(static_cast<NxsAssumptionsBlock *>(b));
-		else if (strcmp(capIdP, "DISTANCES") == 0)
+		else if (wcscmp(capIdP, L"DISTANCES") == 0)
 			distancesBlockVec.push_back(static_cast<NxsDistancesBlock *>(b));
-		else if (strcmp(capIdP, "UNALIGNED") == 0)
+		else if (wcscmp(capIdP, L"UNALIGNED") == 0)
 			unalignedBlockVec.push_back(static_cast<NxsUnalignedBlock *>(b));
 		else 
 			{

@@ -7,17 +7,17 @@
 using namespace std;
 using namespace CDAO;
 
-int main(int argc, char** argv){
-    cerr << "Called with argc: " << argc << " arguments\n";
+int main(int argc, wchar_t** argv){
+    cerr << L"Called with argc: L" << argc << L" arguments\n";
     if ( argc < 2){
-       cout << "usage: ./test_tree_parser TREE\n";
+       cout << L"usage: ./test_tree_parser TREE\n";
        exit( 1 );
     }
-    cerr << "Parsing tree: " << argv[ 1 ] << "\n";
+    cerr << L"Parsing tree: L" << argv[ 1 ] << L"\n";
     TreeDescriptionParser parser( argv[ 1 ] );
-    cerr << "Parsed the tree printing the results\n";
+    cerr << L"Parsed the tree printing the results\n";
     parser.getParseTree()->printTree();
-    cerr << "Printed the parse tree \n";
+    cerr << L"Printed the parse tree \n";
     return 0;
 
 }

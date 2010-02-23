@@ -8,12 +8,12 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <string>
+#include <wstring>
 
 NxsTaxaBlock*		taxa        = NULL;//new NxsTaxaBlock();
 NxsTreesBlock*		trees       =NULL;  //          = new NxsTreesBlock(taxa);
 NxsAssumptionsBlock*	assumptions =NULL;//             = new NxsAssumptionsBlock(taxa);
-NxsCharactersBlock*	characters  =NULL;      //= new NxsCharactersBlock(taxa, assumptions);
+NxsCharactersBlock*	wchar_tacters  =NULL;      //= new NxsCharactersBlock(taxa, assumptions);
 NxsDistancesBlock*	distances   =NULL;    //        = new NxsDistancesBlock(taxa);
 NxsDataBlock*		data        =NULL;  //          = new NxsDataBlock(taxa, assumptions);
 //NxsUnalignedBlock*	unaligned   =NULL;//            = new NxsUnalignedBlock(taxa);
@@ -24,7 +24,7 @@ class MyReader : public NxsReader
 		ifstream inf;
 		ofstream outf;
 
-		MyReader(char *infname, char *outfname) : NxsReader()
+		MyReader(wchar_t *infname, wchar_t *outfname) : NxsReader()
 			{
 			inf.open(infname, ios::binary);
 			outf.open(outfname);
@@ -41,8 +41,8 @@ class MyReader : public NxsReader
 
 	bool EnteringBlock(NxsString blockName)
 		{
-		cout << "Reading \"" << blockName << "\" block..." << endl;
-		outf << "Reading \"" << blockName << "\" block..." << endl;
+		cout << L"Reading \"" << blockName << L"\" block..." << endl;
+		outf << L"Reading \"" << blockName << L"\" block..." << endl;
 
 		// Returning true means it is ok to delete any data associated with 
 		// blocks of this type read in previously
@@ -52,8 +52,8 @@ class MyReader : public NxsReader
 
 	void SkippingBlock(NxsString blockName)
 		{
-		cout << "Skipping unknown block (" << blockName << ")..." << endl;
-		outf << "Skipping unknown block (" << blockName << ")..." << endl;
+		cout << L"Skipping unknown block (" << blockName << L")..." << endl;
+		outf << L"Skipping unknown block (" << blockName << L")..." << endl;
 		}
 
 	void SkippingDisabledBlock(NxsString blockName) {}
@@ -66,15 +66,15 @@ class MyReader : public NxsReader
 	void NexusError(NxsString msg, file_pos pos, unsigned line, unsigned col)
 		{
 		cerr << endl;
-		cerr << "Error found at line " << line;
-		cerr << ", column " << col;
-		cerr << " (file position " << pos << "):" << endl;
+		cerr << L"Error found at line L" << line;
+		cerr << L", column L" << col;
+		cerr << L" (file position L" << pos << L"):" << endl;
 		cerr << msg << endl;
 
 		outf << endl;
-		outf << "Error found at line " << line;
-		outf << ", column " << col;
-		outf << " (file position " << pos << "):" << endl;
+		outf << L"Error found at line L" << line;
+		outf << L", column L" << col;
+		outf << L" (file position L" << pos << L"):" << endl;
 		outf << msg << endl;
 
 		exit(0);
@@ -99,24 +99,24 @@ class MyToken : public NxsToken
 
 
 
-int main(int argc, char* argv[])
+int main(int argc, wchar_t* argv[])
 {
   // ./testNCL <NexusFile>
   // ./testNCL
   // the second will prompt for NeXUS file.
 
-  char* file;
-  string strFile;
+  wchar_t* file;
+  wstring strFile;
   if(argc >= 2)
   {
     file = argv[1];
-    strFile = file;//new string( (const char*) argv[1]);
+    strFile = file;//new wstring( (const wchar_t*) argv[1]);
   }
   else
   {
-    cout << "Nexus file to be read? :\n";
+    cout << L"Nexus file to be read? :\n";
     getline(cin, strFile);
-    //char* cfile = strFile.c_str();
+    //wchar_t* cfile = strFile.c_str();
     //file = cfile;
   }
   
@@ -131,18 +131,18 @@ int main(int argc, char* argv[])
 	taxa                    = new NxsTaxaBlock();
 	trees                   = new NxsTreesBlock(taxa);
 	assumptions             = new NxsAssumptionsBlock(taxa);
-	characters              = new NxsCharactersBlock(taxa, assumptions);
+	wchar_tacters              = new NxsCharactersBlock(taxa, assumptions);
 	distances               = new NxsDistancesBlock(taxa);
 	data                    = new NxsDataBlock(taxa, assumptions);
 	//unaligned               = new NxsUnalignedBlock(taxa);
 
- 	char* outfile = "MyOutput.out";
+ 	wchar_t* outfile = L"MyOutput.out";
 
-	MyReader nexus( (char*) strFile.c_str(), outfile);
+	MyReader nexus( (wchar_t*) strFile.c_str(), outfile);
 	nexus.Add(taxa);
 	nexus.Add(trees);
 	nexus.Add(assumptions);
-	nexus.Add(characters);
+	nexus.Add(wchar_tacters);
 	nexus.Add(distances);
 	nexus.Add(data);
 	//nexus.Add(unaligned);
@@ -171,10 +171,10 @@ int main(int argc, char* argv[])
 		assumptions->Report(nexus.outf);
 	else
 		cout<<"assumptions is Empty().\n";
-	if(!characters->IsEmpty())
-		characters->Report(nexus.outf);
+	if(!wchar_tacters->IsEmpty())
+		wchar_tacters->Report(nexus.outf);
 	else
-		cout<<"characters is Empty().\n";
+		cout<<"wchar_tacters is Empty().\n";
 	if(!distances->IsEmpty())
 		distances->Report(nexus.outf);
 	else
@@ -185,7 +185,7 @@ int main(int argc, char* argv[])
 		cout<<"data is Empty().\n";
 	//unaligned->Report(nexus.outf);
 
-	cout << "File read and Reported to " << outfile <<endl;
+	cout << L"File read and Reported to L" << outfile <<endl;
 
   return 0;
 }

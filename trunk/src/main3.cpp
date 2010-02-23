@@ -20,17 +20,24 @@ using namespace CDAO;
 
 void do_extraction( const string& nexus_tree_file_path );
 
-//Node* parse_description( const string& newick );
+//Node* parse_description( const wstring& newick );
 
-//DataRepresentation* populate_model( vector< string > TUs, map< string, Node* > trees );
+//DataRepresentation* populate_model( vector< wstring > TUs, map< wstring, Node* > trees );
 
 int main( int argc, char** argv ){
   if (argc > 1 ){
+
+    wcerr << L"Preparing to process argument list\n";
+
      processArgs( argc, argv, NULL );
-     static_cast< ifstream* >( getInputStream() )->close();
-     static_cast< ofstream* >( getOutputStream() )->close();
-     //cerr << "Extracting tress from: " << getInputFile() << endl;
-     do_extraction( getInputFile() );       
+
+     wcerr << L"Processed argument list\nPreparing to extract tree information\n";
+     //static_cast< ifstream* >( GlobalState::getNarrowInfile() )->close();
+     //static_cast< ofstream* >( GlobalState::getNarrowOutfile() )->close();
+     //cerr << L"Extracting tress from: L" << getInputFile() << endl;
+     do_extraction( getInputFile() );  
+
+     wcerr << L"Extracted tree information!\n";
   }
 
   return 0;
@@ -77,6 +84,6 @@ void do_extraction( const string& nfp ){
   return;
 }
 
-//Node* parse_description( const string& newick ){
+//Node* parse_description( const wstring& newick ){
 //  return NULL;  
 //}

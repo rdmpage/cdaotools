@@ -48,14 +48,14 @@ NxsSimpleCommandStrings ProcessedNxsToken::ParseSimpleCmd(
 	nscs.cmdPos = wordIt->GetFilePosInfoConstRef();
 	++wordIt;
 	
-	std::string key;
+	std::wstring key;
 	
 	NxsString errorMsg;
 	NxsTokenPosInfo keyPos = nscs.cmdPos;
 	bool eqRead = false;
 	for (; wordIt != pnc.end(); ++wordIt)
 		{
-		std::string w = wordIt->GetToken();
+		std::wstring w = wordIt->GetToken();
 		if (convertToLower)
 			NxsString::to_lower(w);
 		if (key.empty())
@@ -63,34 +63,34 @@ NxsSimpleCommandStrings ProcessedNxsToken::ParseSimpleCmd(
 			key = w;
 			if (nscs.HasKey(key))
 				{
-				errorMsg << "Command option (" << key << ") repeated in the " << nscs.cmdName << " command.";
+				errorMsg << L"Command option (" << key << L") repeated in the " << nscs.cmdName << L" command.";
 				throw NxsException(errorMsg, wordIt->GetFilePosInfoConstRef());
 				}
 			keyPos = wordIt->GetFilePosInfoConstRef();
 			}
 		else if (!eqRead)
 			{
-			if (w != "=") 
+			if (w != L"=") 
 				{
-				errorMsg << "Expecting an = after the  " << key << " command option of the  " << nscs.cmdName << " command.";
+				errorMsg << L"Expecting an = after the  " << key << L" command option of the  " << nscs.cmdName << L" command.";
 				throw NxsException(errorMsg, wordIt->GetFilePosInfoConstRef());
 				}
 			eqRead = true;
 			}
 		else {
-			if (w == "(") 
+			if (w == L"(") 
 				{
 				++wordIt;
 				w = wordIt->GetToken();
-				std::vector<std::string> vals;
+				std::vector<std::wstring> vals;
 				NxsSimpleCommandStrings::MatString mat;
-				if (w == "(") 
+				if (w == L"(") 
 					{
-					while (w != ")")
+					while (w != L")")
 						{
-						if (w != "(")
+						if (w != L"(")
 							{
-							errorMsg << "Expecting a ( to begin another row of values in the " << key << " command option of the  " << nscs.cmdName << " command.";
+							errorMsg << L"Expecting a ( to begin another row of values in the " << key << L" command option of the  " << nscs.cmdName << L" command.";
 							throw NxsException(errorMsg, keyPos);
 							}
 							
@@ -101,14 +101,14 @@ NxsSimpleCommandStrings ProcessedNxsToken::ParseSimpleCmd(
 							w = wordIt->GetToken();
 							if (convertToLower)
 								NxsString::to_lower(w);
-							if (w == ")")
+							if (w == L")")
 								break;
 							vals.push_back(w);
 							++wordIt;
 							}
 						if (wordIt == pnc.end())
 							{
-							errorMsg << "Expecting a ) to end the list of values for the " << key << " command option of the  " << nscs.cmdName << " command.";
+							errorMsg << L"Expecting a ) to end the list of values for the " << key << L" command option of the  " << nscs.cmdName << L" command.";
 							throw NxsException(errorMsg, keyPos);
 							}
 						++wordIt;
@@ -117,7 +117,7 @@ NxsSimpleCommandStrings ProcessedNxsToken::ParseSimpleCmd(
 						w = wordIt->GetToken();
 						if (wordIt == pnc.end())
 							{
-							errorMsg << "Expecting a ) to end the list of values for the " << key << " command option of the  " << nscs.cmdName << " command.";
+							errorMsg << L"Expecting a ) to end the list of values for the " << key << L" command option of the  " << nscs.cmdName << L" command.";
 							throw NxsException(errorMsg, keyPos);
 							}
 						}
@@ -130,14 +130,14 @@ NxsSimpleCommandStrings ProcessedNxsToken::ParseSimpleCmd(
 						w = wordIt->GetToken();
 						if (convertToLower)
 							NxsString::to_lower(w);
-						if (w == ")")
+						if (w == L")")
 							break;
 						vals.push_back(w);
 						++wordIt;
 						}
 					if (wordIt == pnc.end())
 						{
-						errorMsg << "Expecting a ) to end the list of values for the " << key << " command option of the  " << nscs.cmdName << " command.";
+						errorMsg << L"Expecting a ) to end the list of values for the " << key << L" command option of the  " << nscs.cmdName << L" command.";
 						throw NxsException(errorMsg, keyPos);
 						}
 					nscs.multiOpts[key] = NxsSimpleCommandStrings::MultiValFromFile(wordIt->GetFilePosInfoConstRef(), vals);
@@ -145,7 +145,7 @@ NxsSimpleCommandStrings ProcessedNxsToken::ParseSimpleCmd(
 				}
 			else
 				{
-				std::string val = w;
+				std::wstring val = w;
 				nscs.opts[key] = NxsSimpleCommandStrings::SingleValFromFile( wordIt->GetFilePosInfoConstRef(), val);
 				}
 			eqRead = false;
@@ -154,12 +154,12 @@ NxsSimpleCommandStrings ProcessedNxsToken::ParseSimpleCmd(
 		}
 	if (eqRead)
 		{
-		errorMsg << "Expecting a value after the = sign in the  " << key << " command option of the  " << nscs.cmdName << " command.";
+		errorMsg << L"Expecting a value after the = sign in the  " << key << L" command option of the  " << nscs.cmdName << L" command.";
 		throw NxsException(errorMsg, keyPos);
 		}
 	if (!key.empty())
 		{
-		errorMsg << "Expecting an = after the  " << key << " command option of the  " << nscs.cmdName << " command.";
+		errorMsg << L"Expecting an = after the  " << key << L" command option of the  " << nscs.cmdName << L" command.";
 		throw NxsException(errorMsg, keyPos);
 		}
 	return nscs;
@@ -169,28 +169,28 @@ NxsSimpleCommandStrings ProcessedNxsToken::ParseSimpleCmd(
 
 
 NxsX_UnexpectedEOF::NxsX_UnexpectedEOF(NxsToken &token)
-	:NxsException("Unexpected end-of-file", token)
+	:NxsException(L"Unexpected end-of-file", token)
 	{
-	std::string t = token.GetBlockName();
+	std::wstring t = token.GetBlockName();
 	NxsString::to_upper(t);
 	if (!t.empty())
-		msg << " while reading " << t << " block.";
+		msg << L" while reading " << t << L" block.";
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
 | Writes the command `c` (with all embedded comments) a terminating ; will be written if any tokens are written.
 */
-bool WriteCommandAsNexus(std::ostream & out, const ProcessedNxsCommand &c)
+bool WriteCommandAsNexus(std::wostream & out, const ProcessedNxsCommand &c)
 	{
 	if (c.empty())
 		return false;
-	out << "   "; /* command indentation  - 1 space*/
+	out << L"   "; /* command indentation  - 1 space*/
 	for(ProcessedNxsCommand::const_iterator cIt = c.begin(); cIt != c.end(); ++cIt)
 		{
 		out << ' ';
 		cIt->WriteAsNexus(out);
 		}
-	out << ";";
+	out << L";";
 	return true;
 	}
 	
@@ -201,12 +201,12 @@ bool WriteCommandAsNexus(std::ostream & out, const ProcessedNxsCommand &c)
 | 	Raises an aprropriate NxsException (by appending  `contextString` to the phrase Unexpected ; "), if incrementing 
 |		`tokIt` makes it equal to `endIt`
 */	
-void ProcessedNxsToken::IncrementNotLast(std::vector<ProcessedNxsToken>::const_iterator & tokIt, const std::vector<ProcessedNxsToken>::const_iterator &endIt, const char * contextString)
+void ProcessedNxsToken::IncrementNotLast(std::vector<ProcessedNxsToken>::const_iterator & tokIt, const std::vector<ProcessedNxsToken>::const_iterator &endIt, const wchar_t* contextString)
 	{
 	++tokIt;
 	if (tokIt == endIt)
 		{
-		NxsString errormsg = "Unexpected ; ";
+		NxsString errormsg = L"Unexpected ; ";
 		if (contextString)
 			errormsg.append(contextString);
 		--tokIt;
@@ -245,7 +245,7 @@ inline void NxsToken::AdvanceToNextCharInStream()
 |	Does all of the fileposition bookkeeping.
 |	Throws an NxsX_UnexpectedEOF exception if eof is found but eofAllowed is false.
 */
-inline char NxsToken::GetNextChar()
+inline wchar_t NxsToken::GetNextChar()
 	{
 	//
 	// 	Why this was changed:  calls to tellg seem slow and unnecessary - we're storing filepos in terms of the
@@ -253,7 +253,7 @@ inline char NxsToken::GetNextChar()
 	//	if we go back to getting the filepos via in.tellg(), remember to call it 
 	//	twice after both sgetc() calls in the case of the \13\10 endline
 	
-	char ch = nextCharInStream;
+	wchar_t ch = nextCharInStream;
 	AdvanceToNextCharInStream();
 	if(ch == EOF)
 		{
@@ -292,13 +292,13 @@ inline char NxsToken::GetNextChar()
 |	o in all cases, the variable filepos is updated using a call to the tellg function of istream.
 |~
 */
-inline char NxsToken::GetNextChar()
+inline wchar_t NxsToken::GetNextChar()
 	{
 	int ch = inputStream.get();
 	int failed = inputStream.bad();
 	if (failed)
 		{
-		errormsg = "Unknown error reading data file (check to make sure file exists)";
+		errormsg = L"Unknown error reading data file (check to make sure file exists)";
 		throw NxsException(errormsg);
 		}
 
@@ -335,10 +335,10 @@ inline char NxsToken::GetNextChar()
 	}
 #endif
 
-std::map<std::string, std::string> NxsToken::ParseAsSimpleKeyValuePairs(const ProcessedNxsCommand & tv, const char *cmdName)
+std::map<std::wstring, std::wstring> NxsToken::ParseAsSimpleKeyValuePairs(const ProcessedNxsCommand & tv, const wchar_t*cmdName)
 	{
-	std::map<std::string, std::string> kv;
-	std::string key;
+	std::map<std::wstring, std::wstring> kv;
+	std::wstring key;
 	ProcessedNxsCommand::const_iterator tvIt = tv.begin();
 	ProcessedNxsCommand::const_iterator prevIt;
 	ProcessedNxsCommand::const_iterator endIt = tv.end();
@@ -346,13 +346,13 @@ std::map<std::string, std::string> NxsToken::ParseAsSimpleKeyValuePairs(const Pr
 		{
 		key = tvIt->GetToken().c_str();
 		prevIt = tvIt++;
-		if (tvIt == endIt || tvIt->GetToken() != "=")
+		if (tvIt == endIt || tvIt->GetToken() != L"=")
 			{
-			NxsString m("Expecting = after ");
+			NxsString m(L"Expecting = after ");
 			m += key.c_str();
-			m += " in ";
+			m += L" in ";
 			m += cmdName;
-			m += " command.";
+			m += L" command.";
 			if (tvIt == endIt)
 				throw NxsException(m, prevIt->GetFilePosition(), prevIt->GetLineNumber(), prevIt->GetColumnNumber());
 			else
@@ -361,11 +361,11 @@ std::map<std::string, std::string> NxsToken::ParseAsSimpleKeyValuePairs(const Pr
 		prevIt = tvIt++;
 		if (tvIt == endIt)
 			{
-			NxsString m("Expecting a value after = in the  ");
+			NxsString m(L"Expecting a value after = in the  ");
 			m += key.c_str();
-			m += " subcommand of the in ";
+			m += L" subcommand of the in ";
 			m += cmdName;
-			m += " command.";
+			m += L" command.";
 			throw NxsException(m, prevIt->GetFilePosition(), prevIt->GetLineNumber(), prevIt->GetColumnNumber());
 			}
 		kv[key] = tvIt->GetToken();
@@ -381,7 +381,7 @@ std::map<std::string, std::string> NxsToken::ParseAsSimpleKeyValuePairs(const Pr
 void NxsToken::ProcessAsCommand(ProcessedNxsCommand *tokenVec)
 	{
 	;
-	while (!this->Equals(";"))
+	while (!this->Equals(L";"))
 		{
 		if (tokenVec)
 			tokenVec->push_back(ProcessedNxsToken(*this));
@@ -394,9 +394,9 @@ void NxsToken::ProcessAsCommand(ProcessedNxsCommand *tokenVec)
 |	Returns copy of s but with quoting according to the NEXUS Standard (single quotes around the token and all internal
 |		single quotes replaced with a pair of single quotes.
 */
-std::string NxsToken::GetQuoted(const std::string &s) 
+std::wstring NxsToken::GetQuoted(const std::wstring &s) 
 	{
-	std::string withQuotes;
+	std::wstring withQuotes;
 	withQuotes.reserve(s.length() + 4);
 	withQuotes.push_back('\'');
 	for (NxsString::const_iterator sIt = s.begin(); sIt != s.end(); sIt++)
@@ -416,16 +416,16 @@ std::string NxsToken::GetQuoted(const std::string &s)
 |	`contextString` is used in error messages:
 |		"${contextString} must be a number greater than 0"
 */
-unsigned NxsToken::DemandPositiveInt(NxsToken &token, NxsString & errormsg, const char *contextString)
+unsigned NxsToken::DemandPositiveInt(NxsToken &token, NxsString & errormsg, const wchar_t*contextString)
 	{
 	token.GetNextToken();
-	int i = atoi(token.GetToken().c_str());
+	int i = wcstol(token.GetToken().c_str(), NULL, 10);
 	if (i <= 0)
 		{
 		errormsg.assign(contextString);
-		errormsg += " must be a number greater than 0. Found";
+		errormsg += L" must be a number greater than 0. Found";
 		errormsg += token.GetToken();
-		errormsg += " instead";
+		errormsg += L" instead";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 	return (unsigned) i;
@@ -439,16 +439,16 @@ unsigned NxsToken::DemandPositiveInt(NxsToken &token, NxsString & errormsg, cons
 |	`contextString` is used in error messages:
 |		"Expecting ';' to terminate the ${contextString} command"
 */
-void NxsToken::DemandEndSemicolon(NxsToken &token, NxsString & errormsg, const char *contextString)
+void NxsToken::DemandEndSemicolon(NxsToken &token, NxsString & errormsg, const wchar_t*contextString)
 	{
 	token.GetNextToken();
-	if (!token.Equals(";"))
+	if (!token.Equals(L";"))
 		{
-		errormsg = "Expecting ';' to terminate the ";
+		errormsg = L"Expecting ';' to terminate the ";
 		errormsg += contextString;
-		errormsg += " command, but found ";
+		errormsg += L" command, but found ";
 		errormsg += token.GetToken();
-		errormsg += " instead";
+		errormsg += L" instead";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 	}
@@ -456,14 +456,14 @@ void NxsToken::DemandEndSemicolon(NxsToken &token, NxsString & errormsg, const c
 |	Returns copy of s but with quoting according to the NEXUS Standard (single quotes around the token and all internal
 |		single quotes replaced with a pair of single quotes.
 */
-bool NxsToken::NeedsQuotes(const std::string &s)
+bool NxsToken::NeedsQuotes(const std::wstring &s)
 	{
-	for (std::string::const_iterator sIt = s.begin(); sIt != s.end(); sIt++)
+	for (std::wstring::const_iterator sIt = s.begin(); sIt != s.end(); sIt++)
 		{
-		const char &c = (*sIt);
+		const wchar_t &c = (*sIt);
 		if (!isgraph(c))
 			return true;
-		else if (strchr("\'[(){}\"-]/\\,;:=*`+<>", c) != NULL)
+		else if (wcschr(L"\'[(){}\"-]/\\,;:=*`+<>", c) != NULL)
 			{
 			// ' and [ always need quotes.  other punctuation needs quotes if it is in a word of length > 1
 			if (c == '\'' || c == '[')
@@ -477,12 +477,12 @@ bool NxsToken::NeedsQuotes(const std::string &s)
 
 
 /*----------------------------------------------------------------------------------------------------------------------
-|	Sets atEOF and atEOL to false, comment and token to the empty string, fileColumn and fileLine to 1, filepos to 0, 
+|	Sets atEOF and atEOL to false, comment and token to the empty wstring, fileColumn and fileLine to 1, filepos to 0, 
 |	labileFlags to 0 and saved and special to the null character. Initializes the istream reference data 
 |	member in to the supplied istream `i'.
 */
 NxsToken::NxsToken(
-  istream &i)	/* the istream object to which the token is to be associated */
+  wistream &i)	/* the istream object to which the token is to be associated */
   : inputStream(i),
 	eofAllowed(true)
 	{
@@ -534,7 +534,7 @@ bool NxsToken::GetComment()
 	eofAllowed = false;
 	try
 		{
-		char ch = GetNextChar();	
+		wchar_t ch = GetNextChar();	
 		// See if first character is the output comment symbol ('!')
 		// or command comment symbol (&)
 		//
@@ -566,7 +566,7 @@ bool NxsToken::GetComment()
 				// Allow output comment to be printed or displayed in most appropriate
 				// manner for target operating system
 				//
-				NxsString foroutput(currentComment.c_str() + 1);
+				NxsString foroutput(currentComment.c_str() + sizeof(wchar_t));
 				comment = foroutput;
 				OutputComment(foroutput);
 				}
@@ -578,7 +578,7 @@ bool NxsToken::GetComment()
 		}
 	catch (NxsX_UnexpectedEOF & x)
 		{
-		x.msg << " (end-of-file inside comment)";
+		x.msg << L" (end-of-file inside comment)";
 		eofAllowed = formerEOFAllowed;
 		throw x;
 		}
@@ -609,7 +609,7 @@ void NxsToken::GetCurlyBracketedToken()
 		}
 	catch (NxsX_UnexpectedEOF & x)
 		{
-		x.msg << " (end-of-file inside {} braced statement)";
+		x.msg << L" (end-of-file inside {} braced statement)";
 		eofAllowed = formerEOFAllowed;
 		throw x;
 		}
@@ -632,7 +632,7 @@ void NxsToken::GetDoubleQuotedToken()
 		{
 		for(;;)
 			{
-			char ch = GetNextChar();
+			wchar_t ch = GetNextChar();
 			if (ch == '\"')
 				break;
 			else
@@ -641,7 +641,7 @@ void NxsToken::GetDoubleQuotedToken()
 		}
 	catch (NxsX_UnexpectedEOF & x)
 		{
-		x.msg << " (end-of-file inside \" quoted statement)";
+		x.msg << L" (end-of-file inside \" quoted statement)";
 		eofAllowed = formerEOFAllowed;
 		throw x;
 		}
@@ -683,7 +683,7 @@ void NxsToken::GetQuoted()
 		}
 	catch (NxsX_UnexpectedEOF & x)
 		{
-		x.msg << " (end-of-file inside \' quoted token that started on line " << fl<< ", column " <<fc << ')';
+		x.msg << L" (end-of-file inside \' quoted token that started on line " << fl<< L", column " <<fc << ')';
 		eofAllowed = formerEOFAllowed;
 		throw x;
 		}
@@ -727,12 +727,12 @@ void NxsToken::GetParentheticalToken()
 |	user does not type in a word that does not correspond to any command.
 */
 bool NxsToken::Abbreviation(
-  NxsString s)	/* the comparison string */
+  NxsString s)	/* the comparison wstring */
 	{
 	int k;
 	int slen = (int)s.size();
 	int tlen = (int)token.size();
-	char tokenChar, otherChar;
+	wchar_t tokenChar, otherChar;
 
 	// The variable mlen refers to the "mandatory" portion
 	// that is the upper-case portion of s
@@ -760,7 +760,7 @@ bool NxsToken::Abbreviation(
 	//
 	for (k = 0; k < mlen; k++)
 		{
-		tokenChar = (char)toupper( token[k]);
+		tokenChar = static_cast<wchar_t>(toupper( token[k]));
 		otherChar = s[k];
 		if (tokenChar != otherChar)
 			return false;
@@ -770,8 +770,8 @@ bool NxsToken::Abbreviation(
 	//
 	for (k = mlen; k < tlen; k++)
 		{
-		tokenChar = (char)toupper( token[k]);
-		otherChar = (char)toupper( s[k]);
+		tokenChar = static_cast<wchar_t>(toupper( token[k]));
+		otherChar = static_cast<wchar_t>(toupper( s[k]));
 		if (tokenChar != otherChar)
 			return false;
 		}
@@ -784,11 +784,11 @@ bool NxsToken::Abbreviation(
 |	function if you wish to allow for abbreviations of commands.
 */
 bool NxsToken::Begins(
-  NxsString s,			/* the comparison string */
+  NxsString s,			/* the comparison wstring */
   bool respect_case)	/* determines whether comparison is case sensitive */
 	{
 	unsigned k;
-	char tokenChar, otherChar;
+	wchar_t tokenChar, otherChar;
 
 	unsigned slen = (unsigned)s.size();
 	if (slen > token.size())
@@ -803,8 +803,8 @@ bool NxsToken::Begins(
 			}
 		else
 			{
-			tokenChar = (char)toupper( token[k]);
-			otherChar = (char)toupper( s[k]);
+			tokenChar = static_cast<wchar_t>(toupper( token[k]));
+			otherChar = static_cast<wchar_t>(toupper( s[k]));
 			}
 
 		if (tokenChar != otherChar)
@@ -842,7 +842,7 @@ void NxsToken::GetNextToken()
 	{
 	ResetToken();
 
-	char ch = ' ';
+	wchar_t ch = ' ';
 	if (saved == '\0' || IsWhitespace(saved))
 		{
 		// Skip leading whitespace
@@ -873,7 +873,7 @@ void NxsToken::GetNextToken()
 		//
 		if (atEOF)
 			break;
-		if (strchr("\n\r \t", ch) != NULL)//!isgraph(ch))
+		if (wcschr(L"\n\r \t", ch) != NULL)//!isgraph(ch))
 			{
 			if (ch == '\n' && labileFlags & newlineIsToken)
 				{

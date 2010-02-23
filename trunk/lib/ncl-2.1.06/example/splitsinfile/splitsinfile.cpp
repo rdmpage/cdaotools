@@ -115,7 +115,7 @@ class Split
 		}
 		void invertIfNeeded() {
 			if (1 & (splitRep[0])) {
-				//cout << "Inverting: " << getNewick(true) << '\n';
+				//cout << L"Inverting: " << getNewick(true) << '\n';
 				std::vector<WORD_INT_TYPE>::iterator sIt = splitRep.begin();
 				for (; sIt != splitRep.end(); ++sIt) {
 					const WORD_INT_TYPE comp = ~(*sIt);
@@ -123,7 +123,7 @@ class Split
 				}
 				WORD_INT_TYPE & lastWord = *(splitRep.rbegin());
 				lastWord &= lastMask;
-				//cout << "Done inverting: " << getNewick(true) << '\n';
+				//cout << L"Done inverting: " << getNewick(true) << '\n';
 			}
 		}
 		void setIndex(unsigned ind) {
@@ -140,16 +140,16 @@ class Split
 				*sIt |= *oIt;
 			}
 		}
-		std::string getNewick(bool evenIfTrivial=true) const {
-			ostringstream out;
+		std::wstring getNewick(bool evenIfTrivial=true) const {
+			wostringstream out;
 			if (writeNewick(out, 0.0, false, evenIfTrivial))
 				return out.str();
-			return std::string();
+			return std::wstring();
 		}
-		bool writeNewick(std::ostream &out, bool evenIfTrivial) const {
+		bool writeNewick(std::wostream &out, bool evenIfTrivial) const {
 			return writeNewick(out, 0.0, false, evenIfTrivial);
 		}
-		bool writeNewick(std::ostream &out, double edgeLen, bool evenIfTrivial) const {
+		bool writeNewick(std::wostream &out, double edgeLen, bool evenIfTrivial) const {
 			return writeNewick(out, edgeLen, true, evenIfTrivial);
 		}
 		void dumpIndices(NxsUnsignedSet * inc,  NxsUnsignedSet *exc) const {
@@ -188,7 +188,7 @@ class Split
 				bit <<= 1;
 			}	
 		}
-		bool writeNewick(std::ostream &out, double edgeLen, bool writeEdgeLen, bool evenIfTrivial)  const {
+		bool writeNewick(std::wostream &out, double edgeLen, bool writeEdgeLen, bool evenIfTrivial)  const {
 			NxsUnsignedSet inc;
 			NxsUnsignedSet exc;
 			dumpIndices(&inc, &exc);
@@ -309,7 +309,7 @@ class TreesToSplits
 			std::vector<SplitAndScratch>::iterator spIt = splits.begin();	
 			for (std::vector<const NxsSimpleNode *>::reverse_iterator ndIt = nodes.rbegin(); ndIt != last; ++ndIt, ++spIt) {
 				const NxsSimpleNode * nd = *ndIt;
-				//cout << "visiting node " << (long) nd << '\n';
+				//cout << L"visiting node " << (long) nd << '\n';
 				assert(nd);
 				assert(spIt != splits.end());
 				SplitAndScratch & ss = *spIt;
@@ -359,10 +359,10 @@ class TreesToSplits
 			if (smIt == sm.end()) {
 				sm[split] = SplitInfo();
 				smIt = sm.find(split);
-				//std::cout << "New Split " << gCounter << ": " << split.getNewick() << '\n';
+				//std::cout << L"New Split " << gCounter << L": " << split.getNewick() << '\n';
 			}
 			else {
-				//std::cout << "Repeated Split " << gCounter << ": " << split.getNewick() << '\n';
+				//std::cout << L"Repeated Split " << gCounter << L": " << split.getNewick() << '\n';
 			}
 			
 			SplitInfo & info = smIt->second;
@@ -402,31 +402,31 @@ class TreesToSplits
 
 
 
-void writeTranslateCommand(NxsTaxaBlockAPI * taxa, std::ostream & out)
+void writeTranslateCommand(NxsTaxaBlockAPI * taxa, std::wostream & out)
 {
 	if (!taxa)
 		return;
-	out << "    TRANSLATE" << "\n";
+	out << L"    TRANSLATE" << L"\n";
 	const unsigned nt = taxa->GetNTaxTotal();
 	for (unsigned i = 0; i < nt; ++i)
 		{
 		if (i > 0)
-				out << ",\n";
-		out << "        " << i + 1 << ' ' << NxsString::GetEscaped(taxa->GetTaxonLabel(i));
+				out << L",\n";
+		out << L"        " << i + 1 << ' ' << NxsString::GetEscaped(taxa->GetTaxonLabel(i));
 		}
-	out << ";\n";
+	out << L";\n";
 }
 
 TreesToSplits * gTreesToSplitsB = NULL;
-void writeStarTreeCommand(NxsTaxaBlockAPI * taxa, std::ostream & out)
+void writeStarTreeCommand(NxsTaxaBlockAPI * taxa, std::wostream & out)
 	{
-	out << "Tree star = " << " [&";
+	out << L"Tree star = " << L" [&";
 	out << (gTreesToSplitsB->treatAsRooted ? 'R' : 'U');
-	out << "] (1";
+	out << L"] (1";
 	const unsigned nt = taxa->GetNTaxTotal();
 	for (unsigned i = 1; i < nt; ++i)
 		out << ',' << (1+i);
-	out << ");\n";
+	out << L");\n";
 	}
 
 bool newTreeHook(NxsFullTreeDescription &ftd, void * arg, NxsTreesBlock *treesB)
@@ -436,11 +436,11 @@ bool newTreeHook(NxsFullTreeDescription &ftd, void * arg, NxsTreesBlock *treesB)
 	if (gTreeCount <= (unsigned long) gBurnin)
 		{
 		if (gVerbose)
-			std::cerr << "Skipping tree " <<  gTreeCount<< '\n';
+			std::cerr << L"Skipping tree " <<  gTreeCount<< '\n';
 		return false;
 		}
 	if (gVerbose)
-		std::cerr << "Read tree " <<  gTreeCount<< '\n';
+		std::cerr << L"Read tree " <<  gTreeCount<< '\n';
 	NxsTaxaBlockAPI *taxB = 0L;
 	if (treesB)
 		taxB = treesB->GetTaxaBlockPtr(NULL);
@@ -457,25 +457,25 @@ bool newTreeHook(NxsFullTreeDescription &ftd, void * arg, NxsTreesBlock *treesB)
 // The caller is responsibel for calling DeleteBlocksFromFactories() to clean
 //	up (if the reader uses the factory API).
 ////////////////////////////////////////////////////////////////////////////////
-void processContent(PublicNexusReader & nexusReader, ostream *out)
+void processContent(PublicNexusReader & nexusReader, wostream *out)
 {
 	if (!out)
 		return;
 	BlockReaderList blocks = nexusReader.GetUsedBlocksInOrder();
 
-	*out << "#NEXUS\n";
+	*out << L"#NEXUS\n";
 	for (BlockReaderList::const_iterator bIt = blocks.begin(); bIt != blocks.end(); ++bIt)
 		{
 		NxsBlock * b = *bIt;
-		if (b->GetID() == "TAXA")
+		if (b->GetID() == L"TAXA")
 			b->WriteAsNexus(*out);
 		}
 	TreesToSplits::TaxaBlockToSplitsMap::const_iterator tbtsm = gTreesToSplitsB->taxaBlockToSplitsMap.begin();
 	for (; tbtsm != gTreesToSplitsB->taxaBlockToSplitsMap.end(); ++tbtsm) {
-		*out << "Begin Trees;\n";
+		*out << L"Begin Trees;\n";
 		NxsTaxaBlockAPI * tb = tbtsm->first;
 		if (tb && gTreesToSplitsB->taxaBlockToSplitsMap.size() > 1)
-			*out << "Link Taxa = " << NxsString::GetEscaped(tb->GetTitle()) << ";\n";
+			*out << L"Link Taxa = " << NxsString::GetEscaped(tb->GetTitle()) << L";\n";
 		writeTranslateCommand(tb, *out);
 		const TreesToSplits::NTreesSplitsMap & ntsm = tbtsm->second;
 		const unsigned nt = ntsm.first;
@@ -486,24 +486,24 @@ void processContent(PublicNexusReader & nexusReader, ostream *out)
 		
 		for (TreesToSplits::SplitsMap::const_iterator smIt = sm.begin(); smIt != sm.end(); ++smIt, ++n) {
 			const SplitInfo & si = smIt->second;
-			*out << "Tree split_" << n << " = " << " [&";
+			*out << L"Tree split_" << n << L" = " << L" [&";
 			*out << (gTreesToSplitsB->treatAsRooted ? 'R' : 'U');
-			*out << "] [";
+			*out << L"] [";
 			if (gTreesToSplitsB->trackFreq || gTreesToSplitsB->trackEdgeLenSummary || gTreesToSplitsB->trackEdgeLen)
-				*out << "&W " << ((double)si.nTimes)/((double)nt) << " ] [";
+				*out << L"&W " << ((double)si.nTimes)/((double)nt) << L" ] [";
 			if (gTreesToSplitsB->trackHeightSummary) {
-				*out << "meanH =" << ((double)si.heightSum)/((double)si.nTimes);
+				*out << L"meanH =" << ((double)si.heightSum)/((double)si.nTimes);
 			}
-			*out << "] ";
+			*out << L"] ";
 			
 			if (gTreesToSplitsB->trackEdgeLenSummary)
 				smIt->first.writeNewick(*out, si.edgeLenSum/((double)si.nTimes), true);
 			else
 				smIt->first.writeNewick(*out, true);
-			*out << ";\n";
+			*out << L";\n";
 				
 		}
-		*out << "End;\n";
+		*out << L"End;\n";
 	}
 	
 }
@@ -514,7 +514,7 @@ void processContent(PublicNexusReader & nexusReader, ostream *out)
 ////////////////////////////////////////////////////////////////////////////////
 void processFilepath(
 	const char * filename, // name of the file to be read
-	ostream *out, // output stream to use (NULL for no output). Not that cerr is used to report errors.
+	wostream *out, // output stream to use (NULL for no output). Not that cerr is used to report errors.
 	MultiFormatReader::DataFormatType fmt) // enum indicating the file format to expect.
 	{
 	assert(filename);
@@ -546,7 +546,7 @@ void processFilepath(
 			assert(storerB);
 			storerB->SetTolerateEOFInBlock(true);  
 			}
-		cerr << "Executing" <<endl;
+		wcerr << L"Executing" <<endl;
 		try {
 			nexusReader.ReadFilepath(filename, fmt);
 			processContent(nexusReader, out);
@@ -560,24 +560,24 @@ void processFilepath(
 		}
 	catch (const NxsException &x)
 		{
-		cerr << "Error:\n " << x.msg << endl;
+		wcerr << L"Error:\n " << x.msg << endl;
 		if (x.line >=0)
-			cerr << "at line " << x.line << ", column (approximately) " << x.col << " (and file position "<< x.pos << ")" << endl;
+			wcerr << L"at line " << x.line << L", column (approximately) " << x.col << L" (and file position "<< x.pos << L")" << endl;
 		exit(2);
 		}
 	}
 
 void readFilepathAsNEXUS(const char *filename, MultiFormatReader::DataFormatType fmt)
 	{
-	cerr << "[Reading " << filename << "	 ]" << endl;
+	cerr << L"[Reading " << filename << L"	 ]" << endl;
 	try {
-		ostream * outStream = 0L;
-		outStream = &cout;
+		wostream * outStream = 0L;
+		outStream = &wcout;
 		processFilepath(filename, outStream, fmt);
 		}
 	catch (...) 
 		{
-		cerr << "Parsing of " << filename << " failed (with an exception)" << endl;
+		cerr << L"Parsing of " << filename << L" failed (with an exception)" << endl;
 		exit(1);
 		}
 	}	
@@ -587,7 +587,7 @@ void readFilesListedIsFile(const char *masterFilepath, MultiFormatReader::DataFo
 	ifstream masterStream(masterFilepath, ios::binary);
 	if (masterStream.bad())
 		{
-		cerr << "Could not open " << masterFilepath << "." << endl;
+		cerr << L"Could not open " << masterFilepath << L"." << endl;
 		exit(3);
 		}
 	char filename[1024];
@@ -599,47 +599,47 @@ void readFilesListedIsFile(const char *masterFilepath, MultiFormatReader::DataFo
 		}
 	}
 
-void printHelp(ostream & out)
+void printHelp(wostream & out)
 	{
-	out << "NEXUStosplits takes reads a file and writes trees for each split that occurs in any tree in the file.\n";
-	out << "\nThe most common usage is simply:\n    NEXUStosplits <path to NEXUS file>\n";
-	out << "\nCommand-line flags:\n\n";
-	out << "    -h on the command line shows this help message\n\n";
-	out << "    -v verbose output\n\n";
-	out << "    -d report depth of splits\n\n";
-	out << "    -e report edge length of splits\n\n";
-	out << "    -b brief report of splits\n\n";
-	out << "    -o report which trees a split occurs in.\n\n";
-	out << "    -p report the proportion of trees that contain the split occurs in.\n\n";
-	out << "    -r treat splits as rooted\n\n";
-	out << "    -t report trivial splits.\n\n";
-	out << "    -l<path> reads a file and treats each line of the file as a path to NEXUS file\n\n";
-	out << "    -s<non-negative integer> controls the NEXUS strictness level.\n";
-	out << "        the default level is equivalent to -s2 invoking the program with \n";
-	out << "        -s3 or a higher number will convert some warnings into fatal errors.\n";
-	out << "        Running with -s1 will cause the parser to accept dangerous constructs,\n";
-	out << "        and running with -s0 will cause the parser make every attempt to finish\n";
-	out << "        parsing the file (warning about very serious errors).\n\n";
-	out << "        Note that when -s0 strictness level is used, and the parser fails to\n";
-	out << "        finish, it will often be the result of an earlier error than the \n";
-	out << "        error that is reported in the last message.\n";
+	out << L"NEXUStosplits takes reads a file and writes trees for each split that occurs in any tree in the file.\n";
+	out << L"\nThe most common usage is simply:\n    NEXUStosplits <path to NEXUS file>\n";
+	out << L"\nCommand-line flags:\n\n";
+	out << L"    -h on the command line shows this help message\n\n";
+	out << L"    -v verbose output\n\n";
+	out << L"    -d report depth of splits\n\n";
+	out << L"    -e report edge length of splits\n\n";
+	out << L"    -b brief report of splits\n\n";
+	out << L"    -o report which trees a split occurs in.\n\n";
+	out << L"    -p report the proportion of trees that contain the split occurs in.\n\n";
+	out << L"    -r treat splits as rooted\n\n";
+	out << L"    -t report trivial splits.\n\n";
+	out << L"    -l<path> reads a file and treats each line of the file as a path to NEXUS file\n\n";
+	out << L"    -s<non-negative integer> controls the NEXUS strictness level.\n";
+	out << L"        the default level is equivalent to -s2 invoking the program with \n";
+	out << L"        -s3 or a higher number will convert some warnings into fatal errors.\n";
+	out << L"        Running with -s1 will cause the parser to accept dangerous constructs,\n";
+	out << L"        and running with -s0 will cause the parser make every attempt to finish\n";
+	out << L"        parsing the file (warning about very serious errors).\n\n";
+	out << L"        Note that when -s0 strictness level is used, and the parser fails to\n";
+	out << L"        finish, it will often be the result of an earlier error than the \n";
+	out << L"        error that is reported in the last message.\n";
 #	if defined(JUST_VALIDATE_NEXUS) && JUST_VALIDATE_NEXUS
 		//passs
 #	elif defined(JUST_REPORT_NEXUS) && JUST_REPORT_NEXUS
 		//passs
 #	else
-		out << "    -i<format> specifies the input file format expected:\n";
+		out << L"    -i<format> specifies the input file format expected:\n";
 #	endif
-	out << "    -f<format> specifies the input file format expected:\n";
-	out << "            -fnexus     NEXUS (this is also the default)\n";
-	out << "            -faafasta   Amino acid data in fasta\n";
-	out << "            -fdnafasta  DNA data in fasta\n";
-	out << "            -frnafasta  RNA data in fasta\n";
-	out << "        The complete list of format names that can follow the -f flag is:\n";
-	std::vector<std::string> fmtNames =  MultiFormatReader::getFormatNames();
-	for (std::vector<std::string>::const_iterator n = fmtNames.begin(); n != fmtNames.end(); ++n)
+	out << L"    -f<format> specifies the input file format expected:\n";
+	out << L"            -fnexus     NEXUS (this is also the default)\n";
+	out << L"            -faafasta   Amino acid data in fasta\n";
+	out << L"            -fdnafasta  DNA data in fasta\n";
+	out << L"            -frnafasta  RNA data in fasta\n";
+	out << L"        The complete list of format names that can follow the -f flag is:\n";
+	std::vector<std::wstring> fmtNames =  MultiFormatReader::getFormatNames();
+	for (std::vector<std::wstring>::const_iterator n = fmtNames.begin(); n != fmtNames.end(); ++n)
 		{
-		out << "            "<< *n << "\n";
+		out << L"            "<< *n << L"\n";
 		}
 	}
 
@@ -654,9 +654,12 @@ int main(int argc, char *argv[])
 	for (int i = 1; i < argc; ++i)
 		{
 		const char * filepath = argv[i];
+//                string fp(filepath );
+                wstring wfp = str_to_wstr( filepath );
+//                std::copy( fp.begin(), fp.end(), wfp.begin() );
 		const unsigned slen = strlen(filepath);
 		if (strlen(filepath) > 1 && filepath[0] == '-' && filepath[1] == 'h')
-			printHelp(cout);
+			printHelp(wcout);
 		else if (strlen(filepath) == 2 && filepath[0] == '-' && filepath[1] == 'r')
 			gTreatAsRooted = true;
 		else if (strlen(filepath) == 2 && filepath[0] == '-' && filepath[1] == 'v')
@@ -681,19 +684,19 @@ int main(int argc, char *argv[])
 			}
 		else if (slen > 1 && filepath[0] == '-' && filepath[1] == 's')
 			{
-			if ((slen == 2) || (!NxsString::to_long(filepath + 2, &gStrictLevel)))
+			if ((slen == 2) || (!NxsString::to_long(wfp.c_str() + 2, &gStrictLevel)))
 				{
-				cerr << "Expecting an integer after -s\n" << endl;
-				printHelp(cerr);
+				cerr << L"Expecting an integer after -s\n" << endl;
+				printHelp(wcerr);
 				return 2;
 				}
 			}
 		else if (slen > 1 && filepath[0] == '-' && filepath[1] == 'x')
 			{
-			if ((slen == 2) || (!NxsString::to_long(filepath + 2, &gBurnin)))
+			if ((slen == 2) || (!NxsString::to_long(wfp.c_str() + 2, &gBurnin)))
 				{
-				cerr << "Expecting an integer after -x\n" << endl;
-				printHelp(cerr);
+				cerr << L"Expecting an integer after -x\n" << endl;
+				printHelp(wcerr);
 				return 2;
 				}
 			}
@@ -704,10 +707,10 @@ int main(int argc, char *argv[])
 #	else
 		else if (slen > 1 && filepath[0] == '-' && filepath[1] == 'i')
 			{
-			if ((slen == 2) || (!NxsString::to_long(filepath + 2, &gInterleaveLen)) || gInterleaveLen < 1)
+			if ((slen == 2) || (!NxsString::to_long(wfp.c_str() + 2, &gInterleaveLen)) || gInterleaveLen < 1)
 				{
-				cerr << "Expecting a positive integer after -d\n" << endl;
-				printHelp(cerr);
+				cerr << L"Expecting a positive integer after -d\n" << endl;
+				printHelp(wcerr);
 				return 2;
 				}
 			}		
@@ -717,13 +720,13 @@ int main(int argc, char *argv[])
 			f = MultiFormatReader::UNSUPPORTED_FORMAT;
 			if (slen > 2)
 				{
-				std::string fmtName(filepath + 2, slen - 2);
+				std::wstring fmtName(wfp.c_str() + 2, slen - 2);
 				f =  MultiFormatReader::formatNameToCode(fmtName);
 				}
 			if (f == MultiFormatReader::UNSUPPORTED_FORMAT)
 				{
-				cerr << "Expecting a format after after -f\n" << endl;
-				printHelp(cerr);
+				cerr << L"Expecting a format after after -f\n" << endl;
+				printHelp(wcerr);
 				return 2;
 				}
 			}
@@ -764,8 +767,8 @@ int main(int argc, char *argv[])
 		}
 	if (!readfile)
 		{
-		cerr << "Expecting the path to NEXUS file as the only command line argument!\n" << endl;
-		printHelp(cerr);
+		cerr << L"Expecting the path to NEXUS file as the only command line argument!\n" << endl;
+		printHelp(wcerr);
 		return 1;
 		}
 	return 0;

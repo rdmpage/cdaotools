@@ -64,7 +64,7 @@ class NxsEmptyBlock
 						NxsEmptyBlock();
 		virtual			~NxsEmptyBlock();
 
-		virtual void	Report(std::ostream &out) NCL_COULD_BE_CONST ;
+		virtual void	Report(std::wostream &out) NCL_COULD_BE_CONST ;
 
 	protected:
 

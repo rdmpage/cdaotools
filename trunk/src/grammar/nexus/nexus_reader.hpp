@@ -45,37 +45,37 @@ namespace CDAO {
     /*
      * Retrieve the taxon label
      */
-    virtual const std::string getTaxonLabel( const unsigned int i)const{ 
+    virtual const std::wstring getTaxonLabel( const unsigned int i)const{ 
       //assert( taxa_ ); 
-      //string label;
+      //wstring label;
       //try { label =  return label; }
       //catch (NxsX_NoSuchTaxon e){
-      //	cerr << "No Taxon: " << e.getContents() << "\n";
+      //	cerr << L"No Taxon: L" << e.getContents() << L"\n";
       //}
-      return taxa_ && !taxa_->IsEmpty() ? taxa_->GetTaxonLabel( i ) : "";
+      return taxa_ && !taxa_->IsEmpty() ? taxa_->GetTaxonLabel( i )  : L"";
     }
-    virtual const std::string  getTreeLabel( const unsigned int i)const{
+    virtual const std::wstring  getTreeLabel( const unsigned int i)const{
       //assert(  trees_  );
-      return trees_ && !trees_->IsEmpty() && i < trees_->GetNumTrees() ? trees_->GetTreeName( i ) : "" ;;
+      return trees_ && !trees_->IsEmpty() && i < trees_->GetNumTrees() ?  trees_->GetTreeName( i )  : L"" ;;
     }
 
-    virtual const std::string getMatrixLabel()const{ return matrix_label_; }
-    virtual void setMatrixLabel( const std::string& label){ matrix_label_ = label;}
+    virtual const std::wstring getMatrixLabel()const{ return matrix_label_; }
+    virtual void setMatrixLabel( const std::wstring& label){ matrix_label_ = label;}
 
     /*
      * Get the state of a particular trait for a particular taxon.
      */
-    virtual const char getTraitState( const unsigned int taxon, const unsigned int trait)const;
+    virtual const wchar_t getTraitState( const unsigned int taxon, const unsigned int trait)const;
     /*
      * True if all taxa have the same state for the given trait.
      */
-    virtual const bool  isTrait( const unsigned int character)const{ return characters_ && !characters_->IsEmpty() ? characters_->GetObsNumStates( character ) == 1 : false;  }
+    virtual const bool  isTrait( const unsigned int wchar_tacter)const{ return characters_ && !characters_->IsEmpty() ? characters_->GetObsNumStates( wchar_tacter ) == 1 : false;  }
     /*
      * Returns the number of taxa in the set.
      */
     virtual const unsigned int getNTax()const{ return taxa_ && !taxa_->IsEmpty() ? taxa_->GetNumTaxonLabels() : 0; }
     /*
-     * Returns the number of characters/traits in the set.
+     * Returns the number of wchar_tacters/traits in the set.
      */
     virtual const unsigned int getNTraits()const{ return  characters_ &&  !characters_->IsEmpty() ? characters_->GetNumMatrixCols() : 0; }
     /*
@@ -100,28 +100,28 @@ namespace CDAO {
     /*
      * Finds the taxon number associated with the specified label.
      */
-    virtual const unsigned int getTaxonNumber( const string& label)const{ 
+    virtual const unsigned int getTaxonNumber( const wstring& label)const{ 
       int ret = NO_TAXON;
       if ( taxa_ && !taxa_->IsEmpty() ){ 
         try {
-	  ret = taxa_->FindTaxon( NxsString(label.c_str()) ); 
+	  ret = taxa_->FindTaxon( label.c_str() ); 
 	  return ret;
         } catch (NxsTaxaBlock::NxsX_NoSuchTaxon e){
-	  //cerr << "No taxon: " << label << "\n";
+	  //cerr << L"No taxon: L" << label << L"\n";
 	  //return NO_TAXON;
 	//exit ( 1 );
         }
        }
       return ret;
     }
-    virtual const bool isGap( const char ch )const{ return !characters_ || characters_->IsEmpty() ? false : characters_->GetGapSymbol() == ch; }
+    virtual const bool isGap( const wchar_t ch )const{ return !characters_ || characters_->IsEmpty() ? false : characters_->GetGapSymbol() == ch; }
     
-    virtual const bool isMissing( const char ch )const{ return !characters_ || characters_->IsEmpty() ? false : characters_->GetMissingSymbol() == ch; }
+    virtual const bool isMissing( const wchar_t ch )const{ return !characters_ || characters_->IsEmpty() ? false : characters_->GetMissingSymbol() == ch; }
 
     virtual const unsigned int getNumTrees()const{ return trees_ && !trees_->IsEmpty() ? trees_->GetNumTrees() : 0; }
   private:
-    const Node* findNode(const string& key, const Node* current )const;
-    std::string matrix_label_;
+    const Node* findNode(const wstring& key, const Node* current )const;
+    std::wstring matrix_label_;
     std::vector<const Node* > parse_tree_;
     NxsTaxaBlock* taxa_;
     NxsTreesBlock* trees_;
@@ -136,22 +136,22 @@ namespace CDAO {
   class OntNexusReader : public NxsReader, public NxsBlock {
   public:
     
-    OntNexusReader(istream& in, ostream& out, ostream&  err):inf(in), outf(out), errf(err){ }
+    OntNexusReader(wistream& in, wostream& out, wostream&  err):inf(in), outf(out), errf(err){ }
     //NexusReader(ifstream& infile, ofstream& outfile):inf(infile), outf(outfile){}
     void Execute(NxsToken& tok, bool flag){ NxsReader::Execute(tok, flag); return; }
     void Execute(NxsToken& tok){ NxsReader::Execute(tok, true); }
-    bool EnteringBlock(NxsString blockName){ /*outf <<"Entering: " << blockName << endl;*/  return true;}
-    void SkippingBlock(NxsString blockName){ /*outf << "Leaving: " << blockName << endl;*/ return;}
+    bool EnteringBlock(NxsString blockName){ /*outf <<"Entering: L" << blockName << endl;*/  return true;}
+    void SkippingBlock(NxsString blockName){ /*outf << L"Leaving: L" << blockName << endl;*/ return;}
     void NexusError(NxsString msg, file_pos pos, long line, long col){
      // LogManager lmgr = LogManager::getInstance();
      // lmgr.startMultiPartMessage( ALL_MESSAGES_LR  );
-     // lmgr << "Pos:"<< pos << " line:" << line << " col: " << col << " " << (std::string) msg << "\n";
+     // lmgr << L"Pos:"<< pos << L" line:" << line << L" col: L" << col << L" L" << (std::wstring) msg << L"\n";
      // lmgr.endMultiPartMessage( );
       return;
     }
-    istream& inf;
-    ostream& outf;
-    ostream& errf;
+    wistream& inf;
+    wostream& outf;
+    wostream& errf;
   };
   
   DataRepresentation*  nexusparse( void );

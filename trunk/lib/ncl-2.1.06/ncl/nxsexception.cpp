@@ -27,7 +27,7 @@ using namespace std;
 |	stopped.
 */
 NxsException::NxsException(
-  const std::string & s,	/* the message for the user */
+  const std::wstring & s,	/* the message for the user */
   file_pos fp,	/* the current file position */
   long fl,		/* the current file line */
   long fc)		/* the current file column */
@@ -42,7 +42,7 @@ NxsException::NxsException(
 |	Creates a NxsException object with the specified message, getting file position information from the NxsToken.
 */
 NxsException::NxsException(
-  const std::string &s,		/* message that describes the error */
+  const std::wstring &s,		/* message that describes the error */
   const NxsToken &t)		/* NxsToken that was supplied the last token (the token that caused the error) */
 	{
 	msg		= NxsString(s.c_str()); 
@@ -51,7 +51,7 @@ NxsException::NxsException(
 	col		= t.GetFileColumn();
   	}
 
-NxsException::NxsException(const std::string &s, const ProcessedNxsToken &t)
+NxsException::NxsException(const std::wstring &s, const ProcessedNxsToken &t)
 	{
 	msg		= NxsString(s.c_str()); 
 	pos		= t.GetFilePosition();
@@ -59,7 +59,7 @@ NxsException::NxsException(const std::string &s, const ProcessedNxsToken &t)
 	col		= t.GetColumnNumber();
 	}
 
-NxsException::NxsException(const std::string &s, const NxsTokenPosInfo &t)
+NxsException::NxsException(const std::wstring &s, const NxsTokenPosInfo &t)
 	{
 	msg		= NxsString(s.c_str()); 
 	pos		= t.GetFilePosition();

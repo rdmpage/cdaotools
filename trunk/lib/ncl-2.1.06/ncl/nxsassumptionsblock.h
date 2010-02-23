@@ -47,11 +47,11 @@ class NxsAssumptionsBlockAPI
 		virtual NxsTaxaBlockAPI * GetTaxaBlockPtr(int *status=NULL) = 0;
 		virtual NxsTreesBlockAPI * GetTreesBlockPtr(int *status=NULL) = 0;
 
-		virtual void AddCharPartition(const std::string & name, const NxsPartition &) = 0;
-		virtual void AddTaxPartition(const std::string & name, const NxsPartition &) = 0;
-		virtual void AddTreePartition(const std::string & name, const NxsPartition &) = 0;
-		virtual void AddCodeSet(const std::string & name, const NxsPartition &, bool asterisked) = 0;
-		virtual void AddCodonPosSet(const std::string & name, const NxsPartition &, bool asterisked) = 0;
+		virtual void AddCharPartition(const std::wstring & name, const NxsPartition &) = 0;
+		virtual void AddTaxPartition(const std::wstring & name, const NxsPartition &) = 0;
+		virtual void AddTreePartition(const std::wstring & name, const NxsPartition &) = 0;
+		virtual void AddCodeSet(const std::wstring & name, const NxsPartition &, bool asterisked) = 0;
+		virtual void AddCodonPosSet(const std::wstring & name, const NxsPartition &, bool asterisked) = 0;
 
 		virtual void FlagCharBlockAsUsed() = 0;
 		virtual void FlagTaxaBlockAsUsed() = 0;
@@ -104,8 +104,8 @@ class NxsAssumptionsBlock
 		const NxsUnsignedSet *GetCharSet(NxsString nm) const;
 
 		int					GetNumCharPartitions();
-		void				GetCharPartitionNames(vector<std::string> &names);
-		const NxsPartition		*GetCharPartition(std::string nm) const;
+		void				GetCharPartitionNames(vector<std::wstring> &names);
+		const NxsPartition		*GetCharPartition(std::wstring nm) const;
 
 		int					GetNumTaxSets();
 		void				GetTaxSetNames(NxsStringVector &names);
@@ -118,13 +118,13 @@ class NxsAssumptionsBlock
 		void				ApplyExset(NxsString nm);
 
 		virtual void		Read(NxsToken& token);
-		virtual void		Report(std::ostream& out) NCL_COULD_BE_CONST ;
+		virtual void		Report(std::wostream& out) NCL_COULD_BE_CONST ;
 		virtual void		Reset();
-		virtual void 		WriteAsNexus(std::ostream &out) const;
+		virtual void 		WriteAsNexus(std::wostream &out) const;
 
 		/*only used it the linkAPI is enabled*/
 		virtual void		HandleLinkCommand(NxsToken & );
-		virtual void		WriteLinkCommand(std::ostream &out) const;
+		virtual void		WriteLinkCommand(std::wostream &out) const;
 
 		virtual VecBlockPtr		GetImpliedBlocks()
 			{
@@ -158,11 +158,11 @@ class NxsAssumptionsBlock
 			{
 			return codesMgr;
 			}			
-		virtual void AddCharPartition(const std::string & name, const NxsPartition &);
-		virtual void AddTaxPartition(const std::string & name, const NxsPartition &);
-		virtual void AddTreePartition(const std::string & name, const NxsPartition &);
-		virtual void AddCodeSet(const std::string & name, const NxsPartition &, bool asterisked);
-		virtual void AddCodonPosSet(const std::string & name, const NxsPartition &, bool asterisked);
+		virtual void AddCharPartition(const std::wstring & name, const NxsPartition &);
+		virtual void AddTaxPartition(const std::wstring & name, const NxsPartition &);
+		virtual void AddTreePartition(const std::wstring & name, const NxsPartition &);
+		virtual void AddCodeSet(const std::wstring & name, const NxsPartition &, bool asterisked);
+		virtual void AddCodonPosSet(const std::wstring & name, const NxsPartition &, bool asterisked);
 		
 		/*---------------------------------------------------------------------------------------
 		| Results in aliasing of the taxa, trees, and characters blocks!
@@ -243,55 +243,55 @@ class NxsAssumptionsBlock
 		void				HandleUserType(NxsToken& token);
 		void				HandleWeightSet(NxsToken& token);
 		
-		void				WriteCharSet(std::ostream &out) const
+		void				WriteCharSet(std::wostream &out) const
 			{
-			NxsWriteSetCommand("CHARSET", charsets, out);
+			NxsWriteSetCommand(L"CHARSET", charsets, out);
 			}
-		void				WriteCharPartition(std::ostream &out) const
+		void				WriteCharPartition(std::wostream &out) const
 			{
-			NxsWritePartitionCommand("CharPartition", charPartitions, out);
+			NxsWritePartitionCommand(L"CharPartition", charPartitions, out);
 			}
-		void				WriteExSet(std::ostream &out) const
+		void				WriteExSet(std::wostream &out) const
 			{
-			NxsWriteSetCommand("EXSET", exsets, out, def_exset.c_str());
+			NxsWriteSetCommand(L"EXSET", exsets, out, def_exset.c_str());
 			}
-		void				WriteOptions(std::ostream &out) const;
-		void				WriteTaxPartition(std::ostream &out) const
+		void				WriteOptions(std::wostream &out) const;
+		void				WriteTaxPartition(std::wostream &out) const
 			{
-			NxsWritePartitionCommand("TaxPartition", taxPartitions, out);
+			NxsWritePartitionCommand(L"TaxPartition", taxPartitions, out);
 			}
-		void				WriteTaxSet(std::ostream &out) const
+		void				WriteTaxSet(std::wostream &out) const
 			{
-			NxsWriteSetCommand("TAXSET", taxsets, out);
+			NxsWriteSetCommand(L"TAXSET", taxsets, out);
 			}
-		void				WriteTreePartition(std::ostream &out) const
+		void				WriteTreePartition(std::wostream &out) const
 			{
-			NxsWritePartitionCommand("TreePartition", treePartitions, out);
+			NxsWritePartitionCommand(L"TreePartition", treePartitions, out);
 			}
-		void				WriteTreeSet(std::ostream &out) const
+		void				WriteTreeSet(std::wostream &out) const
 			{
-			NxsWriteSetCommand("TREESET", treesets, out);
+			NxsWriteSetCommand(L"TREESET", treesets, out);
 			}
-		void WriteCodeSet(std::ostream &out) const
+		void WriteCodeSet(std::wostream &out) const
 			{
-			NxsWritePartitionCommand("CodeSet", codeSets, out, def_codeSet.c_str());
+			NxsWritePartitionCommand(L"CodeSet", codeSets, out, def_codeSet.c_str());
 			}
-		void WriteCodonPosSet(std::ostream &out) const
+		void WriteCodonPosSet(std::wostream &out) const
 			{
-			NxsWritePartitionCommand("CodonPosSet", codonPosSets, out, def_codonPosSet.c_str());
+			NxsWritePartitionCommand(L"CodonPosSet", codonPosSets, out, def_codonPosSet.c_str());
 			}
 
 	private:
-		NxsAssumptionsBlockAPI  *GetAssumptionsBlockForCharTitle(const char *title, NxsToken &token, const char *cmd);
-		NxsAssumptionsBlockAPI  *GetAssumptionsBlockForTaxaTitle(const char *title, NxsToken &token, const char *cmd);
-		NxsAssumptionsBlockAPI  *GetAssumptionsBlockForTreesTitle(const char *title, NxsToken &token, const char *cmd);
+		NxsAssumptionsBlockAPI  *GetAssumptionsBlockForCharTitle(const wchar_t*title, NxsToken &token, const wchar_t*cmd);
+		NxsAssumptionsBlockAPI  *GetAssumptionsBlockForTaxaTitle(const wchar_t*title, NxsToken &token, const wchar_t*cmd);
+		NxsAssumptionsBlockAPI  *GetAssumptionsBlockForTreesTitle(const wchar_t*title, NxsToken &token, const wchar_t*cmd);
 		
 		NxsAssumptionsBlockAPI  *GetAssumptionsBlockForCharBlock(NxsCharactersBlockAPI *, NxsBlockLinkStatus, NxsToken &token);
 		NxsAssumptionsBlockAPI  *GetAssumptionsBlockForTaxaBlock(NxsTaxaBlockAPI *, NxsBlockLinkStatus, NxsToken &token);
 		NxsAssumptionsBlockAPI  *GetAssumptionsBlockForTreesBlock(NxsTreesBlockAPI *, NxsBlockLinkStatus, NxsToken &token);
 		
 		NxsAssumptionsBlockAPI  *CreateNewAssumptionsBlock(NxsToken &token);
-		NxsAssumptionsBlockAPI *DealWithPossibleParensInCharDependentCmd(NxsToken &token, const char *cmd, const std::vector<std::string> *unsupported = NULL, bool * isVect = false);
+		NxsAssumptionsBlockAPI *DealWithPossibleParensInCharDependentCmd(NxsToken &token, const wchar_t*cmd, const std::vector<std::wstring> *unsupported = NULL, bool * isVect = false);
 		bool					HasAssumptionsBlockCommands() const;
 		bool					HasSetsBlockCommands() const;
 		bool					HasCodonsBlockCommands() const;
@@ -345,7 +345,7 @@ class NxsAssumptionsBlockFactory
 	:public NxsBlockFactory
 	{
 	public:
-		virtual NxsAssumptionsBlock * GetBlockReaderForID(const std::string & id, NxsReader *reader, NxsToken *token);
+		virtual NxsAssumptionsBlock * GetBlockReaderForID(const std::wstring & id, NxsReader *reader, NxsToken *token);
 	};
 
 typedef NxsAssumptionsBlock AssumptionsBlock;	// for backward compatibility

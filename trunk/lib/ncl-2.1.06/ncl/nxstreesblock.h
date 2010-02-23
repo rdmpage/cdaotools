@@ -36,7 +36,7 @@ class NxsTreesBlockAPI
 		virtual bool		IsRootedTree(unsigned i) = 0;
 	};
 
-std::string parseNHXComment(const std::string comment, std::map<std::string, std::string> *infoMap);
+std::wstring parseNHXComment(const std::wstring comment, std::map<std::wstring, std::wstring> *infoMap);
 class NxsFullTreeDescription;
 class NxsSimpleNode;
 class NxsSimpleEdge
@@ -70,9 +70,9 @@ class NxsSimpleEdge
 		/// returns true if `key` was processed from a comment.
 		///	If found, (and value is not NULL), the *value will hold the 
 		///		value on exit
-		bool GetInfo(const std::string &key, std::string *value) const
+		bool GetInfo(const std::wstring &key, std::wstring *value) const
 			{
-			std::map<std::string, std::string>::const_iterator kvit = parsedInfo.find(key);
+			std::map<std::wstring, std::wstring>::const_iterator kvit = parsedInfo.find(key);
 			if (kvit == parsedInfo.end())
 				return false;
 			if (value != NULL)
@@ -89,7 +89,7 @@ class NxsSimpleEdge
 			return child;
 			}
 
-		void SetDblEdgeLen(double e, const char *asString)
+		void SetDblEdgeLen(double e, const wchar_t*asString)
 			{
 			defaultEdgeLen = false;
 			hasIntEdgeLens = false; 
@@ -99,7 +99,7 @@ class NxsSimpleEdge
 
 			}
 		
-		void SetIntEdgeLen(int e, const char *asString) 
+		void SetIntEdgeLen(int e, const wchar_t*asString) 
 			{
 			defaultEdgeLen = false;
 			hasIntEdgeLens = true; 
@@ -109,7 +109,7 @@ class NxsSimpleEdge
 			}
 		mutable void * scratch;
 	private:
-		void WriteAsNewick(std::ostream &out, bool nhx) const;
+		void WriteAsNewick(std::wostream &out, bool nhx) const;
 		void DealWithNexusComments(const std::vector<NxsComment> & ecs, bool NHXComments);
 
 		NxsSimpleEdge(NxsSimpleNode  *par, NxsSimpleNode * des, double edgeLen)
@@ -143,9 +143,9 @@ class NxsSimpleEdge
 		bool			hasIntEdgeLens;
 		int				iEdgeLen;
 		double			dEdgeLen;
-		std::string		lenAsString; /*easy (but inefficient) means of preserving the formatting of the input branch length */
+		std::wstring		lenAsString; /*easy (but inefficient) means of preserving the formatting of the input branch length */
 		std::vector<NxsComment> unprocessedComments;
-		std::map<std::string, std::string> parsedInfo;
+		std::map<std::wstring, std::wstring> parsedInfo;
 		friend class NxsSimpleTree;
 		friend class NxsSimpleNode;
 	};
@@ -198,13 +198,13 @@ class NxsSimpleNode
 			}
 			
 		// non-empty only for internals that are labelled with names that are NOT taxLabels
-		std::string GetName() const
+		std::wstring GetName() const
 			{
 			return name;
 			}
 		mutable void * scratch;
 	private:
-		void WriteAsNewick(std::ostream &out, bool nhx) const;
+		void WriteAsNewick(std::wostream &out, bool nhx) const;
 			
 		
 		NxsSimpleNode(NxsSimpleNode *par, double edgeLen)
@@ -251,7 +251,7 @@ class NxsSimpleNode
 		NxsSimpleNode * lChild;
 		NxsSimpleNode * rSib;
 		NxsSimpleEdge edgeToPar;
-		std::string name; // non-empty only for internals that are labelled with names that are NOT taxLabels
+		std::wstring name; // non-empty only for internals that are labelled with names that are NOT taxLabels
 		unsigned taxIndex; // present for every leaf. UINT_MAX for internals labeled with taxlabels
 		friend class NxsSimpleTree;
 	};
@@ -285,7 +285,7 @@ class NxsSimpleTree
 		/** Writes just the newick description with numbers for leaf labels.
 			Neither the tree name or NEXUS ; are written
 		*/
-		void WriteAsNewick(std::ostream &out, bool nhx) const
+		void WriteAsNewick(std::wostream &out, bool nhx) const
 			{
 			if (root)
 				root->WriteAsNewick(out, nhx);
@@ -348,7 +348,7 @@ class NxsFullTreeDescription
 				NXS_SOME_NEGATIVE_EDGE_LEN_BIT		= 0x1000, 
 				NXS_TREE_PROCESSED 					= 0x2000
 			};
-		NxsFullTreeDescription(const std::string & newickStr, const std::string &treeName, int infoFlags)
+		NxsFullTreeDescription(const std::wstring & newickStr, const std::wstring &treeName, int infoFlags)
 			:newick(newickStr),
 			name(treeName),
 			flags(infoFlags),
@@ -357,12 +357,12 @@ class NxsFullTreeDescription
 			{}
 			
 	
-		/** returns a newick string with 1-based numbers corresponding to (1 + Taxa block's index of taxon)*/
-		const std::string &	GetNewick() const
+		/** returns a newick wstring with 1-based numbers corresponding to (1 + Taxa block's index of taxon)*/
+		const std::wstring &	GetNewick() const
 			{
 			return newick;
 			}
-		const std::string &	GetName() const 
+		const std::wstring &	GetName() const 
 			{
 			return name;
 			}
@@ -373,7 +373,7 @@ class NxsFullTreeDescription
 		void AssertProcessed() const 
 			{
 			if (!IsProcessed())
-				throw NxsNCLAPIException("Tree description queries are only supported on processed tree descriptions.");
+				throw NxsNCLAPIException(L"Tree description queries are only supported on processed tree descriptions.");
 			}
 		bool IsRooted() const 
 			{
@@ -434,8 +434,8 @@ class NxsFullTreeDescription
 			return minDblEdgeLen;
 			}
 	private:
-		std::string newick; /*with 1-based numbers corresponding to (1 + Taxa block's index of taxon)*/
-		std::string name;
+		std::wstring newick; /*with 1-based numbers corresponding to (1 + Taxa block's index of taxon)*/
+		std::wstring name;
 		int flags;
 		int minIntEdgeLen; /* if EdgeLengthsAreAllIntegers returns true then this will hold shortest edge length in the tree (useful as means of checking for constraints by programs that prohibit 0 or negative branch lengths)*/
 		double minDblEdgeLen; /* if EdgeLengthsAreAllIntegers returns false then this will hold shortest edge length in the tree (useful as means of checking for constraints by programs that prohibit 0 or negative branch lengths)*/
@@ -477,7 +477,7 @@ class NxsTreesBlock
 		virtual				~NxsTreesBlock();
 
 		void		ReplaceTaxaBlockPtr(NxsTaxaBlockAPI *tb);
-		unsigned GetIndexSet(const std::string &label, NxsUnsignedSet * toFill) const
+		unsigned GetIndexSet(const std::wstring &label, NxsUnsignedSet * toFill) const
 			{
 			return NxsLabelToIndicesMapper::GetIndicesFromSets(label, toFill, treeSets);
 			}
@@ -486,13 +486,13 @@ class NxsTreesBlock
 		unsigned	GetNumTrees();
 		unsigned	GetNumTrees() const;
 		const NxsFullTreeDescription & GetFullTreeDescription(unsigned i) const;
-		unsigned	TreeLabelToNumber(const std::string & name) const;
+		unsigned	TreeLabelToNumber(const std::wstring & name) const;
 		NxsString	GetTreeName(unsigned i);
 		NxsString	GetTreeDescription(unsigned i);
 		NxsString	GetTranslatedTreeDescription(unsigned i);
 		bool		IsDefaultTree(unsigned i);
 		bool		IsRootedTree(unsigned i);
-		virtual void		Report(std::ostream &out) NCL_COULD_BE_CONST ;
+		virtual void		Report(std::wostream &out) NCL_COULD_BE_CONST ;
 		virtual void		BriefReport(NxsString &s) NCL_COULD_BE_CONST ;
 		virtual void		Reset();
 		void				SetNexus(NxsReader *nxsptr)
@@ -500,12 +500,12 @@ class NxsTreesBlock
 			NxsBlock::SetNexus(nxsptr);
 			NxsTaxaBlockSurrogate::SetNexusReader(nxsptr);
 			}
-        virtual const std::string & GetBlockName() const
+        virtual const std::wstring & GetBlockName() const
             {
             return id;
             }
 
-		void WriteAsNexus(std::ostream &out) const;
+		void WriteAsNexus(std::wostream &out) const;
 
 		virtual VecBlockPtr	GetImpliedBlocks()
 			{
@@ -517,15 +517,15 @@ class NxsTreesBlock
 			{
 			HandleLinkTaxaCommand(token);
 			}
-		virtual void		WriteLinkCommand(std::ostream &out) const
+		virtual void		WriteLinkCommand(std::wostream &out) const
 			{
 			WriteLinkTaxaCommand(out);
 			}
 
 		unsigned GetMaxIndex() const;
-		unsigned GetIndicesForLabel(const std::string &label, NxsUnsignedSet *inds) const;
-		bool AddNewIndexSet(const std::string &label, const NxsUnsignedSet & inds);
-		bool AddNewPartition(const std::string &label, const NxsPartition & inds);
+		unsigned GetIndicesForLabel(const std::wstring &label, NxsUnsignedSet *inds) const;
+		bool AddNewIndexSet(const std::wstring &label, const NxsUnsignedSet & inds);
+		bool AddNewPartition(const std::wstring &label, const NxsPartition & inds);
 
 		bool GetAllowImplicitNames() const 
 			{
@@ -543,8 +543,8 @@ class NxsTreesBlock
 			{
 			processAllTreesDuringParse = s;
 			}
-		/*Interprets the newick string as a tree (builds trees as in memory
-			structures, which may reveal illegal newick strings that were not
+		/*Interprets the newick wstring as a tree (builds trees as in memory
+			structures, which may reveal illegal newick wstrings that were not
 			detected as illegal on the parse).
 		*/
 		void ProcessTree(NxsFullTreeDescription &treeDesc) const;
@@ -593,8 +593,8 @@ class NxsTreesBlock
 			*a = *this;
 			return a;
 			}
-		static void ProcessTokenVecIntoTree(const ProcessedNxsCommand & token, NxsFullTreeDescription & ftd, NxsLabelToIndicesMapper *, std::map<std::string, unsigned> &capNameToInd, bool allowNewTaxa, NxsReader * nexusReader, const bool respectCase=false);
-		static void ProcessTokenStreamIntoTree(NxsToken & token, NxsFullTreeDescription & ftd, NxsLabelToIndicesMapper *, std::map<std::string, unsigned> &capNameToInd, bool allowNewTaxa, NxsReader * nexusReader, const bool respectCase=false);
+		static void ProcessTokenVecIntoTree(const ProcessedNxsCommand & token, NxsFullTreeDescription & ftd, NxsLabelToIndicesMapper *, std::map<std::wstring, unsigned> &capNameToInd, bool allowNewTaxa, NxsReader * nexusReader, const bool respectCase=false);
+		static void ProcessTokenStreamIntoTree(NxsToken & token, NxsFullTreeDescription & ftd, NxsLabelToIndicesMapper *, std::map<std::wstring, unsigned> &capNameToInd, bool allowNewTaxa, NxsReader * nexusReader, const bool respectCase=false);
 		
 		void SetWriteFromNodeEdgeDataStructure(bool v)
 			{
@@ -621,9 +621,9 @@ class NxsTreesBlock
 	protected :
 		void ReadTreeFromOpenParensToken(NxsFullTreeDescription &td, NxsToken & token);
 
-		void WriteTranslateCommand(std::ostream & out) const;
-		void WriteTreesCommand(std::ostream & out) const;
-		void ConstructDefaultTranslateTable(NxsToken &token, const char * cmd);
+		void WriteTranslateCommand(std::wostream & out) const;
+		void WriteTreesCommand(std::wostream & out) const;
+		void ConstructDefaultTranslateTable(NxsToken &token, const wchar_t* cmd);
 
 		bool allowImplicitNames; /** false by default, true causes the trees block to create a taxa block from the labels found in the trees. */
 		bool processAllTreesDuringParse; /** true by default, false speeds processing but disables detection of errors*/
@@ -631,7 +631,7 @@ class NxsTreesBlock
 		bool writeFromNodeEdgeDataStructure; /**this will probably only ever be set to true in testing code. If true the WriteTrees function will convert each tree to NxsSimpleTree object to write the newick*/
 
 		mutable std::vector<NxsFullTreeDescription> trees;
-		mutable std::map<std::string, unsigned> capNameToInd;
+		mutable std::map<std::wstring, unsigned> capNameToInd;
 		unsigned			defaultTreeInd;		/* 0-offset index of default tree specified by user, or 0 if user failed to specify a default tree using an asterisk in the NEXUS data file */
 		NxsUnsignedSetMap 	treeSets;		
 		NxsPartitionsByName treePartitions;	
@@ -651,7 +651,7 @@ class NxsTreesBlockFactory
 	:public NxsBlockFactory
 	{
 	public:
-		virtual NxsTreesBlock  *	GetBlockReaderForID(const std::string & id, NxsReader *reader, NxsToken *token);
+		virtual NxsTreesBlock  *	GetBlockReaderForID(const std::wstring & id, NxsReader *reader, NxsToken *token);
 	};
 
 #endif
