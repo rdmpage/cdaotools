@@ -252,7 +252,7 @@ namespace CDAO {
    * Create a state instance for each taxon and trait.
    */
   void writeCharacterStates( wostream& out, const DataRepresentation* model){
-    //tags used for wchar_tacter states.
+    //tags used for chartacter states.
     static wstring dataTypeTranslation[] = {NSDefs::CDAO + L":" + Classes::UKN,
 					   NSDefs::CDAO + L":" + Classes::NUC_DATUM , 
 					   NSDefs::CDAO + L":" + Classes::AA_DATUM };
@@ -327,10 +327,10 @@ namespace CDAO {
       else {
         //cerr << L"Data type: L" << data_type << L" translation: L" << dataTypeTranslationPosition[ data_type ] << endl;
         if ( NUC_TYPE == dataTypeTranslationPosition[ data_type ] ){
-	  out << L"\t\t<" << NSDefs::CDAO << L":" << dtype_tag << L" " << Builtins::RESOURCE << L"=\"" << Imports::CDAO_DEF_URI << L"#"  << L"d" << (wchar_t)toupper(state_code) << L"\"" << L" />" << endl;
+	  out << L"\t\t<" << NSDefs::CDAO << L":" << dtype_tag << L" " << Builtins::RESOURCE << L"=\"" << Imports::CDAO_DEF_URI << L"#"  << L"d" << (wchar_t)towupper(state_code) << L"\"" << L" />" << endl;
         } 
         else if ( AA_TYPE == dataTypeTranslationPosition[ data_type ] ){
-	  out << L"\t\t<" << NSDefs::CDAO << L":" << dtype_tag << L" " << Builtins::RESOURCE << L"=\"" << Imports::AMINO_ACID << L"#" << (wchar_t)toupper(state_code) << L"\"" << L" />" << endl;
+	  out << L"\t\t<" << NSDefs::CDAO << L":" << dtype_tag << L" " << Builtins::RESOURCE << L"=\"" << Imports::AMINO_ACID << L"#" << (wchar_t)towupper(state_code) << L"\"" << L" />" << endl;
         }
         else { 
           
@@ -346,7 +346,7 @@ namespace CDAO {
   }
   
   /*
-   * Write the wchar_tacter state modifications for each taxon, wchar_tacter.
+   * Write the chartacter state modifications for each taxon, wchar_tacter.
    */
   void writeCharacterStateModifications( wostream& out, const DataRepresentation* model ){}
 
@@ -405,7 +405,7 @@ namespace CDAO {
   void writeTU( wostream& out, const DataRepresentation* model, const Node* current){
     if ( model && current ){
       //if the node has children it must be the MRCA of those children.
-      static const wstring NODE_TYPE[] = {Classes::NODE, Classes::MRCA_NODE}; 
+      static const wstring NODE_TYPE[] = {Classes::NODE, /*Classes::MRCA_NODE*/ Classes::NODE}; 
       if (current->getLabel() != L""){
         //write the edge for this TU
 
@@ -430,12 +430,12 @@ namespace CDAO {
         if (current->hasChildren()){
 	  writeChildConnections( out, current, current->getDescendants() );	
 	  //write the nca info
-	  writeNcaInfo( out, current, current->getDescendants() );
+	  //writeNcaInfo( out, current, current->getDescendants() );
 	  //vector < const Node* > nca_of = current->getAllDescendants();	
         }
         else {
-	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::PART_OF << L" " 
-	      << Builtins::RESOURCE << L"=\"#Lineage_" << XMLizeName( current->getLabel() ) << L"\" />" << endl;
+	//  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::PART_OF << L" " 
+	//      << Builtins::RESOURCE << L"=\"#Lineage_" << XMLizeName( current->getLabel() ) << L"\" />" << endl;
         }
         out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::PART_OF << L" " << Builtins::RESOURCE << L"=\"#" << XMLizeName( model->getTreeLabel( 0 ) ) << L"\" />" << endl;
         //end node definition.
@@ -498,7 +498,7 @@ namespace CDAO {
   
   void writeNcaInfo( wostream& out, const Node* current, const vector< const Node* >& nca_of ){
     if ( current ){
-      /*
+      
       set < const Node* > ncas_written = set< const Node* >();
       ncas_written.insert( current );
       out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::NCA_OF << L" " << Builtins::RESOURCE << L"=\"#Subtree_" << XMLizeName( current->getLabel() ) << L"\" />" << endl;
@@ -517,7 +517,7 @@ namespace CDAO {
 	  }
         }
       }
-      */
+      
     }
     return;
   }
