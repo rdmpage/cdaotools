@@ -36,37 +36,37 @@ class BogusToIndMapper: public NxsLabelToIndicesMapper
 			{
 			return UINT_MAX;
 			}
-		virtual unsigned GetIndicesForLabel(const std::string &label, NxsUnsignedSet *) const
+		virtual unsigned GetIndicesForLabel(const std::wstring &label, NxsUnsignedSet *) const
 			{
 			queried=true;
 			NxsString e;
-			e << "The symbol " << label << " was not recognized";
+			e << L"The symbol " << label << L" was not recognized";
 			throw NxsException(e);
 			}
 			
-		virtual unsigned GetIndexSet(const std::string &, NxsUnsignedSet * ) const
+		virtual unsigned GetIndexSet(const std::wstring &, NxsUnsignedSet * ) const
 			{
 			return 0;
 			}
-		virtual bool AddNewIndexSet(const std::string &, const NxsUnsignedSet & )
+		virtual bool AddNewIndexSet(const std::wstring &, const NxsUnsignedSet & )
 			{
 			return false;
 			}
-		virtual bool AddNewPartition(const std::string &, const NxsPartition & )
+		virtual bool AddNewPartition(const std::wstring &, const NxsPartition & )
 			{
 			return false;
 			}
 
 		/// AppendNewLabel is only overloaded in Taxa and State LabelToIndexMappers
-		virtual unsigned AppendNewLabel(std::string &label)
+		virtual unsigned AppendNewLabel(std::wstring &label)
 			{
 			queried=true;
 			NxsString e;
-			e << "The symbol " << label << " was not recognized";
+			e << L"The symbol " << label << L" was not recognized";
 			throw NxsException(e);
 			}
 			
-		std::vector<std::string> GetLabels() const
+		std::vector<std::wstring> GetLabels() const
 			{
 			queried=true;
 			NxsString e;
@@ -79,17 +79,17 @@ class BogusToIndMapper: public NxsLabelToIndicesMapper
 void NxsTransformationManager::Reset()
 	{
 	standardTypeNames.clear();
-	standardTypeNames.insert("UNORD");
-	standardTypeNames.insert("ORD");
-	standardTypeNames.insert("IRREV");
-	standardTypeNames.insert("IRREV.UP");
-	standardTypeNames.insert("IRREV.DOWN");
-	standardTypeNames.insert("DOLLO");
-	standardTypeNames.insert("DOLLO.UP");
-	standardTypeNames.insert("DOLLO.DOWN");
-	standardTypeNames.insert("STRAT");
-	standardTypeNames.insert("SQUARED"); /* new in Mesquite */
-	standardTypeNames.insert("LINEAR"); /* new in Mesquite */
+	standardTypeNames.insert(L"UNORD");
+	standardTypeNames.insert(L"ORD");
+	standardTypeNames.insert(L"IRREV");
+	standardTypeNames.insert(L"IRREV.UP");
+	standardTypeNames.insert(L"IRREV.DOWN");
+	standardTypeNames.insert(L"DOLLO");
+	standardTypeNames.insert(L"DOLLO.UP");
+	standardTypeNames.insert(L"DOLLO.DOWN");
+	standardTypeNames.insert(L"STRAT");
+	standardTypeNames.insert(L"SQUARED"); /* new in Mesquite */
+	standardTypeNames.insert(L"LINEAR"); /* new in Mesquite */
 	allTypeNames.clear();
 	allTypeNames.insert(standardTypeNames.begin(), standardTypeNames.end());
 
@@ -104,96 +104,96 @@ void NxsTransformationManager::Reset()
 	def_type.clear();
 	}
 
-void NxsTransformationManager::WriteUserType(std::ostream &out) const
+void NxsTransformationManager::WriteUserType(std::wostream &out) const
 	{
 	if (dblUserTypes.empty() && intUserTypes.empty())
 		return;
-	for (std::map<std::string, NxsRealStepMatrix>::const_iterator csIt = dblUserTypes.begin(); csIt != dblUserTypes.end(); ++csIt)
+	for (std::map<std::wstring, NxsRealStepMatrix>::const_iterator csIt = dblUserTypes.begin(); csIt != dblUserTypes.end(); ++csIt)
 		{
-		out << "    UserType ";
-		out << NexusToken::EscapeString(csIt->first) << " (Stepmatrix) = ";
+		out << L"    UserType ";
+		out << NexusToken::EscapeString(csIt->first) << L" (Stepmatrix) = ";
 		const NxsRealStepMatrix & p = csIt->second;
-		const std::vector<std::string> & states = p.GetSymbols();
+		const std::vector<std::wstring> & states = p.GetSymbols();
 		const NxsRealStepMatrix::DblMatrix & mat = p.GetMatrix();
 		const unsigned nStates = (const unsigned)states.size();
 		out << nStates;
-		out << "\n    ";
-		for (std::vector<std::string>::const_iterator sIt = states.begin(); sIt != states.end(); ++sIt)
-			out << "   "<< NxsString::GetEscaped(*sIt) ;
+		out << L"\n    ";
+		for (std::vector<std::wstring>::const_iterator sIt = states.begin(); sIt != states.end(); ++sIt)
+			out << L"   "<< NxsString::GetEscaped(*sIt) ;
 		NxsString n;
 		std::ios::fmtflags prevflags = out.setf(std::ios::showpoint);
 		for (unsigned i = 0; i < nStates; ++i)
 			{
-			out << "\n    ";
+			out << L"\n    ";
 			for (unsigned j = 0; j < nStates; ++j)
 				{
 				const double el = mat.at(i).at(j);
 				if (i == j && el == 0.0)
-					out << "   .";
+					out << L"   .";
 				else
 					{
 					n.clear();
 					if (el == DBL_MAX)
-						n += "i";
+						n += L"i";
 					else
 						n += el;
-					out << "   " << NxsString::GetEscaped(n); 
+					out << L"   " << NxsString::GetEscaped(n); 
 					}
 				}
 			}
 		out.flags(prevflags);
-		out << ";\n";
+		out << L";\n";
 		}
 
-	for (std::map<std::string, NxsIntStepMatrix>::const_iterator csIt = intUserTypes.begin(); csIt != intUserTypes.end(); ++csIt)
+	for (std::map<std::wstring, NxsIntStepMatrix>::const_iterator csIt = intUserTypes.begin(); csIt != intUserTypes.end(); ++csIt)
 		{
-		out << "    UserType ";
-		out << NexusToken::EscapeString(csIt->first) << " (Stepmatrix) = ";
+		out << L"    UserType ";
+		out << NexusToken::EscapeString(csIt->first) << L" (Stepmatrix) = ";
 		const NxsIntStepMatrix & p = csIt->second;
-		const std::vector<std::string> & states = p.GetSymbols();
+		const std::vector<std::wstring> & states = p.GetSymbols();
 		const NxsIntStepMatrix::IntMatrix & mat = p.GetMatrix();
 		const unsigned nStates = (const unsigned)states.size();
 		out << nStates;
-		out << "\n    ";
-		for (std::vector<std::string>::const_iterator sIt = states.begin(); sIt != states.end(); ++sIt)
-			out << "   "<< NxsString::GetEscaped(*sIt) ;
+		out << L"\n    ";
+		for (std::vector<std::wstring>::const_iterator sIt = states.begin(); sIt != states.end(); ++sIt)
+			out << L"   "<< NxsString::GetEscaped(*sIt) ;
 		NxsString n;
 		for (unsigned i = 0; i < nStates; ++i)
 			{
-			out << "\n    ";
+			out << L"\n    ";
 			for (unsigned j = 0; j < nStates; ++j)
 				{
 				const int el = mat.at(i).at(j);
 				if (i == j && el == 0)
-					out << "   .";
+					out << L"   .";
 				else
 					{
 					if (el == INT_MAX)
-						n = "i";
+						n = L"i";
 					else
 						{
 						n.clear();
 						n += el;
 						}
-					out << "   " << NxsString::GetEscaped(n); 
+					out << L"   " << NxsString::GetEscaped(n); 
 					}
 				}
 			}
-		out << ";\n";
+		out << L";\n";
 		}
 	}
 
-void NxsTransformationManager::WriteWtSet(std::ostream &out) const
+void NxsTransformationManager::WriteWtSet(std::wostream &out) const
 	{
 	if (dblWtSets.empty() && intWtSets.empty())
 		return;
-	const char * dtp = (def_wtset.empty() ? NULL : def_wtset.c_str());
-	for (std::map<std::string, ListOfDblWeights>::const_iterator csIt = dblWtSets.begin(); csIt != dblWtSets.end(); ++csIt)
+	const wchar_t* dtp = (def_wtset.empty() ? NULL : def_wtset.c_str());
+	for (std::map<std::wstring, ListOfDblWeights>::const_iterator csIt = dblWtSets.begin(); csIt != dblWtSets.end(); ++csIt)
 		{
-		out << "    WtSet ";
+		out << L"    WtSet ";
 		if (NxsString::case_insensitive_equals(csIt->first.c_str(), dtp))
-			out << "* ";
-		out << NexusToken::EscapeString(csIt->first) << " =";
+			out << L"* ";
+		out << NexusToken::EscapeString(csIt->first) << L" =";
 		const ListOfDblWeights & p = csIt->second;
 		bool first = true;
 		for (ListOfDblWeights::const_iterator pIt = p.begin(); pIt != p.end(); ++pIt)
@@ -201,18 +201,18 @@ void NxsTransformationManager::WriteWtSet(std::ostream &out) const
 			const DblWeightToIndexSet & g = *pIt;
 			if (!first)
 				out << ',';
-			out << " \'" << g.first << "' :";
+			out << L" \'" << g.first << L"' :";
 			NxsSetReader::WriteSetAsNexusValue(g.second, out);
 			first = false;
 			}
-		out << ";\n";
+		out << L";\n";
 		}
-	for (std::map<std::string, ListOfIntWeights>::const_iterator csIt = intWtSets.begin(); csIt != intWtSets.end(); ++csIt)
+	for (std::map<std::wstring, ListOfIntWeights>::const_iterator csIt = intWtSets.begin(); csIt != intWtSets.end(); ++csIt)
 		{
-		out << "    WtSet ";
+		out << L"    WtSet ";
 		if (NxsString::case_insensitive_equals(csIt->first.c_str(), dtp))
-			out << "* ";
-		out << NexusToken::EscapeString(csIt->first) << " =";
+			out << L"* ";
+		out << NexusToken::EscapeString(csIt->first) << L" =";
 		const ListOfIntWeights & p = csIt->second;
 		bool first = true;
 		for (ListOfIntWeights::const_iterator pIt = p.begin(); pIt != p.end(); ++pIt)
@@ -220,11 +220,11 @@ void NxsTransformationManager::WriteWtSet(std::ostream &out) const
 			const IntWeightToIndexSet & g = *pIt;
 			if (!first)
 				out << ',';
-			out << " \'" << g.first << "' :";
+			out << L" \'" << g.first << L"' :";
 			NxsSetReader::WriteSetAsNexusValue(g.second, out);
 			first = false;
 			}
-		out << ";\n";
+		out << L";\n";
 		}
 	}
 
@@ -232,12 +232,12 @@ void NxsTransformationManager::WriteWtSet(std::ostream &out) const
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns -1 if `index` is not in `wtset`
 */
-void NxsTransformationManager::SetDefaultTypeName(const std::string &n)
+void NxsTransformationManager::SetDefaultTypeName(const std::wstring &n)
 	{
 	if (!(n.empty() || IsValidTypeName(n)))
 		{
 		NxsString e(n.c_str());
-		e << " is not the name of a known type (and therefore is not a valid default type)";
+		e << L" is not the name of a known type (and therefore is not a valid default type)";
 		throw NxsException(e);
 		}
 	def_type = n;
@@ -250,7 +250,7 @@ bool NxsTransformationManager::IsEmpty() const
 			&& dblWtSets.empty() 
 			&& intWtSets.empty() 
 			&& typeSets.empty() 
-			&& (def_type.empty() || !NxsString::case_insensitive_equals(def_type.c_str(), "ORD")));
+			&& (def_type.empty() || !NxsString::case_insensitive_equals(def_type.c_str(), L"ORD")));
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -282,9 +282,9 @@ int NxsTransformationManager::GetWeightForIndex(const ListOfIntWeights & wtset, 
 /*----------------------------------------------------------------------------------------------------------------------
 |	Raises an NxsNCLAPIException if the `n` is not a type name.
 */
-bool NxsTransformationManager::IsIntType(const std::string & n) const
+bool NxsTransformationManager::IsIntType(const std::wstring & n) const
 	{
-	std::string capName(n.c_str());
+	std::wstring capName(n.c_str());
 	NxsString::to_upper(capName);
 	if (standardTypeNames.count(capName) > 0)
 		return true;
@@ -292,8 +292,8 @@ bool NxsTransformationManager::IsIntType(const std::string & n) const
 		return true;
 	if (dblUserTypes.find(capName) != dblUserTypes.end())
 		return false;
-	NxsString errormsg = "Type name ";
-	errormsg << n << " not found.";
+	NxsString errormsg = L"Type name ";
+	errormsg << n << L" not found.";
 	throw NxsNCLAPIException(errormsg);
 	}
 
@@ -301,9 +301,9 @@ bool NxsTransformationManager::IsIntType(const std::string & n) const
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns true if `n` is the name of a known type (standard or user type) -- not case-sensitive.
 */
-bool NxsTransformationManager::IsValidTypeName(const std::string & n) const
+bool NxsTransformationManager::IsValidTypeName(const std::wstring & n) const
 	{
-	std::string capName(n.c_str());
+	std::wstring capName(n.c_str());
 	NxsString::to_upper(capName);
 	return (allTypeNames.count(capName) > 0);
 	}
@@ -311,9 +311,9 @@ bool NxsTransformationManager::IsValidTypeName(const std::string & n) const
 /*----------------------------------------------------------------------------------------------------------------------
 |	Raises an NxsNCLAPIException if the `n` is not a type name.
 */
-bool NxsTransformationManager::IsStandardType(const std::string & n) const
+bool NxsTransformationManager::IsStandardType(const std::wstring & n) const
 	{
-	std::string capName(n.c_str());
+	std::wstring capName(n.c_str());
 	NxsString::to_upper(capName);
 	return (standardTypeNames.count(capName) > 0);
 	}
@@ -321,33 +321,33 @@ bool NxsTransformationManager::IsStandardType(const std::string & n) const
 /*----------------------------------------------------------------------------------------------------------------------
 |	Raises an NxsNCLAPIException if the `n` is not a type name.
 */
-const NxsIntStepMatrix & NxsTransformationManager::GetIntType(const std::string & n) const
+const NxsIntStepMatrix & NxsTransformationManager::GetIntType(const std::wstring & n) const
 	{
-	std::string capName(n.c_str());
+	std::wstring capName(n.c_str());
 	NxsString::to_upper(capName);
 	if (IsStandardType(n))
-		throw NxsNCLAPIException("Standard (predefined) types cannot be fetched using GetIntType.");
+		throw NxsNCLAPIException(L"Standard (predefined) types cannot be fetched using GetIntType.");
 
-	std::map<std::string, NxsIntStepMatrix>::const_iterator i = intUserTypes.find(capName);
+	std::map<std::wstring, NxsIntStepMatrix>::const_iterator i = intUserTypes.find(capName);
 	if (i != intUserTypes.end())
 		return i->second;
-	NxsString errormsg = "Type name ";
-	errormsg << n << " not found.";
+	NxsString errormsg = L"Type name ";
+	errormsg << n << L" not found.";
 	throw NxsNCLAPIException(errormsg);
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
 |	Raises an NxsNCLAPIException if the `n` is not a type name.
 */
-const NxsRealStepMatrix & NxsTransformationManager::GetRealType(const std::string & n) const
+const NxsRealStepMatrix & NxsTransformationManager::GetRealType(const std::wstring & n) const
 	{
-	std::string capName(n.c_str());
+	std::wstring capName(n.c_str());
 	NxsString::to_upper(capName);
-	std::map<std::string, NxsRealStepMatrix>::const_iterator i = dblUserTypes.find(capName);
+	std::map<std::wstring, NxsRealStepMatrix>::const_iterator i = dblUserTypes.find(capName);
 	if (i != dblUserTypes.end())
 		return i->second;
-	NxsString errormsg = "Type name ";
-	errormsg << n << " not found.";
+	NxsString errormsg = L"Type name ";
+	errormsg << n << L" not found.";
 	throw NxsNCLAPIException(errormsg);
 	}
 
@@ -382,14 +382,14 @@ const NxsIntStepMatrix::IntMatrix NxsTransformationManager::GetUnorderedType(uns
 |	Raises an NxsNCLAPIException if the `name` is the name of a "standard" type.
 |	Returns true if another user type was replaced.
 */
-bool NxsTransformationManager::AddIntType(const std::string &name, const NxsIntStepMatrix &s)
+bool NxsTransformationManager::AddIntType(const std::wstring &name, const NxsIntStepMatrix &s)
 	{
-	std::string capName(name.c_str());
+	std::wstring capName(name.c_str());
 	NxsString::to_upper(capName);
 	if (standardTypeNames.count(capName) > 0)
 		{
 		NxsString errormsg(name.c_str());
-		errormsg <<  " is a predefined type which cannot be redefined";
+		errormsg << L" is a predefined type which cannot be redefined";
 		throw NxsNCLAPIException(errormsg);
 		}
 	bool replacing = intUserTypes.find(capName) != intUserTypes.end();
@@ -398,7 +398,7 @@ bool NxsTransformationManager::AddIntType(const std::string &name, const NxsIntS
 		replacing = true;
 		dblUserTypes.erase(capName);
 		}
-	intUserTypes.insert(pair<std::string, NxsIntStepMatrix>(capName, s));
+	intUserTypes.insert(pair<std::wstring, NxsIntStepMatrix>(capName, s));
 	userTypeNames.insert(name);
 	allTypeNames.insert(capName);
 	return replacing;
@@ -408,14 +408,14 @@ bool NxsTransformationManager::AddIntType(const std::string &name, const NxsIntS
 |	Raises an NxsNCLAPIException if the `name` is the name of a "standard" type.
 |	Returns true if another user type was replaced.
 */
-bool NxsTransformationManager::AddRealType(const std::string &name, const NxsRealStepMatrix &s)
+bool NxsTransformationManager::AddRealType(const std::wstring &name, const NxsRealStepMatrix &s)
 	{
-	std::string capName(name.c_str());
+	std::wstring capName(name.c_str());
 	NxsString::to_upper(capName);
 	if (standardTypeNames.count(capName) > 0)
 		{
 		NxsString errormsg(name.c_str());
-		errormsg <<  " is a predefined type which cannot be redefined";
+		errormsg << L" is a predefined type which cannot be redefined";
 		throw NxsNCLAPIException(errormsg);
 		}
 	bool replacing = dblUserTypes.find(capName) != dblUserTypes.end();
@@ -424,15 +424,15 @@ bool NxsTransformationManager::AddRealType(const std::string &name, const NxsRea
 		replacing = true;
 		intUserTypes.erase(capName);
 		}
-	dblUserTypes.insert(pair<std::string, NxsRealStepMatrix>(capName, s));
+	dblUserTypes.insert(pair<std::wstring, NxsRealStepMatrix>(capName, s));
 	userTypeNames.insert(capName);
 	allTypeNames.insert(capName);
 	return replacing;
 	}
 
-bool NxsTransformationManager::AddIntWeightSet(const std::string &name, const NxsTransformationManager::ListOfIntWeights &ws, bool isDefault)
+bool NxsTransformationManager::AddIntWeightSet(const std::wstring &name, const NxsTransformationManager::ListOfIntWeights &ws, bool isDefault)
 	{
-	std::string capName(name.c_str());
+	std::wstring capName(name.c_str());
 	NxsString::to_upper(capName);
 	bool replacing = intWtSets.find(capName) != intWtSets.end();
 	if (!replacing &&  dblWtSets.find(capName) != dblWtSets.end())
@@ -446,9 +446,9 @@ bool NxsTransformationManager::AddIntWeightSet(const std::string &name, const Nx
 	return replacing;
 	}
 
-bool NxsTransformationManager::AddRealWeightSet(const std::string &name, const NxsTransformationManager::ListOfDblWeights &ws, bool isDefault)
+bool NxsTransformationManager::AddRealWeightSet(const std::wstring &name, const NxsTransformationManager::ListOfDblWeights &ws, bool isDefault)
 	{
-	std::string capName(name.c_str());
+	std::wstring capName(name.c_str());
 	NxsString::to_upper(capName);
 	bool replacing = dblWtSets.find(capName) != dblWtSets.end();
 	if (!replacing &&  intWtSets.find(capName) != intWtSets.end())
@@ -464,9 +464,9 @@ bool NxsTransformationManager::AddRealWeightSet(const std::string &name, const N
 	return replacing;
 	}
 	
-bool NxsTransformationManager::AddTypeSet(const std::string &name, const NxsPartition &ts, bool isDefault)
+bool NxsTransformationManager::AddTypeSet(const std::wstring &name, const NxsPartition &ts, bool isDefault)
 	{
-	std::string capName(name.c_str());
+	std::wstring capName(name.c_str());
 	NxsString::to_upper(capName);
 	bool replacing = typeSets.find(capName) != typeSets.end();
 	typeSets[capName] = ts;
@@ -477,50 +477,50 @@ bool NxsTransformationManager::AddTypeSet(const std::string &name, const NxsPart
 	return replacing;
 	}
 
-std::set<std::string> NxsTransformationManager::GetWeightSetNames() const
+std::set<std::wstring> NxsTransformationManager::GetWeightSetNames() const
 	{
-	std::set<std::string> s;
-	std::map<std::string, ListOfDblWeights>::const_iterator dws = dblWtSets.begin();
+	std::set<std::wstring> s;
+	std::map<std::wstring, ListOfDblWeights>::const_iterator dws = dblWtSets.begin();
 	for (; dws != dblWtSets.end(); ++dws)
 		s.insert(dws->first);
-	std::map<std::string, ListOfIntWeights>::const_iterator iws = intWtSets.begin();
+	std::map<std::wstring, ListOfIntWeights>::const_iterator iws = intWtSets.begin();
 	for (; iws != intWtSets.end(); ++iws)
 		s.insert(iws->first);
 	return s;
 	}
 
-std::set<std::string> NxsTransformationManager::GetTypeSetNames() const
+std::set<std::wstring> NxsTransformationManager::GetTypeSetNames() const
 	{
-	std::set<std::string> s;
-	std::map<std::string, ListOfTypeNamesToSets>::const_iterator dws = typeSets.begin();
+	std::set<std::wstring> s;
+	std::map<std::wstring, ListOfTypeNamesToSets>::const_iterator dws = typeSets.begin();
 	for (; dws != typeSets.end(); ++dws)
 		s.insert(dws->first);
 	return s;
 	}
 
 
-void NxsAssumptionsBlock::AddCharPartition(const std::string & name, const NxsPartition &p)
+void NxsAssumptionsBlock::AddCharPartition(const std::wstring & name, const NxsPartition &p)
 	{
 	charPartitions[name] = p;
 	}
-void NxsAssumptionsBlock::AddTaxPartition(const std::string & name, const NxsPartition &p)
+void NxsAssumptionsBlock::AddTaxPartition(const std::wstring & name, const NxsPartition &p)
 	{
 	taxPartitions[name] = p;
 	}
 
-void NxsAssumptionsBlock::AddTreePartition(const std::string & name, const NxsPartition &p)
+void NxsAssumptionsBlock::AddTreePartition(const std::wstring & name, const NxsPartition &p)
 	{
 	treePartitions[name] = p;
 	}
 
-void NxsAssumptionsBlock::AddCodeSet(const std::string & name, const NxsPartition &p, bool asterisked)
+void NxsAssumptionsBlock::AddCodeSet(const std::wstring & name, const NxsPartition &p, bool asterisked)
 	{
 	codeSets[name] = p;
 	if (asterisked)
 		def_codeSet.assign(name.c_str());
 	}
 
-void NxsAssumptionsBlock::AddCodonPosSet(const std::string & name, const NxsPartition &p, bool asterisked)
+void NxsAssumptionsBlock::AddCodonPosSet(const std::wstring & name, const NxsPartition &p, bool asterisked)
 	{
 	codonPosSets[name] = p;
 	if (asterisked)
@@ -528,22 +528,22 @@ void NxsAssumptionsBlock::AddCodonPosSet(const std::string & name, const NxsPart
 	}
 
 	
-void NxsAssumptionsBlock::WriteOptions(std::ostream & out) const
+void NxsAssumptionsBlock::WriteOptions(std::wostream & out) const
 	{
-	const std::string d = transfMgr.GetDefaultTypeName();
-	if ((!d.empty() && !NxsString::case_insensitive_equals(d.c_str(), "ORD")) 
+	const std::wstring d = transfMgr.GetDefaultTypeName();
+	if ((!d.empty() && !NxsString::case_insensitive_equals(d.c_str(), L"ORD")) 
 		|| gapsAsNewstate || polyTCountValue != POLY_T_COUNT_UNKNOWN)
 		{
-		out << "    OPTIONS";
+		out << L"    OPTIONS";
 		if (!d.empty())
-			out << " DefType = " << NxsString::GetEscaped(d);
+			out << L" DefType = " << NxsString::GetEscaped(d);
 		if (gapsAsNewstate)
-			out << " GapMode = NewState";
+			out << L" GapMode = NewState";
 		if (polyTCountValue == POLY_T_COUNT_MIN)
-			out << " PolyTCount = MinSteps";
+			out << L" PolyTCount = MinSteps";
 		else if (polyTCountValue == POLY_T_COUNT_MAX)
-			out << " PolyTCount = MaxSteps";
-		out << ";\n";
+			out << L" PolyTCount = MaxSteps";
+		out << L";\n";
 		}
 	}
 	
@@ -566,21 +566,21 @@ bool NxsAssumptionsBlock::HasCodonsBlockCommands() const
 
 bool NxsAssumptionsBlock::CanReadBlockType(const NxsToken & token)
 	{
-	if (token.Equals("ASSUMPTIONS"))
+	if (token.Equals(L"ASSUMPTIONS"))
 		{
-		id = "ASSUMPTIONS";
+		id = L"ASSUMPTIONS";
 		readAs = ASSUMPTIONS_BLOCK_READ;
 		return true;
 		}
-	if (token.Equals("SETS"))
+	if (token.Equals(L"SETS"))
 		{
-		id = "SETS";
+		id = L"SETS";
 		readAs = SETS_BLOCK_READ;
 		return true;
 		}
-	if (token.Equals("CODONS"))
+	if (token.Equals(L"CODONS"))
 		{
-		id = "CODONS";
+		id = L"CODONS";
 		readAs = CODONS_BLOCK_READ;
 		return true;
 		}
@@ -589,10 +589,10 @@ bool NxsAssumptionsBlock::CanReadBlockType(const NxsToken & token)
 
 
 
-void NxsAssumptionsBlock::WriteAsNexus(std::ostream &out) const
+void NxsAssumptionsBlock::WriteAsNexus(std::wostream &out) const
 	{
 	NxsAssumptionsBlock *t = const_cast<NxsAssumptionsBlock *>(this); /*title switching*/
-	const std::string ft = title;
+	const std::wstring ft = title;
 	t->title.clear();
 	NameOfAssumpBlockAsRead treatAs = this->readAs;
 	if (treatAs == UNREAD_OR_GENERATED_BLOCK)
@@ -613,7 +613,7 @@ void NxsAssumptionsBlock::WriteAsNexus(std::ostream &out) const
 			{
 			if (treatAs == SETS_BLOCK_READ && !IsAutoGeneratedTitle())
 				t->title = ft;
-			out << "BEGIN SETS;\n";
+			out << L"BEGIN SETS;\n";
 			WriteBasicBlockCommands(out);
 			this->WriteTaxSet(out);
 			this->WriteCharSet(out);
@@ -626,13 +626,13 @@ void NxsAssumptionsBlock::WriteAsNexus(std::ostream &out) const
 				WriteSkippedCommands(out);
 				t->title.clear();
 				}
-			out << "END;\n";
+			out << L"END;\n";
 			}
 		if (HasCodonsBlockCommands())
 			{
 			if (treatAs == CODONS_BLOCK_READ && !IsAutoGeneratedTitle())
 				t->title = ft;
-			out << "BEGIN CODONS;\n";
+			out << L"BEGIN CODONS;\n";
 			WriteBasicBlockCommands(out);
 			this->codesMgr.WriteGeneticCode(out);
 			this->WriteCodonPosSet(out);
@@ -642,13 +642,13 @@ void NxsAssumptionsBlock::WriteAsNexus(std::ostream &out) const
 				WriteSkippedCommands(out);
 				t->title.clear();
 				}
-			out << "END;\n";
+			out << L"END;\n";
 			}
 		if (HasAssumptionsBlockCommands())
 			{
 			if (treatAs == ASSUMPTIONS_BLOCK_READ && !IsAutoGeneratedTitle())
 				t->title = ft;
-			out << "BEGIN ASSUMPTIONS;\n";
+			out << L"BEGIN ASSUMPTIONS;\n";
 			WriteBasicBlockCommands(out);
 			this->WriteExSet(out);
 			this->transfMgr.WriteUserType(out);
@@ -657,7 +657,7 @@ void NxsAssumptionsBlock::WriteAsNexus(std::ostream &out) const
 			this->WriteOptions(out);
 			if (treatAs == ASSUMPTIONS_BLOCK_READ)
 				WriteSkippedCommands(out);
-			out << "END;\n";
+			out << L"END;\n";
 			}
 		}
 	catch (...)
@@ -693,7 +693,7 @@ NxsAssumptionsBlockAPI	*NxsAssumptionsBlock::CreateNewAssumptionsBlock(NxsToken 
 	NxsAssumptionsBlockAPI * aba = NULL;
 	if (nexusReader)
 		{
-		NxsString n("ASSUMPTIONS");
+		NxsString n(L"ASSUMPTIONS");
 		NxsBlock * block = nexusReader->CreateBlockFromFactories(n, token, NULL);
 		aba = static_cast<NxsAssumptionsBlockAPI *>(block);
 		}
@@ -837,10 +837,10 @@ NxsAssumptionsBlockAPI	*NxsAssumptionsBlock::GetAssumptionsBlockForTreesBlock(Nx
 	return effBlock;
 	}
 
-NxsAssumptionsBlockAPI	*NxsAssumptionsBlock::GetAssumptionsBlockForCharTitle(const char *charTitle, NxsToken &token, const char *cmd)
+NxsAssumptionsBlockAPI	*NxsAssumptionsBlock::GetAssumptionsBlockForCharTitle(const wchar_t*charTitle, NxsToken &token, const wchar_t*cmd)
 	{
 	if (!nexusReader)
-		NxsNCLAPIException("No NxsReader when reading Assumptions block.");
+		NxsNCLAPIException(L"No NxsReader when reading Assumptions block.");
 	if (charTitle == NULL)
 		{
 		int cbstatus;
@@ -871,19 +871,19 @@ NxsAssumptionsBlockAPI	*NxsAssumptionsBlock::GetAssumptionsBlockForCharTitle(con
 		if (effectiveB == NULL)
 			{
 			errormsg.clear();
-			errormsg << "A CHARACTERS (or DATA) block ";
+			errormsg << L"A CHARACTERS (or DATA) block ";
 			if (charTitle)
-				errormsg << "with the title " << NxsString::GetEscaped(charTitle);
-			errormsg << " must precede an " << id << " block with a " <<  cmd <<  " command.";
-			errormsg << "\n(If such a block exists, then this program may not be using an API for the NCL library that supports block linking).";
+				errormsg << L"with the title " << NxsString::GetEscaped(charTitle);
+			errormsg << L" must precede an " << id << L" block with a " <<  cmd << L" command.";
+			errormsg << L"\n(If such a block exists, then this program may not be using an API for the NCL library that supports block linking).";
 			throw NxsException(errormsg, token);
 			}
 		}
 	else if (ncb > 1)
 		{
-		errormsg = "Multiple CHARACTERS blocks have been encountered, but a ";
+		errormsg = L"Multiple CHARACTERS blocks have been encountered, but a ";
 		errormsg += cmd;
-		errormsg += " command was found which does not specify which CHARACTERS block it uses.   The most recent CHARACTERS block will be used.";
+		errormsg += L" command was found which does not specify which CHARACTERS block it uses.   The most recent CHARACTERS block will be used.";
 		if (nexusReader)
 			nexusReader->NexusWarnToken(errormsg, NxsReader::AMBIGUOUS_CONTENT_WARNING, token); 
 		errormsg.clear();
@@ -898,10 +898,10 @@ NxsAssumptionsBlockAPI	*NxsAssumptionsBlock::GetAssumptionsBlockForCharTitle(con
 	return effectiveB;
 	}
 
-NxsAssumptionsBlockAPI	*NxsAssumptionsBlock::GetAssumptionsBlockForTaxaTitle(const char *taxTitle, NxsToken &token, const char *cmd)
+NxsAssumptionsBlockAPI	*NxsAssumptionsBlock::GetAssumptionsBlockForTaxaTitle(const wchar_t*taxTitle, NxsToken &token, const wchar_t*cmd)
 	{
 	if (!nexusReader)
-		NxsNCLAPIException("No NxsReader when reading Assumptions block.");
+		NxsNCLAPIException(L"No NxsReader when reading Assumptions block.");
 	if (taxTitle == NULL)
 		{
 		int cbstatus;
@@ -932,19 +932,19 @@ NxsAssumptionsBlockAPI	*NxsAssumptionsBlock::GetAssumptionsBlockForTaxaTitle(con
 		if (effectiveB == NULL)
 			{
 			errormsg.clear();
-			errormsg <<  "A TAXA block ";
+			errormsg << L"A TAXA block ";
 			if (taxTitle)
-				errormsg << "with the title " << NxsString::GetEscaped(taxTitle);
-			errormsg << " must precede an " << id << " block with a " <<  cmd <<  " command.";
-			errormsg << "\n(If such a block exists, then this program may not be using an API for the NCL library that supports block linking).";
+				errormsg << L"with the title " << NxsString::GetEscaped(taxTitle);
+			errormsg << L" must precede an " << id << L" block with a " <<  cmd << L" command.";
+			errormsg << L"\n(If such a block exists, then this program may not be using an API for the NCL library that supports block linking).";
 			throw NxsException(errormsg, token);
 			}
 		}
 	else if (ncb > 1)
 		{
-		errormsg = "Multiple TAXA blocks have been encountered, but a ";
+		errormsg = L"Multiple TAXA blocks have been encountered, but a ";
 		errormsg += cmd;
-		errormsg += " command was found which does not specify which TAXA block it uses.  The most recent TAXA block will be used.";
+		errormsg += L" command was found which does not specify which TAXA block it uses.  The most recent TAXA block will be used.";
 		nexusReader->NexusWarnToken(errormsg, NxsReader::AMBIGUOUS_CONTENT_WARNING, token);
 		errormsg.clear();
 		effectiveB = GetAssumptionsBlockForTaxaBlock(cb, NxsBlock::BLOCK_LINK_TO_MOST_RECENT, token);
@@ -958,10 +958,10 @@ NxsAssumptionsBlockAPI	*NxsAssumptionsBlock::GetAssumptionsBlockForTaxaTitle(con
 	return effectiveB;
 	}
 
-NxsAssumptionsBlockAPI	*NxsAssumptionsBlock::GetAssumptionsBlockForTreesTitle(const char *treesTitle, NxsToken &token, const char *cmd)
+NxsAssumptionsBlockAPI	*NxsAssumptionsBlock::GetAssumptionsBlockForTreesTitle(const wchar_t*treesTitle, NxsToken &token, const wchar_t*cmd)
 	{
 	if (!nexusReader)
-		NxsNCLAPIException("No NxsReader when reading Assumptions block.");
+		NxsNCLAPIException(L"No NxsReader when reading Assumptions block.");
 	if (treesTitle == NULL)
 		{
 		int cbstatus;
@@ -992,19 +992,19 @@ NxsAssumptionsBlockAPI	*NxsAssumptionsBlock::GetAssumptionsBlockForTreesTitle(co
 		if (effectiveB == NULL)
 			{
 			errormsg.clear();
-			errormsg <<  "A TREES block";
+			errormsg << L"A TREES block";
 			if (treesTitle)
-				errormsg << "with the title " << NxsString::GetEscaped(treesTitle);
-			errormsg << " must precede an " << id << " block with a " <<  cmd <<  " command.";
-			errormsg << "\n(If such a block exists, then this program may not be using an API for the NCL library that supports block linking).";
+				errormsg << L"with the title " << NxsString::GetEscaped(treesTitle);
+			errormsg << L" must precede an " << id << L" block with a " <<  cmd << L" command.";
+			errormsg << L"\n(If such a block exists, then this program may not be using an API for the NCL library that supports block linking).";
 			throw NxsException(errormsg, token);
 			}
 		}
 	else if (ncb > 1)
 		{
-		errormsg = "Multiple TREES blocks have been encountered, but a ";
+		errormsg = L"Multiple TREES blocks have been encountered, but a ";
 		errormsg += cmd;
-		errormsg += " command was found which does not specify which TREES block it uses.  The most recent TREES block will be used.";
+		errormsg += L" command was found which does not specify which TREES block it uses.  The most recent TREES block will be used.";
 		nexusReader->NexusWarnToken(errormsg, NxsReader::AMBIGUOUS_CONTENT_WARNING, token);
 		errormsg.clear();
 		effectiveB = GetAssumptionsBlockForTreesBlock(cb, NxsBlock::BLOCK_LINK_TO_MOST_RECENT, token);
@@ -1022,7 +1022,7 @@ void NxsAssumptionsBlock::SetCharLinkStatus(NxsBlockLinkStatus s)
 	{
 	if (charLinkStatus & NxsBlock::BLOCK_LINK_USED)
 		{
-		throw NxsNCLAPIException("Resetting a used charLinkStatus");
+		throw NxsNCLAPIException(L"Resetting a used charLinkStatus");
 		}
 	charLinkStatus = s;
 	}
@@ -1031,7 +1031,7 @@ void NxsAssumptionsBlock::SetTaxaLinkStatus(NxsBlockLinkStatus s)
 	{
 	if (taxaLinkStatus & NxsBlock::BLOCK_LINK_USED)
 		{
-		throw NxsNCLAPIException("Resetting a used taxaLinkStatus");
+		throw NxsNCLAPIException(L"Resetting a used taxaLinkStatus");
 		}
 	taxaLinkStatus = s;
 	}
@@ -1040,7 +1040,7 @@ void NxsAssumptionsBlock::SetTreesLinkStatus(NxsBlockLinkStatus s)
 	{
 	if (treesLinkStatus & NxsBlock::BLOCK_LINK_USED)
 		{
-		throw NxsNCLAPIException("Resetting a used charLinkStatus");
+		throw NxsNCLAPIException(L"Resetting a used charLinkStatus");
 		}
 	treesLinkStatus = s;
 	}
@@ -1077,7 +1077,7 @@ NxsAssumptionsBlock::NxsAssumptionsBlock(
 	passedRefOfOwnedBlock(false)
 	{
 	taxaLinkStatus = (t == NULL ? NxsBlock::BLOCK_LINK_UNINITIALIZED : NxsBlock::BLOCK_LINK_UNKNOWN_STATUS);
-	id				= "ASSUMPTIONS";
+	id				= L"ASSUMPTIONS";
 	Reset();
 	}
 
@@ -1145,7 +1145,7 @@ int NxsAssumptionsBlock::GetNumCharPartitions()
 |	Erases 'names' vector, then fills 'names' with the names of all stored character partitions.
 */
 void NxsAssumptionsBlock::GetCharPartitionNames(
-	vector<std::string> &names)	/* the vector in which to store the names */
+	vector<std::wstring> &names)	/* the vector in which to store the names */
 	{
 	names.erase(names.begin(), names.end());
 	NxsPartitionsByName::const_iterator i;
@@ -1157,7 +1157,7 @@ void NxsAssumptionsBlock::GetCharPartitionNames(
 |	Returns pointer to character partition having name 'nm'.
 */
 const NxsPartition *NxsAssumptionsBlock::GetCharPartition(
-	std::string nm) const /* the name of the character set to return */
+	std::wstring nm) const /* the name of the character set to return */
 	{
 	NxsPartitionsByName::const_iterator it = charPartitions.find(nm);
 	if (it == charPartitions.end())
@@ -1225,7 +1225,7 @@ NxsUnsignedSet &NxsAssumptionsBlock::GetExSet(
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
-|	Returns name of default exclusion set. If returned string has zero length, then no default exclusion set was defined
+|	Returns name of default exclusion set. If returned wstring has zero length, then no default exclusion set was defined
 |	in the data set.
 */
 NxsString NxsAssumptionsBlock::GetDefExSetName()
@@ -1245,47 +1245,47 @@ void NxsAssumptionsBlock::ApplyExset(
 	charBlockPtr->ApplyExset(exsets[nm]);
 	}
 
-NxsAssumptionsBlockAPI *NxsAssumptionsBlock::DealWithPossibleParensInCharDependentCmd(NxsToken &token, const char *cmd, const std::vector<std::string> *unsupported, bool * isVect)
+NxsAssumptionsBlockAPI *NxsAssumptionsBlock::DealWithPossibleParensInCharDependentCmd(NxsToken &token, const wchar_t*cmd, const std::vector<std::wstring> *unsupported, bool * isVect)
 	{
 	token.GetNextToken();
 	NxsString charblock_name;
 	errormsg.clear();
 	if (isVect)
 		*isVect = false;
-	if (token.Equals("("))
+	if (token.Equals(L"("))
 		{
 		token.GetNextToken();
-		while (!token.Equals(")"))
+		while (!token.Equals(L")"))
 			{		 
-			if (token.Equals("CHARACTERS"))
+			if (token.Equals(L"CHARACTERS"))
 				{
 				NxsString t;
-				t << "after \"(Characters\" in a " << cmd << " command";
+				t << L"after \"(Characters\" in a " << cmd << L" command";
 				DemandEquals(token, t.c_str());
 				token.GetNextToken();
 				charblock_name = token.GetToken();
 				}
-			else if (token.Equals("VECTOR"))
+			else if (token.Equals(L"VECTOR"))
 				{
 				if (!isVect)
-					GenerateNxsException(token, "VECTOR-style set definitions are not currently supported");
+					GenerateNxsException(token, L"VECTOR-style set definitions are not currently supported");
 				else
 					*isVect = true;
 				}
-			else if (token.Equals("NOTOKENS"))
-				GenerateNxsException(token, "NOTOKENS-style set definitions are not currently supported");
-			else if (token.Equals(";"))
+			else if (token.Equals(L"NOTOKENS"))
+				GenerateNxsException(token, L"NOTOKENS-style set definitions are not currently supported");
+			else if (token.Equals(L";"))
 				{
 				NxsString s;
-				s << "; encountered in " << cmd << " command before parentheses were closed";
+				s << L"; encountered in " << cmd << L" command before parentheses were closed";
 				GenerateNxsException(token, s.c_str());
 				}
-			else if (!(token.Equals("STANDARD") || token.Equals("TOKENS")) && nexusReader)
+			else if (!(token.Equals(L"STANDARD") || token.Equals(L"TOKENS")) && nexusReader)
 				{
 				bool found = false;
 				if (unsupported)
 					{
-					for (std::vector<std::string>::const_iterator u = unsupported->begin(); u != unsupported->end(); ++u)
+					for (std::vector<std::wstring>::const_iterator u = unsupported->begin(); u != unsupported->end(); ++u)
 						{
 						if (token.Equals(u->c_str()))
 							{
@@ -1297,12 +1297,12 @@ NxsAssumptionsBlockAPI *NxsAssumptionsBlock::DealWithPossibleParensInCharDepende
 				if (found)
 					{
 					NxsString s;
-					s << "The " << token.GetTokenReference()<< " as a " << cmd << " qualifier is not supported.";
+					s << L"The " << token.GetTokenReference()<< L" as a " << cmd << L" qualifier is not supported.";
 					GenerateNxsException(token, s.c_str());
 					}
 				else
 					{
-					errormsg  << "Skipping unknown " << cmd << " qualifier: "  << token.GetTokenReference();
+					errormsg  << L"Skipping unknown " << cmd << L" qualifier: "  << token.GetTokenReference();
 					nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 					errormsg.clear();
 					}
@@ -1311,9 +1311,9 @@ NxsAssumptionsBlockAPI *NxsAssumptionsBlock::DealWithPossibleParensInCharDepende
 			}
 		token.GetNextToken();
 		}
-	const char *cbn = (charblock_name.empty() ? NULL : charblock_name.c_str());
+	const wchar_t*cbn = (charblock_name.empty() ? NULL : charblock_name.c_str());
 	NxsString u;
-	u << "in " << cmd << " definition";
+	u << L"in " << cmd << L" definition";
 	DemandIsAtEquals(token, u.c_str());
 	return this->GetAssumptionsBlockForCharTitle(cbn, token, cmd);
 	}
@@ -1328,26 +1328,26 @@ void NxsAssumptionsBlock::HandleTypeSet(
 	errormsg.clear();
 	bool asterisked = false;
 	token.GetNextToken();
-	if (token.Equals("*"))
+	if (token.Equals(L"*"))
 		{
 		asterisked = true;
 		token.GetNextToken();
 		}
 	NxsString typeset_name = token.GetToken();
 	//typeset_name.ToUpper();
-	NxsAssumptionsBlockAPI * effectiveAssumpBlock = DealWithPossibleParensInCharDependentCmd(token, "TypeSet");
+	NxsAssumptionsBlockAPI * effectiveAssumpBlock = DealWithPossibleParensInCharDependentCmd(token, L"TypeSet");
 	token.GetNextToken();
 	assert(effectiveAssumpBlock);
 	NxsPartition newPartition;
 	NxsCharactersBlockAPI *cbp = effectiveAssumpBlock->GetCharBlockPtr();
 	assert(cbp);
-	effectiveAssumpBlock->ReadPartitionDef(newPartition, *cbp, typeset_name, "Character", "TypeSet", token, false, false, false);
+	effectiveAssumpBlock->ReadPartitionDef(newPartition, *cbp, typeset_name, L"Character", L"TypeSet", token, false, false, false);
 	NxsTransformationManager &ctm = cbp->GetNxsTransformationManagerRef();
 	for (NxsPartition::const_iterator groupIt = newPartition.begin(); groupIt != newPartition.end(); ++groupIt)
 		{
 		if (!ctm.IsValidTypeName(groupIt->first))
 			{
-			errormsg << "The group name " << groupIt->first << " found in a TypeSet command does not correspond to a known type";
+			errormsg << L"The group name " << groupIt->first << L" found in a TypeSet command does not correspond to a known type";
 			throw NxsException(errormsg, token);
 			}
 		}
@@ -1361,9 +1361,9 @@ void NxsAssumptionsBlock::HandleUserType(NxsToken& token)
 	{
 	token.GetNextToken();
 	errormsg.clear();
-	if (token.Equals("*"))
+	if (token.Equals(L"*"))
 		{
-		errormsg << "An * is ignored in a UserType command";
+		errormsg << L"An * is ignored in a UserType command";
 		if (nexusReader)
 			nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 		token.GetNextToken();
@@ -1375,34 +1375,34 @@ void NxsAssumptionsBlock::HandleUserType(NxsToken& token)
 	NxsString charblock_name;
 	bool floatMat = false;
 	bool cstreeform = false;
-	if (token.Equals("("))
+	if (token.Equals(L"("))
 		{
 		token.GetNextToken();
-		while (!token.Equals(")"))
+		while (!token.Equals(L")"))
 			{		 
-			if (token.Equals("CHARACTERS"))
+			if (token.Equals(L"CHARACTERS"))
 				{
 				NxsString t;
-				t << "after \"(Characters\" in a UserType command";
+				t << L"after \"(Characters\" in a UserType command";
 				DemandEquals(token, t.c_str());
 				token.GetNextToken();
 				charblock_name = token.GetToken();
 				}
-			else if (token.Equals("CSTREE"))
+			else if (token.Equals(L"CSTREE"))
 				cstreeform = true;
-			else if (token.Equals("NOTOKENS"))
-				GenerateNxsException(token, "NOTOKENS-style UserType are not supported");
-			else if (token.Equals("REALMATRIX"))
+			else if (token.Equals(L"NOTOKENS"))
+				GenerateNxsException(token, L"NOTOKENS-style UserType are not supported");
+			else if (token.Equals(L"REALMATRIX"))
 				floatMat = true;
-			else if (token.Equals(";"))
+			else if (token.Equals(L";"))
 				{
 				NxsString s;
-				s << "; encountered in UserType command before parentheses were closed";
+				s << L"; encountered in UserType command before parentheses were closed";
 				GenerateNxsException(token, s.c_str());
 				}
-			else if (!(token.Equals("STEPMATRIX") || token.Equals("TOKENS")) && nexusReader)
+			else if (!(token.Equals(L"STEPMATRIX") || token.Equals(L"TOKENS")) && nexusReader)
 				{
-				errormsg  << "Skipping unknown UserType qualifier: "  << token.GetTokenReference();
+				errormsg  << L"Skipping unknown UserType qualifier: "  << token.GetTokenReference();
 				nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 				errormsg.clear();
 				}
@@ -1410,24 +1410,24 @@ void NxsAssumptionsBlock::HandleUserType(NxsToken& token)
 			}
 		token.GetNextToken();
 		}
-	if (token.Equals("STEPMATRIX") || token.Equals("REALMATRIX"))
+	if (token.Equals(L"STEPMATRIX") || token.Equals(L"REALMATRIX"))
 		{
-		errormsg  << "UserType qualifier "<< token.GetTokenReference() << " should occur in parentheses ("<< token.GetTokenReference() <<") ";
+		errormsg  << L"UserType qualifier "<< token.GetTokenReference() << L" should occur in parentheses ("<< token.GetTokenReference() <<L") ";
 		nexusReader->NexusWarnToken(errormsg, NxsReader::DEPRECATED_WARNING, token);
 		errormsg.clear();
 		token.GetNextToken();
 		}
-	DemandIsAtEquals(token, "in UserType definition");
+	DemandIsAtEquals(token, L"in UserType definition");
 	
-	const char *cbn = (charblock_name.empty() ? NULL : charblock_name.c_str());
-	NxsAssumptionsBlockAPI * effectiveAssumpBlock =  this->GetAssumptionsBlockForCharTitle(cbn, token, "UserType");
+	const wchar_t*cbn = (charblock_name.empty() ? NULL : charblock_name.c_str());
+	NxsAssumptionsBlockAPI * effectiveAssumpBlock =  this->GetAssumptionsBlockForCharTitle(cbn, token, L"UserType");
 	assert(effectiveAssumpBlock);
 	NxsCharactersBlockAPI *cbp = effectiveAssumpBlock->GetCharBlockPtr();
 	assert(cbp);
 	
 	NxsRealStepMatrix::DblMatrix dm; 
 	NxsIntStepMatrix::IntMatrix im;
-	std::vector<std::string> symbolsOrder;
+	std::vector<std::wstring> symbolsOrder;
 	const std::vector<const NxsDiscreteDatatypeMapper *> mappers = cbp->GetAllDatatypeMappers();
 		
 	if (cstreeform)
@@ -1440,16 +1440,16 @@ void NxsAssumptionsBlock::HandleUserType(NxsToken& token)
 		for (std::vector<const NxsDiscreteDatatypeMapper *>::const_iterator mIt = mappers.begin(); !success && mIt != mappers.end(); ++mIt)
 			{
 			const NxsDiscreteDatatypeMapper * mapper = *mIt;
-			std::string s = mapper->GetSymbolsWithGapChar();
+			std::wstring s = mapper->GetSymbolsWithGapChar();
 			symbolsOrder.clear();
-			std::map<std::string, unsigned> symMap;
+			std::map<std::wstring, unsigned> symMap;
 			for (unsigned i = 0; i < s.length(); ++i)
 				{
-				std::string sym(1, s[i]);
+				std::wstring sym(1, s[i]);
 				symbolsOrder.push_back(sym);
 				symMap[sym] = i;
 				}
-			std::string newick;
+			std::wstring newick;
 			NxsFullTreeDescription treeDesc(newick, user_type_name, 0);
 			BogusToIndMapper labelToIndMapper;
 			try
@@ -1484,7 +1484,7 @@ void NxsAssumptionsBlock::HandleUserType(NxsToken& token)
 			}
 		if (!success)
 			{
-			errormsg << "No datatype was found with all of the symbols the UserType CSTree";
+			errormsg << L"No datatype was found with all of the symbols the UserType CSTree";
 			throw NxsException(errormsg, token);
 			}
 		}
@@ -1496,7 +1496,7 @@ void NxsAssumptionsBlock::HandleUserType(NxsToken& token)
 		long longNstates;
 		if (!NxsString::to_long(t.c_str(), &longNstates) || longNstates < 2)
 			{
-			errormsg << "Expecting a number of states after the = in the UserType command (the number of states must be greater than one).  Found " << t;
+			errormsg << L"Expecting a number of states after the = in the UserType command (the number of states must be greater than one).  Found " << t;
 			throw NxsException(t, token);
 			}
 		const bool respectCase = cbp->IsRespectCase();
@@ -1509,9 +1509,9 @@ void NxsAssumptionsBlock::HandleUserType(NxsToken& token)
 		for (unsigned i = 0; i < nStates;)
 			{
 			token.GetNextToken();
-			if (token.Equals(";"))
+			if (token.Equals(L";"))
 				{
-				errormsg << "; prematurely terminated the state declaration portion of a UserType stepmatrix.";
+				errormsg << L"; prematurely terminated the state declaration portion of a UserType stepmatrix.";
 				throw NxsException(t, token);
 				}
 			NxsString tokStr = token.GetToken();
@@ -1522,7 +1522,7 @@ void NxsAssumptionsBlock::HandleUserType(NxsToken& token)
 				char s = *cIt;
 				if (symbolsSet.count(s) > 0)
 					{
-					errormsg << "State names cannot be repeated in a UserType stepmatrix.  " << s << " was encountered more than once.";
+					errormsg << L"State names cannot be repeated in a UserType stepmatrix.  " << s << L" was encountered more than once.";
 					throw NxsException(t, token);
 					}
 				bool found = false;
@@ -1537,11 +1537,11 @@ void NxsAssumptionsBlock::HandleUserType(NxsToken& token)
 					}
 				if (!found)
 					{
-					errormsg << "Unrecognized state " << s << "in  UserType stepmatrix.";
+					errormsg << L"Unrecognized state " << s << L"in  UserType stepmatrix.";
 					throw NxsException(t, token);
 					}
 				symbolsSet.insert(s);
-				symbolsOrder.push_back(std::string(1,s));
+				symbolsOrder.push_back(std::wstring(1,s));
 				}
 			}
 		
@@ -1555,7 +1555,7 @@ void NxsAssumptionsBlock::HandleUserType(NxsToken& token)
 				token.SetLabileFlagBit(NxsToken::hyphenNotPunctuation); // this allows us to deal with sci. not. in weights.
 				token.GetNextToken();
 				NxsString s = token.GetToken();
-				if (i == j && (token.Equals(".") || token.Equals("-")))
+				if (i == j && (token.Equals(L".") || token.Equals(L"-")))
 					{
 					im[i][i] = 0;
 					dm[i][i] = 0.0;
@@ -1565,9 +1565,9 @@ void NxsAssumptionsBlock::HandleUserType(NxsToken& token)
 					bool v = NxsString::to_double(s.c_str(), &currDblWt);
 					if (!v)
 						{
-						if (!token.Equals("I") && !token.Equals("INF"))
+						if (!token.Equals(L"I") && !token.Equals(L"INF"))
 							{
-							errormsg << "Expecting a number or i (for infinity) as an element of the UserType stepmatrix. Found " << s;
+							errormsg << L"Expecting a number or i (for infinity) as an element of the UserType stepmatrix. Found " << s;
 							throw NxsException(errormsg, token);
 							}
 						}
@@ -1586,9 +1586,9 @@ void NxsAssumptionsBlock::HandleUserType(NxsToken& token)
 			}
 		/* END Read as Stepmatrix section  */
 		token.GetNextToken();
-		if (!token.Equals(";"))
+		if (!token.Equals(L";"))
 			{
-			errormsg << "Expecting ; at the end of the UserType command. Found "  << token.GetTokenReference();
+			errormsg << L"Expecting ; at the end of the UserType command. Found "  << token.GetTokenReference();
 			throw NxsException(t, token);
 			}
 		}
@@ -1612,18 +1612,18 @@ void NxsAssumptionsBlock::HandleUserType(NxsToken& token)
 
 NxsGeneticCodesManager::NxsGeneticCodesManager()
 	{
-	standardCodeNames.insert(std::string("UNIVERSAL"));
-	standardCodeNames.insert(std::string("UNIVERSAL.EXT"));
-	standardCodeNames.insert(std::string("MTDNA.DROS"));
-	standardCodeNames.insert(std::string("MTDNA.DROS.EXT"));
-	standardCodeNames.insert(std::string("MTDNA.MAM"));
-	standardCodeNames.insert(std::string("MTDNA.MAM.EXT"));
-	standardCodeNames.insert(std::string("MTDNA.YEAST"));
+	standardCodeNames.insert(std::wstring(L"UNIVERSAL"));
+	standardCodeNames.insert(std::wstring(L"UNIVERSAL.EXT"));
+	standardCodeNames.insert(std::wstring(L"MTDNA.DROS"));
+	standardCodeNames.insert(std::wstring(L"MTDNA.DROS.EXT"));
+	standardCodeNames.insert(std::wstring(L"MTDNA.MAM"));
+	standardCodeNames.insert(std::wstring(L"MTDNA.MAM.EXT"));
+	standardCodeNames.insert(std::wstring(L"MTDNA.YEAST"));
 	}
 
-bool NxsGeneticCodesManager::IsValidCodeName(const std::string &n) const
+bool NxsGeneticCodesManager::IsValidCodeName(const std::wstring &n) const
 	{
-	std::string capName(n.c_str());
+	std::wstring capName(n.c_str());
 	NxsString::to_upper(capName);
 	return (standardCodeNames.count(capName) > 0) || (userDefinedCodeNames.count(capName) > 0);
 	}
@@ -1635,29 +1635,29 @@ void NxsAssumptionsBlock::HandleCodeSet(
 	{
 	bool asterisked = false;
 	token.GetNextToken();
-	if (token.Equals("*"))
+	if (token.Equals(L"*"))
 		{
 		asterisked = true;
 		token.GetNextToken();
 		}
-	std::vector<std::string> unsupported;
-	unsupported.push_back(std::string("TAXA"));
-	unsupported.push_back(std::string("UNALIGNED"));
+	std::vector<std::wstring> unsupported;
+	unsupported.push_back(std::wstring(L"TAXA"));
+	unsupported.push_back(std::wstring(L"UNALIGNED"));
 	NxsString codeset_name = token.GetToken();
 	//codeset_name.ToUpper();
-	NxsAssumptionsBlockAPI * effectiveAssumpBlock = DealWithPossibleParensInCharDependentCmd(token, "CodeSet", &unsupported);
+	NxsAssumptionsBlockAPI * effectiveAssumpBlock = DealWithPossibleParensInCharDependentCmd(token, L"CodeSet", &unsupported);
 	token.GetNextToken();
 	NxsPartition newPartition;
 	NxsCharactersBlockAPI *cbp = effectiveAssumpBlock->GetCharBlockPtr();
 	assert(cbp);
-	effectiveAssumpBlock->ReadPartitionDef(newPartition, *cbp, codeset_name, "Character", "CodeSet", token, false, false, false);
+	effectiveAssumpBlock->ReadPartitionDef(newPartition, *cbp, codeset_name, L"Character", L"CodeSet", token, false, false, false);
 	NxsGeneticCodesManager &gcm = effectiveAssumpBlock->GetNxsGeneticCodesManagerRef();
 	for (NxsPartition::const_iterator groupIt = newPartition.begin(); groupIt != newPartition.end(); ++groupIt)
 		{
-		const std::string & s = groupIt->first;
+		const std::wstring & s = groupIt->first;
 		if (!gcm.IsValidCodeName(s))
 			{
-			errormsg << "The Genetic code name " << groupIt->first << " found in a CodeSet command does not correspond to a known code";
+			errormsg << L"The Genetic code name " << groupIt->first << L" found in a CodeSet command does not correspond to a known code";
 			throw NxsException(errormsg, token);
 			}
 		}
@@ -1672,32 +1672,32 @@ void NxsAssumptionsBlock::HandleCodonPosSet(
 	{
 	bool asterisked = false;
 	token.GetNextToken();
-	if (token.Equals("*"))
+	if (token.Equals(L"*"))
 		{
 		asterisked = true;
 		token.GetNextToken();
 		}
 	NxsString codonPosSetName = token.GetToken();
 	//codonPosSetName.ToUpper();
-	NxsAssumptionsBlockAPI * effectiveAssumpBlock = DealWithPossibleParensInCharDependentCmd(token, "CodonPosSet", NULL);
+	NxsAssumptionsBlockAPI * effectiveAssumpBlock = DealWithPossibleParensInCharDependentCmd(token, L"CodonPosSet", NULL);
 	token.GetNextToken();
 	NxsPartition newPartition;
 	NxsCharactersBlockAPI *cbp = effectiveAssumpBlock->GetCharBlockPtr();
 	assert(cbp);
-	effectiveAssumpBlock->ReadPartitionDef(newPartition, *cbp, codonPosSetName, "Character", "CodonPosSet", token, false, false, false);
+	effectiveAssumpBlock->ReadPartitionDef(newPartition, *cbp, codonPosSetName, L"Character", L"CodonPosSet", token, false, false, false);
 	for (NxsPartition::const_iterator groupIt = newPartition.begin(); groupIt != newPartition.end(); ++groupIt)
 		{
-		const std::string & s = groupIt->first;
+		const std::wstring & s = groupIt->first;
 		bool legal = false;
 		if (s.length() == 1)
 			{
-			const char c = s[0];
+			const wchar_t c = s[0];
 			if (c == 'n' || c == 'N' || c == '1' || c == '2' || c == '3' || c == '?')
 				legal = true;
 			}
 		if (!legal)
 			{
-			errormsg << "The Codon Position category name " << groupIt->first << " found in a CodonPosSet command is not legal.  \"N\", \"1\", \"2\", or \"3\" were expected.";
+			errormsg << L"The Codon Position category name " << groupIt->first << L" found in a CodonPosSet command is not legal.  \"N\", \"1\", \"2\", or \"3\" were expected.";
 			throw NxsException(errormsg, token);
 			}
 		}
@@ -1709,23 +1709,23 @@ class NxsSetVectorItemValidator
 	{
 	public:
 		virtual ~NxsSetVectorItemValidator(){};
-		virtual std::string convert(NxsToken &) = 0;
+		virtual std::wstring convert(NxsToken &) = 0;
 	};
 	
 class WtSetVectorItemValidator: public NxsSetVectorItemValidator
 	{
 	public:
 		virtual ~WtSetVectorItemValidator(){};
-		virtual std::string convert(NxsToken & token)
+		virtual std::wstring convert(NxsToken & token)
 			{
 			NxsString s = token.GetToken();
-			const char * c = s.c_str();
+			const wchar_t* c = s.c_str();
 			long currLongWt;
 			double currDblWt;
 			if (NxsString::to_long(c, &currLongWt) || NxsString::to_double(s.c_str(), &currDblWt))
-				return std::string(c);
+				return std::wstring(c);
 			NxsString errormsg;
-			errormsg << "Expecting a number as a character weight.  Found \"" << c << "\" instead.";
+			errormsg << L"Expecting a number as a character weight.  Found \"" << c << L"\" instead.";
 			throw NxsException(errormsg, token);
 			}
 		
@@ -1739,7 +1739,7 @@ void NxsAssumptionsBlock::HandleWeightSet(
 	{
 	bool asterisked = false;
 	token.GetNextToken();
-	if (token.Equals("*"))
+	if (token.Equals(L"*"))
 		{
 		asterisked = true;
 		token.GetNextToken();
@@ -1747,7 +1747,7 @@ void NxsAssumptionsBlock::HandleWeightSet(
 	NxsString wtset_name = token.GetToken();
 	//wtset_name.ToUpper();
 	bool isVect;
-	NxsAssumptionsBlockAPI * effectiveAssumpBlock = DealWithPossibleParensInCharDependentCmd(token, "WtSet", NULL, &isVect);
+	NxsAssumptionsBlockAPI * effectiveAssumpBlock = DealWithPossibleParensInCharDependentCmd(token, L"WtSet", NULL, &isVect);
 	token.SetLabileFlagBit(NxsToken::hyphenNotPunctuation); // this allows us to deal with sci. not. in weights.
 	token.GetNextToken();
 	NxsPartition newPartition;
@@ -1756,10 +1756,10 @@ void NxsAssumptionsBlock::HandleWeightSet(
 	if (isVect)
 		{
 		WtSetVectorItemValidator validator; 
-		effectiveAssumpBlock->ReadVectorPartitionDef(newPartition, *cbp, wtset_name, "Character", "WtSet", token, false, true, validator);
+		effectiveAssumpBlock->ReadVectorPartitionDef(newPartition, *cbp, wtset_name, L"Character", L"WtSet", token, false, true, validator);
 		}
 	else
-		effectiveAssumpBlock->ReadPartitionDef(newPartition, *cbp, wtset_name, "Character", "WtSet", token, false, false, false);
+		effectiveAssumpBlock->ReadPartitionDef(newPartition, *cbp, wtset_name, L"Character", L"WtSet", token, false, false, false);
 	bool floatWts = false;
 	long currLongWt;
 	double currDblWt;
@@ -1768,7 +1768,7 @@ void NxsAssumptionsBlock::HandleWeightSet(
 	NxsTransformationManager::ListOfDblWeights diw;
 	for (NxsPartition::const_iterator groupIt = newPartition.begin(); groupIt != newPartition.end(); ++groupIt)
 		{
-		const std::string & s = groupIt->first;
+		const std::wstring & s = groupIt->first;
 		if (!floatWts)
 			{
 			floatWts = !NxsString::to_long(s.c_str(), &currLongWt);
@@ -1778,7 +1778,7 @@ void NxsAssumptionsBlock::HandleWeightSet(
 		bool v = NxsString::to_double(s.c_str(), &currDblWt);
 		if (!v)
 			{
-			errormsg << "Invalid weight " << groupIt->first << " found in a WtSet command.";
+			errormsg << L"Invalid weight " << groupIt->first << L" found in a WtSet command.";
 			throw NxsException(errormsg, token);
 			}
 		diw.push_back(NxsTransformationManager::DblWeightToIndexSet(currDblWt, groupIt->second));
@@ -1805,20 +1805,20 @@ void NxsAssumptionsBlock::HandleCharPartition(
 	{
 	bool asterisked = false;
 	token.GetNextToken();
-	if (token.Equals("*"))
+	if (token.Equals(L"*"))
 		{
 		asterisked = true;
 		token.GetNextToken();
 		}
 	NxsString charpart_name = token.GetToken();
 	//charpart_name.ToUpper();
-	NxsAssumptionsBlockAPI * effectiveAssumpBlock = DealWithPossibleParensInCharDependentCmd(token, "CharPartition");
+	NxsAssumptionsBlockAPI * effectiveAssumpBlock = DealWithPossibleParensInCharDependentCmd(token, L"CharPartition");
 	token.GetNextToken();
 
 	NxsPartition newPartition;
 	NxsCharactersBlockAPI *cbp = effectiveAssumpBlock->GetCharBlockPtr();
 	assert(cbp);
-	effectiveAssumpBlock->ReadPartitionDef(newPartition, *cbp, charpart_name, "Character", "CharPartition", token, asterisked, false, true);
+	effectiveAssumpBlock->ReadPartitionDef(newPartition, *cbp, charpart_name, L"Character", L"CharPartition", token, asterisked, false, true);
 	effectiveAssumpBlock->AddCharPartition(charpart_name, newPartition);
 	}
 
@@ -1830,14 +1830,14 @@ void NxsAssumptionsBlock::HandleCharSet(
 	{
 	bool asterisked = false;
 	token.GetNextToken();
-	if (token.Equals("*"))
+	if (token.Equals(L"*"))
 		{
 		asterisked = true;
 		token.GetNextToken();
 		}
 	NxsString charset_name = token.GetToken();
 	//charset_name.ToUpper();
-	NxsAssumptionsBlockAPI * effectiveAssumpBlock = DealWithPossibleParensInCharDependentCmd(token, "CharSet");
+	NxsAssumptionsBlockAPI * effectiveAssumpBlock = DealWithPossibleParensInCharDependentCmd(token, L"CharSet");
 	token.GetNextToken();
 	effectiveAssumpBlock->ReadCharsetDef(charset_name, token, asterisked);
 	}
@@ -1850,18 +1850,18 @@ void NxsAssumptionsBlock::ReadCharsetDef(NxsString charset_name, NxsToken &token
 	assert(charBlockPtr != NULL);
 	NxsCharactersBlockAPI &charBlock = *charBlockPtr;
 	NxsUnsignedSet s;
-	NxsSetReader::ReadSetDefinition(token, charBlock, "Character", "CharSet", &s);
+	NxsSetReader::ReadSetDefinition(token, charBlock, L"Character", L"CharSet", &s);
 	charsets[charset_name] = s;
 	if (asterisked && nexusReader != NULL)
 		{
-		nexusReader->NexusWarnToken("An * is ignored in a CHARSET command", NxsReader::SKIPPING_CONTENT_WARNING, token);
+		nexusReader->NexusWarnToken(L"An * is ignored in a CHARSET command", NxsReader::SKIPPING_CONTENT_WARNING, token);
 		errormsg.clear();
 		}
 	if (charBlock.AddNewIndexSet(charset_name, s) && nexusReader)
 		{
-		errormsg = "A CHARSET with the name ";
+		errormsg = L"A CHARSET with the name ";
 		errormsg += charset_name;
-		errormsg += " has already been encountered.    The later definition will preempt the earlier definition(s).";
+		errormsg += L" has already been encountered.    The later definition will preempt the earlier definition(s).";
 		nexusReader->NexusWarnToken(errormsg, NxsReader::OVERWRITING_CONTENT_WARNING, token);
 		errormsg.clear();
 		}
@@ -1877,14 +1877,14 @@ void NxsAssumptionsBlock::HandleExSet(
 	
 	bool asterisked = false;
 	token.GetNextToken();
-	if (token.Equals("*"))
+	if (token.Equals(L"*"))
 		{
 		asterisked = true;
 		token.GetNextToken();
 		}
 	NxsString exset_name = token.GetToken();
 	//exset_name.ToUpper();
-	NxsAssumptionsBlockAPI * effectiveAssumpBlock = DealWithPossibleParensInCharDependentCmd(token, "ExSet");
+	NxsAssumptionsBlockAPI * effectiveAssumpBlock = DealWithPossibleParensInCharDependentCmd(token, L"ExSet");
 	token.GetNextToken();
 	effectiveAssumpBlock->ReadExsetDef(exset_name, token, asterisked);
 	}
@@ -1897,13 +1897,13 @@ void NxsAssumptionsBlock::ReadExsetDef(NxsString charset_name, NxsToken &token, 
 	assert(charBlockPtr != NULL);
 	NxsCharactersBlockAPI &charBlock = *charBlockPtr;
 	NxsUnsignedSet s;
-	NxsSetReader::ReadSetDefinition(token, charBlock, "Character", "ExSet", &s);
+	NxsSetReader::ReadSetDefinition(token, charBlock, L"Character", L"ExSet", &s);
 	exsets[charset_name] = s;
 	if (charBlock.AddNewExSet(charset_name, s) && nexusReader)
 		{
-		errormsg = "A ExSet with the name ";
+		errormsg = L"A ExSet with the name ";
 		errormsg += charset_name;
-		errormsg += " has already been encountered.    The later definition will preempt the earlier definition(s).";
+		errormsg += L" has already been encountered.    The later definition will preempt the earlier definition(s).";
 		nexusReader->NexusWarnToken(errormsg, NxsReader::OVERWRITING_CONTENT_WARNING, token);
 		errormsg.clear();
 		}
@@ -1923,7 +1923,7 @@ void NxsAssumptionsBlock::HandleTaxPartition(
 	{
 	bool asterisked = false;
 	token.GetNextToken();
-	if (token.Equals("*"))
+	if (token.Equals(L"*"))
 		{
 		asterisked = true;
 		token.GetNextToken();
@@ -1935,26 +1935,26 @@ void NxsAssumptionsBlock::HandleTaxPartition(
 	token.GetNextToken();
 	NxsString taxblock_name;
 
-	if (token.Equals("("))
+	if (token.Equals(L"("))
 		{
 		token.GetNextToken();
-		while (!token.Equals(")"))
+		while (!token.Equals(L")"))
 			{		 
-			if (token.Equals("TAXA"))
+			if (token.Equals(L"TAXA"))
 				{
-				DemandEquals(token, "after \"(Taxa\" in a TaxPartition command");
+				DemandEquals(token, L"after \"(Taxa\" in a TaxPartition command");
 				token.GetNextToken();
 				taxblock_name = token.GetToken();
 				}
-			else if (token.Equals("VECTOR"))
-				GenerateNxsException(token, "VECTOR-style set definitions are not currently supported");
-			else if (token.Equals("NOTOKENS"))
-				GenerateNxsException(token, "NOTOKENS-style set definitions are not currently supported");
-			else if (token.Equals(";"))
-				GenerateNxsException(token, "; encountered in TaxPartition command before parentheses were closed");
-			else if (!(token.Equals("STANDARD") || token.Equals("TOKENS")) && nexusReader)
+			else if (token.Equals(L"VECTOR"))
+				GenerateNxsException(token, L"VECTOR-style set definitions are not currently supported");
+			else if (token.Equals(L"NOTOKENS"))
+				GenerateNxsException(token, L"NOTOKENS-style set definitions are not currently supported");
+			else if (token.Equals(L";"))
+				GenerateNxsException(token, L"; encountered in TaxPartition command before parentheses were closed");
+			else if (!(token.Equals(L"STANDARD") || token.Equals(L"TOKENS")) && nexusReader)
 				{
-				errormsg = "Skipping unknown TaxPartition qualifier: ";
+				errormsg = L"Skipping unknown TaxPartition qualifier: ";
 				errormsg << token.GetTokenReference();
 				nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 				errormsg.clear();
@@ -1963,13 +1963,13 @@ void NxsAssumptionsBlock::HandleTaxPartition(
 			}
 		token.GetNextToken();
 		}
-	const char *cbn = (taxblock_name.empty() ? NULL : taxblock_name.c_str());
-	effectiveAssumpBlock = this->GetAssumptionsBlockForTaxaTitle(cbn, token, "TaxPartition");
-	DemandIsAtEquals(token, "in TaxPartition definition");
+	const wchar_t*cbn = (taxblock_name.empty() ? NULL : taxblock_name.c_str());
+	effectiveAssumpBlock = this->GetAssumptionsBlockForTaxaTitle(cbn, token, L"TaxPartition");
+	DemandIsAtEquals(token, L"in TaxPartition definition");
 	token.GetNextToken();
 	NxsPartition newPartition;
 	assert(taxa);
-	effectiveAssumpBlock->ReadPartitionDef(newPartition, *taxa, taxpart_name, "Taxa", "TaxPartition", token, asterisked, false, true);
+	effectiveAssumpBlock->ReadPartitionDef(newPartition, *taxa, taxpart_name, L"Taxa", L"TaxPartition", token, asterisked, false, true);
 	effectiveAssumpBlock->AddTaxPartition(taxpart_name, newPartition);
 	}
 /*----------------------------------------------------------------------------------------------------------------------
@@ -1980,7 +1980,7 @@ void NxsAssumptionsBlock::HandleTreePartition(
 	{
 	bool asterisked = false;
 	token.GetNextToken();
-	if (token.Equals("*"))
+	if (token.Equals(L"*"))
 		{
 		asterisked = true;
 		token.GetNextToken();
@@ -1991,26 +1991,26 @@ void NxsAssumptionsBlock::HandleTreePartition(
 	token.GetNextToken();
 	NxsString treeblock_name;
 
-	if (token.Equals("("))
+	if (token.Equals(L"("))
 		{
 		token.GetNextToken();
-		while (!token.Equals(")"))
+		while (!token.Equals(L")"))
 			{		 
-			if (token.Equals("TREES"))
+			if (token.Equals(L"TREES"))
 				{
-				DemandEquals(token, "after \"(Trees\" in a TreePartition command");
+				DemandEquals(token, L"after \"(Trees\" in a TreePartition command");
 				token.GetNextToken();
 				treeblock_name = token.GetToken();
 				}
-			else if (token.Equals("VECTOR"))
-				GenerateNxsException(token, "VECTOR-style set definitions are not currently supported");
-			else if (token.Equals("NOTOKENS"))
-				GenerateNxsException(token, "NOTOKENS-style set definitions are not currently supported");
-			else if (token.Equals(";"))
-				GenerateNxsException(token, "; encountered in TreePartition command before parentheses were closed");
-			else if (!(token.Equals("STANDARD") || token.Equals("TOKENS")) && nexusReader)
+			else if (token.Equals(L"VECTOR"))
+				GenerateNxsException(token, L"VECTOR-style set definitions are not currently supported");
+			else if (token.Equals(L"NOTOKENS"))
+				GenerateNxsException(token, L"NOTOKENS-style set definitions are not currently supported");
+			else if (token.Equals(L";"))
+				GenerateNxsException(token, L"; encountered in TreePartition command before parentheses were closed");
+			else if (!(token.Equals(L"STANDARD") || token.Equals(L"TOKENS")) && nexusReader)
 				{
-				errormsg = "Skipping unknown TreePartition qualifier: ";
+				errormsg = L"Skipping unknown TreePartition qualifier: ";
 				errormsg << token.GetTokenReference();
 				nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 				errormsg.clear();
@@ -2019,22 +2019,22 @@ void NxsAssumptionsBlock::HandleTreePartition(
 			}
 		token.GetNextToken();
 		}
-	const char *cbn = (treeblock_name.empty() ? NULL : treeblock_name.c_str());
-	effectiveAssumpBlock = this->GetAssumptionsBlockForTreesTitle(cbn, token, "TreePartition");
-	DemandIsAtEquals(token, "in TreePartition definition");
+	const wchar_t*cbn = (treeblock_name.empty() ? NULL : treeblock_name.c_str());
+	effectiveAssumpBlock = this->GetAssumptionsBlockForTreesTitle(cbn, token, L"TreePartition");
+	DemandIsAtEquals(token, L"in TreePartition definition");
 	token.GetNextToken();
 	NxsPartition newPartition;
 	assert(treesBlockPtr);
-	effectiveAssumpBlock->ReadPartitionDef(newPartition, *treesBlockPtr, treepart_name, "Tree", "TreePartition", token, asterisked, false, true);
+	effectiveAssumpBlock->ReadPartitionDef(newPartition, *treesBlockPtr, treepart_name, L"Tree", L"TreePartition", token, asterisked, false, true);
 	effectiveAssumpBlock->AddTreePartition(treepart_name, newPartition);
 	}
 
 void NxsBlock::ReadPartitionDef(
   NxsPartition &np, 
   NxsLabelToIndicesMapper &ltm, 
-  const std::string & partName, 
-  const char * ptype, 
-  const char * cmd, 
+  const std::wstring & partName, 
+  const wchar_t* ptype, 
+  const wchar_t* cmd, 
   NxsToken & token, 
   bool warnAsterisked, 
   bool demandAllInds, 
@@ -2046,20 +2046,20 @@ void NxsBlock::ReadPartitionDef(
 	errormsg.clear();
 	for (;;)
 		{
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			break;
 		NxsString groupN = token.GetToken();
 		NxsString capGroupN = groupN;
 		capGroupN.ToUpper();
 		if (prevGroupNames.count(capGroupN) > 0)
 			{
-			errormsg << "Illegal repitition of a subset name (" << groupN << ") in the " << cmd << " definition of " << partName;
+			errormsg << L"Illegal repitition of a subset name (" << groupN << L") in the " << cmd << L" definition of " << partName;
 			throw NxsException(errormsg, token);
 			}
 		token.GetNextToken();
-		if (!token.Equals(":"))
+		if (!token.Equals(L":"))
 			{
-			errormsg << "Expecting a : after the subset name " << groupN << " in the " << cmd  << " definition of " << partName << ". Found " << token.GetToken(); 
+			errormsg << L"Expecting a : after the subset name " << groupN << L" in the " << cmd  << L" definition of " << partName << L". Found " << token.GetToken(); 
 			throw NxsException(errormsg, token);
 			}
 		token.GetNextToken();
@@ -2067,9 +2067,9 @@ void NxsBlock::ReadPartitionDef(
 		NxsSetReader::ReadSetDefinition(token, ltm, ptype, cmd, &s, &allInds);
 		allInds.insert(s.begin(), s.end());
 		np.push_back(NxsPartitionGroup(groupN, s));
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			break;
-		assert(token.Equals(","));
+		assert(token.Equals(L","));
 		 // this flag allows us to deal with sci. not. in WtSet commands. 
 		 //	It shouldn't hurt in other contexts, though the parser will be
 		 //		more lax than it should (and will accept unquoted tokens-like-this as names).
@@ -2084,7 +2084,7 @@ void NxsBlock::ReadPartitionDef(
 			if (allInds.count(n) == 0)
 				break;
 			}
-		errormsg << partName << " is a not a valid "<< cmd <<". At least one " << ptype << " ("<< n+1 << ") is not included";
+		errormsg << partName << L" is a not a valid "<< cmd <<L". At least one " << ptype << L" ("<< n+1 << L") is not included";
 		if (demandAllInds)
 			throw NxsException(errormsg, token);
 		else if (nexusReader)
@@ -2095,40 +2095,40 @@ void NxsBlock::ReadPartitionDef(
 		}
 	if (warnAsterisked && nexusReader != NULL)
 		{
-		errormsg << "An * is ignored in a " << cmd << " command";
+		errormsg << L"An * is ignored in a " << cmd << L" command";
 		nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 		errormsg.clear();
 		}
 	if (storeAsPartition && ltm.AddNewPartition(partName, np) && nexusReader)
 		{
-		errormsg << "A " << cmd << " with the name ";
+		errormsg << L"A " << cmd << L" with the name ";
 		errormsg += partName;
-		errormsg += " has already been encountered.    The later definition will preempt the earlier definition(s).";
+		errormsg += L" has already been encountered.    The later definition will preempt the earlier definition(s).";
 		nexusReader->NexusWarnToken(errormsg, NxsReader::OVERWRITING_CONTENT_WARNING, token);
 		errormsg.clear();
 		}
 	}
 
-unsigned NxsBlock::ReadVectorPartitionDef(NxsPartition &np, NxsLabelToIndicesMapper &ltm, const std::string & partName, const char * ptype, const char * cmd, NxsToken & token, bool warnAsterisked, bool demandAllInds, NxsSetVectorItemValidator & v)
+unsigned NxsBlock::ReadVectorPartitionDef(NxsPartition &np, NxsLabelToIndicesMapper &ltm, const std::wstring & partName, const wchar_t* ptype, const wchar_t* cmd, NxsToken & token, bool warnAsterisked, bool demandAllInds, NxsSetVectorItemValidator & v)
 	{
 	NxsUnsignedSet allInds;
 	const unsigned total = ltm.GetMaxIndex() + 1;
-	std::map<std::string, NxsUnsignedSet> subsetMap;
+	std::map<std::wstring, NxsUnsignedSet> subsetMap;
 	errormsg.clear();
 	unsigned ind = 0;
 	for (; ind < total; ++ind)
 		{
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			break;
-		const std::string key = v.convert(token);
-		const std::string capKey = NxsString::get_upper(key);
+		const std::wstring key = v.convert(token);
+		const std::wstring capKey = NxsString::get_upper(key);
 		NxsUnsignedSet & s = subsetMap[key];
 		s.insert(ind);
 		token.GetNextToken();
 		}
 	if (ind < total)
 		{
-		errormsg << partName << " is a not a valid "<< cmd <<". Only " << ind + 1 << " entries for " << ptype << "(s) were included in the definition";
+		errormsg << partName << L" is a not a valid "<< cmd <<L". Only " << ind + 1 << L" entries for " << ptype << L"(s) were included in the definition";
 		if (demandAllInds)
 			throw NxsException(errormsg, token);
 		else if (nexusReader)
@@ -2139,65 +2139,65 @@ unsigned NxsBlock::ReadVectorPartitionDef(NxsPartition &np, NxsLabelToIndicesMap
 		}
 	if (warnAsterisked && nexusReader != NULL)
 		{
-		errormsg << "An * is ignored in a " << cmd << " command";
+		errormsg << L"An * is ignored in a " << cmd << L" command";
 		nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 		errormsg.clear();
 		}
 	np.clear();
-	for (std::map<std::string, NxsUnsignedSet>::const_iterator sIt = subsetMap.begin(); sIt != subsetMap.end(); ++sIt)
+	for (std::map<std::wstring, NxsUnsignedSet>::const_iterator sIt = subsetMap.begin(); sIt != subsetMap.end(); ++sIt)
 		{
-		const std::string & k = sIt->first;
+		const std::wstring & k = sIt->first;
 		const NxsUnsignedSet & valset = sIt->second;
 		np.push_back(NxsPartitionGroup(k, valset));
 		}
 	if (ltm.AddNewPartition(partName, np) && nexusReader)
 		{
-		errormsg << "A " << cmd << " with the name ";
+		errormsg << L"A " << cmd << L" with the name ";
 		errormsg += partName;
-		errormsg += " has already been encountered.    The later definition will preempt the earlier definition(s).";
+		errormsg += L" has already been encountered.    The later definition will preempt the earlier definition(s).";
 		nexusReader->NexusWarnToken(errormsg, NxsReader::OVERWRITING_CONTENT_WARNING, token);
 		errormsg.clear();
 		}
 	return ind;
 	}
 
-void NxsWriteSetCommand(const char *cmd, const NxsUnsignedSetMap & usetmap, std::ostream &out, const char * nameOfDef)
+void NxsWriteSetCommand(const wchar_t*cmd, const NxsUnsignedSetMap & usetmap, std::wostream &out, const wchar_t* nameOfDef)
 	{
 	if (usetmap.empty())
 		return;
 	for (NxsUnsignedSetMap::const_iterator csIt = usetmap.begin(); csIt != usetmap.end(); ++csIt)
 		{
-		out << "    " << cmd << " ";
+		out << L"    " << cmd << L" ";
 		if (NxsString::case_insensitive_equals(csIt->first.c_str(), nameOfDef))
-			out << "* ";
-		out << NexusToken::EscapeString(csIt->first) << " =";
+			out << L"* ";
+		out << NexusToken::EscapeString(csIt->first) << L" =";
 		NxsSetReader::WriteSetAsNexusValue(csIt->second, out);
-		out << ";\n";
+		out << L";\n";
 		}
 	}
 
-void NxsWritePartitionCommand(const char *cmd, const NxsPartitionsByName & usetmap, std::ostream &out, const char * nameOfDef)
+void NxsWritePartitionCommand(const wchar_t*cmd, const NxsPartitionsByName & usetmap, std::wostream &out, const wchar_t* nameOfDef)
 	{
 	if (usetmap.empty())
 		return;
 	for (NxsPartitionsByName::const_iterator csIt = usetmap.begin(); csIt != usetmap.end(); ++csIt)
 		{
-		out << "    " << cmd << " ";
+		out << L"    " << cmd << L" ";
 		if (NxsString::case_insensitive_equals(csIt->first.c_str(), nameOfDef))
-			out << "* ";
-		out << NexusToken::EscapeString(csIt->first) << " =";
+			out << L"* ";
+		out << NexusToken::EscapeString(csIt->first) << L" =";
 		const NxsPartition & p = csIt->second;
 		bool first = true;
 		for (NxsPartition::const_iterator pIt = p.begin(); pIt != p.end(); ++pIt)
 			{
 			const NxsPartitionGroup & g = *pIt;
 			if (!first)
-				out << ',';
-			out << ' ' << NxsString::GetEscaped(g.first) << " :";
+				out << (wchar_t)',';
+			out << (wchar_t)' ' << NxsString::GetEscaped(g.first) << L" :";
 			NxsSetReader::WriteSetAsNexusValue(g.second, out);
 			first = false;
 			}
-		out << ";\n";
+		out << L";\n";
 		}
 	}
 
@@ -2209,7 +2209,7 @@ void NxsAssumptionsBlock::HandleTaxSet(
 	{
 	bool asterisked = false;
 	token.GetNextToken();
-	if (token.Equals("*"))
+	if (token.Equals(L"*"))
 		{
 		asterisked = true;
 		token.GetNextToken();
@@ -2219,24 +2219,24 @@ void NxsAssumptionsBlock::HandleTaxSet(
 	token.GetNextToken();
 	NxsAssumptionsBlockAPI *effectiveAssumpBlock = NULL;
 	NxsString taxblock_name;
-	if (token.Equals("("))
+	if (token.Equals(L"("))
 		{
 		token.GetNextToken();
-		while (!token.Equals(")"))
+		while (!token.Equals(L")"))
 			{		 
-			if (token.Equals("TAXA"))
+			if (token.Equals(L"TAXA"))
 				{
-				DemandEquals(token, "after \"(Taxa\" in a TaxSet command");
+				DemandEquals(token, L"after \"(Taxa\" in a TaxSet command");
 				token.GetNextToken();
 				taxblock_name = token.GetToken();
 				}
-			else if (token.Equals("VECTOR"))
-				GenerateNxsException(token, "VECTOR-style set definitions are not currently supported");
-			else if (token.Equals(";"))
-				GenerateNxsException(token, "; encountered in TaxSet command before parentheses were closed");
-			else if (!token.Equals("STANDARD") && nexusReader)
+			else if (token.Equals(L"VECTOR"))
+				GenerateNxsException(token, L"VECTOR-style set definitions are not currently supported");
+			else if (token.Equals(L";"))
+				GenerateNxsException(token, L"; encountered in TaxSet command before parentheses were closed");
+			else if (!token.Equals(L"STANDARD") && nexusReader)
 				{
-				errormsg = "Skipping unknown TaxSet qualifier: ";
+				errormsg = L"Skipping unknown TaxSet qualifier: ";
 				errormsg << token.GetTokenReference();
 				nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 				errormsg.clear();
@@ -2245,9 +2245,9 @@ void NxsAssumptionsBlock::HandleTaxSet(
 			}
 		token.GetNextToken();
 		}
-	const char *tbn = (taxblock_name.empty() ? NULL : taxblock_name.c_str());
-	effectiveAssumpBlock = this->GetAssumptionsBlockForTaxaTitle(tbn, token, "TAXSET");
-	DemandIsAtEquals(token, "in TAXSET definition");
+	const wchar_t*tbn = (taxblock_name.empty() ? NULL : taxblock_name.c_str());
+	effectiveAssumpBlock = this->GetAssumptionsBlockForTaxaTitle(tbn, token, L"TAXSET");
+	DemandIsAtEquals(token, L"in TAXSET definition");
 	token.GetNextToken();
 	effectiveAssumpBlock->ReadTaxsetDef(taxset_name, token, asterisked);
 	}
@@ -2260,18 +2260,18 @@ void NxsAssumptionsBlock::ReadTaxsetDef(NxsString taxset_name, NxsToken &token, 
 	assert(taxa != NULL);
 	NxsTaxaBlockAPI &taxaBlock = *taxa;
 	NxsUnsignedSet s;
-	NxsSetReader::ReadSetDefinition(token, taxaBlock, "Taxon", "TaxSet", &s);
+	NxsSetReader::ReadSetDefinition(token, taxaBlock, L"Taxon", L"TaxSet", &s);
 	taxsets[taxset_name] = s;
 	if (asterisked && nexusReader != NULL)
 		{
-		nexusReader->NexusWarnToken("An * is ignored in a TaxSet command", NxsReader::SKIPPING_CONTENT_WARNING, token);
+		nexusReader->NexusWarnToken(L"An * is ignored in a TaxSet command", NxsReader::SKIPPING_CONTENT_WARNING, token);
 		errormsg.clear();
 		}
 	if (taxaBlock.AddNewIndexSet(taxset_name, s) && nexusReader)
 		{
-		errormsg = "A TaxSet with the name ";
+		errormsg = L"A TaxSet with the name ";
 		errormsg += taxset_name;
-		errormsg += " has already been encountered.    The later definition will preempt the earlier definition(s).";
+		errormsg += L" has already been encountered.    The later definition will preempt the earlier definition(s).";
 		nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 		errormsg.clear();
 		}
@@ -2285,7 +2285,7 @@ void NxsAssumptionsBlock::HandleTreeSet(
 	{
 	bool asterisked = false;
 	token.GetNextToken();
-	if (token.Equals("*"))
+	if (token.Equals(L"*"))
 		{
 		asterisked = true;
 		token.GetNextToken();
@@ -2295,24 +2295,24 @@ void NxsAssumptionsBlock::HandleTreeSet(
 	token.GetNextToken();
 	NxsAssumptionsBlockAPI *effectiveAssumpBlock = NULL;
 	NxsString treeblock_name;
-	if (token.Equals("("))
+	if (token.Equals(L"("))
 		{
 		token.GetNextToken();
-		while (!token.Equals(")"))
+		while (!token.Equals(L")"))
 			{		 
-			if (token.Equals("TREES"))
+			if (token.Equals(L"TREES"))
 				{
-				DemandEquals(token, "after \"(Trees\" in a TreeSet command");
+				DemandEquals(token, L"after \"(Trees\" in a TreeSet command");
 				token.GetNextToken();
 				treeblock_name = token.GetToken();
 				}
-			else if (token.Equals("VECTOR"))
-				GenerateNxsException(token, "VECTOR-style set definitions are not currently supported");
-			else if (token.Equals(";"))
-				GenerateNxsException(token, "; encountered in TreeSet command before parentheses were closed");
-			else if (!token.Equals("STANDARD") && nexusReader)
+			else if (token.Equals(L"VECTOR"))
+				GenerateNxsException(token, L"VECTOR-style set definitions are not currently supported");
+			else if (token.Equals(L";"))
+				GenerateNxsException(token, L"; encountered in TreeSet command before parentheses were closed");
+			else if (!token.Equals(L"STANDARD") && nexusReader)
 				{
-				errormsg = "Skipping unknown TreeSet qualifier: ";
+				errormsg = L"Skipping unknown TreeSet qualifier: ";
 				errormsg << token.GetTokenReference();
 				nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 				errormsg.clear();
@@ -2321,9 +2321,9 @@ void NxsAssumptionsBlock::HandleTreeSet(
 			}
 		token.GetNextToken();
 		}
-	const char *tbn = (treeblock_name.empty() ? NULL : treeblock_name.c_str());
-	effectiveAssumpBlock = this->GetAssumptionsBlockForTreesTitle(tbn, token, "TreeSet");
-	DemandIsAtEquals(token, "in TreeSet definition");
+	const wchar_t*tbn = (treeblock_name.empty() ? NULL : treeblock_name.c_str());
+	effectiveAssumpBlock = this->GetAssumptionsBlockForTreesTitle(tbn, token, L"TreeSet");
+	DemandIsAtEquals(token, L"in TreeSet definition");
 	token.GetNextToken();
 	effectiveAssumpBlock->ReadTreesetDef(treeset_name, token, asterisked);
 	}
@@ -2336,18 +2336,18 @@ void NxsAssumptionsBlock::ReadTreesetDef(NxsString treeset_name, NxsToken &token
 	assert(treesBlockPtr != NULL);
 	NxsTreesBlockAPI &treesBlock = *treesBlockPtr;
 	NxsUnsignedSet s;
-	NxsSetReader::ReadSetDefinition(token, treesBlock, "Trees", "TreeSet", &s);
+	NxsSetReader::ReadSetDefinition(token, treesBlock, L"Trees", L"TreeSet", &s);
 	treesets[treeset_name] = s;
 	if (asterisked && nexusReader != NULL)
 		{
-		nexusReader->NexusWarnToken("An * is ignored in a TreeSet command", NxsReader::SKIPPING_CONTENT_WARNING, token);
+		nexusReader->NexusWarnToken(L"An * is ignored in a TreeSet command", NxsReader::SKIPPING_CONTENT_WARNING, token);
 		errormsg.clear();
 		}
 	if (treesBlock.AddNewIndexSet(treeset_name, s) && nexusReader)
 		{
-		errormsg = "A TreeSet with the name ";
+		errormsg = L"A TreeSet with the name ";
 		errormsg += treeset_name;
-		errormsg += " has already been encountered.    The later definition will preempt the earlier definition(s).";
+		errormsg += L" has already been encountered.    The later definition will preempt the earlier definition(s).";
 		nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 		errormsg.clear();
 		}
@@ -2363,7 +2363,7 @@ void NxsAssumptionsBlock::Read(
 	{
 	isEmpty = false;
 	isUserSupplied = true;
-	NxsString n = "BEGIN ";
+	NxsString n = L"BEGIN ";
 	n << id;
 	DemandEndSemicolon(token, n.c_str());
 
@@ -2375,31 +2375,31 @@ void NxsAssumptionsBlock::Read(
 			return;
 		if (res != NxsBlock::NxsCommandResult(HANDLED_COMMAND))
 			{
-			if (token.Equals("CHARPARTITION"))
+			if (token.Equals(L"CHARPARTITION"))
 				HandleCharPartition(token);
-			else if (token.Equals("CHARSET"))
+			else if (token.Equals(L"CHARSET"))
 				HandleCharSet(token);
-			else if (token.Equals("CODESET"))
+			else if (token.Equals(L"CODESET"))
 				HandleCodeSet(token);
-			else if (token.Equals("CODONPOSSET"))
+			else if (token.Equals(L"CODONPOSSET"))
 				HandleCodonPosSet(token);
-			else if (token.Equals("EXSET"))
+			else if (token.Equals(L"EXSET"))
 				HandleExSet(token);
-			else if (token.Equals("OPTIONS"))
+			else if (token.Equals(L"OPTIONS"))
 				HandleOptions(token);
-			else if (token.Equals("TAXSET"))
+			else if (token.Equals(L"TAXSET"))
 				HandleTaxSet(token);
-			else if (token.Equals("TAXPARTITION"))
+			else if (token.Equals(L"TAXPARTITION"))
 				HandleTaxPartition(token);
-			else if (token.Equals("TREESET"))
+			else if (token.Equals(L"TREESET"))
 				HandleTreeSet(token);
-			else if (token.Equals("TREEPARTITION"))
+			else if (token.Equals(L"TREEPARTITION"))
 				HandleTreePartition(token);
-			else if (token.Equals("TYPESET"))
+			else if (token.Equals(L"TYPESET"))
 				HandleTypeSet(token);
-			else if (token.Equals("USERTYPE"))
+			else if (token.Equals(L"USERTYPE"))
 				HandleUserType(token);
-			else if (token.Equals("WTSET"))
+			else if (token.Equals(L"WTSET"))
 				HandleWeightSet(token);
 			else
 				SkipCommand(token);
@@ -2411,22 +2411,22 @@ void NxsAssumptionsBlock::HandleOptions(NxsToken &token)
 	{
 	errormsg.clear();
 	token.GetNextToken();
-	std::map<std::string, std::string> kv = token.ProcessAsSimpleKeyValuePairs("OPTIONS");
-	std::map<std::string, std::string>::const_iterator kvIt = kv.begin();
+	std::map<std::wstring, std::wstring> kv = token.ProcessAsSimpleKeyValuePairs(L"OPTIONS");
+	std::map<std::wstring, std::wstring>::const_iterator kvIt = kv.begin();
 	for (; kvIt != kv.end(); ++kvIt)
 		{
-		if (NxsString::case_insensitive_equals(kvIt->first.c_str(), "DEFTYPE"))
+		if (NxsString::case_insensitive_equals(kvIt->first.c_str(), L"DEFTYPE"))
 			{
-			NxsAssumptionsBlockAPI	* effAssumpB = GetAssumptionsBlockForCharTitle(NULL, token, "OPTIONS");
+			NxsAssumptionsBlockAPI	* effAssumpB = GetAssumptionsBlockForCharTitle(NULL, token, L"OPTIONS");
 			assert(effAssumpB);
 			NxsCharactersBlockAPI * cb = effAssumpB->GetCharBlockPtr();
 			assert(cb);
 			NxsTransformationManager & tmRef = cb->GetNxsTransformationManagerRef();
 			if (!tmRef.IsValidTypeName(kvIt->second.c_str()))
 				{
-				errormsg << kvIt->second << " is not a valid type name for OPTIONS DefType. Expceting one of:\n";
-				const std::set<std::string> & tn = tmRef.GetTypeNames();
-				for (std::set<std::string>::const_iterator tnIt = tn.begin(); tnIt != tn.end(); ++tnIt)
+				errormsg << kvIt->second << L" is not a valid type name for OPTIONS DefType. Expceting one of:\n";
+				const std::set<std::wstring> & tn = tmRef.GetTypeNames();
+				for (std::set<std::wstring>::const_iterator tnIt = tn.begin(); tnIt != tn.end(); ++tnIt)
 					errormsg << ' ' << NxsString::GetEscaped(*tnIt);
 				throw NxsException(errormsg, token);
 				}
@@ -2441,33 +2441,33 @@ void NxsAssumptionsBlock::HandleOptions(NxsToken &token)
 				throw NxsException(x.msg, token);
 				}
 			}
-		else if (NxsString::case_insensitive_equals(kvIt->first.c_str(), "POLYTCOUNT"))
+		else if (NxsString::case_insensitive_equals(kvIt->first.c_str(), L"POLYTCOUNT"))
 			{
-			if (NxsString::case_insensitive_equals(kvIt->second.c_str(), "MINSTEPS"))
+			if (NxsString::case_insensitive_equals(kvIt->second.c_str(), L"MINSTEPS"))
 				polyTCountValue = POLY_T_COUNT_MIN;
-			else if (NxsString::case_insensitive_equals(kvIt->second.c_str(), "MAXSTEPS"))
+			else if (NxsString::case_insensitive_equals(kvIt->second.c_str(), L"MAXSTEPS"))
 				polyTCountValue = POLY_T_COUNT_MAX;
 			else
 				{
-				errormsg << "Unknown value (" << kvIt->second << ") found for OPTIONS PolyTCount (expecting MINSTEPS or MAXSTEPS).";
+				errormsg << L"Unknown value (" << kvIt->second << L") found for OPTIONS PolyTCount (expecting MINSTEPS or MAXSTEPS).";
 				throw NxsException(errormsg, token);
 				}
 			}
-		else if (NxsString::case_insensitive_equals(kvIt->first.c_str(), "GAPMODE"))
+		else if (NxsString::case_insensitive_equals(kvIt->first.c_str(), L"GAPMODE"))
 			{
-			if (NxsString::case_insensitive_equals(kvIt->second.c_str(), "MISSING"))
+			if (NxsString::case_insensitive_equals(kvIt->second.c_str(), L"MISSING"))
 				gapsAsNewstate = false;
-			else if (NxsString::case_insensitive_equals(kvIt->second.c_str(), "NEWSTATE"))
+			else if (NxsString::case_insensitive_equals(kvIt->second.c_str(), L"NEWSTATE"))
 				gapsAsNewstate = true;
 			else
 				{
-				errormsg << "Unknown value (" << kvIt->second << ") found for OPTIONS GapMode (expecting MISSING or NEWSTATE).";
+				errormsg << L"Unknown value (" << kvIt->second << L") found for OPTIONS GapMode (expecting MISSING or NEWSTATE).";
 				throw NxsException(errormsg, token);
 				}
 			}
 		else if (nexusReader)
 			{
-			errormsg << "Skipping unknown subcommand (" << kvIt->first << ") in OPTIONS command of " << id << " Block";
+			errormsg << L"Skipping unknown subcommand (" << kvIt->first << L") in OPTIONS command of " << id << L" Block";
 			nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 			errormsg.clear();
 			}
@@ -2523,74 +2523,74 @@ void NxsAssumptionsBlock::Reset()
 |	in the base class.
 */
 void NxsAssumptionsBlock::Report(
-  std::ostream &out)  NCL_COULD_BE_CONST /* the output stream to which to write the report */
+  std::wostream &out)  NCL_COULD_BE_CONST /* the output stream to which to write the report */
 	{
 	out << endl;
-	out << id << " block contains the following:" << endl;
+	out << id << L" block contains the following:" << endl;
 
 	if (charsets.empty())
-		out << "  No character sets were defined" << endl;
+		out << L"  No character sets were defined" << endl;
 	else
 		{
 		NxsUnsignedSetMap::const_iterator charsets_iter = charsets.begin();
 		if (charsets.size() == 1)
 			{
-			out << "  1 character set defined:" << endl;
-			out << "   " << (*charsets_iter).first << endl;
+			out << L"  1 character set defined:" << endl;
+			out << L"   " << (*charsets_iter).first << endl;
 			}
 		else
 			{
-			out << "  " << (unsigned)charsets.size() << " character sets defined:" << endl;
+			out << L"  " << (unsigned)charsets.size() << L" character sets defined:" << endl;
 			for (; charsets_iter != charsets.end(); charsets_iter++)
 				{
 				NxsString nm = (*charsets_iter).first;
-				out << "   " << nm;
+				out << L"   " << nm;
 				out << endl;
 				}
 			}
 		}	// if (charsets.empty()) ... else
 
 	if (taxsets.empty())
-		out << "  No taxon sets were defined" << endl;
+		out << L"  No taxon sets were defined" << endl;
 	else
 		{
 		NxsUnsignedSetMap::const_iterator taxsets_iter = taxsets.begin();
 		if (taxsets.size() == 1)
 			{
-			out << "  1 taxon set defined:" << endl;
-			out << "   " << (*taxsets_iter).first << endl;
+			out << L"  1 taxon set defined:" << endl;
+			out << L"   " << (*taxsets_iter).first << endl;
 			}
 		else
 			{
-			out << "  " << (unsigned)taxsets.size() << " taxon sets defined:" << endl;
+			out << L"  " << (unsigned)taxsets.size() << L" taxon sets defined:" << endl;
 			for (; taxsets_iter != taxsets.end(); taxsets_iter++)
 				{
 				NxsString nm = (*taxsets_iter).first;
-				out << "   " << nm;
+				out << L"   " << nm;
 				out << endl;
 				}
 			}
 		}	// if (taxsets.empty()) ... else
 
 	if (exsets.empty())
-		out << "  No exclusion sets were defined" << endl;
+		out << L"  No exclusion sets were defined" << endl;
 	else
 		{
 		NxsUnsignedSetMap::const_iterator exsets_iter = exsets.begin();
 		if (exsets.size() == 1)
 			{
-			out << "  1 exclusion set defined:" << endl;
-			out << "   " << (*exsets_iter).first << endl;
+			out << L"  1 exclusion set defined:" << endl;
+			out << L"   " << (*exsets_iter).first << endl;
 			}
 		else
 			{
-			out << "  " << (unsigned)exsets.size() << " exclusion sets defined:" << endl;
+			out << L"  " << (unsigned)exsets.size() << L" exclusion sets defined:" << endl;
 			for (; exsets_iter != exsets.end(); exsets_iter++)
 				{
 				NxsString nm = (*exsets_iter).first;
-				out << "   " << nm;
+				out << L"   " << nm;
 				if (NxsString::case_insensitive_equals(nm.c_str(), def_exset.c_str()))
-					out << " (default)";
+					out << L" (default)";
 				out << endl;
 				}
 			}
@@ -2638,23 +2638,23 @@ unsigned NxsAssumptionsBlock::TaxonLabelToNumber(
 void NxsAssumptionsBlock::HandleLinkCommand(NxsToken & token)
 	{
 	if (!nexusReader)
-		NxsNCLAPIException("No NxsReader when reading Assumptions block.");
+		NxsNCLAPIException(L"No NxsReader when reading Assumptions block.");
 
 	token.GetNextToken();
-	const std::map<std::string, std::string> kv = token.ProcessAsSimpleKeyValuePairs("LINK");
-	std::map<std::string, std::string>::const_iterator pairIt = kv.begin();
+	const std::map<std::wstring, std::wstring> kv = token.ProcessAsSimpleKeyValuePairs(L"LINK");
+	std::map<std::wstring, std::wstring>::const_iterator pairIt = kv.begin();
 	for (;pairIt != kv.end(); ++pairIt)
 		{
 		NxsString key(pairIt->first.c_str());
 		key.ToUpper();
 		NxsString value(pairIt->second.c_str());
-		if (key == "TAXA")
+		if (key == L"TAXA")
 			{
 			if (taxa && !taxa->GetID().EqualsCaseInsensitive(value))
 				{
 				if (GetTaxaLinkStatus() & NxsBlock::BLOCK_LINK_USED)
 					{
-					errormsg = "LINK to a Taxa block must occur before commands that use a taxa block";
+					errormsg = L"LINK to a Taxa block must occur before commands that use a taxa block";
 					throw NxsException(errormsg, token);
 					}
 				SetTaxaBlockPtr(NULL, NxsBlock::BLOCK_LINK_UNINITIALIZED);
@@ -2664,21 +2664,21 @@ void NxsAssumptionsBlock::HandleLinkCommand(NxsToken & token)
 				NxsTaxaBlockAPI * cb = nexusReader->GetTaxaBlockByTitle(value.c_str(), NULL);
 				if (cb == NULL)
 					{
-					errormsg = "Unknown TAXA block (";
+					errormsg = L"Unknown TAXA block (";
 					errormsg += value;
-					errormsg +=") referred to in the LINK command";
+					errormsg +=L") referred to in the LINK command";
 					throw NxsException(errormsg, token);
 					}
 				SetTaxaBlockPtr(cb, NxsBlock::BLOCK_LINK_FROM_LINK_CMD);
 				}				
 			}
-		else if (key == "CHARACTERS")
+		else if (key == L"CHARACTERS")
 			{
 			if (charBlockPtr && !charBlockPtr->GetID().EqualsCaseInsensitive(value))
 				{
 				if (GetCharLinkStatus() & NxsBlock::BLOCK_LINK_USED)
 					{
-					errormsg = "LINK to a CHARACTERS block must occur before commands that use a CHARACTERS block";
+					errormsg = L"LINK to a CHARACTERS block must occur before commands that use a CHARACTERS block";
 					throw NxsException(errormsg, token);
 					}
 				SetCharBlockPtr(NULL, NxsBlock::BLOCK_LINK_UNINITIALIZED);
@@ -2688,21 +2688,21 @@ void NxsAssumptionsBlock::HandleLinkCommand(NxsToken & token)
 				NxsCharactersBlockAPI * cb = nexusReader->GetCharBlockByTitle(value.c_str(), NULL);
 				if (cb == NULL)
 					{
-					errormsg = "Unknown CHARACTERS block (";
+					errormsg = L"Unknown CHARACTERS block (";
 					errormsg += value;
-					errormsg +=") referred to in the LINK command";
+					errormsg +=L") referred to in the LINK command";
 					throw NxsException(errormsg, token);
 					}
 				SetCharBlockPtr(cb, NxsBlock::BLOCK_LINK_FROM_LINK_CMD);
 				}				
 			}
-		else if (key == "TREES")
+		else if (key == L"TREES")
 			{
 			if (treesBlockPtr && !treesBlockPtr->GetID().EqualsCaseInsensitive(value))
 				{
 				if (GetTreesLinkStatus() & NxsBlock::BLOCK_LINK_USED)
 					{
-					errormsg = "LINK to a TREES block must occur before commands that use a TREES block";
+					errormsg = L"LINK to a TREES block must occur before commands that use a TREES block";
 					throw NxsException(errormsg, token);
 					}
 				SetTreesBlockPtr(NULL, NxsBlock::BLOCK_LINK_UNINITIALIZED);
@@ -2712,9 +2712,9 @@ void NxsAssumptionsBlock::HandleLinkCommand(NxsToken & token)
 				NxsTreesBlockAPI * cb = nexusReader->GetTreesBlockByTitle(value.c_str(), NULL);
 				if (cb == NULL)
 					{
-					errormsg = "Unknown TREES block (";
+					errormsg = L"Unknown TREES block (";
 					errormsg += value;
-					errormsg +=") referred to in the LINK command";
+					errormsg +=L") referred to in the LINK command";
 					throw NxsException(errormsg, token);
 					}
 				SetTreesBlockPtr(cb, NxsBlock::BLOCK_LINK_FROM_LINK_CMD);
@@ -2722,27 +2722,27 @@ void NxsAssumptionsBlock::HandleLinkCommand(NxsToken & token)
 			}
 		else
 			{
-			errormsg = "Skipping unknown LINK subcommand: ";
+			errormsg = L"Skipping unknown LINK subcommand: ";
 			errormsg += pairIt->first.c_str();
 			nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 			errormsg.clear(); //this token pos will be off a bit.
 			}
 		}
 	}
-void NxsAssumptionsBlock::WriteLinkCommand(std::ostream &out) const
+void NxsAssumptionsBlock::WriteLinkCommand(std::wostream &out) const
 	{
 	if ( (taxa && !(taxa->GetTitle().empty()))
 		|| (treesBlockPtr  && !(treesBlockPtr->GetTitle().empty()))
 		|| (charBlockPtr && !(charBlockPtr->GetTitle().empty())))
 		{
-		out << "    LINK";
+		out << L"    LINK";
 		if (taxa)
-			out << " TAXA = " << NxsString::GetEscaped(taxa->GetTitle());
+			out << L" TAXA = " << NxsString::GetEscaped(taxa->GetTitle());
 		if (charBlockPtr)
-			out << " CHARACTERS = " << NxsString::GetEscaped(charBlockPtr->GetTitle());
+			out << L" CHARACTERS = " << NxsString::GetEscaped(charBlockPtr->GetTitle());
 		if (treesBlockPtr)
-			out << " TREES = " << NxsString::GetEscaped(treesBlockPtr->GetTitle());
-		out << ";\n";
+			out << L" TREES = " << NxsString::GetEscaped(treesBlockPtr->GetTitle());
+		out << L";\n";
 		}
 	}
 	
@@ -2757,9 +2757,9 @@ VecBlockPtr NxsAssumptionsBlock::GetCreatedTaxaBlocks()
 	}
 
 
-NxsAssumptionsBlock *NxsAssumptionsBlockFactory::GetBlockReaderForID(const std::string & idneeded, NxsReader *reader, NxsToken *)
+NxsAssumptionsBlock *NxsAssumptionsBlockFactory::GetBlockReaderForID(const std::wstring & idneeded, NxsReader *reader, NxsToken *)
 	{
-	if (reader == NULL || (idneeded != "ASSUMPTIONS" && idneeded != "CODONS" && idneeded != "SETS"))
+	if (reader == NULL || (idneeded != L"ASSUMPTIONS" && idneeded != L"CODONS" && idneeded != L"SETS"))
 		return NULL;
 	NxsAssumptionsBlock * nb =	new NxsAssumptionsBlock(NULL);
 	nb->SetImplementsLinkAPI(true);

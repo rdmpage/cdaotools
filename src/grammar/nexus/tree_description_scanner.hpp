@@ -20,9 +20,10 @@ namespace CDAO {
     START_WEIGHT    = ':',
     START_COMMENT   = '[',
     END_COMMENT     = ']',
-    LABEL = 257,
-    END   = 258,
-    TOKENS_SIZE = 259
+    QUOTED_STRING_MARKER   = '\'',
+    LABEL = 510,
+    END   = 511,
+    TOKENS_SIZE = 512
   } Token_t;
   /*
    * A token package combines a token's type and value into a single object. 
@@ -30,26 +31,26 @@ namespace CDAO {
    */
   class TokenPackage {
   public: 
-    TokenPackage(Token_t type, std::string contents):type_(type), contents_(contents){}
+    TokenPackage(Token_t type, std::wstring contents):type_(type), contents_(contents){}
     Token_t getType(){return type_; }
-    std::string getContents()const{ return contents_;}
+    std::wstring getContents()const{ return contents_;}
   private:
     Token_t type_;
-    std::string contents_;
+    std::wstring contents_;
     
   };
   /*
-   * Tree description scanner provides an interface to lexically analyze a given Newick format string.
+   * Tree description scanner provides an interface to lexically analyze a given Newick format wstring.
    */
   class TreeDescriptionScanner {
   public:
-    TreeDescriptionScanner(std::string target):current_position_(0),target_(target){}
+    TreeDescriptionScanner(std::wstring target):current_position_(0),target_(target){}
     bool isDone()const{ return current_position_ >= target_.size();}
     TokenPackage lex();
     TokenPackage lookAhead();
   private:
     unsigned int current_position_;
-    std::string target_;
+    std::wstring target_;
   }; 
 }
 

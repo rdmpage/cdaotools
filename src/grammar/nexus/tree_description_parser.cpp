@@ -1,7 +1,7 @@
 /*
  * Brandon Chisham
  * Created: 3-26-08
- * Implementation of a tree description parser for Nexus/Newick style strings.
+ * Implementation of a tree description parser for Nexus/Newick style wstrings.
  */
 #include "tree_description_parser.hpp"
 #include <cassert>
@@ -23,16 +23,16 @@ namespace CDAO {
    * Start point parse the tree from the beginning.
    */
   void TreeDescriptionParser::parse(){
-    parsetree_ = new Node( "tree" );
-    //cerr << "parse()\n";
+    parsetree_ = new Node( labelMaker( L"tree" ) );
+    //cerr << L"parse()\n";
     consume_tree( parsetree_ );
-    //cerr << "exiting: parse()\n";
+    //cerr << L"exiting: parse()\n";
     
   }
   /*
    * Print an error message then exit.
    */
-  void print_parse_error_message( string error_token  );
+  void print_parse_error_message( wstring error_token  );
   
   /*
    * Parse a substee.
@@ -43,7 +43,7 @@ namespace CDAO {
   void  TreeDescriptionParser::consume_tree(  Node* current ){
     
     assert( current );
-    //cerr << "consume_tree( current: " << current << ")\n";
+    //cerr << L"consume_tree( current: L" << current << L")\n";
     /* Expect ( */
     TokenPackage start_tree = scanner.lookAhead();
     if (start_tree.getType() == START_TREE){
@@ -61,13 +61,13 @@ namespace CDAO {
       }
       else if (scanner.lookAhead().getType() == END){
 	//make up a name for the tree if it's not supplied
-	current->setLabel( labelMaker( "tree" ) );
+	current->setLabel( labelMaker( L"tree" ) );
       }
       //else {
       //  print_parse_error_message( scanner.lookAhead().getContents() );
       //}
     }
-    //cerr << "exiting consume_tree( " << current << ")\n";
+    //cerr << L"exiting consume_tree( L" << current << L")\n";
     return;
   }
   
@@ -82,16 +82,16 @@ namespace CDAO {
   void TreeDescriptionParser::consume_tree_list( Node* current ){
     assert( current );
     
-    //cerr << "consume_tree_list( current: " << current << ")\n";
+    //cerr << L"consume_tree_list( current: L" << current << L")\n";
     
     /* Expect TREE or LABEL */
     TokenPackage next_token = scanner.lookAhead();
     
-    //cerr << "Next Token is type: " << next_token.getType() << " has contents: \"" << next_token.getContents() << "\"\n";
-    //cerr << "Expecting type: START_TREE: " << START_TREE << " or LABEL: " << LABEL << "\n"; 
+    //cerr << L"Next Token is type: L" << next_token.getType() << L" has contents: \"" << next_token.getContents() << L"\"\n";
+    //cerr << L"Expecting type: START_TREE: L" << START_TREE << L" or LABEL: L" << LABEL << L"\n"; 
     
     if (next_token.getType() == START_TREE){
-      Node* subtree = new Node( labelMaker( "node" ) );
+      Node* subtree = new Node( labelMaker( L"node" ) );
       consume_tree( subtree );
       subtree->setAncestor( current );
       current->addDescendant( subtree );
@@ -133,7 +133,7 @@ namespace CDAO {
       print_parse_error_message( next_token.getContents() );
     }
     
-    //cerr << "exiting consume_tree_list( " << current << " )\n";
+    //cerr << L"exiting consume_tree_list( L" << current << L" )\n";
     
   }
   
@@ -142,15 +142,16 @@ namespace CDAO {
   /*
    * Consume a label token.
    * LABEL -> [a-zA-Z0-9]+ EXTENDED_META
+   *       | ' LABEL '
  */
-  void  TreeDescriptionParser::consume_label(  Node* current){
+  void  TreeDescriptionParser::consume_label(  Node* current ){
     assert( current );
-    //cerr << "consume_label( " << current << " )\n";
+    //cerr << L"consume_label( L" << current << L" )\n";
     TokenPackage label = scanner.lex();
     assert( label.getType() == LABEL );
     current->setLabel( label.getContents()  );
     consume_extended_meta( current );
-    //cerr << "exiting: consume_label( " << current << " )\n";
+    //cerr << L"exiting: consume_label( L" << current << L" )\n";
   return ;
   
   }
@@ -162,7 +163,7 @@ namespace CDAO {
     assert( current );
     assert( scanner.lex().getType() == START_TREE );
     
-    //cerr << "enter/exit consume_start_tree()\n";
+    //cerr << L"enter/exit consume_start_tree()\n";
     
     return;
 
@@ -175,7 +176,7 @@ namespace CDAO {
     assert( current );
     assert( scanner.lex().getType() == END_TREE );
     
-    //cerr << "enter/exit consume_end_tree()\n";
+    //cerr << L"enter/exit consume_end_tree()\n";
     return;
   }
   /*
@@ -210,7 +211,7 @@ namespace CDAO {
   void TreeDescriptionParser::consume_weight( Node* current ){
     assert( scanner.lex().getType() == START_WEIGHT );
     TokenPackage weight = scanner.lex();
-    current->setWeight( strtod( weight.getContents().c_str(), NULL )  );
+    current->setWeight( strtod( wstr_to_str( weight.getContents()).c_str(), NULL )  );
     return;
   }
   /*
@@ -225,8 +226,8 @@ namespace CDAO {
     
   }
 
-void print_parse_error_message( string error_token  ){
-	cerr << "Unexpected Token \"" << error_token << "\" in the input.\n";  
+void print_parse_error_message( wstring error_token  ){
+	cerr << L"Unexpected Token \"" << wstr_to_str( error_token )<< L"\" in the input.\n";  
 	exit( 1 );
 
 }

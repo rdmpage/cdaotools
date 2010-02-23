@@ -34,18 +34,18 @@ namespace CDAO {
     /*
      * Extract a particular taxon label.
      */
-    virtual const std::string  getTaxonLabel( const unsigned int i )const=0;
-    virtual const std::string  getTreeLabel( const unsigned int i)const=0;
-    virtual const std::string  getMatrixLabel()const=0;
-    virtual void setMatrixLabel(const std::string& )=0;
+    virtual const std::wstring  getTaxonLabel( const unsigned int i )const=0;
+    virtual const std::wstring  getTreeLabel( const unsigned int i)const=0;
+    virtual const std::wstring  getMatrixLabel()const=0;
+    virtual void setMatrixLabel(const std::wstring& )=0;
     /*
-     * Get the state of a character for the specified taxon.
+     * Get the state of a wchar_tacter for the specified taxon.
      */
-    virtual const char getTraitState( const unsigned int taxon, const unsigned int trait)const=0;
+    virtual const wchar_t getTraitState( const unsigned int taxon, const unsigned int trait)const=0;
     /*
-     * True if all the taxa agree on the specified characteristic, otherwise false.
+     * True if all the taxa agree on the specified wchar_tacteristic, otherwise false.
      */
-    virtual const bool isTrait( const unsigned int character )const=0;
+    virtual const bool isTrait( const unsigned int wchar_tacter )const=0;
     /*
      * Get the number of taxa in the dataset
      */
@@ -77,11 +77,11 @@ namespace CDAO {
     /*
      * Find the taxon number associated with a name.
      */
-    virtual const unsigned int getTaxonNumber( const string& label)const=0;
+    virtual const unsigned int getTaxonNumber( const wstring& label)const=0;
 
-    virtual const bool isGap( const char ch )const=0;
+    virtual const bool isGap( const wchar_t ch )const=0;
     
-    virtual const bool isMissing( const char ch )const=0;
+    virtual const bool isMissing( const wchar_t ch )const=0;
   private:
   };
 }

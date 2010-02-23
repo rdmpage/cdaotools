@@ -20,7 +20,7 @@
 #include "ncl/nxscxxdiscretematrix.h"
 #include "ncl/nxsutilcopy.h"
 #include <cassert>
-using std::string;
+using std::wstring;
 using std::vector;
 using std::cout;
 using std::endl;
@@ -53,20 +53,20 @@ void NxsCXXDiscreteMatrix::Initialize(const NxsCharactersBlock * cb, bool gapsTo
 		return;
 	std::vector<const NxsDiscreteDatatypeMapper *> mappers = cb->GetAllDatatypeMappers();
 	if (mappers.size() > 1)
-		throw NxsException("too many mappers");
+		throw NxsException(L"too many mappers");
 	if (mappers.empty() || mappers[0] == NULL)
-		throw NxsException("no mappers");
+		throw NxsException(L"no mappers");
 		
 	const NxsDiscreteDatatypeMapper & mapper = *mappers[0];
 	const NxsDiscreteStateMatrix & rawMatrix = cb->GetRawDiscreteMatrixRef();
 
 	NxsCharactersBlock::DataTypesEnum inDatatype = mapper.GetDatatype();
 	if (inDatatype < LowestNxsCDatatype || inDatatype > HighestNxsCDatatype)
-		throw NxsException("Datatype cannot be converted to NxsCDiscreteMatrix");
+		throw NxsException(L"Datatype cannot be converted to NxsCDiscreteMatrix");
 	this->nativeCMatrix.datatype = NxsAltDatatypes(inDatatype);
 	this->nativeCMatrix.nStates = mapper.GetNumStates();
-	const std::string fundamentalSymbols = mapper.GetSymbols();
-	const std::string fundamentalSymbolsPlusGaps = mapper.GetSymbolsWithGapChar();
+	const std::wstring fundamentalSymbols = mapper.GetSymbols();
+	const std::wstring fundamentalSymbolsPlusGaps = mapper.GetSymbolsWithGapChar();
 	const bool hadGaps = !(fundamentalSymbols == fundamentalSymbolsPlusGaps);
 	
 	this->symbolsStringAlias = fundamentalSymbols;
@@ -83,13 +83,13 @@ void NxsCXXDiscreteMatrix::Initialize(const NxsCharactersBlock * cb, bool gapsTo
 	NxsCDiscreteState_t * recodeArr = &recodeVec[negSCLOffset];
 
 	if (fundamentalSymbols.length() < this->nativeCMatrix.nStates)
-		throw NxsException("Fundamental states missing from the symbols string");
+		throw NxsException(L"Fundamental states missing from the symbols wstring");
 	const unsigned nfun_sym = (const unsigned)fundamentalSymbols.length();
 	for (NxsCDiscreteState_t i = 0; i < (NxsCDiscreteState_t)this->nativeCMatrix.nStates; ++i)
 		{
 		if (i < (NxsCDiscreteState_t)nfun_sym && (NxsCDiscreteState_t)fundamentalSymbols[i] == '\0' && mapper.PositionInSymbols(fundamentalSymbols[i]) != (int) i)
 			{
-			//std::cerr << "i=" << int(i)  << "\nfundamentalSymbols = " << fundamentalSymbols << "\n" << nfun_sym << " symbols.\n";
+			//std::cerr << L"i=" << int(i)  << L"\nfundamentalSymbols = " << fundamentalSymbols << L"\n" << nfun_sym << L" symbols.\n";
 			assert(i >= (NxsCDiscreteState_t)nfun_sym || fundamentalSymbols[i] == '\0' || mapper.PositionInSymbols(fundamentalSymbols[i]) == (int) i);
 			}
 #		if defined (NDEBUG)
@@ -139,7 +139,7 @@ void NxsCXXDiscreteMatrix::Initialize(const NxsCharactersBlock * cb, bool gapsTo
 			stateListAlias.push_back(ns);
 			for (std::set<int>::const_iterator sIt = ss.begin(); sIt != ss.end(); ++sIt)
 				stateListAlias.push_back((NxsCDiscreteState_t) *sIt);
-			std::string stateName = mapper.StateCodeToNexusString(i);
+			std::wstring stateName = mapper.StateCodeToNexusString(i);
 			if (stateName.length() != 1)
 				this->symbolsStringAlias.append(1, ' ');
 			else
@@ -183,7 +183,7 @@ void NxsCXXDiscreteMatrix::Initialize(const NxsCharactersBlock * cb, bool gapsTo
 				const NxsCDiscreteState_t recodedC = recodeArr[rawC];
 				assert(recodedC > -2);
 				assert(recodedC < nextStateCode);
-				//std::cerr << "c" << c << ": " << rawC << " => " << (int) recodedC << '\n';
+				//std::cerr << L"c" << c << L": " << rawC << L" => " << (int) recodedC << '\n';
 				*recodedRow++ = recodedC;
 				}
 			}
@@ -218,14 +218,14 @@ NxsCXXDiscreteMatrix::NxsCXXDiscreteMatrix(const NxsCDiscreteMatrix & mat)
 		{
 		const unsigned lastStateIndex = nativeCMatrix.stateListPos[nativeCMatrix.nObservedStateSets - 1];
 		const unsigned lenAmbigList = lastStateIndex + mat.stateList[lastStateIndex] + 1;
-		//	cout << "lenAmbigList = "<< lenAmbigList <<endl;
+		//	cout << L"lenAmbigList = "<< lenAmbigList <<endl;
 		stateListAlias.reserve(lenAmbigList);
 		ncl_copy(mat.stateList, (mat.stateList + lenAmbigList), std::back_inserter(stateListAlias));
 		}
 	nativeCMatrix.stateList = &stateListAlias[0];
 	nativeCMatrix.matrix = matrixAlias.ptr;
 	
-	// cout << "Matrix in NxsCXXDiscreteMatrix ctor:" << mat.nTax << ' '<< mat.nChar<< endl;
+	// cout << L"Matrix in NxsCXXDiscreteMatrix ctor:" << mat.nTax << ' '<< mat.nChar<< endl;
 	for (unsigned i = 0; i < mat.nTax; ++i)
 		{
 		if (mat.nChar > 0)

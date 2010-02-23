@@ -11,14 +11,14 @@
 namespace CDAO {
  
   /*
-   * Parses a Newick/Nexus tree string into a tree. 
+   * Parses a Newick/Nexus tree wstring into a tree. 
    */
   class TreeDescriptionParser {
   public:
     /*
-     * Initialize the parser with the specified target string.
+     * Initialize the parser with the specified target wstring.
      */
-    TreeDescriptionParser( std::string target ):parsetree_(NULL), scanner( target ){ parse(); }
+    TreeDescriptionParser( std::wstring target ):parsetree_(NULL), scanner( target ){ parse(); }
     /*
      * Retrieve the parse tree.
      */
@@ -26,7 +26,7 @@ namespace CDAO {
 
   protected:
     /*
-     * Parse the specified string.
+     * Parse the specified wstring.
      */
     void parse();
   private:

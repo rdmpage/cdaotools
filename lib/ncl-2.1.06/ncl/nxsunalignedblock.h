@@ -79,7 +79,7 @@ class NxsUnalignedBlock
 								NxsUnalignedBlock(NxsTaxaBlockAPI * tb);
 		virtual					~NxsUnalignedBlock();
 
-		void					ShowStateLabels(std::ostream & out, NxsDiscreteDatum s);
+		void					ShowStateLabels(std::wostream & out, NxsDiscreteDatum s);
 		NxsCharactersBlock::DataTypesEnum	GetDataType() const ;
 		NxsCharactersBlock::DataTypesEnum	GetOriginalDataType() const ;
 		const NxsDiscreteStateRow * GetDiscreteMatrixRow(unsigned taxInd) const
@@ -102,24 +102,24 @@ class NxsUnalignedBlock
 		bool					IsPolymorphic(unsigned i, unsigned j);
 		bool					IsRespectCase();
 		unsigned				GetStateSymbolIndex(unsigned i, unsigned j, unsigned k = 0);	// added by mth for standard data types
-		const char *			GetSymbols();
-		virtual void			DebugShowMatrix(std::ostream & out, const char * marginText = NULL) NCL_COULD_BE_CONST ;
-		virtual void			Report(std::ostream & out) NCL_COULD_BE_CONST ;
+		const wchar_t*			GetSymbols();
+		virtual void			DebugShowMatrix(std::wostream & out, const wchar_t* marginText = NULL) NCL_COULD_BE_CONST ;
+		virtual void			Report(std::wostream & out) NCL_COULD_BE_CONST ;
 		virtual void			Reset();
 		void					SetNexus(NxsReader *nxsptr)
 			{
 			NxsBlock::SetNexus(nxsptr);
 			NxsTaxaBlockSurrogate::SetNexusReader(nxsptr);
 			}
-		virtual const std::string & GetBlockName() const
+		virtual const std::wstring & GetBlockName() const
 			{
 			return id;
 			}
 
-		void					WriteAsNexus(std::ostream & out) const;
-		void					WriteFormatCommand(std::ostream & out) const;
-		void					WriteMatrixCommand(std::ostream & out) const;
-		const char *			GetDatatypeName() const
+		void					WriteAsNexus(std::wostream & out) const;
+		void					WriteFormatCommand(std::wostream & out) const;
+		void					WriteMatrixCommand(std::wostream & out) const;
+		const wchar_t*			GetDatatypeName() const
 			{
 			return NxsCharactersBlock::GetNameOfDatatype(datatype);
 			}
@@ -134,7 +134,7 @@ class NxsUnalignedBlock
 			{
 			HandleLinkTaxaCommand(token);
 			}
-		virtual void		WriteLinkCommand(std::ostream &out) const
+		virtual void		WriteLinkCommand(std::wostream &out) const
 			{
 			WriteLinkTaxaCommand(out);
 			}
@@ -188,12 +188,12 @@ class NxsUnalignedBlock
 		void					HandleEndblock(NxsToken & token);
 		virtual void			HandleFormat(NxsToken & token);
 		virtual void			HandleMatrix(NxsToken & token);
-		virtual bool			HandleNextState(NxsToken & token, unsigned taxInd, unsigned charInd, NxsDiscreteStateRow & new_row, const NxsString &);
+		virtual bool			HandleNextState(NxsToken & token, unsigned taxInd, unsigned wchar_tInd, NxsDiscreteStateRow & new_row, const NxsString &);
 		virtual void			Read(NxsToken & token);
 		void					ResetSymbols();
-		std::string				FormatState(NxsDiscreteDatum x) const;
+		std::wstring				FormatState(NxsDiscreteDatum x) const;
 
-		void					WriteStatesForMatrixRow(std::ostream &out, unsigned currTaxonIndex) const;
+		void					WriteStatesForMatrixRow(std::wostream &out, unsigned currTaxonIndex) const;
 
 		unsigned				nChar;				/* number of columns in matrix	*/
 		unsigned				nTaxWithData;		/* number of non empty rows in the matrix*/
@@ -205,8 +205,8 @@ class NxsUnalignedBlock
 
 		char					missing;			/* missing data symbol */
 
-		std::string				symbols;			/* list of valid character state symbols */
-		std::map<char, NxsString> equates;			/* list of associations defined by EQUATE attribute of FORMAT command */
+		std::wstring				symbols;			/* list of valid character state symbols */
+		std::map<wchar_t, NxsString> equates;			/* list of associations defined by EQUATE attribute of FORMAT command */
 
 		NxsDiscreteDatatypeMapper mapper;
 		NxsDiscreteStateMatrix	uMatrix;		/* storage for unaligned data */
@@ -227,7 +227,7 @@ class NxsUnalignedBlockFactory
 	:public NxsBlockFactory
 	{
 	public:
-		virtual NxsUnalignedBlock  *GetBlockReaderForID(const std::string & id, NxsReader *reader, NxsToken *token);
+		virtual NxsUnalignedBlock  *GetBlockReaderForID(const std::wstring & id, NxsReader *reader, NxsToken *token);
 	};
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -305,7 +305,7 @@ inline unsigned NxsUnalignedBlock::GetNumMatrixRows()
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns data member `symbols'. Warning: returned value may be NULL.
 */
-inline const char * NxsUnalignedBlock::GetSymbols()
+inline const wchar_t* NxsUnalignedBlock::GetSymbols()
 	{
 	return symbols.c_str();
 	}

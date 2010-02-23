@@ -45,7 +45,7 @@
 	typedef UINT64 uint64_t;
 #elif defined(_MSC_VER)
 	typedef signed char int8_t;
-	typedef unsigned char uint8_t;
+	typedef unsigned wchar_t uint8_t;
 	typedef long long int64_t;
 	typedef unsigned long long uint64_t;
 #elif defined(_WIN32)
@@ -96,7 +96,7 @@ typedef struct NxsCDiscreteMatrixStruct
 											  Exceptions: -1 is for gaps, nStates is for missing. */
 	unsigned * stateListPos;  	/** Maps a state set code (the elements of the matrix) to the index in stateList where the states are listed */
 	NxsCDiscreteStateSet ** matrix;			/** taxa x characters matrix of indices of state sets */
-	const char * symbolsList;	/** array of the characters used to stand for each state ("ACGT?NRY" for example) //@temp paup depends on all symbols being unique (even ambiguity codes)*/
+	const wchar_t* symbolsList;	/** array of the characters used to stand for each state ("ACGT?NRY" for example) //@temp paup depends on all symbols being unique (even ambiguity codes)*/
 	unsigned nStates;
 	unsigned nChar;
 	unsigned nTax;

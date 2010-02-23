@@ -28,9 +28,9 @@
 
 #define NCL_MAJOR_VERSION 2
 #define NCL_MINOR_VERSION 1
-#define NCL_NAME_AND_VERSION  "NCL version 2.1.00"
-#define NCL_COPYRIGHT         "Copyright (c) 1999-2003 by Paul O. Lewis"
-#define NCL_HOMEPAGEURL       "http://sourceforge.net/projects/ncl"
+#define NCL_NAME_AND_VERSION  L"NCL version 2.1.00"
+#define NCL_COPYRIGHT         L"Copyright (c) 1999-2003 by Paul O. Lewis"
+#define NCL_HOMEPAGEURL       L"http://sourceforge.net/projects/ncl"
 
 
 // NCL_COULD_BE_CONST is a mechanism for declaring some old (v < 2.1) functions 
@@ -72,9 +72,9 @@ typedef std::map< unsigned, NxsStringVector> NxsStringVectorMap;
 typedef std::map< NxsString, NxsString> NxsStringMap;
 typedef std::map< NxsString, NxsUnsignedSet> NxsUnsignedSetMap;
 
-typedef std::pair<std::string, NxsUnsignedSet> NxsPartitionGroup;
+typedef std::pair<std::wstring, NxsUnsignedSet> NxsPartitionGroup;
 typedef std::list<NxsPartitionGroup> NxsPartition;
-typedef std::map<std::string, NxsPartition> NxsPartitionsByName;
+typedef std::map<std::wstring, NxsPartition> NxsPartitionsByName;
 
 // The following typedefs are simply for maintaining compatibility with existing code.
 // The names on the right are deprecated and should not be used.

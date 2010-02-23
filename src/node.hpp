@@ -36,7 +36,7 @@ namespace CDAO {
       tree_op_t lambda_;
     };
 
-    Node(const std::string label="", 
+    Node(const std::wstring label=L"", 
 	 const Node* ancestor = NULL):label_(label),
                                 weight_(0.0),
     			        ancestor_(ancestor){ descendants_ = std::vector<const Node*>( 0 ); }
@@ -44,11 +44,11 @@ namespace CDAO {
     /*
      * Retrieve the name of the node.
      */
-    const std::string& getLabel()const{ return label_; }
+    const std::wstring& getLabel()const{ return label_; }
     /*
      * Set the name of the node.
      */
-    void   setLabel(const std::string& label){ label_ = label;}
+    void   setLabel(const std::wstring& label){ label_ = label;}
     /**
      * Retrieve the node weight
      */
@@ -59,6 +59,7 @@ namespace CDAO {
     void setWeight( double weight ){ weight_ = weight; }
     /*
      * Retrieve the ancestor of the node.
+
      */
     const Node* getAncestor()const{ return ancestor_; }
     
@@ -92,7 +93,7 @@ namespace CDAO {
     /*
      * Print a representation of the tree.
      */
-    void printTree(unsigned int level=0,  std::ostream& out=std::cout  )const;
+    void printTree(unsigned int level=0,  std::wostream& out=std::wcout  )const;
     /*
      * Determines if the node does or does not have any children
      */
@@ -115,7 +116,7 @@ namespace CDAO {
      */
     void doPostOrderTraversal( Delegate* cb, const Node* current)const;
     
-    std::string label_;
+    std::wstring label_;
     double weight_;
     const Node* ancestor_;
     std::vector<const Node*> descendants_;

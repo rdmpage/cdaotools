@@ -18,14 +18,14 @@
 #include <LogManager.hpp>
 
 
-using namespace std;
+//using namespace std;
 using namespace CDAO;
 
 
 //Logger* logger;
 
-//string input_file = "";
-//string output_file = "";
+//wstring input_file = L"";
+//wstring output_file = L"";
 int main(int argc, char** argv, char** env){
   //setup environment
   processArgs( argc, argv, env );
@@ -34,13 +34,13 @@ int main(int argc, char** argv, char** env){
   lmgr.log(INFO_MESSAGES_LR, "Preparing to parse the input file\n");
   //parse the input stream
   DataRepresentation* data = nexusparse();
-  data->setMatrixLabel( getInputFile()  );
+  data->setMatrixLabel( CDAO::str_to_wstr( getInputFile() ) );
   lmgr.log(INFO_MESSAGES_LR, "Parsed the input file\n");
   lmgr.log(INFO_MESSAGES_LR, "Preparing to generate output\n");
   //configure the output generator
   CodeGenerator outputFormatter( data );
   //write the output
-  outputFormatter.generate( *(getOutputStream()) );
+  outputFormatter.generate( *(GlobalState::getOutfile()) );
   lmgr.log(INFO_MESSAGES_LR, "Generated output\n");
   return 0;
 

@@ -110,7 +110,7 @@ class NxsX_UnexpectedEOF: public NxsException
 class NxsComment
 	{
 	public:
-		NxsComment(const std::string & s, long lineNumber, long colNumber)
+		NxsComment(const std::wstring & s, long lineNumber, long colNumber)
 			:body(s),
 			line(lineNumber),
 			col(colNumber)
@@ -123,16 +123,16 @@ class NxsComment
 			{
 			return col;
 			}
-		const std::string & GetText() const
+		const std::wstring & GetText() const
 			{
 			return body;
 			}
-		void WriteAsNexus(std::ostream &out) const
+		void WriteAsNexus(std::wostream &out) const
 			{
 			out << '[' << body << ']';
 			}
 	private:
-		std::string body;
+		std::wstring body;
 		long line;
 		long col;
 	};
@@ -180,27 +180,27 @@ class NxsTokenPosInfo
 
 /*----------------------------------------------------------------------------------------------------------------------
 |	A structure for storing the name of a command and to maps of option names
-| 		to value strings.
+| 		to value wstrings.
 |	Produced by ProcessedNxsToken::ParseSimpleCmd (see that commands comments for rules on how it parses a NEXUS
 |	command into a NxsSimpleCommandStrings struct).
 */
 class NxsSimpleCommandStrings
 	{
 	public:
-		typedef std::vector<std::string> VecString;
+		typedef std::vector<std::wstring> VecString;
 		typedef std::list<VecString> MatString;
-		typedef std::pair<NxsTokenPosInfo, std::string> SingleValFromFile;
+		typedef std::pair<NxsTokenPosInfo, std::wstring> SingleValFromFile;
 		typedef std::pair<NxsTokenPosInfo, VecString > MultiValFromFile;
 		typedef std::pair<NxsTokenPosInfo, MatString > MatFromFile;
-		typedef std::map<std::string, SingleValFromFile> StringToValFromFile;
-		typedef std::map<std::string,  MultiValFromFile> StringToMultiValFromFile;
-		typedef std::map<std::string,  MatFromFile> StringToMatFromFile;
+		typedef std::map<std::wstring, SingleValFromFile> StringToValFromFile;
+		typedef std::map<std::wstring,  MultiValFromFile> StringToMultiValFromFile;
+		typedef std::map<std::wstring,  MatFromFile> StringToMatFromFile;
 	
 		// Looks for k in opts and multiOpts. Returns all of the values 
-		// 	for the command option (will be an empty vector of strings if the option was not found).
+		// 	for the command option (will be an empty vector of wstrings if the option was not found).
 		// Case-sensitive!
 		// If an option is in multiOpts and opts, then only the value from opts will be returned!
-		MultiValFromFile GetOptValue(const std::string &k) const
+		MultiValFromFile GetOptValue(const std::wstring &k) const
 			{
 			MultiValFromFile mvff; 
 			StringToValFromFile::const_iterator s = this->opts.find(k);
@@ -223,7 +223,7 @@ class NxsSimpleCommandStrings
 			return mvff;	
 			}
 
-		MatFromFile GetMatOptValue(const std::string & k) const
+		MatFromFile GetMatOptValue(const std::wstring & k) const
 			{
 			StringToMatFromFile::const_iterator mIt = this->matOpts.find(k);
 			if (mIt ==  this->matOpts.end())
@@ -231,14 +231,14 @@ class NxsSimpleCommandStrings
 			return mIt->second;
 			}
 
-		bool HasKey(const std::string k) const
+		bool HasKey(const std::wstring k) const
 			{
 			if (this->opts.find(k) !=  this->opts.end())
 				return true;
 			return ((this->multiOpts.find(k) !=  this->multiOpts.end()) || (this->matOpts.find(k) !=  this->matOpts.end()));
 			}
 
-	  	std::string cmdName;
+	  	std::wstring cmdName;
 	  	NxsTokenPosInfo cmdPos;
 		StringToValFromFile opts;
 		StringToMultiValFromFile multiOpts;
@@ -253,22 +253,22 @@ class ProcessedNxsToken
 	public:
 		static void IncrementNotLast(std::vector<ProcessedNxsToken>::const_iterator & it, 
 									 const std::vector<ProcessedNxsToken>::const_iterator &endIt, 
-									 const char * context);
+									 const wchar_t* context);
 		static NxsSimpleCommandStrings ParseSimpleCmd(const std::vector<ProcessedNxsToken> &, bool convertToLower);
 
 
 		ProcessedNxsToken(const NxsToken &t);
 			
-		ProcessedNxsToken(std::string &s)
+		ProcessedNxsToken(std::wstring &s)
 			:token(s)
 			{}
 			
-		ProcessedNxsToken(std::string &s, file_pos position,long lineno, long columnno)
+		ProcessedNxsToken(std::wstring &s, file_pos position,long lineno, long columnno)
 			:token(s),
 			posInfo(position, lineno, columnno)
 			{}
 
-		std::string GetToken() const
+		std::wstring GetToken() const
 			{
 			return token;
 			}
@@ -302,7 +302,7 @@ class ProcessedNxsToken
 			return posInfo.GetColumnNumber();
 			}
 
-		bool		Equals(const char *c) const 
+		bool		Equals(const wchar_t*c) const 
 			{
 			return NxsString::case_insensitive_equals(token.c_str(), c);
 			}
@@ -312,14 +312,14 @@ class ProcessedNxsToken
 			embeddedComments = c;
 			}
 
-		void WriteAsNexus(std::ostream &out) const
+		void WriteAsNexus(std::wostream &out) const
 			{
 			for(std::vector<NxsComment>::const_iterator cIt = embeddedComments.begin(); cIt != embeddedComments.end(); ++cIt)
 				cIt->WriteAsNexus(out);
 			out << NxsString::GetEscaped(token);
 			}
 	private:
-		std::string token;
+		std::wstring token;
 		NxsTokenPosInfo posInfo;
 		std::vector<NxsComment> embeddedComments; /* comments that were processed in the same GetToken operation that created this token. */
 	};
@@ -331,7 +331,7 @@ class ProcessedNxsToken
 |	See NxsToken::ProcessAsCommand method.
 */
 typedef std::vector<ProcessedNxsToken> ProcessedNxsCommand;
-bool WriteCommandAsNexus(std::ostream &, const ProcessedNxsCommand &);
+bool WriteCommandAsNexus(std::wostream &, const ProcessedNxsCommand &);
 
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -349,12 +349,12 @@ bool WriteCommandAsNexus(std::ostream &, const ProcessedNxsCommand &);
 class NxsToken
 	{
 	public:
-		static std::string	EscapeString(const std::string &);
-		static bool 		NeedsQuotes(const std::string &);
-		static std::string	GetQuoted(const std::string &);
-		static void 		DemandEndSemicolon(NxsToken &token, NxsString & errormsg, const char *contextString);
-		static unsigned 	DemandPositiveInt(NxsToken &token, NxsString & errormsg, const char *contextString);
-		static std::map<std::string, std::string> ParseAsSimpleKeyValuePairs(const ProcessedNxsCommand & tv, const char *cmdName);
+		static std::wstring	EscapeString(const std::wstring &);
+		static bool 		NeedsQuotes(const std::wstring &);
+		static std::wstring	GetQuoted(const std::wstring &);
+		static void 		DemandEndSemicolon(NxsToken &token, NxsString & errormsg, const wchar_t*contextString);
+		static unsigned 	DemandPositiveInt(NxsToken &token, NxsString & errormsg, const wchar_t*contextString);
+		static std::map<std::wstring, std::wstring> ParseAsSimpleKeyValuePairs(const ProcessedNxsCommand & tv, const wchar_t*cmdName);
 
 		enum NxsTokenFlags	/* For use with the variable labileFlags */
 			{
@@ -373,7 +373,7 @@ class NxsToken
 
 		NxsString		errormsg;
 
-						NxsToken(std::istream &i);
+						NxsToken(std::wistream &i);
 		virtual			~NxsToken();
 
 		bool			AtEOF();
@@ -387,26 +387,26 @@ class NxsToken
 		long			GetFileLine() const;
 		void			GetNextToken();
 		NxsString		GetToken(bool respect_case = true);
-		const char		*GetTokenAsCStr(bool respect_case = true);
+		const wchar_t		*GetTokenAsCStr(bool respect_case = true);
 		const NxsString	&GetTokenReference() const;
 		int				GetTokenLength() const;
 		bool			IsPlusMinusToken();
 		bool			IsPunctuationToken();
 		bool			IsWhitespaceToken();
-		bool			IsPlusMinusToken(const std::string & t);
-		bool			IsPunctuationToken(const std::string & t);
-		bool			IsWhitespaceToken(const std::string & t);
-		std::map<std::string, std::string> ProcessAsSimpleKeyValuePairs(const char *cmdName);
+		bool			IsPlusMinusToken(const std::wstring & t);
+		bool			IsPunctuationToken(const std::wstring & t);
+		bool			IsWhitespaceToken(const std::wstring & t);
+		std::map<std::wstring, std::wstring> ProcessAsSimpleKeyValuePairs(const wchar_t*cmdName);
 		void 			ProcessAsCommand(ProcessedNxsCommand *tokenVec);
 		void			ReplaceToken(const NxsString s);
 		void			ResetToken();
-		void			SetSpecialPunctuationCharacter(char c);
+		void			SetSpecialPunctuationCharacter(wchar_t c);
 		void			SetLabileFlagBit(int bit);
-		bool			StoppedOn(char ch);
+		bool			StoppedOn(wchar_t ch);
 		void			StripWhitespace();
 		void			ToUpper();
-		void			Write(std::ostream &out);
-		void			Writeln(std::ostream &out);
+		void			Write(std::wostream &out);
+		void			Writeln(std::wostream &out);
 
 		virtual void	OutputComment(const NxsString &msg);
 
@@ -414,46 +414,46 @@ class NxsToken
 			{
 			eofAllowed = e;
 			}
-		void			SetBlockName(const char *);
-		std::string 	GetBlockName();
+		void			SetBlockName(const wchar_t*);
+		std::wstring 	GetBlockName();
 		const std::vector<NxsComment> & GetEmbeddedComments() const
 			{
 			return embeddedComments;
 			}
-		char			PeekAtNextChar() const;
+		wchar_t			PeekAtNextChar() const;
 	protected:
 
-		void			AppendToComment(char ch);
-		void			AppendToToken(char ch);
+		void			AppendToComment(wchar_t ch);
+		void			AppendToToken(wchar_t ch);
 		bool			GetComment();
 		void			GetCurlyBracketedToken();
 		void			GetDoubleQuotedToken();
 		void			GetQuoted();
 		void			GetParentheticalToken();
-		bool			IsPunctuation(char ch);
-		bool			IsWhitespace(char ch);
+		bool			IsPunctuation(wchar_t ch);
+		bool			IsWhitespace(wchar_t ch);
 
 	private:
 		void AdvanceToNextCharInStream();
-		char			GetNextChar();
+		wchar_t			GetNextChar();
 		//char ReadNextChar();
 		
-		std::istream	&inputStream;		/* reference to input stream from which tokens will be read */
-		char			nextCharInStream;
+		std::wistream	&inputStream;		/* reference to input stream from which tokens will be read */
+		wchar_t			nextCharInStream;
 		file_pos		posOffBy;			/* offset of the file pos (according to the stream) and the tokenizer (which is usually a character or two behind, due to saved chars */
-		file_pos		usualPosOffBy;		/* default of posOffBy.  Usually this is -1, but it can be positive if a tokenizer is created from a substring of the file */
+		file_pos		usualPosOffBy;		/* default of posOffBy.  Usually this is -1, but it can be positive if a tokenizer is created from a subwstring of the file */
 		long			fileLine;			/* current file line */
 		long			fileColumn;			/* current column in current line (refers to column immediately following token just read) */
 		NxsString		token;				/* the character buffer used to store the current token */
 		NxsString		comment;			/* temporary buffer used to store output comments while they are being built */
 		bool			eofAllowed;
-		char			saved;				/* either '\0' or is last character read from input stream */
+		wchar_t			saved;				/* either '\0' or is last character read from input stream */
 		bool			atEOF;				/* true if end of file has been encountered */
 		bool			atEOL;				/* true if newline encountered while newlineIsToken labile flag set */
-		char			special;			/* ad hoc punctuation character; default value is '\0' */
+		wchar_t			special;			/* ad hoc punctuation character; default value is '\0' */
 		int				labileFlags;		/* storage for flags in the NxsTokenFlags enum */
-		char			whitespace[4];		/* stores the 3 whitespace characters: blank space, tab and newline */
-		std::string 	currBlock;
+		wchar_t			whitespace[4];		/* stores the 3 whitespace characters: blank space, tab and newline */
+		std::wstring 	currBlock;
 		std::vector<NxsComment>		embeddedComments;
 	};
 
@@ -474,7 +474,7 @@ inline NxsTokenPosInfo::NxsTokenPosInfo(const NxsToken &t)
 /*----------------------------------------------------------------------------------------------------------------------
 |	Stores the current block name (for better error reporting only).  Use NULL to clear the currBlock name.
 */
-inline void NxsToken::SetBlockName(const char *c)
+inline void NxsToken::SetBlockName(const wchar_t*c)
 	{
 	if (c == 0L)
 		currBlock.clear();
@@ -485,7 +485,7 @@ inline void NxsToken::SetBlockName(const char *c)
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns the token's block name (for better error reporting)
 */
-inline std::string NxsToken::GetBlockName()
+inline std::wstring NxsToken::GetBlockName()
 	{
 	return currBlock;
 	}
@@ -493,7 +493,7 @@ inline std::string NxsToken::GetBlockName()
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns copy of s but with quoting according to the NEXUS Standard iff s needs to be quoted.
 */
-inline std::string NxsToken::EscapeString(const std::string &s)
+inline std::wstring NxsToken::EscapeString(const std::wstring &s)
 	{
 	return NxsString::GetEscaped(s);
 	}
@@ -520,7 +520,7 @@ inline void NxsToken::OutputComment(
 |	Adds `ch' to end of comment NxsString.
 */
 inline void NxsToken::AppendToComment(
-  char ch)	/* character to be appended to comment */
+  wchar_t ch)	/* character to be appended to comment */
 	{
 	comment += ch;
 	}
@@ -529,7 +529,7 @@ inline void NxsToken::AppendToComment(
 |	Adds `ch' to end of current token.
 */
 inline void NxsToken::AppendToToken(
-  char ch)	/* character to be appended to token */
+  wchar_t ch)	/* character to be appended to token */
 	{
 	token.push_back(ch);
 	}
@@ -551,7 +551,7 @@ inline void NxsToken::AppendToToken(
 |	Use the SetLabileFlagBit method to set one or more NxsLabileFlags flags in `labileFlags'
 */
 inline bool NxsToken::IsPunctuation(
-  char ch)	/* the character in question */
+  wchar_t ch)	/* the character in question */
 	{
 	// PAUP 4.0b10 
 	//  o allows ]`<> inside taxon names
@@ -577,13 +577,13 @@ inline bool NxsToken::IsPunctuation(
 |	flag newlineIsToken is in effect.
 */
 inline bool NxsToken::IsWhitespace(
-  char ch)	/* the character in question */
+  wchar_t ch)	/* the character in question */
 	{
 	bool ws = false;
 
 	// If ch is found in the whitespace array, it's whitespace
 	//
-	if (strchr(whitespace, ch) != NULL)
+	if (wcschr(whitespace, ch) != NULL)
 		ws = true;
 
 	// Unless of course ch is the newline character and we're currently
@@ -665,11 +665,11 @@ inline NxsString NxsToken::GetToken(
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
-|	Returns the data member `token' as a C-style string. Specifying false for`respect_case' parameter causes all 
-|	characters in `token' to be converted to upper case before the `token' C-string is returned. Specifying true 
+|	Returns the data member `token' as a C-style wstring. Specifying false for`respect_case' parameter causes all 
+|	characters in `token' to be converted to upper case before the `token' C-wstring is returned. Specifying true 
 |	results in GetTokenAsCStr returning exactly what it read from the file.
 */
-inline const char *NxsToken::GetTokenAsCStr(
+inline const wchar_t*NxsToken::GetTokenAsCStr(
   bool respect_case)	/* determines whether token is converted to upper case before being returned */
 	{
 	if (!respect_case)
@@ -697,7 +697,7 @@ inline bool NxsToken::IsPlusMinusToken()
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns true if t is a single character and this character is either '+' or '-'.
 */
-inline bool NxsToken::IsPlusMinusToken(const std::string &t)
+inline bool NxsToken::IsPlusMinusToken(const std::wstring &t)
 	{
 	return (t.size() == 1 && ( t[0] == '+' || t[0] == '-') );
 	}
@@ -715,7 +715,7 @@ inline bool NxsToken::IsPunctuationToken()
 |	Returns true if t is a single character and this character is a punctuation character (as defined in 
 |	IsPunctuation function).
 */
-inline bool NxsToken::IsPunctuationToken(const std::string &t)
+inline bool NxsToken::IsPunctuationToken(const std::wstring &t)
 	{
 	return (t.size() == 1 && IsPunctuation(t[0]));
 	}
@@ -733,7 +733,7 @@ inline bool NxsToken::IsWhitespaceToken()
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns true if t is a single character and this character is a whitespace character (as defined in IsWhitespace function).
 */
-inline bool NxsToken::IsWhitespaceToken(const std::string &t)
+inline bool NxsToken::IsWhitespaceToken(const std::wstring &t)
 	{
 	return (t.size() == 1 && IsWhitespace( t[0]));
 	}
@@ -762,7 +762,7 @@ inline void NxsToken::ResetToken()
 |	punctuation characters.
 */
 inline void NxsToken::SetSpecialPunctuationCharacter(
-  char c)	/* the character to which `special' is set */
+  wchar_t c)	/* the character to which `special' is set */
 	{
 	special = c;
 	}
@@ -790,14 +790,14 @@ inline void NxsToken::SetLabileFlagBit(
 |>
 */
 inline bool NxsToken::StoppedOn(
-  char ch)	/* the character to compare with saved character */
+  wchar_t ch)	/* the character to compare with saved character */
 	{
 	if (saved == ch)
 		return true;
 	else
 		return false;
 	}
-inline char NxsToken::PeekAtNextChar() const
+inline wchar_t NxsToken::PeekAtNextChar() const
 	{
 	return nextCharInStream;
 	}
@@ -806,7 +806,7 @@ inline char NxsToken::PeekAtNextChar() const
 |	output stream afterwards.
 */
 inline void NxsToken::Write(
-  std::ostream &out)	/* the output stream to which to write token NxsString */
+  std::wostream &out)	/* the output stream to which to write token NxsString */
 	{
 	out << token;
 	}
@@ -816,12 +816,12 @@ inline void NxsToken::Write(
 |	stream afterwards.
 */
 inline void NxsToken::Writeln(
-  std::ostream &out)	/* the output stream to which to write `token' */
+  std::wostream &out)	/* the output stream to which to write `token' */
 	{
 	out << token << std::endl;
 	}
 
-inline std::map<std::string, std::string> NxsToken::ProcessAsSimpleKeyValuePairs(const char *cmdName)
+inline std::map<std::wstring, std::wstring> NxsToken::ProcessAsSimpleKeyValuePairs(const wchar_t*cmdName)
 	{
 	ProcessedNxsCommand tokenVec;
 	ProcessAsCommand(&tokenVec);
@@ -833,11 +833,11 @@ inline std::map<std::string, std::string> NxsToken::ProcessAsSimpleKeyValuePairs
 |	Abbreviation should be used instead of Equals.
 */
 inline bool NxsToken::Equals(
-  NxsString s, /* the string for comparison to the string currently stored in this token */
+  NxsString s, /* the wstring for comparison to the wstring currently stored in this token */
   bool respect_case) const	/* if true, comparison will be case-sensitive */
 	{
 	if (respect_case)
-		return (strcmp(token.c_str(), s.c_str()) == 0);
+		return (wcscmp(token.c_str(), s.c_str()) == 0);
 	return NxsString::case_insensitive_equals(token.c_str(), s.c_str());
 	}
 

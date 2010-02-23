@@ -26,22 +26,22 @@
 using namespace std;
 
 
-void NxsDistancesBlock::WriteFormatCommand(std::ostream &out) const
+void NxsDistancesBlock::WriteFormatCommand(std::wostream &out) const
 	{
-	out << "    FORMAT Missing = " << missing << " Triangle = Lower Diagonal;\n";
+	out << L"    FORMAT Missing = " << missing << L" Triangle = Lower Diagonal;\n";
 	}
 
-void NxsDistancesBlock::WriteMatrixCommand(std::ostream &out) const
+void NxsDistancesBlock::WriteMatrixCommand(std::wostream &out) const
 	{
 	if (taxa == NULL)
 		return;
 	unsigned width = taxa->GetMaxTaxonLabelLength();
 	const unsigned ntaxTotal = taxa->GetNTax();
-	out << "MATRIX";
+	out << L"MATRIX";
 	int prec = out.precision(10);
 	for (unsigned i = 0; i < ntaxTotal; i++)
 		{
-		const std::string currTaxonLabel = NxsString::GetEscaped(taxa->GetTaxonLabel(i));
+		const std::wstring currTaxonLabel = NxsString::GetEscaped(taxa->GetTaxonLabel(i));
 		out << '\n' << currTaxonLabel;
 		unsigned currTaxonLabelLen = (unsigned)currTaxonLabel.size();
 		unsigned diff = width - currTaxonLabelLen;
@@ -50,25 +50,25 @@ void NxsDistancesBlock::WriteMatrixCommand(std::ostream &out) const
 		for (unsigned j = 0; j< i; j++)
 			{
 			if (IsMissing(i,j))
-				out << ' ' << missing << "         ";
+				out << ' ' << missing << L"         ";
 			else
 				out << ' '<< GetDistance(i, j);
 			}
-		out << " 0.0";
+		out << L" 0.0";
 		}
-	out << ";\n";
+	out << L";\n";
 	out.precision(prec);
 	}
-void NxsDistancesBlock::WriteAsNexus(std::ostream &out) const
+void NxsDistancesBlock::WriteAsNexus(std::wostream &out) const
 	{
-	out << "BEGIN DISTANCES;\n";
+	out << L"BEGIN DISTANCES;\n";
 	WriteBasicBlockCommands(out);
 	if (nchar > 0)
-		out << "    DIMENSIONS NChar = " << nchar << ";\n";
+		out << L"    DIMENSIONS NChar = " << nchar << L";\n";
 	WriteFormatCommand(out);
 	WriteMatrixCommand(out);
 	WriteSkippedCommands(out);
-	out << "END;\n";
+	out << L"END;\n";
 	}
 
 
@@ -80,7 +80,7 @@ NxsDistancesBlock::NxsDistancesBlock(
   : NxsBlock(), 
   NxsTaxaBlockSurrogate(t, NULL)
 	{
-	id = "DISTANCES";
+	id = L"DISTANCES";
 	Reset();
 	}
 
@@ -104,30 +104,30 @@ void NxsDistancesBlock::HandleDimensionsCommand(
 	for (;;)
 		{
 		token.GetNextToken();
-		if (token.Equals("NEWTAXA"))
+		if (token.Equals(L"NEWTAXA"))
 			newtaxa = true;
-		else if (token.Equals("NTAX")) 
+		else if (token.Equals(L"NTAX")) 
 			{
-			DemandEquals(token, "after NTAX in DIMENSIONS command");
-			ntaxRead = DemandPositiveInt(token, "NTAX");
+			DemandEquals(token, L"after NTAX in DIMENSIONS command");
+			ntaxRead = DemandPositiveInt(token, L"NTAX");
 			}
-		else if (token.Equals("NCHAR")) 
+		else if (token.Equals(L"NCHAR")) 
 			{
-			DemandEquals(token, "in DIMENSIONS command");
-			nchar = DemandPositiveInt(token, "NCHAR");
+			DemandEquals(token, L"in DIMENSIONS command");
+			nchar = DemandPositiveInt(token, L"NCHAR");
 			}
-		else if (token.Equals(";"))
+		else if (token.Equals(L";"))
 			break;
 		}
 	if (newtaxa)
 		{
 		if (ntaxRead == 0)
 			{
-			errormsg = "DIMENSIONS command must have an NTAX subcommand when the NEWTAXA option is in effect.";
+			errormsg = L"DIMENSIONS command must have an NTAX subcommand when the NEWTAXA option is in effect.";
 			throw NxsException(errormsg, token);
 			}
 		expectedNtax = ntaxRead;
-		AssureTaxaBlock(createImpliedBlock, token, "Dimensions");
+		AssureTaxaBlock(createImpliedBlock, token, L"Dimensions");
 		if (!createImpliedBlock)
 			{
 			taxa->Reset();
@@ -138,17 +138,17 @@ void NxsDistancesBlock::HandleDimensionsCommand(
 		}
 	else
 		{
-		AssureTaxaBlock(false, token, "Dimensions");
+		AssureTaxaBlock(false, token, L"Dimensions");
 		const unsigned ntaxinblock = taxa->GetNumTaxonLabels();
 		if (ntaxinblock == 0)
 			{
-			errormsg = "A TAXA block must be read before character data, or the DIMENSIONS command must use the NEWTAXA.";
+			errormsg = L"A TAXA block must be read before character data, or the DIMENSIONS command must use the NEWTAXA.";
 			throw NxsException(errormsg, token);
 			}
 		if (ntaxinblock < ntaxRead)
 			{
-			errormsg = "NTAX in ";
-			errormsg << id << " block must be less than or equal to NTAX in TAXA block\nNote: one circumstance that can cause this error is \nforgetting to specify NTAX in DIMENSIONS command when \na TAXA block has not been provided";
+			errormsg = L"NTAX in ";
+			errormsg << id << L" block must be less than or equal to NTAX in TAXA block\nNote: one circumstance that can cause this error is \nforgetting to specify NTAX in DIMENSIONS command when \na TAXA block has not been provided";
 			throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 			}
 		expectedNtax = (ntaxRead == 0 ? ntaxinblock : ntaxRead);;
@@ -165,56 +165,56 @@ void NxsDistancesBlock::HandleFormatCommand(
 	for (;;)
 		{
 		token.GetNextToken();
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			break;
-		if (token.Equals("TRIANGLE"))
+		if (token.Equals(L"TRIANGLE"))
 			{
-			DemandEquals(token, "after TRIANGLE");
+			DemandEquals(token, L"after TRIANGLE");
 			token.GetNextToken();
-			if (token.Equals("LOWER"))
+			if (token.Equals(L"LOWER"))
 				triangle = NxsDistancesBlockEnum(lower);
-			else if (token.Equals("UPPER"))
+			else if (token.Equals(L"UPPER"))
 				triangle = NxsDistancesBlockEnum(upper);
-			else if (token.Equals("BOTH"))
+			else if (token.Equals(L"BOTH"))
 				triangle = NxsDistancesBlockEnum(both);
 			else
 				{
-				errormsg = "Expecting UPPER, LOWER, or BOTH but found ";
+				errormsg = L"Expecting UPPER, LOWER, or BOTH but found ";
 				errormsg += token.GetToken();
-				errormsg += " instead";
+				errormsg += L" instead";
 				throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 				}
 			}
-		else if (token.Equals("DIAGONAL"))
+		else if (token.Equals(L"DIAGONAL"))
 			diagonal = true;
-		else if (token.Equals("NODIAGONAL"))
+		else if (token.Equals(L"NODIAGONAL"))
 			diagonal = false;
-		else if (token.Equals("LABELS"))
+		else if (token.Equals(L"LABELS"))
 			labels = true;
-		else if (token.Equals("NOLABELS"))
+		else if (token.Equals(L"NOLABELS"))
 			labels = false;
-		else if (token.Equals("INTERLEAVE"))
+		else if (token.Equals(L"INTERLEAVE"))
 			interleave = true;
-		else if (token.Equals("NOINTERLEAVE"))
+		else if (token.Equals(L"NOINTERLEAVE"))
 			interleave = false;
-		else if (token.Equals("MISSING"))
+		else if (token.Equals(L"MISSING"))
 			{
-			DemandEquals(token, "after MISSING");
+			DemandEquals(token, L"after MISSING");
 			token.GetNextToken();
 			if (token.GetTokenLength() != 1 || isdigit(token.GetTokenReference()[0]))
 				{
-				errormsg = "Missing data symbol specified (";
+				errormsg = L"Missing data symbol specified (";
 				errormsg += token.GetToken();
-				errormsg += ") is invalid (must be a single character)";
+				errormsg += L") is invalid (must be a single character)";
 				throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 				}
 			missing = token.GetTokenReference()[0];
 			}
 		else
 			{
-			errormsg = "Token specified (";
+			errormsg = L"Token specified (";
 			errormsg += token.GetToken();
-			errormsg += ") is an invalid subcommand for the FORMAT command";
+			errormsg += L") is an invalid subcommand for the FORMAT command";
 			throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 			}
 		}
@@ -266,7 +266,7 @@ bool NxsDistancesBlock::HandleNextPass(
 				unsigned k = taxa->FindTaxon(token.GetToken());
 				if (k != i && triangle != NxsDistancesBlockEnum(lower))
 					{
-					errormsg << "Taxon " << token.GetToken() << " was not expected in the DISTANCES matrix.\nTaxa should be in the same order as in the Taxon block";
+					errormsg << L"Taxon " << token.GetToken() << L" was not expected in the DISTANCES matrix.\nTaxa should be in the same order as in the Taxon block";
 					throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 					}
 
@@ -277,22 +277,22 @@ bool NxsDistancesBlock::HandleNextPass(
 					fileMatrixCmdOrderToTaxInd[i] = k;
 					if (taxIndsRead.count(k) > 0)
 						{
-						errormsg << "Taxon " << token.GetToken() << " was encountered more than one time in the Distances Matrix.";
+						errormsg << L"Taxon " << token.GetToken() << L" was encountered more than one time in the Distances Matrix.";
 						throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 						}
 					taxIndsRead.insert(k);
 					}
 				else if (fileMatrixCmdOrderToTaxInd[i] != k)
 					{
-					errormsg << "Taxon labeled " << token.GetToken() << " is out of order compared to previous interleave pages";
+					errormsg << L"Taxon labeled " << token.GetToken() << L" is out of order compared to previous interleave pages";
 					throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 					}
 				}
 			catch (NxsTaxaBlock::NxsX_NoSuchTaxon)
 				{
-				errormsg = "Could not find ";
+				errormsg = L"Could not find ";
 				errormsg += token.GetToken();
-				errormsg += " among taxa previously defined";
+				errormsg += L" among taxa previously defined";
 				throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 				}
 			}
@@ -358,24 +358,24 @@ bool NxsDistancesBlock::HandleNextPass(
 
 			if (true_j == expectedNtax)
 				{
-				errormsg = "Too many distances specified in row just read in";
+				errormsg = L"Too many distances specified in row just read in";
 				throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 				}
 
-			string t = token.GetToken();
+			wstring t = token.GetToken();
 			unsigned corrected_i = fileMatrixCmdOrderToTaxInd.at(i);
 			unsigned corrected_j = true_j;
 			if (triangle == NxsDistancesBlockEnum(lower))
 				corrected_j = fileMatrixCmdOrderToTaxInd.at(true_j);
 			if (corrected_i == UINT_MAX || corrected_j == UINT_MAX)
 				{
-				errormsg = "Illegal internal row number for taxon in Distance Matrix.";
+				errormsg = L"Illegal internal row number for taxon in Distance Matrix.";
 				throw NxsNCLAPIException(errormsg, token);
 				}
 			if (token.GetTokenLength() == 1 && t[0] == missing)
 				SetMissing(corrected_i, corrected_j);
 			else
-				SetDistance(corrected_i, corrected_j, atof(t.c_str()));
+				SetDistance(corrected_i, corrected_j, wcstod(t.c_str(), NULL));
 			}
 		}
 	offset += jmax;
@@ -404,18 +404,18 @@ void NxsDistancesBlock::HandleMatrixCommand(
 	errormsg.clear();
 	if (expectedNtax == 0 || taxa == NULL)
 		{
-		AssureTaxaBlock(false, token, "Matrix");
+		AssureTaxaBlock(false, token, L"Matrix");
 		expectedNtax = taxa->GetNumTaxonLabels();
 		}
 	if (expectedNtax == 0)
 		{
-		errormsg = "MATRIX command cannot be read if NTAX is zero";
+		errormsg = L"MATRIX command cannot be read if NTAX is zero";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 
 	if (triangle == NxsDistancesBlockEnum(both) && !diagonal)
 		{
-		errormsg = "Cannot specify NODIAGONAL and TRIANGLE=BOTH at the same time";
+		errormsg = L"Cannot specify NODIAGONAL and TRIANGLE=BOTH at the same time";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 	if (newtaxa)
@@ -426,7 +426,7 @@ void NxsDistancesBlock::HandleMatrixCommand(
 	unsigned nTaxInTaxBlock = taxa->GetNumTaxonLabels();
 	if (nTaxInTaxBlock < expectedNtax)
 		{
-		errormsg << "NTAX in " << id << " block must be less than or equal to NTAX in TAXA block\nNote: one circumstance that can cause this error is \nforgetting to specify NTAX in DIMENSIONS command when \na TAXA block has not been provided";
+		errormsg << L"NTAX in " << id << L" block must be less than or equal to NTAX in TAXA block\nNote: one circumstance that can cause this error is \nforgetting to specify NTAX in DIMENSIONS command when \na TAXA block has not been provided";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 	NxsDistanceDatumRow row(nTaxInTaxBlock);
@@ -437,7 +437,7 @@ void NxsDistancesBlock::HandleMatrixCommand(
 		if (HandleNextPass(token, offset, fileMatrixCmdOrderToTaxInd, taxIndsRead))
 			break;
 		}
-	DemandEndSemicolon(token, "MATRIX");
+	DemandEndSemicolon(token, L"MATRIX");
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -450,7 +450,7 @@ void NxsDistancesBlock::Read(
 	{
 	isEmpty = false;
 
-	DemandEndSemicolon(token, "BEGIN DISTANCES");
+	DemandEndSemicolon(token, L"BEGIN DISTANCES");
 
 	for (;;)
 		{
@@ -460,13 +460,13 @@ void NxsDistancesBlock::Read(
 			return;
 		if (res != NxsBlock::NxsCommandResult(HANDLED_COMMAND))
 			{
-			if (token.Equals("DIMENSIONS"))
+			if (token.Equals(L"DIMENSIONS"))
 				HandleDimensionsCommand(token);
-			else if (token.Equals("FORMAT"))
+			else if (token.Equals(L"FORMAT"))
 				HandleFormatCommand(token);
-			else if (token.Equals("TAXLABELS"))
+			else if (token.Equals(L"TAXLABELS"))
 				HandleTaxLabels(token);
-			else if (token.Equals("MATRIX"))
+			else if (token.Equals(L"MATRIX"))
 				HandleMatrixCommand(token);
 			else
 				SkipCommand(token);
@@ -479,44 +479,44 @@ void NxsDistancesBlock::Read(
 |	the base class.
 */
 void NxsDistancesBlock::Report(
-  std::ostream &out) NCL_COULD_BE_CONST /* the output stream to which to write the report */
+  std::wostream &out) NCL_COULD_BE_CONST /* the output stream to which to write the report */
 	{
 	const unsigned ntaxTotal = taxa->GetNumTaxonLabels();
 
 	out << endl;
-	out << id << " block contains ";
+	out << id << L" block contains ";
 	if (ntaxTotal == 0)
 		{
-		out << "no taxa" << endl;
+		out << L"no taxa" << endl;
 		}
 	else if (ntaxTotal == 1)
-		out << "one taxon" << endl;
+		out << L"one taxon" << endl;
 	else
-		out << ntaxTotal << " taxa" << endl;
+		out << ntaxTotal << L" taxa" << endl;
 
 	if (IsLowerTriangular())
-		out << "  Matrix is lower-triangular" << endl;
+		out << L"  Matrix is lower-triangular" << endl;
 	else if (IsUpperTriangular())
-		out << "  Matrix is upper-triangular" << endl;
+		out << L"  Matrix is upper-triangular" << endl;
 	else
-		out << "  Matrix is rectangular" << endl;
+		out << L"  Matrix is rectangular" << endl;
 
 	if (IsInterleave())
-		out << "  Matrix is interleaved" << endl;
+		out << L"  Matrix is interleaved" << endl;
 	else 
-		out << "  Matrix is non-interleaved" << endl;
+		out << L"  Matrix is non-interleaved" << endl;
 
 	if (IsLabels())
-		out << "  Taxon labels provided" << endl;
+		out << L"  Taxon labels provided" << endl;
 	else
-		out << "  No taxon labels provided" << endl;
+		out << L"  No taxon labels provided" << endl;
 
 	if (IsDiagonal())
-		out << "  Diagonal elements specified" << endl;
+		out << L"  Diagonal elements specified" << endl;
 	else 
-		out << "  Diagonal elements not specified" << endl;
+		out << L"  Diagonal elements not specified" << endl;
 
-	out << "  Missing data symbol is " << missing << endl;
+	out << L"  Missing data symbol is " << missing << endl;
 
 	if (expectedNtax == 0)
 		return;
@@ -528,17 +528,17 @@ void NxsDistancesBlock::Report(
 		if (labels)
 			out << setw(20) << taxa->GetTaxonLabel(i);
 		else
-			out << "        ";
+			out << L"        ";
 
 		for (unsigned j = 0; j < ntaxTotal; j++)
 			{
 			if (triangle == NxsDistancesBlockEnum(upper) && j < i)
-				out << setw(12) << " ";
+				out << setw(12) << L" ";
 			else if (triangle == NxsDistancesBlockEnum(lower) && j > i)
 				continue;
 			else if (!diagonal && i == j)
 				{
-				out << setw(12) << " ";
+				out << setw(12) << L" ";
 				}
 			else if (IsMissing(i, j))
 				out << setw(12) << missing;
@@ -703,9 +703,9 @@ void NxsDistancesBlock::SetNchar(
 	nchar = n;
 	}
 
-NxsDistancesBlock *NxsDistancesBlockFactory::GetBlockReaderForID(const std::string & idneeded, NxsReader *reader, NxsToken *)
+NxsDistancesBlock *NxsDistancesBlockFactory::GetBlockReaderForID(const std::wstring & idneeded, NxsReader *reader, NxsToken *)
 	{
-	if (reader == NULL || idneeded != "DISTANCES")
+	if (reader == NULL || idneeded != L"DISTANCES")
 		return NULL;
 	NxsDistancesBlock * nb  = new NxsDistancesBlock(NULL);
 	nb->SetCreateImpliedBlock(true);

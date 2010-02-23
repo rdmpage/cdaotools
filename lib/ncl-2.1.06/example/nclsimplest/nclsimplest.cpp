@@ -6,8 +6,8 @@ NxsTreesBlock	*trees	= NULL;
 class MyReader : public NxsReader
 	{
 	public:
-		ifstream inf;
-		ofstream outf;
+		wifstream inf;
+		wofstream outf;
 
 		MyReader(char *infname, char *outfname) : NxsReader()
 			{
@@ -26,8 +26,8 @@ class MyReader : public NxsReader
 
 	bool EnteringBlock(NxsString blockName)
 		{
-		cout << "Reading \"" << blockName << "\" block..." << endl;
-		outf << "Reading \"" << blockName << "\" block..." << endl;
+		wcout << L"Reading \"" << blockName << L"\" block..." << endl;
+		outf << L"Reading \"" << blockName << L"\" block..." << endl;
 
 		// Returning true means it is ok to delete any data associated with 
 		// blocks of this type read in previously
@@ -37,8 +37,8 @@ class MyReader : public NxsReader
 
 	void SkippingBlock(NxsString blockName)
 		{
-		cout << "Skipping unknown block (" << blockName << ")..." << endl;
-		outf << "Skipping unknown block (" << blockName << ")..." << endl;
+		wcout << L"Skipping unknown block (" << blockName << L")..." << endl;
+		outf << L"Skipping unknown block (" << blockName << L")..." << endl;
 		}
 
 	void SkippingDisabledBlock(NxsString ) 
@@ -52,16 +52,16 @@ class MyReader : public NxsReader
 
 	void NexusError(NxsString msg, file_pos pos, long line, long col)
 		{
-		cerr << endl;
-		cerr << "Error found at line " << line;
-		cerr << ", column " << col;
-		cerr << " (file position " << pos << "):" << endl;
-		cerr << msg << endl;
+		wcerr << endl;
+		wcerr << L"Error found at line " << line;
+		wcerr << L", column " << col;
+		wcerr << L" (file position " << pos << L"):" << endl;
+		wcerr << msg << endl;
 
 		outf << endl;
-		outf << "Error found at line " << line;
-		outf << ", column " << col;
-		outf << " (file position " << pos << "):" << endl;
+		outf << L"Error found at line " << line;
+		outf << L", column " << col;
+		outf << L" (file position " << pos << L"):" << endl;
 		outf << msg << endl;
 
 		exit(0);
@@ -72,7 +72,7 @@ class MyToken : public NxsToken
 	{
 	public:
 
-		MyToken(istream &is, ostream &os)
+		MyToken(wistream &is, wostream &os)
 			:NxsToken(is),
 			out(os)
 			{
@@ -80,12 +80,12 @@ class MyToken : public NxsToken
 
 		void OutputComment(const NxsString &msg)
 			{
-			cout << msg << endl;
+			wcout << msg << endl;
 			out << msg << endl;
 			}
 
 	private:
-		ostream &out;
+		wostream &out;
 	};
 
 int main(int , char *argv[])

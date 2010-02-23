@@ -7,23 +7,23 @@
 #include <cctype>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <string>
+#include <wstring>
 #include <ncurses.h>
 #include <unistd.h>
-#include <strings.h>
+#include <wstrings.h>
 #include <fstream>
 
 using namespace std;
 /*
  * Find and return matches from the specifed file.
  */
-string getmatches( string pattern, string src_file );
+wstring getmatches( wstring pattern, wstring src_file );
 
-int main(int argc, char** argv){
+int main(int argc, wchar_t** argv){
   int ch =0;
-  string search = "";
-  string results = "";
-   string results_file = "/dev/null";
+  wstring search = L"";
+  wstring results = L"";
+   wstring results_file = L"/dev/null";
 
   if ( argc > 2){
        results_file = argv[2];
@@ -42,13 +42,13 @@ int main(int argc, char** argv){
            int r = search.size() - 1; 
            search = search.substr(0, r > 0 ? r : 0 ); 
      }
-     else if ( ch == KEY_DL ){ search = "";  }
+     else if ( ch == KEY_DL ){ search = L"";  }
      else {     
-           search += (char)ch;
+           search += (wchar_t)ch;
      }
      results = getmatches( search, argv[1] );
      clear(); 
-     printw( "%s\n%s",search.c_str(), results.c_str());
+     printw( L"%s\n%s",search.c_str(), results.c_str());
      move(0, search.size() );
   }
   //curses clean-up
@@ -64,23 +64,23 @@ int main(int argc, char** argv){
 /*
  * search the specified file for the specified pattern.
  */
-string getmatches( string pattern, string src_file ){
+wstring getmatches( wstring pattern, wstring src_file ){
    const unsigned READ_END = 0;
    const unsigned WRITE_END = 1;
    int pfd[2];
    int ch = 0;
-   string ret = "";
+   wstring ret = L"";
    pipe( pfd );
    pid_t child = fork();
    if ( 0 == child ){
        close( pfd[READ_END] );
        dup2( pfd[WRITE_END], STDOUT_FILENO );
-       execlp( "grep", "grep", pattern.c_str(), src_file.c_str() , (char*)NULL );
+       execlp( L"grep", L"grep", pattern.c_str(), src_file.c_str() , (wchar_t*)NULL );
     }
     else {
       close( pfd[WRITE_END] );
-      FILE* pipestream = fdopen(pfd[READ_END], "r");
-      while ( (ch = fgetc(pipestream)) != EOF ){  ret += (char)ch; }
+      FILE* pipestream = fdopen(pfd[READ_END], L"r");
+      while ( (ch = fgetc(pipestream)) != EOF ){  ret += (wchar_t)ch; }
       fclose( pipestream );
       wait(NULL);
     }

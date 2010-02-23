@@ -29,46 +29,46 @@
 #	define NCL_NAME_AND_VERSION "NCL unknown version"
 #endif
 
-void writeAsNexml(PublicNexusReader & nexusReader, ostream & os);
+void writeAsNexml(PublicNexusReader & nexusReader, wostream & os);
 
 
 class NexmlIDStrorer;
 
-typedef std::pair<const NxsDiscreteDatatypeMapper *, std::vector<std::string> > MapperStateLabelVec;
+typedef std::pair<const NxsDiscreteDatatypeMapper *, std::vector<std::wstring> > MapperStateLabelVec;
 template <typename T>
-std::string getOrGenId(std::pair<T, unsigned> & p, std::map<T, std::string> & toId, std::map<std::string, T> & toObj, const std::string & pref);
+std::wstring getOrGenId(std::pair<T, unsigned> & p, std::map<T, std::wstring> & toId, std::map<std::wstring, T> & toObj, const std::wstring & pref);
 
 typedef std::pair<const NxsTaxaBlock *, unsigned> TaxaBlockPtrIndPair;
 typedef std::pair<const NxsCharactersBlock *, unsigned> CharBlockPtrIndPair;
 typedef std::pair<const NxsTreesBlock *, unsigned> TreesBlockPtrIndPair;
 typedef std::pair<MapperStateLabelVec, unsigned> MapperStateLabelVecIndPair;
 
-void writeOTUS(ostream & os, const NxsTaxaBlock *, const std::vector<const NxsAssumptionsBlock *> & assumps, NexmlIDStrorer &, unsigned );
-void writeCharacters(ostream & os, const NxsCharactersBlock *, const std::vector<const NxsAssumptionsBlock *> & assumps, NexmlIDStrorer &, unsigned);
-void writeTrees(ostream & os, const NxsTreesBlock *, const std::vector<const NxsAssumptionsBlock *> & assumps, NexmlIDStrorer &, unsigned);
+void writeOTUS(wostream & os, const NxsTaxaBlock *, const std::vector<const NxsAssumptionsBlock *> & assumps, NexmlIDStrorer &, unsigned );
+void writeCharacters(wostream & os, const NxsCharactersBlock *, const std::vector<const NxsAssumptionsBlock *> & assumps, NexmlIDStrorer &, unsigned);
+void writeTrees(wostream & os, const NxsTreesBlock *, const std::vector<const NxsAssumptionsBlock *> & assumps, NexmlIDStrorer &, unsigned);
 
-typedef std::pair<std::string, std::string> AttributeData;
+typedef std::pair<std::wstring, std::wstring> AttributeData;
 typedef std::vector<AttributeData> AttributeDataVec;
 
-void writeAttribute(ostream & out, const AttributeData & aIt);
-void writeAttributeValue(ostream & out, const std::string & v);
+void writeAttribute(wostream & out, const AttributeData & aIt);
+void writeAttributeValue(wostream & out, const std::wstring & v);
 
 
 
 
-std::string generateID(std::string prefix, unsigned n)
+std::wstring generateID(std::wstring prefix, unsigned n)
 	{
-	char tmp[81];
-	sprintf(tmp, "%u", n);
+	wchar_t tmp[81];
+	wprintf(tmp, L"%u", n);
 	prefix.append(tmp);
 	return prefix;
 	}
 
 
 template <typename T>
-std::string getOrGenId(std::pair<T, unsigned> & p, std::map<T, std::string> & toId, std::map<std::string, T> & toObj, const std::string & pref)
+std::wstring getOrGenId(std::pair<T, unsigned> & p, std::map<T, std::wstring> & toId, std::map<std::wstring, T> & toObj, const std::wstring & pref)
 {
-	typedef typename std::map<T, std::string>::const_iterator ToIDIterator;
+	typedef typename std::map<T, std::wstring>::const_iterator ToIDIterator;
 	T & t = p.first;
 	ToIDIterator f = toId.find(t);
 	if (f == toId.end())
@@ -76,10 +76,10 @@ std::string getOrGenId(std::pair<T, unsigned> & p, std::map<T, std::string> & to
 		unsigned index = p.second;
 		if (index == UINT_MAX)
 			{
-			cerr << "could not find ID for NEXUS object";
+			wcerr << L"could not find ID for NEXUS object";
 			exit(3);
 			}
-		std::string id;
+		std::wstring id;
 		do 
 			{
 			id = generateID(pref, index++);
@@ -97,90 +97,90 @@ class NexmlIDStrorer
 	{
 	public:
 		
-		std::string getID(TaxaBlockPtrIndPair taxa)
+		std::wstring getID(TaxaBlockPtrIndPair taxa)
 			{
-			const std::string pref("t");
+			const std::wstring pref(L"t");
 			return getOrGenId<const NxsTaxaBlock *>(taxa, taxaBToID, idToTaxaB, pref);
 			}
-		std::string getID(CharBlockPtrIndPair chars)
+		std::wstring getID(CharBlockPtrIndPair chars)
 			{
-			const std::string pref("c");
+			const std::wstring pref(L"c");
 			return getOrGenId<const NxsCharactersBlock *>(chars, charsBToID, idToCharsB, pref);
 			}
-		std::string getID(TreesBlockPtrIndPair trees)
+		std::wstring getID(TreesBlockPtrIndPair trees)
 			{
-			const std::string pref("g");
+			const std::wstring pref(L"g");
 			return getOrGenId<const NxsTreesBlock *>(trees, treesBToID, idToTreesB, pref);
 			}
-		std::string getID(TaxaBlockPtrIndPair taxa, unsigned taxonInd)
+		std::wstring getID(TaxaBlockPtrIndPair taxa, unsigned taxonInd)
 			{
-			const std::string pref("t");
-			std::string p =  getOrGenId<const NxsTaxaBlock *>(taxa, taxaBToID, idToTaxaB, pref);
+			const std::wstring pref(L"t");
+			std::wstring p =  getOrGenId<const NxsTaxaBlock *>(taxa, taxaBToID, idToTaxaB, pref);
 			p.append(1, 'n');
 			return generateID(p, taxonInd);
 			}
-		std::string getCharID(CharBlockPtrIndPair chars, unsigned charInd)
+		std::wstring getCharID(CharBlockPtrIndPair chars, unsigned charInd)
 			{
-			const std::string pref("c");
-			std::string p =  getOrGenId<const NxsCharactersBlock *>(chars, charsBToID, idToCharsB, pref);
+			const std::wstring pref(L"c");
+			std::wstring p =  getOrGenId<const NxsCharactersBlock *>(chars, charsBToID, idToCharsB, pref);
 			p.append(1, 'n');
 			return generateID(p, charInd);
 			}
-		std::string getID(CharBlockPtrIndPair chars, unsigned charInd)
+		std::wstring getID(CharBlockPtrIndPair chars, unsigned charInd)
 			{
-			const std::string pref("r");
-			std::string p =  getOrGenId<const NxsCharactersBlock *>(chars, charsBToID, idToCharsB, pref);
+			const std::wstring pref(L"r");
+			std::wstring p =  getOrGenId<const NxsCharactersBlock *>(chars, charsBToID, idToCharsB, pref);
 			p.append(1, 'n');
 			return generateID(p, charInd);
 			}
-		std::string getID(TreesBlockPtrIndPair trees, unsigned treeInd)
+		std::wstring getID(TreesBlockPtrIndPair trees, unsigned treeInd)
 			{
-			const std::string pref("g");
-			std::string p =  getOrGenId<const NxsTreesBlock *>(trees, treesBToID, idToTreesB, pref);
+			const std::wstring pref(L"g");
+			std::wstring p =  getOrGenId<const NxsTreesBlock *>(trees, treesBToID, idToTreesB, pref);
 			p.append(1, 'n');
 			return generateID(p, treeInd);
 			}
-		std::string getID(MapperStateLabelVecIndPair m, unsigned sIndex)
+		std::wstring getID(MapperStateLabelVecIndPair m, unsigned sIndex)
 			{
-			const std::string pref("s");
-			std::string p =  getOrGenId<MapperStateLabelVec>(m, mapperToID, idToMapper, pref);
+			const std::wstring pref(L"s");
+			std::wstring p =  getOrGenId<MapperStateLabelVec>(m, mapperToID, idToMapper, pref);
 			p.append(1, 'n');
 			return generateID(p, sIndex);
 			}
 			
 		
 	protected:
-		std::map<const NxsTaxaBlock *, std::string> taxaBToID;
-		std::map<std::string, const NxsTaxaBlock *> idToTaxaB;
-		std::map<const NxsCharactersBlock *, std::string> charsBToID;
-		std::map<std::string, const NxsCharactersBlock *> idToCharsB;
-		std::map<const NxsTreesBlock *, std::string> treesBToID;
-		std::map<std::string, const NxsTreesBlock *> idToTreesB;
-		std::map<MapperStateLabelVec, std::string> mapperToID;
-		std::map<std::string, MapperStateLabelVec> idToMapper;
+		std::map<const NxsTaxaBlock *, std::wstring> taxaBToID;
+		std::map<std::wstring, const NxsTaxaBlock *> idToTaxaB;
+		std::map<const NxsCharactersBlock *, std::wstring> charsBToID;
+		std::map<std::wstring, const NxsCharactersBlock *> idToCharsB;
+		std::map<const NxsTreesBlock *, std::wstring> treesBToID;
+		std::map<std::wstring, const NxsTreesBlock *> idToTreesB;
+		std::map<MapperStateLabelVec, std::wstring> mapperToID;
+		std::map<std::wstring, MapperStateLabelVec> idToMapper;
 	};
 
 
 
-void writeAttributeValue(ostream & out, const std::string & v)
+void writeAttributeValue(wostream & out, const std::wstring & v)
 	{
 	if (v.c_str() == NULL)
 		out << "\'\'";
 	else 
 		{
 		
-		if (v.find_first_of("\'\"&") != string::npos)
+		if (v.find_first_of(L"\'\"&") != wstring::npos)
 			{
-			if (strchr(v.c_str(), '\'') != NULL)
+			if (wcschr(v.c_str(), '\'') != NULL)
 				{
 				out << '\"';
-				for (std::string::const_iterator cIt = v.begin(); cIt != v.end(); ++cIt)
+				for (std::wstring::const_iterator cIt = v.begin(); cIt != v.end(); ++cIt)
 					{
-					const char & c = *cIt;
+					const wchar_t & c = *cIt;
 					if (c == '\"')
-						out << "&quot;";
+						out << L"&quot;";
 					else if (c == '&')
-						out << "&amp;";
+						out << L"&amp;";
 					else 
 						out << c;
 					}
@@ -190,11 +190,11 @@ void writeAttributeValue(ostream & out, const std::string & v)
 			else
 				{
 				out << '\'';
-				for (std::string::const_iterator cIt = v.begin(); cIt != v.end(); ++cIt)
+				for (std::wstring::const_iterator cIt = v.begin(); cIt != v.end(); ++cIt)
 					{
-					const char & c = *cIt;
+					const wchar_t & c = *cIt;
 					if (c == '&')
-						out << "&amp;";
+						out << L"&amp;";
 					else 
 						out << c;
 					}
@@ -211,7 +211,7 @@ void writeAttributeValue(ostream & out, const std::string & v)
 
 
 
-inline void writeAttribute(ostream & out, const AttributeData & aIt)
+inline void writeAttribute(wostream & out, const AttributeData & aIt)
 	{
 	out << ' ' << aIt.first << '=';
 	writeAttributeValue(out, aIt.second);
@@ -222,7 +222,7 @@ class XMLElement
 {
 	public:
 	
-	XMLElement(const char *name, ostream &outstream, bool hasSubElements, const char *indentStr, const AttributeDataVec *ovec=NULL)
+	XMLElement(const wchar_t *name, wostream &outstream, bool hasSubElements, const wchar_t *indentStr, const AttributeDataVec *ovec=NULL)
 		:out(outstream),
 		elementName(name)
 		,containsElements(hasSubElements)
@@ -239,70 +239,70 @@ class XMLElement
 		}
 	void open(const std::vector<AttributeData> &atts)
 		{
-		out << indentation << "<" << this->elementName;
+		out << indentation << L"<" << this->elementName;
 		std::vector<AttributeData>::const_iterator aIt = atts.begin();
 		for (; aIt != atts.end(); ++aIt)
 			{
 			writeAttribute(out, *aIt);
 			}
 		if (containsElements)
-			out << ">\n";
+			out << L">\n";
 		else
-			out << "/>\n";
+			out << L"/>\n";
 		
 		}
 	virtual ~XMLElement()
 		{
 		if (containsElements)
-			out << indentation << "</" << this->elementName << ">\n";
+			out << indentation << L"</" << this->elementName << L">\n";
 		}
 	protected:
-		ostream & out;
-		const std::string elementName;
+		wostream & out;
+		const std::wstring elementName;
 		bool containsElements;
-		const char *indentation;
+		const wchar_t *indentation;
 };
 
-const char * getNexmlCharPref(NxsCharactersBlock::DataTypesEnum dt)
+const wchar_t * getNexmlCharPref(NxsCharactersBlock::DataTypesEnum dt)
 {
 	if (dt == NxsCharactersBlock::standard)
-		return "nex:Standard";
+		return L"nex:Standard";
 	if (dt == NxsCharactersBlock::dna)
-		return "nex:Dna";
+		return L"nex:Dna";
 	if (dt == NxsCharactersBlock::rna)
-		return "nex:Rna";
+		return L"nex:Rna";
 	if (dt == NxsCharactersBlock::protein)
-		return "nex:Protein";
+		return L"nex:Protein";
 	if (dt == NxsCharactersBlock::continuous)
-		return "nex:Continuous";
-	cerr << "Mixed and Nucleotide data (int " << int(dt) <<") type not supported for nexml output\n";
+		return L"nex:Continuous";
+	wcerr << L"Mixed and Nucleotide data (int " << int(dt) <<L") type not supported for nexml output\n";
 	exit(2);
 }
 
-std::string getNexmlCharSeqType(NxsCharactersBlock::DataTypesEnum dt)
+std::wstring getNexmlCharSeqType(NxsCharactersBlock::DataTypesEnum dt)
 {
-	std::string p(getNexmlCharPref(dt));
-	p.append("Seqs");
+	std::wstring p(getNexmlCharPref(dt));
+	p.append(L"Seqs");
 	return p;
 }
 
-std::string getNexmlCharCellsType(NxsCharactersBlock::DataTypesEnum dt)
+std::wstring getNexmlCharCellsType(NxsCharactersBlock::DataTypesEnum dt)
 {
-	std::string p(getNexmlCharPref(dt));
-	p.append("Cells");
+	std::wstring p(getNexmlCharPref(dt));
+	p.append(L"Cells");
 	return p;
 }
 
 class IDLabelledElement: public XMLElement
 {
 	public:
-		IDLabelledElement(const char *elN, std::string id, std::string titleStr, ostream &outstream, bool contains, const char *indent, const AttributeDataVec *ovec=NULL)
+		IDLabelledElement(const wchar_t *elN, std::wstring id, std::wstring titleStr, wostream &outstream, bool contains, const wchar_t *indent, const AttributeDataVec *ovec=NULL)
 			:XMLElement(elN, outstream, contains, indent)
 			{
 			AttributeDataVec v;
-			v.push_back(AttributeData("id", id));
+			v.push_back(AttributeData(L"id", id));
 			if (!titleStr.empty())
-				v.push_back(AttributeData("label", titleStr));
+				v.push_back(AttributeData(L"label", titleStr));
 			if (ovec)
 				v.insert(v.end(), ovec->begin(), ovec->end());
 			XMLElement::open(v);
@@ -312,30 +312,30 @@ class IDLabelledElement: public XMLElement
 class OtusElement: public IDLabelledElement
 {
 	public:
-		OtusElement(std::string id, std::string titleStr, ostream &outstream, const AttributeDataVec *ovec=NULL)
-			:IDLabelledElement("otus", id, titleStr, outstream, true, "  ", ovec)
+		OtusElement(std::wstring id, std::wstring titleStr, wostream &outstream, const AttributeDataVec *ovec=NULL)
+			:IDLabelledElement(L"otus", id, titleStr, outstream, true, L"  ", ovec)
 			{}
 };
 
 class OtuElement: public IDLabelledElement
 {
 	public:
-		OtuElement(std::string id, std::string titleStr, ostream &outstream, const AttributeDataVec *ovec=NULL)
-			:IDLabelledElement("otu", id, titleStr, outstream, false, "    ", ovec)
+		OtuElement(std::wstring id, std::wstring titleStr, wostream &outstream, const AttributeDataVec *ovec=NULL)
+			:IDLabelledElement(L"otu", id, titleStr, outstream, false, L"    ", ovec)
 			{}			
 };
 
 class OtherObjLinkedElement : public XMLElement
 {
 	public:
-		OtherObjLinkedElement(const char  * elN, std::string id, std::string titleStr, const char *otherAttN, std::string otherID, ostream &outstream, bool contains, const char * indent, const AttributeDataVec * att)
+		OtherObjLinkedElement(const wchar_t  * elN, std::wstring id, std::wstring titleStr, const wchar_t *otherAttN, std::wstring otherID, wostream &outstream, bool contains, const wchar_t * indent, const AttributeDataVec * att)
 			:XMLElement(elN, outstream, contains, indent)
 			{
 			AttributeDataVec v;
-			v.push_back(AttributeData("id", id));
+			v.push_back(AttributeData(L"id", id));
 			v.push_back(AttributeData(otherAttN, otherID));
 			if (!titleStr.empty())
-				v.push_back(AttributeData("label", titleStr));
+				v.push_back(AttributeData(L"label", titleStr));
 			if (att)
 				v.insert(v.end(), att->begin(), att->end());
 			XMLElement::open(v);
@@ -345,31 +345,31 @@ class OtherObjLinkedElement : public XMLElement
 class OTULinkedElement: public OtherObjLinkedElement
 {
 	public:
-		OTULinkedElement(const char  * elN, std::string id, std::string titleStr, std::string taxaBlockID, ostream &outstream, bool contains, const char * indent, const AttributeDataVec * att)
-			:OtherObjLinkedElement(elN, id, titleStr, "otu", taxaBlockID, outstream, contains, indent, att)
+		OTULinkedElement(const wchar_t  * elN, std::wstring id, std::wstring titleStr, std::wstring taxaBlockID, wostream &outstream, bool contains, const wchar_t * indent, const AttributeDataVec * att)
+			:OtherObjLinkedElement(elN, id, titleStr, L"otu", taxaBlockID, outstream, contains, indent, att)
 			{}
 };
 
 class OTUSLinkedElement: public OtherObjLinkedElement
 {
 	public:
-		OTUSLinkedElement(const char  * elN, std::string id, std::string titleStr, std::string taxaBlockID, ostream &outstream, bool contains, const char * indent, const AttributeDataVec * att)
-			:OtherObjLinkedElement(elN, id, titleStr, "otus", taxaBlockID, outstream, contains, indent, att)
+		OTUSLinkedElement(const wchar_t  * elN, std::wstring id, std::wstring titleStr, std::wstring taxaBlockID, wostream &outstream, bool contains, const wchar_t * indent, const AttributeDataVec * att)
+			:OtherObjLinkedElement(elN, id, titleStr, L"otus", taxaBlockID, outstream, contains, indent, att)
 			{}
 };
 class CharactersElement: public OTUSLinkedElement
 {
 	public:
-		CharactersElement(std::string id, std::string titleStr, std::string taxaBlockID, ostream &outstream, const AttributeDataVec * att)
-			:OTUSLinkedElement("characters", id, titleStr, taxaBlockID, outstream, true, "  ", att)
+		CharactersElement(std::wstring id, std::wstring titleStr, std::wstring taxaBlockID, wostream &outstream, const AttributeDataVec * att)
+			:OTUSLinkedElement(L"characters", id, titleStr, taxaBlockID, outstream, true, L"  ", att)
 			{}			
 };
 
 
-void writeAsNexml(PublicNexusReader & nexusReader, ostream & os)
+void writeAsNexml(PublicNexusReader & nexusReader, wostream & os)
 {
-	os << "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<nex:nexml xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.nexml.org/1.0 http://www.nexml.org/1.0/nexml.xsd\" xmlns:nex=\"http://www.nexml.org/1.0\" ";
-	os << "xmlns:xml=\"http://www.w3.org/XML/1998/namespace\" version=\"1.0\" generator=\"NEX_us2ml " << NCL_NAME_AND_VERSION << "\">";
+	os << L"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<nex:nexml xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.nexml.org/1.0 http://www.nexml.org/1.0/nexml.xsd\" xmlns:nex=\"http://www.nexml.org/1.0\" ";
+	os << L"xmlns:xml=\"http://www.w3.org/XML/1998/namespace\" version=\"1.0\" generator=\"NEX_us2ml " << NCL_NAME_AND_VERSION << L"\">";
 	
 	const unsigned nTaxaBlocks = nexusReader.GetNumTaxaBlocks();
 	NexmlIDStrorer memo;
@@ -411,65 +411,65 @@ void writeAsNexml(PublicNexusReader & nexusReader, ostream & os)
 			}
 		}
 	
-	os << "</nex:nexml>\n";
+	os << L"</nex:nexml>\n";
 }
 
 
-void writeOTUS(ostream & os, const NxsTaxaBlock *taxa, const std::vector<const NxsAssumptionsBlock *> & , NexmlIDStrorer &memo, unsigned index)
+void writeOTUS(wostream & os, const NxsTaxaBlock *taxa, const std::vector<const NxsAssumptionsBlock *> & , NexmlIDStrorer &memo, unsigned index)
 {
 	if (taxa == NULL)
 		return;
 	TaxaBlockPtrIndPair tbp(taxa, index);
-	std::string taxaBlockID = memo.getID(tbp);
-	std::string title = taxa->GetTitle();
+	std::wstring taxaBlockID = memo.getID(tbp);
+	std::wstring title = taxa->GetTitle();
 	OtusElement otus(taxaBlockID, title, os);
 
-	const std::vector<std::string> labels = taxa->GetAllLabels();
-	std::vector<std::string>::const_iterator labelIt = labels.begin();
+	const std::vector<std::wstring> labels = taxa->GetAllLabels();
+	std::vector<std::wstring>::const_iterator labelIt = labels.begin();
 	unsigned n = 0;
 	for (; labelIt != labels.end(); ++labelIt, ++n)
 		{
-		std::string taxonId = memo.getID(tbp, n);
+		std::wstring taxonId = memo.getID(tbp, n);
 		OtuElement o(taxonId, *labelIt, os);
 		}
 }
 
 
-void writeCharLabels(ostream & os, const NxsCharactersBlock *cb, NexmlIDStrorer &memo, unsigned index, std::vector<std::string> * indToStatesID)
+void writeCharLabels(wostream & os, const NxsCharactersBlock *cb, NexmlIDStrorer &memo, unsigned index, std::vector<std::wstring> * indToStatesID)
 {
 	CharBlockPtrIndPair cbp(cb, index);
 	const unsigned nchars = cb->GetNumChar();
 	for (unsigned i = 0; i < nchars; ++i)
 		{
 		NxsString label = cb->GetCharLabel(i);
-		if (label != " " || indToStatesID)
+		if (label != L" " || indToStatesID)
 			{
-			std::string charId = memo.getCharID(cbp, i);
+			std::wstring charId = memo.getCharID(cbp, i);
 			if (indToStatesID)
 				{
-				std::string labelToShow;
-				if (label != " ")
+				std::wstring labelToShow;
+				if (label != L" ")
 					labelToShow = label;
-				std::string statesID = (*indToStatesID)[i];
-				AttributeDataVec v(1, AttributeData("states", statesID));
-				IDLabelledElement c("char", charId, labelToShow, os, false, "      ", &v);
+				std::wstring statesID = (*indToStatesID)[i];
+				AttributeDataVec v(1, AttributeData(L"states", statesID));
+				IDLabelledElement c(L"char", charId, labelToShow, os, false, L"      ", &v);
 				}
 			else
-				IDLabelledElement c("char", charId, label, os, false, "      ");
+				IDLabelledElement c(L"char", charId, label, os, false, L"      ");
 			}
 		}
 }
 
-std::vector<std::string> getStateLabesVec(const NxsCharactersBlock *cb, unsigned charIndex, const NxsDiscreteDatatypeMapper *mapper)
+std::vector<std::wstring> getStateLabesVec(const NxsCharactersBlock *cb, unsigned charIndex, const NxsDiscreteDatatypeMapper *mapper)
 {
 	const unsigned nst = mapper->GetNumStates();
 	unsigned i = 0;
-	std::vector<std::string> v;
-	const std::string emptyString;
+	std::vector<std::wstring> v;
+	const std::wstring emptyString;
 	for (unsigned n = 0; n < nst; ++n)
 		{
-		std::string l = cb->GetStateLabel(charIndex, n);
-		if (l != " ")
+		std::wstring l = cb->GetStateLabel(charIndex, n);
+		if (l != L" ")
 			{
 			if (i > 0)
 				{
@@ -486,8 +486,8 @@ std::vector<std::string> getStateLabesVec(const NxsCharactersBlock *cb, unsigned
 }
 
 
-const char * gDigits = "0123456789";
-const char * gLetters = "abcdefghijklmnopqrstuvwxyz";
+const wchar_t * gDigits = L"0123456789";
+const wchar_t * gLetters = L"abcdefghijklmnopqrstuvwxyz";
 
 ////////////////////////////////////////////////////////////////////////////////
 // Creates a new states element and returns its ID.  
@@ -499,14 +499,14 @@ const char * gLetters = "abcdefghijklmnopqrstuvwxyz";
 //		the gap state's id will have the next-to-last state code's index 
 //			(mapper->GetNumStateCodes() - 2).
 ////////////////////////////////////////////////////////////////////////////////
-std::string writeStatesElement(const MapperStateLabelVec & mslp, ostream &os, NexmlIDStrorer &memo, unsigned charIndex, unsigned statesIndex)
+std::wstring writeStatesElement(const MapperStateLabelVec & mslp, wostream &os, NexmlIDStrorer &memo, unsigned charIndex, unsigned statesIndex)
 {
 	MapperStateLabelVecIndPair m(mslp, charIndex);
-	const std::string emptyString;
-	const std::string id = memo.getID(m, statesIndex);
-	IDLabelledElement statesElement("states", id, emptyString, os, true, "        ", NULL);
+	const std::wstring emptyString;
+	const std::wstring id = memo.getID(m, statesIndex);
+	IDLabelledElement statesElement(L"states", id, emptyString, os, true, L"        ", NULL);
 	const NxsDiscreteDatatypeMapper * mapper = mslp.first;
-	std::vector<std::string> symbols;
+	std::vector<std::wstring> symbols;
 	
 	// figure out what symbols to use (in almost all cases this will be the NEXUS symbols
 	//	but it is possible that (if the matrix was entered in TOKENS mode) there 
@@ -523,7 +523,7 @@ std::string writeStatesElement(const MapperStateLabelVec & mslp, ostream &os, Ne
 	for (int i = 0; useNexusSymbols && i < endNum; ++i)
 		{
 		//cerr << i << '\n';
-		std::string s = mapper->StateCodeToNexusString(i, false);
+		std::wstring s = mapper->StateCodeToNexusString(i, false);
 		if (s.length() != 1)
 			useNexusSymbols = false;
 		else
@@ -546,9 +546,9 @@ std::string writeStatesElement(const MapperStateLabelVec & mslp, ostream &os, Ne
 		if (nsc <= unnumberedCutoff)
 			{
 			for (int i = 0; i < 10 && (int) symbols.size() < endNum; ++i)
-				symbols.push_back(std::string(1, gDigits[i]));
+				symbols.push_back(std::wstring(1, gDigits[i]));
 			for (int i = 0; i < 26 && (int) symbols.size() < endNum; ++i)
-				symbols.push_back(std::string(1, gLetters[i]));
+				symbols.push_back(std::wstring(1, gLetters[i]));
 			}
 		else
 			{
@@ -566,34 +566,34 @@ std::string writeStatesElement(const MapperStateLabelVec & mslp, ostream &os, Ne
 		}
 	/// now we write the "fundamental" states
 	const unsigned nst = mapper->GetNumStates();
-	const std::vector<std::string> & sl = mslp.second;
-	std::string stateIDpref = id;
+	const std::vector<std::wstring> & sl = mslp.second;
+	std::wstring stateIDpref = id;
 	stateIDpref.append(1, 's');
 	for (unsigned i = 0; i < nst; ++i)
 		{
-		const std::string stateID = generateID(stateIDpref, i);
-		const std::string label = (i < sl.size() ? sl[i] : emptyString);
-		AttributeDataVec v(1, AttributeData("symbol", symbols[i]));
-		IDLabelledElement c("state", stateID, label, os, false, "          ", &v);
+		const std::wstring stateID = generateID(stateIDpref, i);
+		const std::wstring label = (i < sl.size() ? sl[i] : emptyString);
+		AttributeDataVec v(1, AttributeData(L"symbol", symbols[i]));
+		IDLabelledElement c(L"state", stateID, label, os, false, L"          ", &v);
 		}
 	/// now we write the state sets:
-	std::string gapStateID;
+	std::wstring gapStateID;
 	if (hasGap)
 		gapStateID = generateID(stateIDpref, nsc - 2);
-	std::string missingStateID = generateID(stateIDpref, nsc - 1);
+	std::wstring missingStateID = generateID(stateIDpref, nsc - 1);
 	/// now we deal with the gap "state"
 	if (hasGap)
 		{
-		const std::string label("Gap");
-		AttributeDataVec v(1, AttributeData("symbol", symbols[nsc - 2]));
-		IDLabelledElement c("state", gapStateID, label, os, false, "          ", &v);
+		const std::wstring label(L"Gap");
+		AttributeDataVec v(1, AttributeData(L"symbol", symbols[nsc - 2]));
+		IDLabelledElement c(L"state", gapStateID, label, os, false, L"          ", &v);
 		}
 	/// now we deal with the gap "state"
 	if (hasGap)
 		{
-		const std::string label("Missing");
-		AttributeDataVec v(1, AttributeData("symbol", symbols[nsc - 1]));
-		IDLabelledElement c("state", missingStateID, label, os, false, "          ", &v);
+		const std::wstring label(L"Missing");
+		AttributeDataVec v(1, AttributeData(L"symbol", symbols[nsc - 1]));
+		IDLabelledElement c(L"state", missingStateID, label, os, false, L"          ", &v);
 		}
 	for (int polyuncertain = 0; polyuncertain < 2; ++polyuncertain)
 		{
@@ -602,29 +602,29 @@ std::string writeStatesElement(const MapperStateLabelVec & mslp, ostream &os, Ne
 			const bool isPoly = mapper->IsPolymorphic(i);
 			if ((isPoly && (polyuncertain == 0)) || ((!isPoly) && (polyuncertain == 1)))
 				{
-				const char * elName = (isPoly ? "polymorphic_state_set" : "uncertain_state_set");
-				const std::string stateID = generateID(stateIDpref, i);
-				AttributeDataVec v(1, AttributeData("symbol", symbols[i]));
-				IDLabelledElement stateSetElement(elName, stateID, emptyString, os, true, "          ", &v);
+				const wchar_t * elName = (isPoly ? L"polymorphic_state_set" : L"uncertain_state_set");
+				const std::wstring stateID = generateID(stateIDpref, i);
+				AttributeDataVec v(1, AttributeData(L"symbol", symbols[i]));
+				IDLabelledElement stateSetElement(elName, stateID, emptyString, os, true, L"          ", &v);
 				const std::set<int>	 & ss = mapper->GetStateSetForCode(i);
 				for (std::set<int>::const_iterator subStateIt = ss.begin(); subStateIt != ss.end(); ++subStateIt)
 					{
 					const int subStateCode = *subStateIt;
-					string subStateID;
+					wstring subStateID;
 					if (subStateCode < 0)
 						{
 						if (subStateCode == NXS_GAP_STATE_CODE)
 							subStateID = gapStateID;
 						else
 							{
-							cerr << "unexpected negative state code\n";
+							wcerr << L"unexpected negative state code\n";
 							exit(4);
 							}
 						}
 					else
 						subStateID = generateID(stateIDpref, (unsigned) subStateCode);
-					AttributeDataVec v2(1, AttributeData("state", subStateID));
-					XMLElement ss2("member", os, false, "            ", &v2);
+					AttributeDataVec v2(1, AttributeData(L"state", subStateID));
+					XMLElement ss2(L"member", os, false, L"            ", &v2);
 					}
 				}
 			}
@@ -632,7 +632,7 @@ std::string writeStatesElement(const MapperStateLabelVec & mslp, ostream &os, Ne
 	return id;
 }
 
-void writeCharacters(ostream & os, const NxsCharactersBlock *cb , const std::vector<const NxsAssumptionsBlock *> & , NexmlIDStrorer &memo, unsigned index)
+void writeCharacters(wostream & os, const NxsCharactersBlock *cb , const std::vector<const NxsAssumptionsBlock *> & , NexmlIDStrorer &memo, unsigned index)
 {
 	if (!cb)
 		return;
@@ -640,10 +640,10 @@ void writeCharacters(ostream & os, const NxsCharactersBlock *cb , const std::vec
 	if (!taxa)
 		return;
 	TaxaBlockPtrIndPair tbp(taxa, UINT_MAX);
-	std::string taxaBlockID = memo.getID(tbp);
+	std::wstring taxaBlockID = memo.getID(tbp);
 	CharBlockPtrIndPair cbp(cb, index);
-	std::string charBlockID = memo.getID(cbp);
-	std::string title = cb->GetTitle();
+	std::wstring charBlockID = memo.getID(cbp);
+	std::wstring title = cb->GetTitle();
 	
 	NxsCharactersBlock::DataTypesEnum dt = cb->GetDataType();
 	const unsigned nchars = cb->GetNumChar();
@@ -652,28 +652,28 @@ void writeCharacters(ostream & os, const NxsCharactersBlock *cb , const std::vec
 		{
 		if (dt != NxsCharactersBlock::standard)
 			{
-			cerr << "Warning: user defined equates causing the coercion of " << getNexmlCharCellsType(dt) << " type to nex:StandardCells.\n";
+			wcerr << L"Warning: user defined equates causing the coercion of " << getNexmlCharCellsType(dt) << L" type to nex:StandardCells.\n";
 			dt = NxsCharactersBlock::standard;
 			}
 
-		std::string dtStr = getNexmlCharCellsType(dt);
-		AttributeDataVec atts(1, AttributeData("xsi:type", dtStr));
+		std::wstring dtStr = getNexmlCharCellsType(dt);
+		AttributeDataVec atts(1, AttributeData(L"xsi:type", dtStr));
 		CharactersElement charEl(charBlockID, title, taxaBlockID, os, &atts);
-		std::vector<std::string> statesIDVec;
+		std::vector<std::wstring> statesIDVec;
 		if (true)
 			{
-			XMLElement format("format", os, true, "    ");
+			XMLElement format(L"format", os, true, L"    ");
 			format.open();
-			typedef std::map<MapperStateLabelVec, std::string> MSLToId;
+			typedef std::map<MapperStateLabelVec, std::wstring> MSLToId;
 			MSLToId mappersUsed;
 			for (unsigned i = 0; i < nchars; ++i)
 				{
 				const NxsDiscreteDatatypeMapper * mapper = cb->GetDatatypeMapperForChar(i);
-				std::vector<std::string> lv = getStateLabesVec(cb, i, mapper);
+				std::vector<std::wstring> lv = getStateLabesVec(cb, i, mapper);
 				MapperStateLabelVec mslPair(mapper, lv);
 				MSLToId::const_iterator prev = mappersUsed.find(mslPair);
 				const bool wse = (prev == mappersUsed.end());
-				std::string sid;
+				std::wstring sid;
 				if (wse)
 					{
 					sid = writeStatesElement(mslPair, os, memo, index, mappersUsed.size());
@@ -687,23 +687,23 @@ void writeCharacters(ostream & os, const NxsCharactersBlock *cb , const std::vec
 			}
 		if (true)
 			{
-			XMLElement mat("matrix", os, true, "    ");
+			XMLElement mat(L"matrix", os, true, L"    ");
 			mat.open();
 			
-			const std::vector<std::string> labels = taxa->GetAllLabels();
-			std::vector<std::string>::const_iterator labelIt = labels.begin();
+			const std::vector<std::wstring> labels = taxa->GetAllLabels();
+			std::vector<std::wstring>::const_iterator labelIt = labels.begin();
 			unsigned n = 0;
-			const std::string emptyString;
+			const std::wstring emptyString;
 			for (; labelIt != labels.end(); ++labelIt, ++n)
 				{
 				if (cb->TaxonIndHasData(n))
 					{
-					std::string rowId = memo.getID(cbp, n);
-					std::string otuId = memo.getID(tbp, n);
-					OTULinkedElement row("row", rowId,  emptyString, otuId, os, true, "      ", NULL);
+					std::wstring rowId = memo.getID(cbp, n);
+					std::wstring otuId = memo.getID(tbp, n);
+					OTULinkedElement row(L"row", rowId,  emptyString, otuId, os, true, L"      ", NULL);
 					AttributeDataVec csAtts;
-					csAtts.push_back(AttributeData("char",emptyString));
-					csAtts.push_back(AttributeData("state",emptyString));
+					csAtts.push_back(AttributeData(L"char",emptyString));
+					csAtts.push_back(AttributeData(L"state",emptyString));
 					AttributeData & charAttribute = csAtts[0];
 					AttributeData & stateAttribute = csAtts[1];
 					const NxsDiscreteStateRow & dataRow =  cb->GetDiscreteMatrixRow(n);
@@ -724,14 +724,14 @@ void writeCharacters(ostream & os, const NxsCharactersBlock *cb , const std::vec
 								nexmlStatesIndex = nsc - 1; 
 							else
 								{
-								cerr << "Unknown state code " << sc << '\n';
+								wcerr << L"Unknown state code " << sc << '\n';
 								exit(5);
 								}
 							}
-						std::string stateIDpref = statesIDVec[k];
+						std::wstring stateIDpref = statesIDVec[k];
 						stateIDpref.append(1, 's');
 						stateAttribute.second = generateID(stateIDpref, nexmlStatesIndex);
-						XMLElement("cell", os, false, "        ", &csAtts);
+						XMLElement(L"cell", os, false, L"        ", &csAtts);
 						}
 					}
 				}
@@ -739,36 +739,36 @@ void writeCharacters(ostream & os, const NxsCharactersBlock *cb , const std::vec
 		}
 	else
 		{
-		std::string dtStr = getNexmlCharSeqType(dt);
-		AttributeDataVec atts(1, AttributeData("xsi:type", dtStr));
+		std::wstring dtStr = getNexmlCharSeqType(dt);
+		AttributeDataVec atts(1, AttributeData(L"xsi:type", dtStr));
 		CharactersElement charEl(charBlockID, title, taxaBlockID, os, &atts);
 		if (cb->HasCharLabels())
 			{
-			XMLElement format("format", os, true, "    ");
+			XMLElement format(L"format", os, true, L"    ");
 			format.open();
 			writeCharLabels(os, cb, memo, index, NULL);
 			}
 		if (true)
 			{
-			XMLElement mat("matrix", os, true, "    ");
+			XMLElement mat(L"matrix", os, true, L"    ");
 			mat.open();
 			
-			const std::vector<std::string> labels = taxa->GetAllLabels();
-			std::vector<std::string>::const_iterator labelIt = labels.begin();
+			const std::vector<std::wstring> labels = taxa->GetAllLabels();
+			std::vector<std::wstring>::const_iterator labelIt = labels.begin();
 			unsigned n = 0;
-			const std::string emptyString;
+			const std::wstring emptyString;
 			for (; labelIt != labels.end(); ++labelIt, ++n)
 				{
 				if (cb->TaxonIndHasData(n))
 					{
-					std::string rowId = memo.getID(cbp, n);
-					std::string otuId = memo.getID(tbp, n);
-					OTULinkedElement row("row", rowId,  emptyString, otuId, os, true, "      ", NULL);
+					std::wstring rowId = memo.getID(cbp, n);
+					std::wstring otuId = memo.getID(tbp, n);
+					OTULinkedElement row(L"row", rowId,  emptyString, otuId, os, true, L"      ", NULL);
 					if (true)
 						{
-						os << "        <seq>";
+						os << L"        <seq>";
 						cb->WriteStatesForTaxonAsNexus(os, n, 0, nchars);
-						os << "</seq>\n";
+						os << "L</seq>\n";
 						}
 					}
 				}
@@ -776,31 +776,31 @@ void writeCharacters(ostream & os, const NxsCharactersBlock *cb , const std::vec
 		}
 }
 
-std::string writeSimpleNode(ostream & os, const NxsSimpleNode &nd, const TaxaBlockPtrIndPair & taxa, unsigned nodeIndex, NexmlIDStrorer &memo, AttributeDataVec*oatts)
+std::wstring writeSimpleNode(wostream & os, const NxsSimpleNode &nd, const TaxaBlockPtrIndPair & taxa, unsigned nodeIndex, NexmlIDStrorer &memo, AttributeDataVec*oatts)
 {
 	AttributeDataVec v;
-	std::string prefix("n");
+	std::wstring prefix(L"n");
 	unsigned otuInd = nd.GetTaxonIndex();
-	std::string otuID;
-	std::string label;
-	std::string id = generateID(prefix, nodeIndex);
+	std::wstring otuID;
+	std::wstring label;
+	std::wstring id = generateID(prefix, nodeIndex);
 	if (otuInd != UINT_MAX)
-		v.push_back(AttributeData("otu", memo.getID(taxa, otuInd)));
+		v.push_back(AttributeData(L"otu", memo.getID(taxa, otuInd)));
 	else
 		label = nd.GetName();
 	if (oatts)
 		v.insert(v.end(), oatts->begin(), oatts->end());
-	IDLabelledElement nodeEl ("node", id, label, os, false, "      ", &v);
+	IDLabelledElement nodeEl (L"node", id, label, os, false, L"      ", &v);
 	return id;
 }
 
-std::string writeSimpleEdge(ostream & os, const NxsSimpleNode *nd, std::map<const NxsSimpleNode *, std::string>  & ndToIdMap, bool edgesAsIntegers)
+std::wstring writeSimpleEdge(wostream & os, const NxsSimpleNode *nd, std::map<const NxsSimpleNode *, std::wstring>  & ndToIdMap, bool edgesAsIntegers)
 {
 	const NxsSimpleEdge edge = nd->GetEdgeToParent();
 	bool defEdgeLen = edge.EdgeLenIsDefaultValue();
 	assert(edge.GetChild() == nd);
-	std::string eid(1, 'e');
-	const std::string & nid = ndToIdMap[nd];
+	std::wstring eid(1, 'e');
+	const std::wstring & nid = ndToIdMap[nd];
 	eid.append(nid);
 	NxsString lenstring;
 	AttributeDataVec v;
@@ -809,16 +809,16 @@ std::string writeSimpleEdge(ostream & os, const NxsSimpleNode *nd, std::map<cons
 	else
 		lenstring << edge.GetDblEdgeLen();
 	if (!defEdgeLen)
-		v.push_back(AttributeData("length", lenstring));
-	v.push_back(AttributeData("target", nid));
+		v.push_back(AttributeData(L"length", lenstring));
+	v.push_back(AttributeData(L"target", nid));
 	const NxsSimpleNode * par = edge.GetParent();
 	assert(par);
 	assert(ndToIdMap.find(par) != ndToIdMap.end());
-	v.push_back(AttributeData("source", ndToIdMap[par]));
-	IDLabelledElement edgeEl("edge", eid, std::string(), os, false, "      ", &v);
+	v.push_back(AttributeData(L"source", ndToIdMap[par]));
+	IDLabelledElement edgeEl(L"edge", eid, std::wstring(), os, false, L"      ", &v);
 	return eid;
 }
-void writeTrees(ostream & os, const NxsTreesBlock *tb, const std::vector<const NxsAssumptionsBlock *> & , NexmlIDStrorer &memo, unsigned index)
+void writeTrees(wostream & os, const NxsTreesBlock *tb, const std::vector<const NxsAssumptionsBlock *> & , NexmlIDStrorer &memo, unsigned index)
 {
 	if (!tb)
 		return;
@@ -826,33 +826,33 @@ void writeTrees(ostream & os, const NxsTreesBlock *tb, const std::vector<const N
 	if (!taxa)
 		return;
 	TaxaBlockPtrIndPair tbp(taxa, UINT_MAX);
-	std::string taxaBlockID = memo.getID(tbp);
+	std::wstring taxaBlockID = memo.getID(tbp);
 	TreesBlockPtrIndPair treesbp(tb, index);
-	std::string treesBlockID = memo.getID(treesbp);
-	std::string title = tb->GetTitle();
+	std::wstring treesBlockID = memo.getID(treesbp);
+	std::wstring title = tb->GetTitle();
 	const unsigned ntrees = tb->GetNumTrees();
 	if (ntrees == 0)
 		return;
-	OTUSLinkedElement treesEl("trees", treesBlockID, title, taxaBlockID, os, true, "  ", NULL);
+	OTUSLinkedElement treesEl(L"trees", treesBlockID, title, taxaBlockID, os, true, L"  ", NULL);
 	tb->ProcessAllTrees();
 	for (unsigned treen = 0; treen < ntrees; ++treen)
 		{
 		const NxsFullTreeDescription &ftd = tb->GetFullTreeDescription(treen);
 		const bool edgesAsIntegers = ftd.EdgeLengthsAreAllIntegers();
-		const char * treeType = (edgesAsIntegers ?  "nex:IntTree": "nex:FloatTree" );
-		std::string id = memo.getID(treesbp, treen);
-		AttributeDataVec treeAtts(1, AttributeData("xsi:type", std::string(treeType)));
-		IDLabelledElement treeEl("tree", id, ftd.GetName(), os, true, "    ", &treeAtts);
+		const wchar_t * treeType = (edgesAsIntegers ?  L"nex:IntTree": L"nex:FloatTree" );
+		std::wstring id = memo.getID(treesbp, treen);
+		AttributeDataVec treeAtts(1, AttributeData(L"xsi:type", std::wstring(treeType)));
+		IDLabelledElement treeEl(L"tree", id, ftd.GetName(), os, true, L"    ", &treeAtts);
 		NxsSimpleTree tree(ftd, INT_MAX, DBL_MAX);
 		std::vector<const NxsSimpleNode *> preorder = tree.GetPreorderTraversal();
 		std::vector<const NxsSimpleNode *>::const_iterator ndIt = preorder.begin();
-		std::map<const NxsSimpleNode *, std::string> nodeToIDMap;
+		std::map<const NxsSimpleNode *, std::wstring> nodeToIDMap;
 		unsigned nodeIndex = 0;
 		if (ndIt != preorder.end())
 			{
 			AttributeDataVec rootAtts;
-			string rv(ftd.IsRooted() ? "true" : "false");
-			rootAtts.push_back(AttributeData("root", rv));
+			wstring rv(ftd.IsRooted() ? L"true" : L"false");
+			rootAtts.push_back(AttributeData(L"root", rv));
 			const NxsSimpleNode * nd = *ndIt;
 			nodeToIDMap[nd] = writeSimpleNode(os, *nd, tbp, nodeIndex++, memo, &rootAtts);
 			++ndIt;
@@ -871,8 +871,8 @@ void writeTrees(ostream & os, const NxsTreesBlock *tb, const std::vector<const N
 			bool defEdgeLen = edge.EdgeLenIsDefaultValue();
 			if (!defEdgeLen)
 				{
-				std::string eid(1, 'e');
-				const std::string & nid = nodeToIDMap[nd];
+				std::wstring eid(1, 'e');
+				const std::wstring & nid = nodeToIDMap[nd];
 				eid.append(nid);
 				NxsString lenstring;
 				AttributeDataVec v;
@@ -880,9 +880,9 @@ void writeTrees(ostream & os, const NxsTreesBlock *tb, const std::vector<const N
 					lenstring << edge.GetIntEdgeLen();
 				else
 					lenstring << edge.GetDblEdgeLen();
-				v.push_back(AttributeData("length", lenstring));
-				v.push_back(AttributeData("target", nid));
-				IDLabelledElement edgeEl("rootedge", eid, std::string(), os, false, "      ", &v);
+				v.push_back(AttributeData(L"length", lenstring));
+				v.push_back(AttributeData(L"target", nid));
+				IDLabelledElement edgeEl(L"rootedge", eid, std::wstring(), os, false, L"      ", &v);
 				}
 			++ndIt;
 			for (; ndIt != preorder.end(); ++ndIt)

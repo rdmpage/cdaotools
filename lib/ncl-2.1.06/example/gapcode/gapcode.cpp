@@ -100,7 +100,7 @@ void vecToListOfDblWeights(const std::vector<double> & v, NxsTransformationManag
 	}
 
 
-void writeCharactersAsGapped(ostream & out, NxsCharactersBlock * cb);
+void writeCharactersAsGapped(wostream & out, NxsCharactersBlock * cb);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Takes NxsReader that has successfully read a file, and processes the
@@ -109,19 +109,19 @@ void writeCharactersAsGapped(ostream & out, NxsCharactersBlock * cb);
 // The caller is responsibel for calling DeleteBlocksFromFactories() to clean
 //	up (if the reader uses the factory API).
 ////////////////////////////////////////////////////////////////////////////////
-void processContent(PublicNexusReader & nexusReader, ostream *out)
+void processContent(PublicNexusReader & nexusReader, wostream *out)
 	{
 	if (!out)
 		return;
 	BlockReaderList blocks = nexusReader.GetUsedBlocksInOrder();
 
-	*out << "#NEXUS\n";
+	*out << L"#NEXUS\n";
 	for (BlockReaderList::const_iterator bIt = blocks.begin(); bIt != blocks.end(); ++bIt)
 		{
 		NxsBlock * b = *bIt;
-		if (b->GetID() == "TAXA")
+		if (b->GetID() == L"TAXA")
 			b->WriteAsNexus(*out);
-		else if (b->GetID() == "CHARACTERS" || b->GetID() == "DATA" ) 
+		else if (b->GetID() == L"CHARACTERS" || b->GetID() == L"DATA" ) 
 			{
 			NxsCharactersBlock * charactersBPtr = (NxsCharactersBlock *) b;
 			writeCharactersAsGapped(*out, charactersBPtr);
@@ -135,7 +135,7 @@ void processContent(PublicNexusReader & nexusReader, ostream *out)
 ////////////////////////////////////////////////////////////////////////////////
 void processFilepath(
 	const char * filename, // name of the file to be read
-	ostream *out, // output stream to use (NULL for no output). Not that cerr is used to report errors.
+	wostream *out, // output stream to use (NULL for no output). Not that cerr is used to report errors.
 	MultiFormatReader::DataFormatType fmt) // enum indicating the file format to expect.
 	{
 	assert(filename);
@@ -164,7 +164,7 @@ void processFilepath(
 			assert(storerB);
 			storerB->SetTolerateEOFInBlock(true);  
 			}
-		cerr << "Executing" <<endl;
+		wcerr << L"Executing" <<endl;
 		try {
 			nexusReader.ReadFilepath(filename, fmt);
 			processContent(nexusReader, out);
@@ -178,24 +178,24 @@ void processFilepath(
 		}
 	catch (const NxsException &x)
 		{
-		cerr << "Error:\n " << x.msg << endl;
+		wcerr << L"Error:\n " << x.msg << endl;
 		if (x.line >=0)
-			cerr << "at line " << x.line << ", column (approximately) " << x.col << " (and file position "<< x.pos << ")" << endl;
+			wcerr << L"at line " << x.line << L", column (approximately) " << x.col << L" (and file position "<< x.pos << L")" << endl;
 		exit(2);
 		}
 	}
 
 void readFilepathAsNEXUS(const char *filename, MultiFormatReader::DataFormatType fmt)
 	{
-	cerr << "[Reading " << filename << "	 ]" << endl;
+	cerr << L"[Reading " << filename << L"	 ]" << endl;
 	try {
-		ostream * outStream = 0L;
-		outStream = &cout;
+		wostream * outStream = 0L;
+		outStream = &wcout;
 		processFilepath(filename, outStream, fmt);
 		}
 	catch (...) 
 		{
-		cerr << "Normalizing of " << filename << " failed (with an exception)" << endl;
+		cerr << L"Normalizing of " << filename << L" failed (with an exception)" << endl;
 		exit(1);
 		}
 	}	
@@ -205,7 +205,7 @@ void readFilesListedIsFile(const char *masterFilepath, MultiFormatReader::DataFo
 	ifstream masterStream(masterFilepath, ios::binary);
 	if (masterStream.bad())
 		{
-		cerr << "Could not open " << masterFilepath << "." << endl;
+		wcerr << L"Could not open " << masterFilepath << L"." << endl;
 		exit(3);
 		}
 	char filename[1024];
@@ -217,39 +217,39 @@ void readFilesListedIsFile(const char *masterFilepath, MultiFormatReader::DataFo
 		}
 	}
 
-void printHelp(ostream & out)
+void printHelp(wostream & out)
 	{
-	out << "NEXUSgapcode takes reads a file and rewrites the characters blocks with gaps coded as missing and an additional character block that displayse the presence/absence of a base for all gapped columns in the alignment.\n";
-	out << "\nThe most common usage is simply:\n    NEXUSgapcode <path to NEXUS file>\n";
-	out << "\nCommand-line flags:\n\n";
-	out << "    -h on the command line shows this help message\n\n";
-	out << "    -l<path> reads a file and treats each line of the file as a path to NEXUS file\n\n";
-	out << "    -s<non-negative integer> controls the NEXUS strictness level.\n";
-	out << "        the default level is equivalent to -s2 invoking the program with \n";
-	out << "        -s3 or a higher number will convert some warnings into fatal errors.\n";
-	out << "        Running with -s1 will cause the parser to accept dangerous constructs,\n";
-	out << "        and running with -s0 will cause the parser make every attempt to finish\n";
-	out << "        parsing the file (warning about very serious errors).\n\n";
-	out << "        Note that when -s0 strictness level is used, and the parser fails to\n";
-	out << "        finish, it will often be the result of an earlier error than the \n";
-	out << "        error that is reported in the last message.\n";
+	out << L"NEXUSgapcode takes reads a file and rewrites the characters blocks with gaps coded as missing and an additional character block that displayse the presence/absence of a base for all gapped columns in the alignment.\n";
+	out << L"\nThe most common usage is simply:\n    NEXUSgapcode <path to NEXUS file>\n";
+	out << L"\nCommand-line flags:\n\n";
+	out << L"    -h on the command line shows this help message\n\n";
+	out << L"    -l<path> reads a file and treats each line of the file as a path to NEXUS file\n\n";
+	out << L"    -s<non-negative integer> controls the NEXUS strictness level.\n";
+	out << L"        the default level is equivalent to -s2 invoking the program with \n";
+	out << L"        -s3 or a higher number will convert some warnings into fatal errors.\n";
+	out << L"        Running with -s1 will cause the parser to accept dangerous constructs,\n";
+	out << L"        and running with -s0 will cause the parser make every attempt to finish\n";
+	out << L"        parsing the file (warning about very serious errors).\n\n";
+	out << L"        Note that when -s0 strictness level is used, and the parser fails to\n";
+	out << L"        finish, it will often be the result of an earlier error than the \n";
+	out << L"        error that is reported in the last message.\n";
 #	if defined(JUST_VALIDATE_NEXUS) && JUST_VALIDATE_NEXUS
 		//passs
 #	elif defined(JUST_REPORT_NEXUS) && JUST_REPORT_NEXUS
 		//passs
 #	else
-		out << "    -i<number> specifies the length of the interleaved pages to create\n";
+		out << L"    -i<number> specifies the length of the interleaved pages to create\n";
 #	endif
-	out << "    -f<format> specifies the input file format expected:\n";
-	out << "            -fnexus     NEXUS (this is also the default)\n";
-	out << "            -faafasta   Amino acid data in fasta\n";
-	out << "            -fdnafasta  DNA data in fasta\n";
-	out << "            -frnafasta  RNA data in fasta\n";
-	out << "        The complete list of format names that can follow the -f flag is:\n";
-	std::vector<std::string> fmtNames =  MultiFormatReader::getFormatNames();
-	for (std::vector<std::string>::const_iterator n = fmtNames.begin(); n != fmtNames.end(); ++n)
+	out << L"    -f<format> specifies the input file format expected:\n";
+	out << L"            -fnexus     NEXUS (this is also the default)\n";
+	out << L"            -faafasta   Amino acid data in fasta\n";
+	out << L"            -fdnafasta  DNA data in fasta\n";
+	out << L"            -frnafasta  RNA data in fasta\n";
+	out << L"        The complete list of format names that can follow the -f flag is:\n";
+	std::vector<std::wstring> fmtNames =  MultiFormatReader::getFormatNames();
+	for (std::vector<std::wstring>::const_iterator n = fmtNames.begin(); n != fmtNames.end(); ++n)
 		{
-		out << "            "<< *n << "\n";
+		out << L"            "<< *n << L"\n";
 		}
 	}
 
@@ -262,14 +262,17 @@ int main(int argc, char *argv[])
 		{
 		const char * filepath = argv[i];
 		const unsigned slen = strlen(filepath);
+                wstring wfp = str_to_wstr( filepath );
+                //string fp( filepath );
+//                std::copy( fp.begin(), fp.end(), wfp.begin() );
 		if (strlen(filepath) > 1 && filepath[0] == '-' && filepath[1] == 'h')
-			printHelp(cout);
+			printHelp(wcout);
 		else if (slen > 1 && filepath[0] == '-' && filepath[1] == 's')
 			{
-			if ((slen == 2) || (!NxsString::to_long(filepath + 2, &gStrictLevel)))
+			if ((slen == 2) || (!NxsString::to_long(wfp.c_str() + 2, &gStrictLevel)))
 				{
-				cerr << "Expecting an integer after -s\n" << endl;
-				printHelp(cerr);
+				cerr << L"Expecting an integer after -s\n" << endl;
+				printHelp(wcerr);
 				return 2;
 				}
 			}
@@ -280,10 +283,10 @@ int main(int argc, char *argv[])
 #	else
 		else if (slen > 1 && filepath[0] == '-' && filepath[1] == 'i')
 			{
-			if ((slen == 2) || (!NxsString::to_long(filepath + 2, &gInterleaveLen)) || gInterleaveLen < 1)
+			if ((slen == 2) || (!NxsString::to_long(wfp.c_str() + 2, &gInterleaveLen)) || gInterleaveLen < 1)
 				{
-				cerr << "Expecting a positive integer after -i\n" << endl;
-				printHelp(cerr);
+				wcerr << L"Expecting a positive integer after -i\n" << endl;
+				printHelp(wcerr);
 				return 2;
 				}
 			}		
@@ -293,13 +296,16 @@ int main(int argc, char *argv[])
 			f = MultiFormatReader::UNSUPPORTED_FORMAT;
 			if (slen > 2)
 				{
-				std::string fmtName(filepath + 2, slen - 2);
+                                  //string sfp( filepath );
+                                  //wstring wfp = L"";
+                                  //std::copy( sfp.begin(), sfp.end(), wfp.begin() );
+				std::wstring fmtName(wfp.c_str() + 2, slen - 2);
 				f =  MultiFormatReader::formatNameToCode(fmtName);
 				}
 			if (f == MultiFormatReader::UNSUPPORTED_FORMAT)
 				{
-				cerr << "Expecting a format after -f\n" << endl;
-				printHelp(cerr);
+				cerr << L"Expecting a format after -f\n" << endl;
+				printHelp(wcerr);
 				return 2;
 				}
 			}
@@ -316,20 +322,22 @@ int main(int argc, char *argv[])
 		}
 	if (!readfile)
 		{
-		cerr << "Expecting the path to NEXUS file as the only command line argument!\n" << endl;
-		printHelp(cerr);
+		wcerr << L"Expecting the path to NEXUS file as the only command line argument!\n" << endl;
+		printHelp(wcerr);
 		return 1;
 		}
 	return 0;
 	}
 
 
-void writeCoreAssumptions(ostream &out, NxsCharactersBlock * cb, const char * newTitle)
+void writeCoreAssumptions(wostream &out, NxsCharactersBlock * cb, const wchar_t * newTitle)
 {
 	std::vector<int>			intWts;
 	std::vector<double>			dblWts;
 	NxsUnsignedSet activeExSet = cb->GetExcludedIndexSet();
-	
+	//string nt( newTitle );
+        //wstring wnt = L"";
+        //std::copy( nt.begin(), nt.end(), wnt.begin() );
 	const NxsTransformationManager &tm = cb->GetNxsTransformationManagerRef();
 	intWts = tm.GetDefaultIntWeights();
 	if (intWts.empty())
@@ -337,21 +345,21 @@ void writeCoreAssumptions(ostream &out, NxsCharactersBlock * cb, const char * ne
 
 	if (!(activeExSet.empty() && intWts.empty() && dblWts.empty()))
 		{
-		out << "BEGIN ASSUMPTIONS; \n    LINK CHARACTERS = ";
-		out << NxsString::GetEscaped(newTitle) << " ;\n";
+		out << L"BEGIN ASSUMPTIONS; \n    LINK CHARACTERS = ";
+		out << NxsString::GetEscaped(newTitle) << L" ;\n";
 		if (!activeExSet.empty())
 			{
 			NxsString exsetName;
 			exsetName << newTitle;
-			exsetName.append("ExSet");
+			exsetName.append(L"ExSet");
 			NxsUnsignedSetMap m;
 			m[exsetName] = activeExSet;
-			NxsWriteSetCommand("EXSET", m, out, exsetName.c_str());;
+			NxsWriteSetCommand(L"EXSET", m, out, exsetName.c_str());;
 			}
 		if (!(intWts.empty() && dblWts.empty()))
 			{
 			NxsTransformationManager &cbntm = cb->GetNxsTransformationManagerRef();
-			const std::string &wtSetName =  cbntm.GetDefaultWeightSetName(); 
+			const std::wstring &wtSetName =  cbntm.GetDefaultWeightSetName(); 
 			NxsTransformationManager ntm;
 			if (!intWts.empty())
 				{
@@ -367,11 +375,11 @@ void writeCoreAssumptions(ostream &out, NxsCharactersBlock * cb, const char * ne
 				}
 			ntm.WriteWtSet(out);
 			}
-		out << "END;\n";
+		out << L"END;\n";
 		}
 }
 
-void writeCharactersAsGapped(ostream &out, NxsCharactersBlock * cb)
+void writeCharactersAsGapped(wostream &out, NxsCharactersBlock * cb)
 {
 	if (!cb )
 		return;
@@ -380,7 +388,7 @@ void writeCharactersAsGapped(ostream &out, NxsCharactersBlock * cb)
 		return;
 	NxsCharactersBlock::DataTypesEnum dt = cb->GetDataType();
 	const char g = cb->GetGapSymbol();
-	const std::string baseTitle = cb->GetTitle();
+	const std::wstring baseTitle = cb->GetTitle();
 	if (tb == NULL
 		|| dt == NxsCharactersBlock::standard 
 		|| dt == NxsCharactersBlock::continuous 
@@ -393,25 +401,25 @@ void writeCharactersAsGapped(ostream &out, NxsCharactersBlock * cb)
 		return;
 		}
 	bool isAutogen = cb->IsAutoGeneratedTitle();
-	std::string newTitle = baseTitle;
-	newTitle.append("GapsAsMissing");
+	std::wstring newTitle = baseTitle;
+	newTitle.append(L"GapsAsMissing");
 	cb->SetTitle(newTitle, isAutogen);
 	
 	std::set<unsigned> gappedColumns;
 
-	out << "BEGIN CHARACTERS;\n";
+	out << L"BEGIN CHARACTERS;\n";
 	cb->WriteBasicBlockCommands(out);
 
 	const unsigned ntaxTotal = tb->GetNTax();
-	out << "    DIMENSIONS";
+	out << L"    DIMENSIONS";
 	if (tb)
 		{
 		const unsigned wod = cb->GetNTaxWithData();
 		if (wod > 0 && wod != ntaxTotal)
-			out << " NTax=" << wod;
+			out << L" NTax=" << wod;
 		}
 	const unsigned nc = cb->GetNCharTotal();
-	out << " NChar=" << nc << ";\n";
+	out << L" NChar=" << nc << L";\n";
 	cb->WriteEliminateCommand(out);
 	cb->SetGapSymbol('\0');
 	cb->WriteFormatCommand(out);
@@ -429,14 +437,14 @@ void writeCharactersAsGapped(ostream &out, NxsCharactersBlock * cb)
 		dblWts = tm.GetDefaultDoubleWeights();
 
 	unsigned width = tb->GetMaxTaxonLabelLength();
-	out << "Matrix\n";
+	out << L"Matrix\n";
 	unsigned begCharInd = 0;
 	unsigned endCharInd = nc;
 	for (unsigned i = 0; i < ntaxTotal; i++)
 		{
 		if (cb->TaxonIndHasData(i))
 			{
-			const std::string currTaxonLabel = NxsString::GetEscaped(tb->GetTaxonLabel(i));
+			const std::wstring currTaxonLabel = NxsString::GetEscaped(tb->GetTaxonLabel(i));
 			out << currTaxonLabel;
 			unsigned currTaxonLabelLen = (unsigned)currTaxonLabel.size();
 			unsigned diff = width - currTaxonLabelLen;
@@ -448,9 +456,9 @@ void writeCharactersAsGapped(ostream &out, NxsCharactersBlock * cb)
 				{
 				const NxsDiscreteDatatypeMapper * dm = cb->GetDatatypeMapperForChar(0);
 				if (dm == NULL)
-					throw NxsNCLAPIException("No DatatypeMapper in WriteStatesForTaxonAsNexus");
+					throw NxsNCLAPIException(L"No DatatypeMapper in WriteStatesForTaxonAsNexus");
 				if (cb->IsMixedType())
-					throw NxsNCLAPIException("Mixed datatypes are not supported by the NEXUSgapcode program.");
+					throw NxsNCLAPIException(L"Mixed datatypes are not supported by the NEXUSgapcode program.");
 				if (cb->IsTokens())
 					{
 					for (unsigned charInd = begCharInd; charInd < endCharInd; ++charInd)
@@ -462,10 +470,10 @@ void writeCharactersAsGapped(ostream &out, NxsCharactersBlock * cb)
 						else 
 							{
 							NxsString sl = cb->GetStateLabel(charInd, sc);
-							if (sl == " ")
+							if (sl == L" ")
 								{
-								NxsString errormsg = "Writing character state ";
-								errormsg << 1 + sc << " for character " << 1+charInd << ", but no appropriate chararcter label or symbol was found.";
+								NxsString errormsg = L"Writing character state ";
+								errormsg << 1 + sc << L" for character " << 1+charInd << L", but no appropriate chararcter label or symbol was found.";
 								throw NxsNCLAPIException(errormsg);
 								}
 							else
@@ -499,9 +507,9 @@ void writeCharactersAsGapped(ostream &out, NxsCharactersBlock * cb)
 			out << '\n';
 			}
 		}
-	out << ";\n";
+	out << L";\n";
 	cb->WriteSkippedCommands(out);
-	out << "END;\n";
+	out << L"END;\n";
 	
 	
 	writeCoreAssumptions(out, cb, newTitle.c_str());
@@ -509,34 +517,34 @@ void writeCharactersAsGapped(ostream &out, NxsCharactersBlock * cb)
 	if (nGappedCols > 0)
 		{
 		newTitle = baseTitle;
-		newTitle.append("GapsAsBinary");
+		newTitle.append(L"GapsAsBinary");
 		cb->SetTitle(newTitle, isAutogen);
-			out << "BEGIN CHARACTERS;\n";
+			out << L"BEGIN CHARACTERS;\n";
 		cb->WriteBasicBlockCommands(out);
 	
-		out << "    DIMENSIONS";
+		out << L"    DIMENSIONS";
 		if (tb)
 			{
 			const unsigned wod = cb->GetNTaxWithData();
 			if (wod > 0 && wod != ntaxTotal)
-				out << " NTax=" << wod;
+				out << L" NTax=" << wod;
 			}
-		out << " NChar=" << nGappedCols << ";\n";
-		out << " CharStateLabels " ;
+		out << L" NChar=" << nGappedCols << L";\n";
+		out << L" CharStateLabels " ;
 		unsigned currChNumber = 1;
 		std::set<unsigned>::iterator gcIt = gappedColumns.begin(); 
-		out << currChNumber++ << " col_" << (1 + *gcIt);
+		out << currChNumber++ << L" col_" << (1 + *gcIt);
 		for (++gcIt ; gcIt != gappedColumns.end(); ++gcIt)
-			out << ",\n    " << currChNumber++ << " col_" << (1 + *gcIt);
-		out << " ;\n" ;
-		out << "Format Datatype = Standard Symbols=\"01\" missing = '?' ;\n";
+			out << L",\n    " << currChNumber++ << L" col_" << (1 + *gcIt);
+		out << L" ;\n" ;
+		out << L"Format Datatype = Standard Symbols=\"01\" missing = '?' ;\n";
 	
-		out << "Matrix\n";
+		out << L"Matrix\n";
 		for (unsigned i = 0; i < ntaxTotal; i++)
 			{
 			if (cb->TaxonIndHasData(i))
 				{
-				const std::string currTaxonLabel = NxsString::GetEscaped(tb->GetTaxonLabel(i));
+				const std::wstring currTaxonLabel = NxsString::GetEscaped(tb->GetTaxonLabel(i));
 				out << currTaxonLabel;
 				unsigned currTaxonLabelLen = (unsigned)currTaxonLabel.size();
 				unsigned diff = width - currTaxonLabelLen;
@@ -555,9 +563,9 @@ void writeCharactersAsGapped(ostream &out, NxsCharactersBlock * cb)
 				out << '\n';
 				}
 			}
-		out << ";\n";
+		out << L";\n";
 		cb->WriteSkippedCommands(out);
-		out << "END;\n";
+		out << L"END;\n";
 		}
 
 	std::vector<int>			gapintWts;
@@ -585,22 +593,22 @@ void writeCharactersAsGapped(ostream &out, NxsCharactersBlock * cb)
 
 	if (!(gapactiveExSet.empty() && gapintWts.empty() && gapdblWts.empty()))
 		{
-		out << "BEGIN ASSUMPTIONS; \n    LINK CHARACTERS = ";
-		out << NxsString::GetEscaped(newTitle) << " ;\n";
+		out << L"BEGIN ASSUMPTIONS; \n    LINK CHARACTERS = ";
+		out << NxsString::GetEscaped(newTitle) << L" ;\n";
 		if (!gapactiveExSet.empty())
 			{
 			NxsString exsetName;
 			exsetName << newTitle;
-			exsetName.append("GapExSet");
+			exsetName.append(L"GapExSet");
 			NxsUnsignedSetMap m;
 			m[exsetName] = gapactiveExSet;
-			NxsWriteSetCommand("EXSET", m, out, exsetName.c_str());;
+			NxsWriteSetCommand(L"EXSET", m, out, exsetName.c_str());;
 			}
 		if (!(gapintWts.empty() && gapdblWts.empty()))
 			{
 			NxsTransformationManager &cbntm = cb->GetNxsTransformationManagerRef();
-			std::string wtSetName =  cbntm.GetDefaultWeightSetName(); 
-			wtSetName.append("GapWtSet");
+			std::wstring wtSetName =  cbntm.GetDefaultWeightSetName(); 
+			wtSetName.append(L"GapWtSet");
 			NxsTransformationManager ntm;
 			if (!gapintWts.empty())
 				{
@@ -616,7 +624,7 @@ void writeCharactersAsGapped(ostream &out, NxsCharactersBlock * cb)
 				}
 			ntm.WriteWtSet(out);
 			}
-		out << "END;\n";
+		out << L"END;\n";
 		}
 
 

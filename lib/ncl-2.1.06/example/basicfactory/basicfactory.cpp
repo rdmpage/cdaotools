@@ -25,7 +25,7 @@
 |	The constructor simply passes along `i' to the base class constructor. Nothing else needs to be done.
 */
 MyNexusToken::MyNexusToken(
-  istream & i)	/* is the input file stream attached to the NEXUS file to be read */
+  wistream & i)	/* is the input file stream attached to the NEXUS file to be read */
   : NxsToken(i)
 	{
 	}
@@ -38,7 +38,7 @@ MyNexusToken::MyNexusToken(
 void MyNexusToken::OutputComment(
   const NxsString & msg)	/* is the output comment to be displayed */
 	{
-	cout << msg << endl;
+	wcout << msg << endl;
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ void MyNexusToken::OutputComment(
 */
 BASICFACTORY::BASICFACTORY()
 	{
-	id				= "BASICFACTORY";
+	id				= L"BASICFACTORY";
 	Add(this);
 	next_command	= NULL;
 	FactoryDefaults();
@@ -89,9 +89,9 @@ unsigned BASICFACTORY::CharLabelToNumber(
 bool BASICFACTORY::EnteringBlock(
   NxsString blockName)	/* is the name of the block just entered */
 	{
-	message = "Reading ";
+	message = L"Reading ";
 	message += blockName;
-	message += " block...";
+	message += L" block...";
 	PrintMessage();
 
 	return true;
@@ -121,7 +121,7 @@ void BASICFACTORY::FactoryDefaults()
 	message.clear();
 	if (next_command == NULL)
 		{
-		next_command = new char[COMMAND_MAXLEN + 1];
+		next_command = new wchar_t[COMMAND_MAXLEN + 1];
 		}
 	next_command[0] = '\0';
 	}
@@ -160,11 +160,11 @@ NxsString BASICFACTORY::GetFileName(
 	// Eat the equals sign
 	token.GetNextToken();
 
-	if (!token.Equals("="))
+	if (!token.Equals(L"="))
 		{
-		errormsg = "Expecting an equals sign, but found ";
+		errormsg = L"Expecting an equals sign, but found ";
 		errormsg += token.GetToken();
-		errormsg += " instead";
+		errormsg += L" instead";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 
@@ -184,11 +184,11 @@ void BASICFACTORY::HandleEndblock(
 	// Get the semicolon following END or ENDBLOCK token
 	token.GetNextToken();
 
-	if (!token.Equals(";"))
+	if (!token.Equals(L";"))
 		{
-		errormsg = "Expecting ';' to terminate the END or ENDBLOCK command, but found ";
+		errormsg = L"Expecting ';' to terminate the END or ENDBLOCK command, but found ";
 		errormsg += token.GetToken();
-		errormsg += " instead";
+		errormsg += L" instead";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 	}
@@ -203,7 +203,7 @@ void BASICFACTORY::HandleExecute(
 	// Issuing the EXECUTE command from within a file is a no-no (at least in this program)
 	if (inf_open)
 		{
-		errormsg = "Cannot issue execute command from within a BASICFACTORY block";
+		errormsg = L"Cannot issue execute command from within a BASICFACTORY block";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 
@@ -212,26 +212,27 @@ void BASICFACTORY::HandleExecute(
 	token.GetNextToken();
 
 	NxsString fn = token.GetToken();
-
+        string nfn = wstr_to_str( fn );
+//        std::copy( fn.begin(), fn.end(), nfn.begin() );
 	// Get the semicolon terminating the EXECUTE command
 	token.GetNextToken();
 
-	if (!token.Equals(";"))
+	if (!token.Equals(L";"))
 		{
-		errormsg = "Expecting ';' to terminate the EXECUTE command, but found ";
+		errormsg = L"Expecting ';' to terminate the EXECUTE command, but found ";
 		errormsg += token.GetToken();
-		errormsg += " instead";
+		errormsg += L" instead";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
-
-	if (FileExists(fn.c_str()))
+         
+	if (FileExists(nfn.c_str()))
 		{
-		cerr << endl;
-		cerr << "Opening " << fn << "..." << endl;
+		wcerr << endl;
+		wcerr << "Opening " << fn << "..." << endl;
 
 		PurgeBlocks();
 
-		ifstream inf(fn.c_str(), ios::binary | ios::in);
+		wifstream inf(nfn.c_str(), ios::binary | ios::in);
 
 		inf_open = true;
 
@@ -254,8 +255,8 @@ void BASICFACTORY::HandleExecute(
 
 	else
 		{
-		cerr << endl;
-		cerr << "Oops! Could not find specified file: " << fn << endl;
+		wcerr << endl;
+		wcerr << "Oops! Could not find specified file: " << fn << endl;
 		}
 	}
 
@@ -271,27 +272,27 @@ void BASICFACTORY::HandleHelp(
 		{
 		token.GetNextToken();
 
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			{
 			break;
 			}
 		else
 			{
-			errormsg = "Unexpected keyword (";
+			errormsg = L"Unexpected keyword (";
 			errormsg += token.GetToken();
-			errormsg += ") encountered reading HELP command";
+			errormsg += L") encountered reading HELP command";
 			throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 			}
 		}
 
-	message = "\nExamples of use of available commands:";
-	message += "\n  help                     -> shows this message";
-	message += "\n  log file=mylog.txt start -> opens log file named mylog.txt";
-	message += "\n  log stop                 -> closes current log file";
-	message += "\n  exe mydata.nex           -> executes nexus file mydata.nex";
-	message += "\n  show                     -> reports on blocks currently stored";
-	message += "\n  quit                     -> terminates application";
-	message += "\n";
+	message = L"\nExamples of use of available commands:";
+	message += L"\n  help                     -> shows this message";
+	message += L"\n  log file=mylog.txt start -> opens log file named mylog.txt";
+	message += L"\n  log stop                 -> closes current log file";
+	message += L"\n  exe mydata.nex           -> executes nexus file mydata.nex";
+	message += L"\n  show                     -> reports on blocks currently stored";
+	message += L"\n  quit                     -> terminates application";
+	message += L"\n";
 	PrintMessage();
 	}
 
@@ -307,32 +308,32 @@ void BASICFACTORY::HandleShow(
 		{
 		token.GetNextToken();
 
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			break;
 		else
 			{
-			errormsg = "Unexpected keyword (";
+			errormsg = L"Unexpected keyword (";
 			errormsg += token.GetToken();
-			errormsg += ") encountered reading HELP command";
+			errormsg += L") encountered reading HELP command";
 			throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 			}
 		}
 
 	BlockTypeToBlockList usedBlocksByType = GetUsedBlocks();
 	if (usedBlocksByType.size() > 1) //the "BASICFACTORY" key will always be present with a `this` pointer
-		message = "\nNexus blocks currently stored:";
+		message = L"\nNexus blocks currently stored:";
 	else
-		message = "\nNo Nexus blocks are currently stored.";
+		message = L"\nNo Nexus blocks are currently stored.";
 	PrintMessage();
-	const char * blocknames[7] = {"TAXA", "TREES", "ASSUMPTIONS", "DISTANCES", "CHARACTERS", "DATA", "UNALIGNED"};
+	const wchar_t * blocknames[7] = {L"TAXA", L"TREES", L"ASSUMPTIONS", L"DISTANCES", L"CHARACTERS", L"DATA", L"UNALIGNED"};
 	for (int i = 0; i < 7; ++i)
 		{
-		std::string n(blocknames[i]);
+		std::wstring n(blocknames[i]);
 		BlockReaderList brl = usedBlocksByType[n];
 		for (BlockReaderList::iterator brlIt = brl.begin(); brlIt != brl.end(); ++brlIt)
 			{
-			cerr << "\n  " << n << " block found" << endl;
-			(*brlIt)->Report(cerr);
+			wcerr << "\n  " << n << " block found" << endl;
+			(*brlIt)->Report(wcerr);
 			if (logf_open)
 				(*brlIt)->Report(logf);
 			}
@@ -351,43 +352,45 @@ void BASICFACTORY::HandleLog(
 	bool replacing = false;
 	bool name_provided = false;
 	NxsString logfname;
-
+        string nlgn = "";
 	// Retrieve all tokens for this command, stopping only in the event
 	// of a semicolon or an unrecognized keyword
 	for (;;)
 		{
 		token.GetNextToken();
 
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			{
 			break;
 			}
-		else if (token.Abbreviation("STOp"))
+		else if (token.Abbreviation(L"STOp"))
 			{
 			stopping = true;
 			}
-		else if (token.Abbreviation("STArt"))
+		else if (token.Abbreviation(L"STArt"))
 			{
 			starting = true;
 			}
-		else if (token.Abbreviation("Replace"))
+		else if (token.Abbreviation(L"Replace"))
 			{
 			replacing = true;
 			}
-		else if (token.Abbreviation("Append"))
+		else if (token.Abbreviation(L"Append"))
 			{
 			appending = true;
 			}
-		else if (token.Abbreviation("File"))
+		else if (token.Abbreviation(L"File"))
 			{
 			logfname = GetFileName(token);
+                        nlgn = wstr_to_str( logfname );
+                        //std::copy( logfname.begin(), logfname.end(), nlgn.begin() );
 			name_provided = true;
 			}
 		else
 			{
-			errormsg = "Unexpected keyword (";
+			errormsg = L"Unexpected keyword (";
 			errormsg += token.GetToken();
-			errormsg += ") encountered reading LOG command";
+			errormsg += L") encountered reading LOG command";
 			throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 			}
 		}
@@ -395,19 +398,19 @@ void BASICFACTORY::HandleLog(
 	// Check for incompatible combinations of keywords
 	if (stopping && (starting || appending || replacing || name_provided))
 		{
-		errormsg = "Cannot specify STOP with any of the following START, APPEND, REPLACE, FILE";
+		errormsg = L"Cannot specify STOP with any of the following START, APPEND, REPLACE, FILE";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 
 	if (appending && replacing)
 		{
-		errormsg = "Cannot specify APPEND and REPLACE at the same time";
+		errormsg = L"Cannot specify APPEND and REPLACE at the same time";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 
 	if (logf_open && (starting || name_provided || appending || replacing))
 		{
-		errormsg = "Cannot start log file since log file is already open";
+		errormsg = L"Cannot start log file since log file is already open";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 
@@ -417,7 +420,7 @@ void BASICFACTORY::HandleLog(
 		logf.close();
 		logf_open = false;
 
-		message = "\nLog file closed";
+		message = L"\nLog file closed";
 		PrintMessage();
 
 		return;
@@ -426,17 +429,17 @@ void BASICFACTORY::HandleLog(
 	// If this far, must be attempting to open a log file
 	if (!name_provided)
 		{
-		errormsg = "Must provide a file name when opening a log file\n";
-		errormsg += "e.g., log file=doofus.txt start replace;";
+		errormsg = L"Must provide a file name when opening a log file\n";
+		errormsg += L"e.g., log file=doofus.txt start replace;";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}   
 
 	if (appending)
 		{
 		logf_open = true;
-		logf.open(logfname.c_str(), ios::out | ios::app);
+                		logf.open(nlgn.c_str(), ios::out | ios::app);
 
-		message = "\nAppending to log file ";
+		message = L"\nAppending to log file ";
 		message += logfname;
 		PrintMessage();
 		}
@@ -444,42 +447,42 @@ void BASICFACTORY::HandleLog(
 	else if (replacing)
 		{
 		logf_open = true;
-		logf.open(logfname.c_str());
+		logf.open(nlgn.c_str());
 
-		message = "\nReplacing log file ";
+		message = L"\nReplacing log file ";
 		message += logfname;
 		PrintMessage();
 		}
 
 	else 
 		{
-		bool exists = FileExists(logfname.c_str());
+		bool exists = FileExists(nlgn.c_str());
 		bool userok = true;
-		if (exists && !UserQuery("Ok to replace?", "Log file specified already exists", BASICFACTORY::UserQueryEnum(BASICFACTORY::uq_yes | BASICFACTORY::uq_no)))
+		if (exists && !UserQuery(L"Ok to replace?", L"Log file specified already exists", BASICFACTORY::UserQueryEnum(BASICFACTORY::uq_yes | BASICFACTORY::uq_no)))
 			userok = false;
 
 		if (userok)
 			{
 			logf_open = true;
-			logf.open(logfname.c_str());
+			logf.open(nlgn.c_str());
 			}
 
 		if (exists && userok)
 			{
-			message = "\nReplacing log file ";
+			message = L"\nReplacing log file ";
 			message += logfname;
 			}
 
 		else if (userok)
 			{
-			message = "\nLog file ";
+			message = L"\nLog file ";
 			message += logfname;
-			message += " opened";
+			message += L" opened";
 			}
 
 		else
 			{
-			message = "\nLog command aborted";
+			message = L"\nLog command aborted";
 			}
 
 		PrintMessage();
@@ -492,7 +495,7 @@ void BASICFACTORY::HandleLog(
 */
 void BASICFACTORY::HandleNextCommand()
 	{
-	std::istringstream cmdin(next_command);
+	std::wistringstream cmdin(next_command);
 
 	MyNexusToken token(cmdin);
 	try
@@ -515,17 +518,17 @@ void BASICFACTORY::NexusError(
   long line,		/* is the line in the NEXUS file where the error occurred */
   long col)			/* is the column in the NEXUS file where the error occurred */
 	{
-	message = "\n";
+	message = L"\n";
 	message += msg;
 	PrintMessage();
 
 	if (inf_open)
 		{
-		message = "Line:   ";
+		message = L"Line:   ";
 		message += line;
 		PrintMessage();
 
-		message = "Column: ";
+		message = L"Column: ";
 		message += col;
 		PrintMessage();
 		}
@@ -541,7 +544,7 @@ void BASICFACTORY::PreprocessNextCommand()
 	{
 	// If user failed to add the terminating semicolon, we'll do it now. We will also remove the line feed
 	// at the end and add the command "end;" to the end of the line (see explanation below).
-	unsigned len = (unsigned)strlen(next_command);
+	unsigned len = (unsigned)wcslen(next_command);
 	assert(len > 0);
 
 	// Remove any whitespace characters from end of string entered by user
@@ -564,12 +567,12 @@ void BASICFACTORY::PreprocessNextCommand()
 	// so that we can pretend this is simply a very short private NEXUS block
 	// containing only one command.  This allows us to simply use the Read 
 	// function we inherited from the base class BstBase to process the command.
-	len = (unsigned)strlen(next_command);
+	len = (unsigned)wcslen(next_command);
 	assert(len < COMMAND_MAXLEN-2);
-	NxsString tmp = ";";
+	NxsString tmp = L";";
 	tmp += next_command;
-	tmp += "end;";
-	strcpy(next_command, tmp.c_str());
+	tmp += L"end;";
+	wcscpy(next_command, tmp.c_str());
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -580,9 +583,9 @@ void BASICFACTORY::PreprocessNextCommand()
 void BASICFACTORY::PrintMessage(
   bool linefeed) NCL_COULD_BE_CONST /* if true, places newline character after message */
 	{
-	cerr << message;
+	wcerr << message;
 	if (linefeed)
-		cerr << endl;
+		wcerr << endl;
 
 	if (logf_open)
 		{
@@ -620,13 +623,13 @@ void BASICFACTORY::Read(
 	// This should be the semicolon after the block name
 	token.GetNextToken();
 
-	if (!token.Equals(";"))
+	if (!token.Equals(L";"))
 		{
-		errormsg = "Expecting ';' after ";
+		errormsg = L"Expecting ';' after ";
 		errormsg += id;
-		errormsg += " block name, but found ";
+		errormsg += L" block name, but found ";
 		errormsg += token.GetToken();
-		errormsg += " instead";
+		errormsg += L" instead";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 
@@ -634,32 +637,32 @@ void BASICFACTORY::Read(
 		{
 		token.GetNextToken();
 
-		if (token.Abbreviation("ENdblock"))
+		if (token.Abbreviation(L"ENdblock"))
 			{
 			HandleEndblock(token);
 			break;
 			}
-		else if (token.Abbreviation("Help"))
+		else if (token.Abbreviation(L"Help"))
 			{
 			HandleHelp(token);
 			}
-		else if (token.Abbreviation("Log"))
+		else if (token.Abbreviation(L"Log"))
 			{
 			HandleLog(token);
 			}
-		else if (token.Abbreviation("EXecute"))
+		else if (token.Abbreviation(L"EXecute"))
 			{
 			HandleExecute(token);
 			}
-		else if (token.Abbreviation("Show"))
+		else if (token.Abbreviation(L"Show"))
 			{
 			HandleShow(token);
 			}
-		else if (token.Abbreviation("Quit"))
+		else if (token.Abbreviation(L"Quit"))
 			{
 			quit_now = true;
 
-			message = "\nBASICFACTORY says goodbye\n";
+			message = L"\nBASICFACTORY says goodbye\n";
 			PrintMessage();
 
 			break;
@@ -671,11 +674,11 @@ void BASICFACTORY::Read(
 				{
 				token.GetNextToken();
 				}
-			while (!token.AtEOF() && !token.Equals(";"));
+			while (!token.AtEOF() && !token.Equals(L";"));
 
 			if (token.AtEOF())
 				{
-				errormsg = "Unexpected end of file encountered";
+				errormsg = L"Unexpected end of file encountered";
 				throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 				}
 			}
@@ -696,13 +699,13 @@ void BASICFACTORY::Reset()
 |	in the NxsBlock base class.
 */
 void BASICFACTORY::Report(
-  ostream & out) NCL_COULD_BE_CONST /* is the output stream to which to write the report */
+  wostream & out) NCL_COULD_BE_CONST /* is the output stream to which to write the report */
 	{
 	message.clear();
 	PrintMessage();
 	out << message << '\n';
 	message = id;
-	message += " block contains...";
+	message += L" block contains...";
 	PrintMessage();
 	out << message << '\n';
 	}
@@ -713,13 +716,16 @@ void BASICFACTORY::Report(
 |	executed by the command interpreter will be "EXECUTE `infile_name'".
 */
 void BASICFACTORY::Run(
-  char * infile_name)	/* is the name of the NEXUS data file to execute (can be NULL) */
+  const char * infile_name)	/* is the name of the NEXUS data file to execute (can be NULL) */
 	{
 	
 	if (infile_name != NULL)
 		{
-		strcpy(next_command, "exe ");
-		strncat(next_command, infile_name, 252);
+                  //string inn( infile_name );
+                  wstring win = str_to_wstr( infile_name );
+                  //std::copy( inn.begin(), inn.end(), win.begin() );
+		wcscpy(next_command, L"exe ");
+		wcsncat(next_command, win.c_str(), 252);
 		PreprocessNextCommand();
 		HandleNextCommand();
 		}
@@ -727,23 +733,23 @@ void BASICFACTORY::Run(
 	quit_now = false;
 	while (!quit_now) 
 		{
-		cerr << endl;
-		cerr << "BASICFACTORY> ";
+		wcerr << endl;
+		wcerr << L"BASICFACTORY> ";
 		//cin.getline(next_command, COMMAND_MAXLEN);
 		unsigned i = 0;
 		for(;;)
 			{
-			int ch = cin.get();
+			int ch = wcin.get();
 			if (i > COMMAND_MAXLEN)
 				{
-				cerr << endl;
-				cerr << "Error: the length of any one command cannot exceed ";
-				cerr << COMMAND_MAXLEN << " characters" << endl;
+				wcerr << endl;
+				wcerr << L"Error: the length of any one command cannot exceed ";
+				wcerr << COMMAND_MAXLEN << L" characters" << endl;
 				break;
 				}
 			else if (ch == 10 || ch == 13)
 				break;
-			next_command[i++] = (char)ch;
+			next_command[i++] = (wchar_t)ch;
 			next_command[i] = '\0';
 			}
 		PreprocessNextCommand();
@@ -758,9 +764,9 @@ void BASICFACTORY::Run(
 void BASICFACTORY::SkippingBlock(
   NxsString blockName)	/* is the unrecognized block name */
 	{
-	message = "Skipping unknown block (";
+	message = L"Skipping unknown block (";
 	message += blockName;
-	message += ")";
+	message += L")";
 	PrintMessage();
 	}
 
@@ -773,9 +779,9 @@ void BASICFACTORY::SkippingBlock(
 void BASICFACTORY::SkippingCommand(
   NxsString commandName)	/* is the name of the command being skipped */
 	{
-	message = "Skipping unknown command (";
+	message = L"Skipping unknown command (";
 	message += commandName;
-	message += ")";
+	message += L")";
 	PrintMessage();
 	}
 
@@ -820,19 +826,19 @@ bool BASICFACTORY::UserQuery(
 
 	if (ok_only)
 		{
-		cerr << endl;
-		cerr << mb_title << endl;
-		cerr << "  " << mb_message;
-		cerr << " (press return to acknowledge) ";
-		cin.getline(next_command, COMMAND_MAXLEN);
+		wcerr << endl;
+		wcerr << mb_title << endl;
+		wcerr << L"  " << mb_message;
+		wcerr << L" (press return to acknowledge) ";
+		wcin.getline(next_command, COMMAND_MAXLEN);
 		return true;
 		}
-	cerr << endl;
-	cerr << mb_title << endl;
-	cerr << "  " << mb_message;
-	cerr << " (y/n) ";
+	wcerr << endl;
+	wcerr << mb_title << endl;
+	wcerr << L"  " << mb_message;
+	wcerr << L" (y/n) ";
 
-	cin.getline(next_command, COMMAND_MAXLEN);
+	wcin.getline(next_command, COMMAND_MAXLEN);
 
 	// This could be made much simpler by just checking first letter: if 'y' then
 	// assume yes, if 'n' assume no.
@@ -841,14 +847,14 @@ bool BASICFACTORY::UserQuery(
 
 	while (!yep && !nope)
 		{
-		cerr << endl;
-		cerr << "Must answer by typing either y or n and then pressing the Enter key" << endl;
-		cerr << endl;
-		cerr << mb_title << endl;
-		cerr << "  " << mb_message;
-		cerr << " (y/n) ";
+		wcerr << endl;
+		wcerr << L"Must answer by typing either y or n and then pressing the Enter key" << endl;
+		wcerr << endl;
+		wcerr << mb_title << endl;
+		wcerr << L"  " << mb_message;
+		wcerr << L" (y/n) ";
 
-		cin.getline(next_command, COMMAND_MAXLEN);
+		wcin.getline(next_command, COMMAND_MAXLEN);
 		yep  = (next_command[0] == 'y' && next_command[1] == '\0');
 		nope = (next_command[0] == 'n' && next_command[1] == '\0');
 		}
@@ -858,20 +864,23 @@ bool BASICFACTORY::UserQuery(
 
 int main(int argc, char *argv[])
 	{
-	char * infile_name = NULL;
+	const char * infile_name = NULL;
 
 	if (argc > 2)
 		{
-		cerr << "Sorry, this program can accept at most one command" << endl;
-		cerr << "line argument, which must be the name of a NEXUS" << endl;
-		cerr << "data file." << endl;
-		cerr << endl;
+		wcerr << "Sorry, this program can accept at most one command" << endl;
+		wcerr << "line argument, which must be the name of a NEXUS" << endl;
+		wcerr << "data file." << endl;
+		wcerr << endl;
 		exit(0);
 		}
 
 	else if (argc > 1)
 		{
-		infile_name = argv[1];
+                  //string instr = argv[1];
+                  //wstring winstr = L"";
+                  //std::copy( instr.begin(), instr.end(), winstr.begin() );
+		infile_name = argv[1];//instr.c_str();
 		}
 
 	BASICFACTORY BASICFACTORY;

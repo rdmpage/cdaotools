@@ -30,16 +30,16 @@
 class IndexSet;
 
 /*----------------------------------------------------------------------------------------------------------------------
-|	A string class for use with the Nexus Class Library. NxsString inherits most of its functionality from the standard
-|	template library class string, adding certain abilities needed for use in NCL, such as the ability to discern 
-|	whether a short string represents an abbreviation for the string currently stored. Another important addition is
-|	the member function PrintF, which accepts a format string and an arbitrary number of arguments, allowing a string
+|	A wstring class for use with the Nexus Class Library. NxsString inherits most of its functionality from the standard
+|	template library class wstring, adding certain abilities needed for use in NCL, such as the ability to discern 
+|	whether a short wstring represents an abbreviation for the wstring currently stored. Another important addition is
+|	the member function PrintF, which accepts a format wstring and an arbitrary number of arguments, allowing a wstring
 |	to be built in a manner similar to the standard C function printf. Many operators are also provided for appending
-|	numbers to the ends of strings, an ability which is very useful for producing default labels (e.g. taxon1, taxon2,
+|	numbers to the ends of wstrings, an ability which is very useful for producing default labels (e.g. taxon1, taxon2,
 |	etc.).
 */
 class NxsString
-  : public std::string
+  : public std::wstring
 	{
 	public:
 		enum NxsQuotingRequirements
@@ -49,26 +49,26 @@ class NxsString
 			kUnderscoresSufficeForNexus  /// No nexus token-breakers
 			};
 
-		class NxsX_NotANumber {};	/* exception thrown if attempt to convert string to a number fails */
-		static bool case_insensitive_equals(const char *o, const char * t);
-		static bool to_long(const char *c, long *n);
-		static bool to_double(const char *c, double *n);
-		static std::string strip_whitespace(const std::string & s);
-		static std::string get_upper(const std::string &s)
+		class NxsX_NotANumber {};	/* exception thrown if attempt to convert wstring to a number fails */
+		static bool case_insensitive_equals(const wchar_t*o, const wchar_t* t);
+		static bool to_long(const wchar_t*c, long *n);
+		static bool to_double(const wchar_t*c, double *n);
+		static std::wstring strip_whitespace(const std::wstring & s);
+		static std::wstring get_upper(const std::wstring &s)
 			{
-			std::string t(s);
+			std::wstring t(s);
 			to_upper(t);
 			return t;
 			}
-		static std::string & to_lower(std::string & s);
-		static std::string & to_upper(std::string & s);
-		static NxsQuotingRequirements determine_quoting_requirements(const std::string &);
-		static void blanks_to_underscores(std::string &s);
-		static void add_nxs_quotes(std::string &s);
-		static int index_in_vector(const std::string &t, const std::vector<std::string> &v);
-		static int index_in_array(const std::string &t, const char * * v, const unsigned n);
+		static std::wstring & to_lower(std::wstring & s);
+		static std::wstring & to_upper(std::wstring & s);
+		static NxsQuotingRequirements determine_quoting_requirements(const std::wstring &);
+		static void blanks_to_underscores(std::wstring &s);
+		static void add_nxs_quotes(std::wstring &s);
+		static int index_in_vector(const std::wstring &t, const std::vector<std::wstring> &v);
+		static int index_in_array(const std::wstring &t, const wchar_t* * v, const unsigned n);
 		
-		enum CmpEnum				/* enum that is used to specify string comparison modes */
+		enum CmpEnum				/* enum that is used to specify wstring comparison modes */
 			{
 			respect_case,		
 			no_respect_case, 
@@ -76,12 +76,12 @@ class NxsString
 			};
 
 							NxsString();
-							NxsString(const char *s);
+							NxsString(const wchar_t*s);
 							NxsString(const NxsString &s);
 
-		static std::string	GetEscaped(const std::string &s);
-		static std::string	GetEscapedInt(const int &v);
-		static std::string	GetEscapedDouble(const double &v);
+		static std::wstring	GetEscaped(const std::wstring &s);
+		static std::wstring	GetEscapedInt(const int &v);
+		static std::wstring	GetEscapedDouble(const double &v);
 		//	Accessors
 		//
 		bool				Abbreviates(const NxsString &s, NxsString::CmpEnum mode = NxsString::no_respect_case) const;
@@ -97,19 +97,19 @@ class NxsString
 		bool				IsCapAbbreviation(const NxsString &s) const;
 		bool				IsInVector(const NxsStringVector &s, NxsString::CmpEnum mode = respect_case) const;
 		bool				IsStdAbbreviation(const NxsString &s, bool respectCase) const;
-		static bool			IsNexusPunctuation(const char c);
+		static bool			IsNexusPunctuation(const wchar_t c);
 		bool				QuotesNeeded() const;
 		NxsString 			UpperCasePrefix() const;
-		friend std::ostream &operator<<(std::ostream &out, const NxsString &s);
+		friend std::wostream &operator<<(std::wostream &out, const NxsString &s);
 
 		//	Modifiers
 		//
 		//NxsString		   &operator=(const NxsString &s);
 		NxsString			&operator=(char);
-		NxsString			&operator=(const char *s);
-		NxsString			&operator+=(const char *s);
-		NxsString			&operator+=(const std::string &s);
-		NxsString			&operator+=(const char c);
+		NxsString			&operator=(const wchar_t*s);
+		NxsString			&operator+=(const wchar_t*s);
+		NxsString			&operator+=(const std::wstring &s);
+		NxsString			&operator+=(const wchar_t c);
 		NxsString			&operator+=(const int i);
 		NxsString			&operator+=(unsigned i);
 		NxsString			&operator+=(unsigned long i);
@@ -121,21 +121,21 @@ class NxsString
 		NxsString			&operator<<(long l);
 		NxsString			&operator<<(unsigned long l);
 		NxsString			&operator<<(double d);
-		NxsString			&operator<<(const char *c);
-		NxsString			&operator<<(char c);
-		NxsString			&operator<<(const std::string &s);
+		NxsString			&operator<<(const wchar_t*c);
+		NxsString			&operator<<(wchar_t c);
+		NxsString			&operator<<(const std::wstring &s);
 		NxsString			&operator<<(const IndexSet &s);
 		NxsString			&operator<<(NxsString &(*funcPtr)(NxsString	&));
 
-		// Functions that should be in base class string but aren't
+		// Functions that should be in base class wstring but aren't
 		void				clear();
 
-		int					PrintF(const char *formatStr, ...);
+		int					PrintF(const wchar_t*formatStr, ...);
 
-		unsigned char		*p_str(unsigned char *) const;
+		unsigned wchar_t		*p_str(unsigned wchar_t *) const;
 
 		NxsString			&AddQuotes();
-		NxsString 			&AddTail(char c, unsigned n);
+		NxsString 			&AddTail(wchar_t c, unsigned n);
 		NxsString			&NumberThenWord(unsigned i, NxsString s);
 		NxsString 			&ShortenTo(unsigned n);
 		NxsString			&AppendDouble(unsigned minFieldFormat, unsigned precFormat, double x);
@@ -171,7 +171,7 @@ class NxsString
 
 
 /*-------------------------------------------------------------------------------------------------------------------------- 
-|	Replaces the stored string with a copy of itself surrounded by single quotes (single quotes inside the string are 
+|	Replaces the stored wstring with a copy of itself surrounded by single quotes (single quotes inside the wstring are 
 |	converted to the '' pair of characters that signify a single quote). Returns a reference to itself.
 */
 inline NxsString &NxsString::AddQuotes() 
@@ -180,26 +180,26 @@ inline NxsString &NxsString::AddQuotes()
 	return *this;
 	}
 
-inline std::string	NxsString::GetEscapedDouble(const double &v)
+inline std::wstring	NxsString::GetEscapedDouble(const double &v)
 	{
 	NxsString s;
 	s << v;
 	return NxsString::GetEscaped(s);
 	}
 	
-inline std::string	NxsString::GetEscapedInt(const int &v)
+inline std::wstring	NxsString::GetEscapedInt(const int &v)
 	{
 	NxsString s;
 	s << v;
 	return NxsString::GetEscaped(s);
 	}
 	
-inline std::string	NxsString::GetEscaped(const std::string &s)
+inline std::wstring	NxsString::GetEscaped(const std::wstring &s)
 	{
 	NxsQuotingRequirements r = determine_quoting_requirements(s);
 	if (r == kNoQuotesNeededForNexus)
 		return s;
-	std::string x(s.c_str());
+	std::wstring x(s.c_str());
 	if (r == kUnderscoresSufficeForNexus)
 		blanks_to_underscores(x);
 	else
@@ -209,9 +209,9 @@ inline std::string	NxsString::GetEscaped(const std::string &s)
 
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Function object (Unary Predicate functor) that stores one string. The ()(const NxsString &) operator then returns the 
+|	Function object (Unary Predicate functor) that stores one wstring. The ()(const NxsString &) operator then returns the 
 |	result of a case-insensitive compare. Useful for STL find algorithms. Could be made faster than sequential case 
-|	insenstive comparisons, because the string stored in the object is just capitalized once.
+|	insenstive comparisons, because the wstring stored in the object is just capitalized once.
 */
 class NStrCaseInsensitiveEquals 
 	{
@@ -226,7 +226,7 @@ class NStrCaseInsensitiveEquals
 	};
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Function object (Unary Predicate functor) that stores one string. The ()(const NxsString &) operator then returns the 
+|	Function object (Unary Predicate functor) that stores one wstring. The ()(const NxsString &) operator then returns the 
 |	result of a case-sensitive compare. Useful for STL find algorithms.
 */
 class NStrCaseSensitiveEquals 
@@ -242,7 +242,7 @@ class NStrCaseSensitiveEquals
 	};
 
 /*----------------------------------------------------------------------------------------------------------------------
-|	Binary function class that performs case-Insensitive string compares.
+|	Binary function class that performs case-Insensitive wstring compares.
 */
 struct NxsStringEqual
   : public std::binary_function<NxsString, NxsString, bool>
@@ -253,22 +253,22 @@ struct NxsStringEqual
 // ############################# start NStrCaseInsensitiveEquals functions ##########################
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Creates a function object for case-insensitive comparisons of `s' to a container of strings. 
+|	Creates a function object for case-insensitive comparisons of `s' to a container of wstrings. 
 */
 inline NStrCaseInsensitiveEquals::NStrCaseInsensitiveEquals(
-  const NxsString &s)	/* the string to be compared */
+  const NxsString &s)	/* the wstring to be compared */
 	{
 	compStr = s;
 	compStr.Capitalize();
 	}
 	
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Returns the result of a case-sensitive compare of `s' and the string stored when the NStrCaseInsensitiveEquals object  
+|	Returns the result of a case-sensitive compare of `s' and the wstring stored when the NStrCaseInsensitiveEquals object  
 |	was created. Could be made more efficient (currently capitalizes the entire argument even though the first character may 
 |	be wrong).
 */
 inline bool NStrCaseInsensitiveEquals::operator()(
-  const NxsString &s)	/* the string to be compared */
+  const NxsString &s)	/* the wstring to be compared */
 	{
 	if (s.length() == compStr.length())
 		{
@@ -282,20 +282,20 @@ inline bool NStrCaseInsensitiveEquals::operator()(
 // ############################# start NStrCaseSensitiveEquals functions ##########################
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Creates a function object for case-sensitive comparisons of `s' to a container of strings. 
+|	Creates a function object for case-sensitive comparisons of `s' to a container of wstrings. 
 */
 inline NStrCaseSensitiveEquals::NStrCaseSensitiveEquals(
-  const NxsString &s)	/* the string that all other strings will be compared to when the (const NxsString &) operator is called */  
+  const NxsString &s)	/* the wstring that all other wstrings will be compared to when the (const NxsString &) operator is called */  
 	{
 	compStr = s;
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Returns the result of a case-sensitive compare of `s' and the string stored when the NStrCaseSensitiveEquals was 
+|	Returns the result of a case-sensitive compare of `s' and the wstring stored when the NStrCaseSensitiveEquals was 
 |	created.
 */
 inline bool NStrCaseSensitiveEquals::operator()(
-  const NxsString &s)	/* the string to be compared */
+  const NxsString &s)	/* the wstring to be compared */
   const
 	{
 	return (compStr == s);
@@ -304,11 +304,11 @@ inline bool NStrCaseSensitiveEquals::operator()(
 // ############################# start NxsStringEqual functions ##########################
 
 /*----------------------------------------------------------------------------------------------------------------------
-|	Returns true if the strings `x' and `y' are identical (NOT case sensitive)
+|	Returns true if the wstrings `x' and `y' are identical (NOT case sensitive)
 */
 inline bool NxsStringEqual::operator()(
-  const NxsString &x,	/* first string */
-  const NxsString &y)	/* second string to be compared with `x' */
+  const NxsString &x,	/* first wstring */
+  const NxsString &y)	/* second wstring to be compared with `x' */
   const
 	{
 	return x.EqualsCaseInsensitive(y);
@@ -325,7 +325,7 @@ inline NxsString::NxsString()
 
 /*--------------------------------------------------------------------------------------------------------------------------
 |	Returns a single-quoted version of the NxsString. The calling object is not altered. Written for ease of use. Simply 
-|	copies the stored string, then returns the copy after calling its AddQuotes function.
+|	copies the stored wstring, then returns the copy after calling its AddQuotes function.
 */
 inline NxsString NxsString::GetQuoted()
   const
@@ -337,7 +337,7 @@ inline NxsString NxsString::GetQuoted()
 
 /*--------------------------------------------------------------------------------------------------------------------------
 |	Most containers in the standard template library can be completely erased using the clear function, but none is 
-|	provided for the class string and hence is provided here.
+|	provided for the class wstring and hence is provided here.
 */
 inline void NxsString::clear()
 	{
@@ -361,10 +361,10 @@ inline bool NxsString::IsInVector(
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	A copy constructor taking a C-string argument.
+|	A copy constructor taking a C-wstring argument.
 */
 inline NxsString::NxsString(
-  const char *s)	/* the C-string that forms the basis for the new NxsString object */
+  const wchar_t*s)	/* the C-wstring that forms the basis for the new NxsString object */
 	{
 	assign(s);
 	}
@@ -374,16 +374,16 @@ inline NxsString::NxsString(
 */
 inline NxsString::NxsString(
   const NxsString &s)	/* reference to a NxsString to be used to create this copy */
-  :std::string()
+  :std::wstring()
 	{
 	assign(s);
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Sets the stored string equal to the supplied C-string `s'.
+|	Sets the stored wstring equal to the supplied C-wstring `s'.
 */
 inline NxsString &NxsString::operator=(
-  const char *s)	/* the string for comparison */
+  const wchar_t*s)	/* the wstring for comparison */
 	{
 	assign(s);
 	return *this;
@@ -397,43 +397,43 @@ inline NxsString &NxsString::operator=(
 //	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Appends the supplied C-string `s' to the stored string.
+|	Appends the supplied C-wstring `s' to the stored wstring.
 */
 inline NxsString &NxsString::operator+=(
-  const char *s)	/* the C-string to be appended */
+  const wchar_t*s)	/* the C-wstring to be appended */
 	{
-	append(std::string(s));
+	append(std::wstring(s));
 	return *this;
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Appends the characters in the supplied NxsString reference `s' to the stored string.
+|	Appends the characters in the supplied NxsString reference `s' to the stored wstring.
 */
 inline NxsString &NxsString::operator+=(
-  const std::string &s)	/* the string to append */
+  const std::wstring &s)	/* the wstring to append */
 	{
 	append(s);
 	return *this;
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Appends the character `c' to the stored string.
+|	Appends the character `c' to the stored wstring.
 */
 inline NxsString &NxsString::operator+=(
-  const char c)	/* the character to append */
+  const wchar_t c)	/* the character to append */
 	{
-	char s[2];
+	wchar_t s[2];
 	s[0] = c;
 	s[1] = '\0';
-	append(std::string(s));
+	append(std::wstring(s));
 	return *this;
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Sets the stored std::string to the supplied character 'c'.
+|	Sets the stored std::wstring to the supplied character 'c'.
 */
 inline NxsString &NxsString::operator=(
-  char c)	/* the character to which the stored std::string should be set */
+  char c)	/* the character to which the stored std::wstring should be set */
 	{
 	clear();
 	return (*this += c);
@@ -441,19 +441,19 @@ inline NxsString &NxsString::operator=(
 
 /*--------------------------------------------------------------------------------------------------------------------------
 |	Uses the standard C sprintf function to append the character representation of the supplied integer i' to the stored
-|	string (format code %d). For example, if the stored string is "taxon" and `i' is 9, the result is "taxon9".
+|	wstring (format code %d). For example, if the stored wstring is "taxon" and `i' is 9, the result is "taxon9".
 */
 inline NxsString &NxsString::operator+=(
   const int i)	/* the int to append */
 	{
-	char tmp[81];
-	sprintf(tmp, "%d", i);
+	wchar_t tmp[81];
+	swprintf(tmp, 81, L"%d", i);
 	append(tmp);
 	return *this;
 	}
 
 /*-------------------------------------------------------------------------------------------------------------------------- 
-|	Capitalizes all lower case letters in the stored string by calling ToUpper.
+|	Capitalizes all lower case letters in the stored wstring by calling ToUpper.
 */
 inline NxsString &NxsString::Capitalize()
 	{
@@ -462,10 +462,10 @@ inline NxsString &NxsString::Capitalize()
 	}
 	
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Returns true if the stored string is an abbreviation (or complete copy) of the supplied string `s'.
+|	Returns true if the stored wstring is an abbreviation (or complete copy) of the supplied wstring `s'.
 */
 inline bool NxsString::Abbreviates(
-  const NxsString	&s,		/* the full comparison string */
+  const NxsString	&s,		/* the full comparison wstring */
   NxsString::CmpEnum	mode)	/* if equal to abbrev, a non-case-sensitive comparison will be made, otherwise comparison will respect case */
   const
 	{
@@ -476,52 +476,52 @@ inline bool NxsString::Abbreviates(
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Uses standard C function sprintf to append the unsigned integer `i' to the stored string (format code %u). 
+|	Uses standard C function sprintf to append the unsigned integer `i' to the stored wstring (format code %u). 
 */
 inline NxsString& NxsString::operator+=(
   unsigned i)	/* the integer to be appended */
 	{
-	char tmp[81];
-	sprintf(tmp, "%u", i);
+	wchar_t tmp[81];
+	swprintf(tmp,81, L"%u", i);
 	append(tmp);
 	return *this;
 	}
 	
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Uses standard C function sprintf to append the long integer `l' to the stored string (format code %ld).
+|	Uses standard C function sprintf to append the long integer `l' to the stored wstring (format code %ld).
 */
 inline NxsString& NxsString::operator+=(
   const long l)	/* the long integer to be appended */
 	{
-	char tmp[81];
-	sprintf(tmp, "%ld", l);
+	wchar_t tmp[81];
+	swprintf(tmp, 81, L"%ld", l);
 	append(tmp);
 	return *this;
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Uses standard C function sprintf to append the unsigned long integer `l' to the stored string (format code %lu).
+|	Uses standard C function sprintf to append the unsigned long integer `l' to the stored wstring (format code %lu).
 */
 inline NxsString& NxsString::operator+=(
   const unsigned long l)	/* the unsigned long integer to be appended */
 	{
-	char tmp[81];
-	sprintf(tmp, "%lu", l);
+	wchar_t tmp[81];
+	swprintf(tmp, 81, L"%lu", l);
 	append(tmp);
 	return *this;
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Uses the mode argument to call (and return the result of) the correct string comparison function. 
+|	Uses the mode argument to call (and return the result of) the correct wstring comparison function. 
 */
 inline bool NxsString::Equals(
-  const NxsString &s,		/* the string to which *this is compared */
+  const NxsString &s,		/* the wstring to which *this is compared */
   NxsString::CmpEnum mode)	/* should be one of these three: respect_case, no_respect_case or abbrev */
   const	
 	{
 	switch (mode) {
 		case NxsString::respect_case :
-			return (strcmp(this->c_str(), s.c_str()) == 0);
+			return (wcscmp(this->c_str(), s.c_str()) == 0);
 		case NxsString::no_respect_case :
 			return this->EqualsCaseInsensitive(s);
 		case NxsString::abbrev :
@@ -533,7 +533,7 @@ inline bool NxsString::Equals(
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Allows functions that take and return references to NxsString strings to be placed in a series of << operators.
+|	Allows functions that take and return references to NxsString wstrings to be placed in a series of << operators.
 |	See the NxsString endl function.
 */
 inline NxsString &NxsString::operator<<(
@@ -549,20 +549,20 @@ inline NxsString &NxsString::operator<<(
 |>
 */
 inline bool NxsString::IsNexusPunctuation(
-  const char c)	/* the character in question */
+  const wchar_t c)	/* the character in question */
 	{
-	return (strchr("()[]{}/\\,;:=*\'\"`-+<>", c) != NULL);
+	return (wcschr(L"()[]{}/\\,;:=*\'\"`-+<>", c) != NULL);
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Creates a new string (and returns a reference to the new string) composed of the integer `i' followed by a space and
-|	then the string `s'. If `i' is not 1, then an 's' character is appended to make `s' plural. For example, if `i' were 0,
-|	1, or 2, and `s' is "character", then the returned string would be "0 characters", "1 character" or "2 characters", 
-|	respectively. Obviously this only works if adding an 's' to the supplied string makes it plural.
+|	Creates a new wstring (and returns a reference to the new wstring) composed of the integer `i' followed by a space and
+|	then the wstring `s'. If `i' is not 1, then an 's' character is appended to make `s' plural. For example, if `i' were 0,
+|	1, or 2, and `s' is "character", then the returned wstring would be "0 characters", L"1 character" or "2 characters", 
+|	respectively. Obviously this only works if adding an 's' to the supplied wstring makes it plural.
 */
 inline NxsString &NxsString::NumberThenWord(
   unsigned i,			/* the number */
-  const NxsString s)	/* the string needing to be pluralized */
+  const NxsString s)	/* the wstring needing to be pluralized */
   	{
 	(*this).erase();
   	*this << i << ' ' << s;
@@ -572,7 +572,7 @@ inline NxsString &NxsString::NumberThenWord(
   	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Another way to call the += operator (written to make it possible to use a NxsString like an std::ostream)
+|	Another way to call the += operator (written to make it possible to use a NxsString like an std::wostream)
 */
 inline NxsString &NxsString::operator<<(
   int i)	/* the integer to append */
@@ -581,7 +581,7 @@ inline NxsString &NxsString::operator<<(
   	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Another way to call the += operator (written to make it possible to use a NxsString like an std::ostream)
+|	Another way to call the += operator (written to make it possible to use a NxsString like an std::wostream)
 */
 inline NxsString &NxsString::operator<<(
   unsigned i)	/* the unsigned integer to append */
@@ -590,7 +590,7 @@ inline NxsString &NxsString::operator<<(
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Another way to call the += operator (written to make it possible to use a NxsString like an std::ostream)
+|	Another way to call the += operator (written to make it possible to use a NxsString like an std::wostream)
 */
 inline NxsString &NxsString::operator<<(
   long l)	/* the long integer to append */
@@ -599,7 +599,7 @@ inline NxsString &NxsString::operator<<(
 	}	
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Another way to call the += operator (written to make it possible to use a NxsString like an std::ostream)
+|	Another way to call the += operator (written to make it possible to use a NxsString like an std::wostream)
 */
 inline NxsString &NxsString::operator<<(
   unsigned long l)	/* the unsigned long integer to append */
@@ -608,7 +608,7 @@ inline NxsString &NxsString::operator<<(
 	}	
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Another way to call the += operator (written to make it possible to use a NxsString like an std::ostream)
+|	Another way to call the += operator (written to make it possible to use a NxsString like an std::wostream)
 */
 inline NxsString &NxsString::operator<<(
   double d)	/* the double floating point value to append */
@@ -617,62 +617,62 @@ inline NxsString &NxsString::operator<<(
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Another way to call the += operator (written to make it possible to use a NxsString like an std::ostream)
+|	Another way to call the += operator (written to make it possible to use a NxsString like an std::wostream)
 */
 inline NxsString &NxsString::operator<<(
-  const char *c)	/* the C-string to append */
+  const wchar_t*c)	/* the C-wstring to append */
 	{	
 	return (*this += c);
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Another way to call the += operator (written to make it possible to use a NxsString like an std::ostream)
+|	Another way to call the += operator (written to make it possible to use a NxsString like an std::wostream)
 */
 inline NxsString &NxsString::operator<<(
-  char c)	/* the char to append */
+  wchar_t c)	/* the char to append */
 	{	
 	return (*this += c);
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Another way to call the += operator (written to make it possible to use a NxsString like an std::ostream)
+|	Another way to call the += operator (written to make it possible to use a NxsString like an std::wostream)
 */
 inline NxsString &NxsString::operator<<(
-  const std::string &s)	/* the NxsString to append */
+  const std::wstring &s)	/* the NxsString to append */
 	{
 	return (*this += s);
 	}
 	
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Returns string as a Pascal string (array of unsigned characters with the length in the first byte).
+|	Returns wstring as a Pascal wstring (array of unsigned wchar_tacters with the length in the first byte).
 */
-inline unsigned char *NxsString::p_str(
-  unsigned char *buffer)	/* buffer to receive current string in Pascal form (i.e. length in first byte) */
+inline unsigned wchar_t *NxsString::p_str(
+  unsigned wchar_t *buffer)	/* buffer to receive current wstring in Pascal form (i.e. length in first byte) */
   const
 	{
 	memmove(buffer + 1, c_str(), length());
-	buffer[0] = (unsigned char)length();
+	buffer[0] = (unsigned wchar_t)length();
 	return buffer;
 	}
 
 // ############################# start of standalone functions ##########################
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Appends a newline character to the string `s' and the returns a reference to `s'. Used with << operator to allow 
-|	strings to be written to like std::ostreams.
+|	Appends a newline character to the wstring `s' and the returns a reference to `s'. Used with << operator to allow 
+|	wstrings to be written to like std::wostreams.
 */
 inline NxsString &endl(
-  NxsString &s)	/* the string to which the newline character is to be appended */
+  NxsString &s)	/* the wstring to which the newline character is to be appended */
 	{
 	return (s += '\n');
 	}
 	
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Writes the string `s' to the std::ostream `out'.
+|	Writes the wstring `s' to the std::wostream `out'.
 */
-inline std::ostream &operator<<(
-  std::ostream &out,			/* the stream to which the string `s' is to be written */
-  const NxsString &s)	/* the string to write */
+inline std::wostream &operator<<(
+  std::wostream &out,			/* the stream to which the wstring `s' is to be written */
+  const NxsString &s)	/* the wstring to write */
 	{
 	out << s.c_str();
 	return out;
@@ -681,5 +681,10 @@ inline std::ostream &operator<<(
 NxsStringVector 	BreakPipeSeparatedList(const NxsString &strList);
 NxsStringVector 	GetVecOfPossibleAbbrevMatches(const NxsString &testStr,const NxsStringVector &possMatches);
 bool 				SetToShortestAbbreviation(NxsStringVector &strVec, bool allowTooShort = false);
+
+std::wstring str_to_wstr( const std::string& src);
+std::string wstr_to_str( const std::wstring& src );
+
+
 
 #endif

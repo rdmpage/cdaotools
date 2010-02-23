@@ -25,29 +25,29 @@ class NxsTaxaBlockAPI
   : public NxsBlock, public NxsLabelToIndicesMapper
   {
   public:
-		virtual unsigned			AddTaxonLabel(const std::string & s) = 0;
+		virtual unsigned			AddTaxonLabel(const std::wstring & s) = 0;
 		virtual void  				ChangeTaxonLabel(unsigned i, NxsString s) = 0;
 		virtual unsigned			FindTaxon(const NxsString & label) const  = 0;
-		virtual bool  				IsAlreadyDefined(const std::string & label) = 0;
+		virtual bool  				IsAlreadyDefined(const std::wstring & label) = 0;
 		virtual unsigned			GetMaxTaxonLabelLength() = 0;
 		virtual unsigned			GetNumTaxonLabels() const = 0;
 		virtual unsigned			GetNTax() const = 0;
 		virtual unsigned			GetNTaxTotal() const = 0;
 		virtual NxsString 			GetTaxonLabel(unsigned i) const = 0;
 
-		virtual std::vector<std::string> GetAllLabels() const
+		virtual std::vector<std::wstring> GetAllLabels() const
 			{
 			const unsigned n = GetNTaxTotal();
-			std::vector<std::string> v(n);
+			std::vector<std::wstring> v(n);
 			for (unsigned i = 0; i < n; ++i)
-				v[i] = std::string(GetTaxonLabel(i).c_str());
+				v[i] = std::wstring(GetTaxonLabel(i).c_str());
 			return v;
 			}
 
-		virtual unsigned			TaxLabelToNumber(const std::string &label) const = 0;
+		virtual unsigned			TaxLabelToNumber(const std::wstring &label) const = 0;
 		
 		virtual void 				HandleTaxLabels(NxsToken &token) = 0;
-		virtual void 				WriteTaxLabelsCommand(std::ostream &out) const = 0;
+		virtual void 				WriteTaxLabelsCommand(std::wostream &out) const = 0;
 		virtual void 				SetNtax(unsigned n) = 0;
 
 		virtual unsigned		 	GetNumActiveTaxa() const = 0;
@@ -63,7 +63,7 @@ class NxsTaxaBlockAPI
 /*----------------------------------------------------------------------------------------------------------------------
 |	This class handles reading and storage for the NxsReader block TAXA. It overrides the member functions Read and 
 |	Reset, which are abstract virtual functions in the base class NxsBlock. The taxon names are stored in an vector of
-|	strings (taxLabels) that is accessible through the member functions GetTaxonLabel(int), AddTaxonLabel(NxsString), 
+|	wstrings (taxLabels) that is accessible through the member functions GetTaxonLabel(int), AddTaxonLabel(NxsString), 
 |	ChangeTaxonLabel(int, NxsString), and GetNumTaxonLabels().
 */
 class NxsTaxaBlock
@@ -78,12 +78,12 @@ class NxsTaxaBlock
 							NxsTaxaBlock();
 		virtual				~NxsTaxaBlock();
 
-		virtual unsigned	AddTaxonLabel(const std::string & s);
+		virtual unsigned	AddTaxonLabel(const std::wstring & s);
 		void  				ChangeTaxonLabel(unsigned i, NxsString s);
-		unsigned			TaxLabelToNumber(const std::string &label) const;
+		unsigned			TaxLabelToNumber(const std::wstring &label) const;
 		unsigned			FindTaxon(const NxsString & label) const;
-		bool  				IsAlreadyDefined(const std::string &label);
-		unsigned GetIndexSet(const std::string &label, NxsUnsignedSet * toFill) const
+		bool  				IsAlreadyDefined(const std::wstring &label);
+		unsigned GetIndexSet(const std::wstring &label, NxsUnsignedSet * toFill) const
 			{
 			return NxsLabelToIndicesMapper::GetIndicesFromSets(label, toFill, taxSets);
 			}
@@ -94,10 +94,10 @@ class NxsTaxaBlock
 		NxsString 			GetTaxonLabel(unsigned i) const;
 		void 				HandleTaxLabels(NxsToken &token);
 		bool 				NeedsQuotes(unsigned i);
-		virtual void		Report(std::ostream &out) NCL_COULD_BE_CONST ;
+		virtual void		Report(std::wostream &out) NCL_COULD_BE_CONST ;
 		virtual void 		Reset();
 		void 				SetNtax(unsigned n);
-		void				WriteAsNexus(std::ostream &out) const;
+		void				WriteAsNexus(std::wostream &out) const;
 
 
 		virtual unsigned		 	GetNumActiveTaxa() const;
@@ -109,18 +109,18 @@ class NxsTaxaBlock
 
 		class NxsX_NoSuchTaxon {};	/* thrown if FindTaxon cannot locate a supplied taxon label in the taxLabels vector */
 
-		void 				WriteTaxLabelsCommand(std::ostream &out) const;
+		void 				WriteTaxLabelsCommand(std::wostream &out) const;
 
 		unsigned GetMaxIndex() const;
-		unsigned GetIndicesForLabel(const std::string &label, NxsUnsignedSet *inds) const;
-		bool AddNewIndexSet(const std::string &label, const NxsUnsignedSet & inds);
-		bool AddNewPartition(const std::string &label, const NxsPartition & inds);
+		unsigned GetIndicesForLabel(const std::wstring &label, NxsUnsignedSet *inds) const;
+		bool AddNewIndexSet(const std::wstring &label, const NxsUnsignedSet & inds);
+		bool AddNewPartition(const std::wstring &label, const NxsPartition & inds);
 
 		/*----------------------------------------------------------------------
 		| AppendNewLabel should not be called in most client code.  It is only
 		| 	added because some blocks create their own taxa block on-the-fly.
 		*/
-		virtual unsigned AppendNewLabel(std::string &label)
+		virtual unsigned AppendNewLabel(std::wstring &label)
 			{
 			while (dimNTax <= taxLabels.size())
 				dimNTax++;
@@ -152,15 +152,15 @@ class NxsTaxaBlock
 			}
 	protected:
 		NxsStringVector	taxLabels;	/* storage for list of taxon labels */
-		std::map<std::string, unsigned> labelToIndex;
+		std::map<std::wstring, unsigned> labelToIndex;
 		unsigned		dimNTax;
 		NxsUnsignedSetMap taxSets;
 		NxsPartitionsByName taxPartitions;
 		std::set<unsigned> inactiveTaxa;
 		
 		virtual void 	Read(NxsToken &token);
-		void CheckCapitalizedTaxonLabel(const std::string &s) const;
-		unsigned CapitalizedTaxLabelToNumber(const std::string & s) const;
+		void CheckCapitalizedTaxonLabel(const std::wstring &s) const;
+		unsigned CapitalizedTaxLabelToNumber(const std::wstring & s) const;
 		void 			RemoveTaxonLabel(unsigned taxInd);
 	};
 
@@ -180,7 +180,7 @@ class NxsTaxaBlockSurrogate
 		void SetTaxaLinkStatus(NxsBlock::NxsBlockLinkStatus s);
 		NxsTaxaBlockAPI * GetTaxaBlockPtr(int *status) const;
 
-		virtual const std::string & GetBlockName() const = 0;
+		virtual const std::wstring & GetBlockName() const = 0;
 
 		virtual unsigned			GetNTax() const;
 		virtual unsigned			GetNTaxTotal() const;
@@ -237,7 +237,7 @@ class NxsTaxaBlockSurrogate
 			taxaLinkStatus |= NxsBlock::BLOCK_LINK_USED;
 			}
 		
-		void AssureTaxaBlock(bool allocBlock, NxsToken &, const char *cmd);
+		void AssureTaxaBlock(bool allocBlock, NxsToken &, const wchar_t*cmd);
 		void ResetSurrogate();
 		void SetNexusReader(NxsReader *nxsptr)
 			{
@@ -245,7 +245,7 @@ class NxsTaxaBlockSurrogate
 			}
 		virtual void 			HandleTaxLabels(NxsToken & token);
 		virtual void			HandleLinkTaxaCommand(NxsToken & );
-		virtual void			WriteLinkTaxaCommand(std::ostream &out) const;
+		virtual void			WriteLinkTaxaCommand(std::wostream &out) const;
 		bool					SurrogateSwapEquivalentTaxaBlock(NxsTaxaBlockAPI * tb);
 		
 		NxsTaxaBlockAPI			*taxa;				/* pointer to the TAXA block in which taxon labels are stored */
@@ -264,7 +264,7 @@ class NxsTaxaBlockFactory
 	:public NxsBlockFactory
 	{
 	public:
-		virtual NxsTaxaBlock  *	GetBlockReaderForID(const std::string & id, NxsReader *reader, NxsToken *token);
+		virtual NxsTaxaBlock  *	GetBlockReaderForID(const std::wstring & id, NxsReader *reader, NxsToken *token);
 	};
 
 inline unsigned NxsTaxaBlock::GetNTax() const
@@ -276,9 +276,9 @@ inline unsigned NxsTaxaBlock::GetNTaxTotal() const
 	return dimNTax;
 	}
 
-inline unsigned NxsTaxaBlock::CapitalizedTaxLabelToNumber(const std::string &r) const
+inline unsigned NxsTaxaBlock::CapitalizedTaxLabelToNumber(const std::wstring &r) const
 	{
-	std::map<std::string, unsigned>::const_iterator rIt = labelToIndex.find(r);
+	std::map<std::wstring, unsigned>::const_iterator rIt = labelToIndex.find(r);
 	if (rIt == labelToIndex.end())
 		return 0;
 	return rIt->second + 1;
@@ -293,52 +293,52 @@ inline bool NxsTaxaBlockSurrogate::IsActiveTaxon(
   unsigned taxInd) const	/* the taxon in question, in the range [0..`ntax') */
 	{
 	if (!taxa)
-	    throw NxsNCLAPIException("Calling IsActiveTaxon on uninitialized block");
+	    throw NxsNCLAPIException(L"Calling IsActiveTaxon on uninitialized block");
 	return taxa->IsActiveTaxon(taxInd);
 	}
 inline unsigned NxsTaxaBlockSurrogate::GetNumActiveTaxa() const
 	{
 	if (!taxa)
-	    throw NxsNCLAPIException("Calling GetNumActiveTaxa on uninitialized block");
+	    throw NxsNCLAPIException(L"Calling GetNumActiveTaxa on uninitialized block");
 	return taxa->GetNumActiveTaxa();
 	}
 inline unsigned NxsTaxaBlockSurrogate::InactivateTaxa(const std::set<unsigned> &s)
 	{
 	if (!taxa)
-	    throw NxsNCLAPIException("Calling InactivateTaxa on uninitialized block");
+	    throw NxsNCLAPIException(L"Calling InactivateTaxa on uninitialized block");
 	return taxa->InactivateTaxa(s);
 	}
 inline unsigned NxsTaxaBlockSurrogate::ActivateTaxa(const std::set<unsigned> &s)
 	{
 	if (!taxa)
-	    throw NxsNCLAPIException("Calling ActivateTaxa on uninitialized block");
+	    throw NxsNCLAPIException(L"Calling ActivateTaxa on uninitialized block");
 	return taxa->ActivateTaxa(s);
 	}
 
 inline unsigned NxsTaxaBlockSurrogate::InactivateTaxon(unsigned i)
 	{
 	if (!taxa)
-	    throw NxsNCLAPIException("Calling InactivateTaxon on uninitialized block");
+	    throw NxsNCLAPIException(L"Calling InactivateTaxon on uninitialized block");
 	return taxa->InactivateTaxon(i);
 	}
 
 inline unsigned NxsTaxaBlockSurrogate::ActivateTaxon(unsigned i)
 	{
 	if (!taxa)
-	    throw NxsNCLAPIException("Calling ActivateTaxon on uninitialized block");
+	    throw NxsNCLAPIException(L"Calling ActivateTaxon on uninitialized block");
 	return taxa->ActivateTaxon(i);
 	}
 
 inline unsigned NxsTaxaBlockSurrogate::GetNTax() const
 	{
 	if (!taxa)
-	    throw NxsNCLAPIException("Calling GetNTax on uninitialized block");
+	    throw NxsNCLAPIException(L"Calling GetNTax on uninitialized block");
 	return taxa->GetNTax();
 	}
 inline unsigned NxsTaxaBlockSurrogate::GetNTaxTotal() const
 	{
 	if (!taxa)
-	    throw NxsNCLAPIException("Calling GetNTaxTotal on uninitialized block");
+	    throw NxsNCLAPIException(L"Calling GetNTaxTotal on uninitialized block");
 	return taxa->GetNTaxTotal();
 	}
 
@@ -367,14 +367,14 @@ inline unsigned NxsTaxaBlock::ActivateTaxa(const std::set<unsigned> &s)
 inline unsigned NxsTaxaBlock::InactivateTaxon(unsigned i)
 	{
 	if (i > GetNTax())
-		throw NxsNCLAPIException("Taxon index out of range in InactivateTaxon");
+		throw NxsNCLAPIException(L"Taxon index out of range in InactivateTaxon");
 	inactiveTaxa.insert(i);
 	return GetNumActiveTaxa();
 	}
 inline unsigned NxsTaxaBlock::ActivateTaxon(unsigned i)
 	{
 	if (i > GetNTax())
-		throw NxsNCLAPIException("Taxon index out of range in InactivateTaxon");
+		throw NxsNCLAPIException(L"Taxon index out of range in InactivateTaxon");
 	inactiveTaxa.erase(i);
 	return GetNumActiveTaxa();
 	}

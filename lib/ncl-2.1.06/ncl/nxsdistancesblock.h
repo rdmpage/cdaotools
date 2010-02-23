@@ -80,7 +80,7 @@ class NxsDistancesBlock
 		bool				IsLowerTriangular() NCL_COULD_BE_CONST ;
 		bool				IsMissing(unsigned i, unsigned j) const;
 		bool				IsUpperTriangular() NCL_COULD_BE_CONST ;
-		virtual void		Report(std::ostream &out) NCL_COULD_BE_CONST ;
+		virtual void		Report(std::wostream &out) NCL_COULD_BE_CONST ;
 		virtual void		Reset();
 		void				SetDistance(unsigned i, unsigned j, double d);
 		void				SetMissing(unsigned i, unsigned j);
@@ -90,7 +90,7 @@ class NxsDistancesBlock
 			NxsBlock::SetNexus(nxsptr);
 			NxsTaxaBlockSurrogate::SetNexusReader(nxsptr);
 			}
-        virtual const std::string & GetBlockName() const
+        virtual const std::wstring & GetBlockName() const
             {
             return id;
             }
@@ -112,11 +112,11 @@ class NxsDistancesBlock
 			{
 			HandleLinkTaxaCommand(token);
 			}
-		virtual void		WriteLinkCommand(std::ostream &out) const
+		virtual void		WriteLinkCommand(std::wostream &out) const
 			{
 			WriteLinkTaxaCommand(out);
 			}
-		void				WriteAsNexus(std::ostream &out) const;
+		void				WriteAsNexus(std::wostream &out) const;
 
 
 		NxsDistancesBlock &operator=(const NxsDistancesBlock &other)
@@ -141,8 +141,8 @@ class NxsDistancesBlock
 		}
 
 	protected:
-		void				WriteFormatCommand(std::ostream &out) const;
-		void				WriteMatrixCommand(std::ostream &out) const;
+		void				WriteFormatCommand(std::wostream &out) const;
+		void				WriteMatrixCommand(std::wostream &out) const;
 
 		void				HandleDimensionsCommand(NxsToken &token);
 		void				HandleFormatCommand(NxsToken &token);
@@ -183,7 +183,7 @@ class NxsDistancesBlockFactory
 	:public NxsBlockFactory
 	{
 	public:
-		virtual NxsDistancesBlock  *	GetBlockReaderForID(const std::string & id, NxsReader *reader, NxsToken *token);
+		virtual NxsDistancesBlock  *	GetBlockReaderForID(const std::wstring & id, NxsReader *reader, NxsToken *token);
 	};
 
 inline bool NxsDistancesBlock::IsBoth() NCL_COULD_BE_CONST 

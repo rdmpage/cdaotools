@@ -35,9 +35,9 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode);
 std::vector<int> getToCodonRecodingMapper(NxsGeneticCodesEnum gCode);
 
 
-static unsigned char lcBaseToInd(char );
+static unsigned wchar_t lcBaseToInd(char );
 
-static unsigned char lcBaseToInd(char c) {
+static unsigned wchar_t lcBaseToInd(char c) {
 	if (c == 'a')
 		return 0;
 	if (c == 'c')
@@ -46,14 +46,14 @@ static unsigned char lcBaseToInd(char c) {
 		return 2;
 	if (c == 't')
 		return 3;
-	throw NxsException("Expecting a DNA base");
+	throw NxsException(L"Expecting a DNA base");
 }
 
-NxsCodonTriplet::NxsCodonTriplet(const char *triplet)
+NxsCodonTriplet::NxsCodonTriplet(const wchar_t*triplet)
 {
-	std::string s(triplet);
+	std::wstring s(triplet);
 	if (s.length() != 3)
-		throw NxsException("Expecting a triplet of bases");
+		throw NxsException(L"Expecting a triplet of bases");
 	NxsString::to_lower(s);
 	this->firstPos = lcBaseToInd(s[0]);
 	this->secondPos = lcBaseToInd(s[1]);
@@ -93,12 +93,12 @@ void NxsDiscreteDatatypeMapper::DeleteStateIndices(const std::set<int> & deleted
 	if (deletedInds.empty())
 		return;
 	if (*(deletedInds.begin()) < 0 || *(deletedInds.rbegin()) >= (int)this->nStates)
-		throw NxsException("DeleteStateIndices can only delete fundamental states");
+		throw NxsException(L"DeleteStateIndices can only delete fundamental states");
 	if (!(NxsCharactersBlock::GetDefaultEquates(this->datatype).empty() && extraEquates.empty()))
-		throw NxsException("DeleteStateIndices can not currently work on datatypes with equates");
+		throw NxsException(L"DeleteStateIndices can not currently work on datatypes with equates");
 	std::vector<int> remap;
 	int newIndex = 0;
-	std::string nsym;
+	std::wstring nsym;
 	for (int i = 0; i < (int) this->nStates; ++i)
 		{
 		if (deletedInds.find(i) == deletedInds.end())
@@ -224,7 +224,7 @@ std::vector<int> getToCodonRecodingMapper(NxsGeneticCodesEnum gCode)
 		std::copy(trnxs_gcode_thraustochytrium_mito, trnxs_gcode_thraustochytrium_mito + 64, back_inserter(v));
 		return v;
 	}
-	throw NxsException("Unrecognized genetic code.");
+	throw NxsException(L"Unrecognized genetic code.");
 }
 
 
@@ -237,7 +237,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_standard[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 51, 52, 53, 54, 55, 57, 58, 59, 60, 61, 62, 63};
 		n = 61;
 		const int caaindnxs_gcode_standard[] = {8, 11, 8, 11, 16, 16, 16, 16, 14, 15, 14, 15, 7, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 19, 15, 15, 15, 15, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_standard[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAT", "TCA", "TCC", "TCG", "TCT", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_standard[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_standard, ccitacnxs_gcode_standard + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_standard, caaindnxs_gcode_standard + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_standard, ccodstrnxs_gcode_standard + n, back_inserter(c.codonStrings));
@@ -247,7 +247,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_vert_mito[] = {0, 1, 2, 3, 4, 5, 6, 7, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63};
 		n = 60;
 		const int caaindnxs_gcode_vert_mito[] = {8, 11, 8, 11, 16, 16, 16, 16, 15, 15, 10, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 19, 15, 15, 15, 15, 18, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_vert_mito[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGC", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAT", "TCA", "TCC", "TCG", "TCT", "TGA", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_vert_mito[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGC", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGA", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_vert_mito, ccitacnxs_gcode_vert_mito + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_vert_mito, caaindnxs_gcode_vert_mito + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_vert_mito, ccodstrnxs_gcode_vert_mito + n, back_inserter(c.codonStrings));
@@ -257,7 +257,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_yeast_mito[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63};
 		n = 62;
 		const int caaindnxs_gcode_yeast_mito[] = {8, 11, 8, 11, 16, 16, 16, 16, 14, 15, 14, 15, 7, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 19, 15, 15, 15, 15, 18, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_yeast_mito[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAT", "TCA", "TCC", "TCG", "TCT", "TGA", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_yeast_mito[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGA", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_yeast_mito, ccitacnxs_gcode_yeast_mito + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_yeast_mito, caaindnxs_gcode_yeast_mito + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_yeast_mito, ccodstrnxs_gcode_yeast_mito + n, back_inserter(c.codonStrings));
@@ -267,7 +267,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_mold_mito[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63};
 		n = 62;
 		const int caaindnxs_gcode_mold_mito[] = {8, 11, 8, 11, 16, 16, 16, 16, 14, 15, 14, 15, 7, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 19, 15, 15, 15, 15, 18, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_mold_mito[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAT", "TCA", "TCC", "TCG", "TCT", "TGA", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_mold_mito[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGA", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_mold_mito, ccitacnxs_gcode_mold_mito + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_mold_mito, caaindnxs_gcode_mold_mito + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_mold_mito, ccodstrnxs_gcode_mold_mito + n, back_inserter(c.codonStrings));
@@ -277,7 +277,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_invert_mito[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63};
 		n = 62;
 		const int caaindnxs_gcode_invert_mito[] = {8, 11, 8, 11, 16, 16, 16, 16, 15, 15, 15, 15, 10, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 19, 15, 15, 15, 15, 18, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_invert_mito[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAT", "TCA", "TCC", "TCG", "TCT", "TGA", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_invert_mito[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGA", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_invert_mito, ccitacnxs_gcode_invert_mito + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_invert_mito, caaindnxs_gcode_invert_mito + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_invert_mito, ccodstrnxs_gcode_invert_mito + n, back_inserter(c.codonStrings));
@@ -287,7 +287,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_ciliate[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 57, 58, 59, 60, 61, 62, 63};
 		n = 63;
 		const int caaindnxs_gcode_ciliate[] = {8, 11, 8, 11, 16, 16, 16, 16, 14, 15, 14, 15, 7, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 13, 19, 13, 19, 15, 15, 15, 15, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_ciliate[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAA", "TAC", "TAG", "TAT", "TCA", "TCC", "TCG", "TCT", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_ciliate[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAA", L"TAC", L"TAG", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_ciliate, ccitacnxs_gcode_ciliate + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_ciliate, caaindnxs_gcode_ciliate + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_ciliate, ccodstrnxs_gcode_ciliate + n, back_inserter(c.codonStrings));
@@ -297,7 +297,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_echino_mito[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63};
 		n = 62;
 		const int caaindnxs_gcode_echino_mito[] = {11, 11, 8, 11, 16, 16, 16, 16, 15, 15, 15, 15, 7, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 19, 15, 15, 15, 15, 18, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_echino_mito[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAT", "TCA", "TCC", "TCG", "TCT", "TGA", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_echino_mito[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGA", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_echino_mito, ccitacnxs_gcode_echino_mito + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_echino_mito, caaindnxs_gcode_echino_mito + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_echino_mito, ccodstrnxs_gcode_echino_mito + n, back_inserter(c.codonStrings));
@@ -307,7 +307,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_euplotid[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63};
 		n = 62;
 		const int caaindnxs_gcode_euplotid[] = {8, 11, 8, 11, 16, 16, 16, 16, 14, 15, 14, 15, 7, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 19, 15, 15, 15, 15, 1, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_euplotid[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAT", "TCA", "TCC", "TCG", "TCT", "TGA", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_euplotid[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGA", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_euplotid, ccitacnxs_gcode_euplotid + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_euplotid, caaindnxs_gcode_euplotid + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_euplotid, ccodstrnxs_gcode_euplotid + n, back_inserter(c.codonStrings));
@@ -317,7 +317,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_plant_plastid[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 51, 52, 53, 54, 55, 57, 58, 59, 60, 61, 62, 63};
 		n = 61;
 		const int caaindnxs_gcode_plant_plastid[] = {8, 11, 8, 11, 16, 16, 16, 16, 14, 15, 14, 15, 7, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 19, 15, 15, 15, 15, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_plant_plastid[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAT", "TCA", "TCC", "TCG", "TCT", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_plant_plastid[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_plant_plastid, ccitacnxs_gcode_plant_plastid + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_plant_plastid, caaindnxs_gcode_plant_plastid + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_plant_plastid, ccodstrnxs_gcode_plant_plastid + n, back_inserter(c.codonStrings));
@@ -327,7 +327,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_alt_yeast[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 51, 52, 53, 54, 55, 57, 58, 59, 60, 61, 62, 63};
 		n = 61;
 		const int caaindnxs_gcode_alt_yeast[] = {8, 11, 8, 11, 16, 16, 16, 16, 14, 15, 14, 15, 7, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 15, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 19, 15, 15, 15, 15, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_alt_yeast[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAT", "TCA", "TCC", "TCG", "TCT", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_alt_yeast[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_alt_yeast, ccitacnxs_gcode_alt_yeast + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_alt_yeast, caaindnxs_gcode_alt_yeast + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_alt_yeast, ccodstrnxs_gcode_alt_yeast + n, back_inserter(c.codonStrings));
@@ -337,7 +337,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_ascidian_mito[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63};
 		n = 62;
 		const int caaindnxs_gcode_ascidian_mito[] = {8, 11, 8, 11, 16, 16, 16, 16, 5, 15, 5, 15, 10, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 19, 15, 15, 15, 15, 18, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_ascidian_mito[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAT", "TCA", "TCC", "TCG", "TCT", "TGA", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_ascidian_mito[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGA", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_ascidian_mito, ccitacnxs_gcode_ascidian_mito + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_ascidian_mito, caaindnxs_gcode_ascidian_mito + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_ascidian_mito, ccodstrnxs_gcode_ascidian_mito + n, back_inserter(c.codonStrings));
@@ -347,7 +347,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_alt_flatworm_mito[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63};
 		n = 63;
 		const int caaindnxs_gcode_alt_flatworm_mito[] = {11, 11, 8, 11, 16, 16, 16, 16, 15, 15, 15, 15, 7, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 19, 19, 15, 15, 15, 15, 18, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_alt_flatworm_mito[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAA", "TAC", "TAT", "TCA", "TCC", "TCG", "TCT", "TGA", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_alt_flatworm_mito[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAA", L"TAC", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGA", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_alt_flatworm_mito, ccitacnxs_gcode_alt_flatworm_mito + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_alt_flatworm_mito, caaindnxs_gcode_alt_flatworm_mito + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_alt_flatworm_mito, ccodstrnxs_gcode_alt_flatworm_mito + n, back_inserter(c.codonStrings));
@@ -357,7 +357,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_blepharisma_macro[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 50, 51, 52, 53, 54, 55, 57, 58, 59, 60, 61, 62, 63};
 		n = 62;
 		const int caaindnxs_gcode_blepharisma_macro[] = {8, 11, 8, 11, 16, 16, 16, 16, 14, 15, 14, 15, 7, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 13, 19, 15, 15, 15, 15, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_blepharisma_macro[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAG", "TAT", "TCA", "TCC", "TCG", "TCT", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_blepharisma_macro[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAG", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_blepharisma_macro, ccitacnxs_gcode_blepharisma_macro + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_blepharisma_macro, caaindnxs_gcode_blepharisma_macro + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_blepharisma_macro, ccodstrnxs_gcode_blepharisma_macro + n, back_inserter(c.codonStrings));
@@ -367,7 +367,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_chlorophycean_mito[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 50, 51, 52, 53, 54, 55, 57, 58, 59, 60, 61, 62, 63};
 		n = 62;
 		const int caaindnxs_gcode_chlorophycean_mito[] = {8, 11, 8, 11, 16, 16, 16, 16, 14, 15, 14, 15, 7, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 9, 19, 15, 15, 15, 15, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_chlorophycean_mito[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAG", "TAT", "TCA", "TCC", "TCG", "TCT", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_chlorophycean_mito[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAG", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_chlorophycean_mito, ccitacnxs_gcode_chlorophycean_mito + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_chlorophycean_mito, caaindnxs_gcode_chlorophycean_mito + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_chlorophycean_mito, ccodstrnxs_gcode_chlorophycean_mito + n, back_inserter(c.codonStrings));
@@ -377,7 +377,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_trematode_mito[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63};
 		n = 62;
 		const int caaindnxs_gcode_trematode_mito[] = {11, 11, 8, 11, 16, 16, 16, 16, 15, 15, 15, 15, 10, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 19, 15, 15, 15, 15, 18, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_trematode_mito[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAT", "TCA", "TCC", "TCG", "TCT", "TGA", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_trematode_mito[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGA", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_trematode_mito, ccitacnxs_gcode_trematode_mito + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_trematode_mito, caaindnxs_gcode_trematode_mito + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_trematode_mito, ccodstrnxs_gcode_trematode_mito + n, back_inserter(c.codonStrings));
@@ -387,7 +387,7 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_scenedesmus_mito[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 50, 51, 53, 54, 55, 57, 58, 59, 60, 61, 62, 63};
 		n = 61;
 		const int caaindnxs_gcode_scenedesmus_mito[] = {8, 11, 8, 11, 16, 16, 16, 16, 14, 15, 14, 15, 7, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 9, 19, 15, 15, 15, 1, 18, 1, 9, 4, 9, 4};
-		const char * ccodstrnxs_gcode_scenedesmus_mito[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAG", "TAT", "TCC", "TCG", "TCT", "TGC", "TGG", "TGT", "TTA", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_scenedesmus_mito[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAG", L"TAT", L"TCC", L"TCG", L"TCT", L"TGC", L"TGG", L"TGT", L"TTA", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_scenedesmus_mito, ccitacnxs_gcode_scenedesmus_mito + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_scenedesmus_mito, caaindnxs_gcode_scenedesmus_mito + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_scenedesmus_mito, ccodstrnxs_gcode_scenedesmus_mito + n, back_inserter(c.codonStrings));
@@ -397,24 +397,24 @@ CodonRecodingStruct getCodonRecodingStruct(NxsGeneticCodesEnum gCode)
 		const int ccitacnxs_gcode_thraustochytrium_mito[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 51, 52, 53, 54, 55, 57, 58, 59, 61, 62, 63};
 		n = 60;
 		const int caaindnxs_gcode_thraustochytrium_mito[] = {8, 11, 8, 11, 16, 16, 16, 16, 14, 15, 14, 15, 7, 7, 10, 7, 13, 6, 13, 6, 12, 12, 12, 12, 14, 14, 14, 14, 9, 9, 9, 9, 3, 2, 3, 2, 0, 0, 0, 0, 5, 5, 5, 5, 17, 17, 17, 17, 19, 19, 15, 15, 15, 15, 1, 18, 1, 4, 9, 4};
-		const char * ccodstrnxs_gcode_thraustochytrium_mito[] = {"AAA", "AAC", "AAG", "AAT", "ACA", "ACC", "ACG", "ACT", "AGA", "AGC", "AGG", "AGT", "ATA", "ATC", "ATG", "ATT", "CAA", "CAC", "CAG", "CAT", "CCA", "CCC", "CCG", "CCT", "CGA", "CGC", "CGG", "CGT", "CTA", "CTC", "CTG", "CTT", "GAA", "GAC", "GAG", "GAT", "GCA", "GCC", "GCG", "GCT", "GGA", "GGC", "GGG", "GGT", "GTA", "GTC", "GTG", "GTT", "TAC", "TAT", "TCA", "TCC", "TCG", "TCT", "TGC", "TGG", "TGT", "TTC", "TTG", "TTT"};
+		const wchar_t* ccodstrnxs_gcode_thraustochytrium_mito[] = {L"AAA", L"AAC", L"AAG", L"AAT", L"ACA", L"ACC", L"ACG", L"ACT", L"AGA", L"AGC", L"AGG", L"AGT", L"ATA", L"ATC", L"ATG", L"ATT", L"CAA", L"CAC", L"CAG", L"CAT", L"CCA", L"CCC", L"CCG", L"CCT", L"CGA", L"CGC", L"CGG", L"CGT", L"CTA", L"CTC", L"CTG", L"CTT", L"GAA", L"GAC", L"GAG", L"GAT", L"GCA", L"GCC", L"GCG", L"GCT", L"GGA", L"GGC", L"GGG", L"GGT", L"GTA", L"GTC", L"GTG", L"GTT", L"TAC", L"TAT", L"TCA", L"TCC", L"TCG", L"TCT", L"TGC", L"TGG", L"TGT", L"TTC", L"TTG", L"TTT"};
 		std::copy(ccitacnxs_gcode_thraustochytrium_mito, ccitacnxs_gcode_thraustochytrium_mito + n, back_inserter(c.compressedCodonIndToAllCodonsInd));
 		std::copy(caaindnxs_gcode_thraustochytrium_mito, caaindnxs_gcode_thraustochytrium_mito + n, back_inserter(c.aaInd));
 		std::copy(ccodstrnxs_gcode_thraustochytrium_mito, ccodstrnxs_gcode_thraustochytrium_mito + n, back_inserter(c.codonStrings));
 		return c;
 	}
-	throw NxsException("Unrecognized genetic code.");
+	throw NxsException(L"Unrecognized genetic code.");
 }
 
 CodonRecodingStruct NxsCharactersBlock::RemoveStopCodons(NxsGeneticCodesEnum gCode)
 {
 	NxsDiscreteDatatypeMapper * mapper = this->GetMutableDatatypeMapperForChar(0);
 	if (mapper == 0L)
-		throw NxsException("Invalid characters block (no datatype mapper)");
+		throw NxsException(L"Invalid characters block (no datatype mapper)");
 	if (mapper->GetDatatype() != codon)
-		throw NxsException("Characters block must be of the type codons when RemoveStopCodons is called");
+		throw NxsException(L"Characters block must be of the type codons when RemoveStopCodons is called");
 	if (mapper->geneticCode != NXS_GCODE_NO_CODE)
-		throw NxsException("Characters block must be an uncompressed codons type when RemoveStopCodons is called");
+		throw NxsException(L"Characters block must be an uncompressed codons type when RemoveStopCodons is called");
 	
 	const std::vector<int> v = getToCodonRecodingMapper(gCode);
 	CodonRecodingStruct c = getCodonRecodingStruct(gCode);
@@ -422,10 +422,11 @@ CodonRecodingStruct NxsCharactersBlock::RemoveStopCodons(NxsGeneticCodesEnum gCo
 	const unsigned offset = 64 - nRS;
 	NxsDiscreteStateMatrix	dMat(this->discreteMatrix);
 	unsigned rowInd = 0;
+        unsigned charInd = 0;
 	for (NxsDiscreteStateMatrix::iterator rowIt = dMat.begin(); rowIt != dMat.end(); ++rowIt)
 		{
 		NxsDiscreteStateRow & row = *rowIt;
-		unsigned charInd = 0;
+		unsigned wchar_tInd = 0;
 		for (NxsDiscreteStateRow::iterator cellIt = row.begin(); cellIt != row.end(); ++cellIt)
 			{
 			const int cell = *cellIt;
@@ -437,9 +438,9 @@ CodonRecodingStruct NxsCharactersBlock::RemoveStopCodons(NxsGeneticCodesEnum gCo
 				if (recoded < 0)
 					{
 					NxsString m;
-					m << "Stop codon found at character ";
+					m << L"Stop codon found at character ";
 					m << charInd + 1;
-					m << " for taxon ";
+					m << L" for taxon ";
 					m << rowInd + 1;
 					throw NxsException(m);
 					}
@@ -702,109 +703,109 @@ void NxsDiscreteDatatypeMapper::BuildStateIntersectionMatrix() const
 }
 
 
-NxsGeneticCodesEnum geneticCodeNameToEnum(std::string n)
+NxsGeneticCodesEnum geneticCodeNameToEnum(std::wstring n)
 {
 	NxsString::to_lower(n);
-	if (n == "standard")
+	if (n == L"standard")
 		return NXS_GCODE_STANDARD;
-	if (n == "vertmito")
+	if (n == L"vertmito")
 		return NXS_GCODE_VERT_MITO;
-	if (n == "yeastmito")
+	if (n == L"yeastmito")
 		return NXS_GCODE_YEAST_MITO;
-	if (n == "moldmito")
+	if (n == L"moldmito")
 		return NXS_GCODE_MOLD_MITO;
-	if (n == "invertmito")
+	if (n == L"invertmito")
 		return NXS_GCODE_INVERT_MITO;
-	if (n == "ciliate")
+	if (n == L"ciliate")
 		return NXS_GCODE_CILIATE;
-	if (n == "echinomito")
+	if (n == L"echinomito")
 		return NXS_GCODE_ECHINO_MITO;
-	if (n == "euplotid")
+	if (n == L"euplotid")
 		return NXS_GCODE_EUPLOTID;
-	if (n == "plantplastid")
+	if (n == L"plantplastid")
 		return NXS_GCODE_PLANT_PLASTID;
-	if (n == "altyeast")
+	if (n == L"altyeast")
 		return NXS_GCODE_ALT_YEAST;
-	if (n == "ascidianmito")
+	if (n == L"ascidianmito")
 		return NXS_GCODE_ASCIDIAN_MITO;
-	if (n == "altflatwormmito")
+	if (n == L"altflatwormmito")
 		return NXS_GCODE_ALT_FLATWORM_MITO;
-	if (n == "blepharismamacro")
+	if (n == L"blepharismamacro")
 		return NXS_GCODE_BLEPHARISMA_MACRO;
-	if (n == "chlorophyceanmito")
+	if (n == L"chlorophyceanmito")
 		return NXS_GCODE_CHLOROPHYCEAN_MITO;
-	if (n == "trematodemito")
+	if (n == L"trematodemito")
 		return NXS_GCODE_TREMATODE_MITO;
-	if (n == "scenedesmusmito")
+	if (n == L"scenedesmusmito")
 		return NXS_GCODE_SCENEDESMUS_MITO;
-	if (n == "thraustochytriummito")
+	if (n == L"thraustochytriummito")
 		return NXS_GCODE_THRAUSTOCHYTRIUM_MITO;
-	NxsString err = "Unrecognized genetic code name: ";
+	NxsString err = L"Unrecognized genetic code name: ";
 	err << n;
 	throw NxsException(err);
 }
 
-std::string geneticCodeEnumToName(NxsGeneticCodesEnum n)
+std::wstring geneticCodeEnumToName(NxsGeneticCodesEnum n)
 {
 	if (n == NXS_GCODE_STANDARD)
-		return "Standard";
+		return L"Standard";
 	if (n == NXS_GCODE_VERT_MITO)
-		return "VertMito";
+		return L"VertMito";
 	if (n == NXS_GCODE_YEAST_MITO)
-		return "YeastMito";
+		return L"YeastMito";
 	if (n == NXS_GCODE_MOLD_MITO)
-		return "MoldMito";
+		return L"MoldMito";
 	if (n == NXS_GCODE_INVERT_MITO)
-		return "InvertMito";
+		return L"InvertMito";
 	if (n == NXS_GCODE_CILIATE)
-		return "Ciliate";
+		return L"Ciliate";
 	if (n == NXS_GCODE_ECHINO_MITO)
-		return "EchinoMito";
+		return L"EchinoMito";
 	if (n == NXS_GCODE_EUPLOTID)
-		return "Euplotid";
+		return L"Euplotid";
 	if (n == NXS_GCODE_PLANT_PLASTID)
-		return "PlantPlastid";
+		return L"PlantPlastid";
 	if (n == NXS_GCODE_ALT_YEAST)
-		return "AltYeast";
+		return L"AltYeast";
 	if (n == NXS_GCODE_ASCIDIAN_MITO)
-		return "AscidianMito";
+		return L"AscidianMito";
 	if (n == NXS_GCODE_ALT_FLATWORM_MITO)
-		return "AltFlatwormMito";
+		return L"AltFlatwormMito";
 	if (n == NXS_GCODE_BLEPHARISMA_MACRO)
-		return "BlepharismaMacro";
+		return L"BlepharismaMacro";
 	if (n == NXS_GCODE_CHLOROPHYCEAN_MITO)
-		return "ChlorophyceanMito";
+		return L"ChlorophyceanMito";
 	if (n == NXS_GCODE_TREMATODE_MITO)
-		return "Trematodemito";
+		return L"Trematodemito";
 	if (n == NXS_GCODE_SCENEDESMUS_MITO)
-		return "ScenedesmusMito";
+		return L"ScenedesmusMito";
 	if (n == NXS_GCODE_THRAUSTOCHYTRIUM_MITO)
-		return "ThraustochytriumMito";
-	NxsString err = "Unrecognized genetic code enumeration: ";
+		return L"ThraustochytriumMito";
+	NxsString err = L"Unrecognized genetic code enumeration: ";
 	err << n;
 	throw NxsException(err);
 }
 
-std::vector<std::string> getGeneticCodeNames()
+std::vector<std::wstring> getGeneticCodeNames()
 {
-	std::vector<std::string> n(NXS_GCODE_CODE_ENUM_SIZE);
-	n[NXS_GCODE_STANDARD] = "Standard" ;
-	n[NXS_GCODE_VERT_MITO] = "VertMito" ;
-	n[NXS_GCODE_YEAST_MITO] = "YeastMito" ;
-	n[NXS_GCODE_MOLD_MITO] = "MoldMito" ;
-	n[NXS_GCODE_INVERT_MITO] = "InvertMito" ;
-	n[NXS_GCODE_CILIATE] = "Ciliate" ;
-	n[NXS_GCODE_ECHINO_MITO] = "EchinoMito" ;
-	n[NXS_GCODE_EUPLOTID] = "Euplotid" ;
-	n[NXS_GCODE_PLANT_PLASTID] = "PlantPlastid" ;
-	n[NXS_GCODE_ALT_YEAST] = "AltYeast" ;
-	n[NXS_GCODE_ASCIDIAN_MITO] = "AscidianMito" ;
-	n[NXS_GCODE_ALT_FLATWORM_MITO] = "AltFlatwormMito" ;
-	n[NXS_GCODE_BLEPHARISMA_MACRO] = "BlepharismaMacro" ;
-	n[NXS_GCODE_CHLOROPHYCEAN_MITO] = "ChlorophyceanMito" ;
-	n[NXS_GCODE_TREMATODE_MITO] = "TrematodeMito" ;
-	n[NXS_GCODE_SCENEDESMUS_MITO] = "ScenedesmusMito" ;
-	n[NXS_GCODE_THRAUSTOCHYTRIUM_MITO] = "ThraustochytriumMito" ;
+	std::vector<std::wstring> n(NXS_GCODE_CODE_ENUM_SIZE);
+	n[NXS_GCODE_STANDARD] = L"Standard" ;
+	n[NXS_GCODE_VERT_MITO] = L"VertMito" ;
+	n[NXS_GCODE_YEAST_MITO] = L"YeastMito" ;
+	n[NXS_GCODE_MOLD_MITO] = L"MoldMito" ;
+	n[NXS_GCODE_INVERT_MITO] = L"InvertMito" ;
+	n[NXS_GCODE_CILIATE] = L"Ciliate" ;
+	n[NXS_GCODE_ECHINO_MITO] = L"EchinoMito" ;
+	n[NXS_GCODE_EUPLOTID] = L"Euplotid" ;
+	n[NXS_GCODE_PLANT_PLASTID] = L"PlantPlastid" ;
+	n[NXS_GCODE_ALT_YEAST] = L"AltYeast" ;
+	n[NXS_GCODE_ASCIDIAN_MITO] = L"AscidianMito" ;
+	n[NXS_GCODE_ALT_FLATWORM_MITO] = L"AltFlatwormMito" ;
+	n[NXS_GCODE_BLEPHARISMA_MACRO] = L"BlepharismaMacro" ;
+	n[NXS_GCODE_CHLOROPHYCEAN_MITO] = L"ChlorophyceanMito" ;
+	n[NXS_GCODE_TREMATODE_MITO] = L"TrematodeMito" ;
+	n[NXS_GCODE_SCENEDESMUS_MITO] = L"ScenedesmusMito" ;
+	n[NXS_GCODE_THRAUSTOCHYTRIUM_MITO] = L"ThraustochytriumMito" ;
 	return n;
 }
 
@@ -829,26 +830,26 @@ std::vector<std::string> getGeneticCodeNames()
   code index 21 => "Scenedesmus obliquus Mitochondrial"
   code index 22 => "Thraustochytrium Mitochondrial"
 */
-std::string getGeneticCodeAAOrder(NxsGeneticCodesEnum codeIndex)
+std::wstring getGeneticCodeAAOrder(NxsGeneticCodesEnum codeIndex)
 {
-	std::vector<std::string> code(NXS_GCODE_CODE_ENUM_SIZE);
-	code[NXS_GCODE_STANDARD] =  "KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSS*CWCLFLF";
-	code[NXS_GCODE_VERT_MITO] = "KNKNTTTT*S*SMIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSWCWCLFLF";
-	code[NXS_GCODE_YEAST_MITO] = "KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSWCWCLFLF";
-	code[NXS_GCODE_MOLD_MITO] = "KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSWCWCLFLF";
-	code[NXS_GCODE_INVERT_MITO] = "KNKNTTTTSSSSMIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSWCWCLFLF";
-	code[NXS_GCODE_CILIATE] = "KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVVQYQYSSSS*CWCLFLF";
-	code[NXS_GCODE_ECHINO_MITO] = "NNKNTTTTSSSSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSWCWCLFLF";
-	code[NXS_GCODE_EUPLOTID] = "KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSCCWCLFLF";
-	code[NXS_GCODE_PLANT_PLASTID] = "KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSS*CWCLFLF";
-	code[NXS_GCODE_ALT_YEAST] = "KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLSLEDEDAAAAGGGGVVVV*Y*YSSSS*CWCLFLF";
-	code[NXS_GCODE_ASCIDIAN_MITO] = "KNKNTTTTGSGSMIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSWCWCLFLF";
-	code[NXS_GCODE_ALT_FLATWORM_MITO] = "NNKNTTTTSSSSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVVYY*YSSSSWCWCLFLF";
-	code[NXS_GCODE_BLEPHARISMA_MACRO] = "KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*YQYSSSS*CWCLFLF";
-	code[NXS_GCODE_CHLOROPHYCEAN_MITO] = "KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*YLYSSSS*CWCLFLF";
-	code[NXS_GCODE_TREMATODE_MITO] = "NNKNTTTTSSSSMIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSWCWCLFLF";
-	code[NXS_GCODE_SCENEDESMUS_MITO] = "KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*YLY*SSS*CWCLFLF";
-	code[NXS_GCODE_THRAUSTOCHYTRIUM_MITO] = "KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSS*CWC*FLF";
+	std::vector<std::wstring> code(NXS_GCODE_CODE_ENUM_SIZE);
+	code[NXS_GCODE_STANDARD] =  L"KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSS*CWCLFLF";
+	code[NXS_GCODE_VERT_MITO] = L"KNKNTTTT*S*SMIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSWCWCLFLF";
+	code[NXS_GCODE_YEAST_MITO] = L"KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSWCWCLFLF";
+	code[NXS_GCODE_MOLD_MITO] = L"KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSWCWCLFLF";
+	code[NXS_GCODE_INVERT_MITO] = L"KNKNTTTTSSSSMIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSWCWCLFLF";
+	code[NXS_GCODE_CILIATE] = L"KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVVQYQYSSSS*CWCLFLF";
+	code[NXS_GCODE_ECHINO_MITO] = L"NNKNTTTTSSSSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSWCWCLFLF";
+	code[NXS_GCODE_EUPLOTID] = L"KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSCCWCLFLF";
+	code[NXS_GCODE_PLANT_PLASTID] = L"KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSS*CWCLFLF";
+	code[NXS_GCODE_ALT_YEAST] = L"KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLSLEDEDAAAAGGGGVVVV*Y*YSSSS*CWCLFLF";
+	code[NXS_GCODE_ASCIDIAN_MITO] = L"KNKNTTTTGSGSMIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSWCWCLFLF";
+	code[NXS_GCODE_ALT_FLATWORM_MITO] = L"NNKNTTTTSSSSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVVYY*YSSSSWCWCLFLF";
+	code[NXS_GCODE_BLEPHARISMA_MACRO] = L"KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*YQYSSSS*CWCLFLF";
+	code[NXS_GCODE_CHLOROPHYCEAN_MITO] = L"KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*YLYSSSS*CWCLFLF";
+	code[NXS_GCODE_TREMATODE_MITO] = L"NNKNTTTTSSSSMIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSSWCWCLFLF";
+	code[NXS_GCODE_SCENEDESMUS_MITO] = L"KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*YLY*SSS*CWCLFLF";
+	code[NXS_GCODE_THRAUSTOCHYTRIUM_MITO] = L"KNKNTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVV*Y*YSSSS*CWC*FLF";
 	int c = (int) codeIndex;
 	return code.at(c);
 }
@@ -1005,26 +1006,26 @@ void NxsCharactersBlock::CodonPosPartitionToPosList(const NxsPartition &codonPos
 	const NxsUnsignedSet * thirdPos = 0L;
 	for (NxsPartition::const_iterator pIt = codonPos.begin(); pIt != codonPos.end(); ++pIt)
 		{
-		if (pIt->first == "1") 
+		if (pIt->first == L"1") 
 			{
 			assert(firstPos == 0L);
 			firstPos = &(pIt->second);
 			}
-		else if (pIt->first == "2") 
+		else if (pIt->first == L"2") 
 			{
 			assert(secondPos == 0L);
 			secondPos = &(pIt->second);
 			}
-		else if (pIt->first == "3") 
+		else if (pIt->first == L"3") 
 			{
 			assert(thirdPos == 0L);
 			thirdPos = &(pIt->second);
 			}
 		}
 	if (firstPos == 0L || secondPos == 0L || thirdPos == 0L)
-		throw NxsException("Expecting partition subsets named 1, 2, and 3");
+		throw NxsException(L"Expecting partition subsets named 1, 2, and 3");
 	if (firstPos->size() != secondPos->size() || firstPos->size() != thirdPos->size())
-		throw NxsException("Expecting the partition subsets named 1, 2, and 3 to have the same size");
+		throw NxsException(L"Expecting the partition subsets named 1, 2, and 3 to have the same size");
 	NxsUnsignedSet::const_iterator fIt = firstPos->begin();
 	NxsUnsignedSet::const_iterator sIt = secondPos->begin();
 	NxsUnsignedSet::const_iterator thIt = thirdPos->begin();
@@ -1062,7 +1063,7 @@ NxsCharactersBlock * NxsCharactersBlock::NewProteinCharactersBlock(
 	if (!codonBlock)
 		return NULL;
 	if (codonBlock->GetDataType() != NxsCharactersBlock::codon)
-		throw NxsException("NewProteinCharactersBlock must be called with a block of codon datatype"); 
+		throw NxsException(L"NewProteinCharactersBlock must be called with a block of codon datatype"); 
 	const unsigned nc = codonBlock->GetNCharTotal();
 	
 	/* create a new characters block with the same TAXA, but no ASSUMPTIONS block */
@@ -1114,7 +1115,7 @@ NxsCharactersBlock * NxsCharactersBlock::NewProteinCharactersBlock(
 		}
 	else
 		{
-		throw NxsException("NewProteinCharactersBlock is not implemented for cases in which you are not mapping any ambiguity to the missing state code."); 
+		throw NxsException(L"NewProteinCharactersBlock is not implemented for cases in which you are not mapping any ambiguity to the missing state code."); 
 		}
 	return aaBlock;
 }
@@ -1186,7 +1187,7 @@ NxsCharactersBlock * NxsCharactersBlock::NewCodonsCharactersBlock(
 	
 	const unsigned nnucs = (const unsigned)sourceChars->size();
 	if (nnucs % 3)
-		throw NxsException("Cannot create a codons block with a number of characters that is not a multiple of 3"); 
+		throw NxsException(L"Cannot create a codons block with a number of characters that is not a multiple of 3"); 
 	const unsigned ncodons = nnucs/3;
 	
 	/* create a new characters block with the same TAXA, but no ASSUMPTIONS block */
@@ -1198,7 +1199,7 @@ NxsCharactersBlock * NxsCharactersBlock::NewCodonsCharactersBlock(
 	codonsBlock->gap = (gapsToUnknown ? '\0' : dnaBlock->gap);
 	codonsBlock->symbols.assign(64, '\0');
 	codonsBlock->tokens = false;
-	const char * gsl[] = {"AAA",  "AAC",  "AAG",  "AAT",  "ACA",  "ACC",  "ACG",  "ACT",  "AGA",  "AGC",  "AGG",  "AGT",  "ATA",  "ATC",  "ATG",  "ATT",  "CAA",  "CAC",  "CAG",  "CAT",  "CCA",  "CCC",  "CCG",  "CCT",  "CGA",  "CGC",  "CGG",  "CGT",  "CTA",  "CTC",  "CTG",  "CTT",  "GAA",  "GAC",  "GAG",  "GAT",  "GCA",  "GCC",  "GCG",  "GCT",  "GGA",  "GGC",  "GGG",  "GGT",  "GTA",  "GTC",  "GTG",  "GTT",  "TAA",  "TAC",  "TAG",  "TAT",  "TCA",  "TCC",  "TCG",  "TCT",  "TGA",  "TGC",  "TGG",  "TGT",  "TTA",  "TTC",  "TTG",  "TTT"};
+	const wchar_t* gsl[] = {L"AAA",  L"AAC",  L"AAG",  L"AAT",  L"ACA",  L"ACC",  L"ACG",  L"ACT",  L"AGA",  L"AGC",  L"AGG",  L"AGT",  L"ATA",  L"ATC",  L"ATG",  L"ATT",  L"CAA",  L"CAC",  L"CAG",  L"CAT",  L"CCA",  L"CCC",  L"CCG",  L"CCT",  L"CGA",  L"CGC",  L"CGG",  L"CGT",  L"CTA",  L"CTC",  L"CTG",  L"CTT",  L"GAA",  L"GAC",  L"GAG",  L"GAT",  L"GCA",  L"GCC",  L"GCG",  L"GCT",  L"GGA",  L"GGC",  L"GGG",  L"GGT",  L"GTA",  L"GTC",  L"GTG",  L"GTT",  L"TAA",  L"TAC",  L"TAG",  L"TAT",  L"TCA",  L"TCC",  L"TCG",  L"TCT",  L"TGA",  L"TGC",  L"TGG",  L"TGT",  L"TTA",  L"TTC",  L"TTG",  L"TTT"};
 	
 	codonsBlock->globalStateLabels.reserve(64);
 	for (unsigned i = 0 ; i < 64; ++i)	
@@ -1266,7 +1267,7 @@ NxsCharactersBlock * NxsCharactersBlock::NewCodonsCharactersBlock(
 		}
 	else
 		{
-		throw NxsException("NewCodonsCharactersBlock is not implemented for cases in which you are not mapping any ambiguity to the missing state code."); 
+		throw NxsException(L"NewCodonsCharactersBlock is not implemented for cases in which you are not mapping any ambiguity to the missing state code."); 
 		}
 	if (!untranslated.empty())
 		{
@@ -1310,7 +1311,7 @@ NxsCharactersBlock * NxsCharactersBlock::NewCodonsCharactersBlock(
 			}
 		else
 			{
-			throw NxsException("NewProteinCharactersBlock is not implemented for cases in which you are not mapping any ambiguity to the missing state code."); 
+			throw NxsException(L"NewProteinCharactersBlock is not implemented for cases in which you are not mapping any ambiguity to the missing state code."); 
 			}
 		*spareNucs = untBlock;
 		}
@@ -1320,11 +1321,11 @@ NxsCharactersBlock * NxsCharactersBlock::NewCodonsCharactersBlock(
 }
 
 
-std::vector<double>  NxsTransformationManager::GetDoubleWeights(const std::string &set_name) const
+std::vector<double>  NxsTransformationManager::GetDoubleWeights(const std::wstring &set_name) const
 	{
 	std::vector<double> r; 
 	const ListOfDblWeights *p = 0L;
-	std::map<std::string, ListOfDblWeights>::const_iterator dIt = dblWtSets.begin();
+	std::map<std::wstring, ListOfDblWeights>::const_iterator dIt = dblWtSets.begin();
 	for (; dIt != dblWtSets.end(); ++dIt)
 		{
 		if (NxsString::case_insensitive_equals(dIt->first.c_str(), set_name.c_str()))
@@ -1354,11 +1355,11 @@ std::vector<double>  NxsTransformationManager::GetDoubleWeights(const std::strin
 	return r;
 	}
 
-std::vector<int> NxsTransformationManager::GetIntWeights(const std::string &set_name) const
+std::vector<int> NxsTransformationManager::GetIntWeights(const std::wstring &set_name) const
 	{
 	std::vector<int> r; 
 	const ListOfIntWeights *p = 0L;
-	std::map<std::string, ListOfIntWeights>::const_iterator dIt = intWtSets.begin();
+	std::map<std::wstring, ListOfIntWeights>::const_iterator dIt = intWtSets.begin();
 	for (; dIt != intWtSets.end(); ++dIt)
 		{
 		if (NxsString::case_insensitive_equals(dIt->first.c_str(), set_name.c_str()))
@@ -1390,12 +1391,12 @@ std::vector<int> NxsTransformationManager::GetIntWeights(const std::string &set_
 
 NxsDiscreteDatatypeMapper::NxsDiscreteDatatypeMapper(
 	NxsCharactersBlock::DataTypesEnum datatypeE, 
-	const std::string & symbolsStr,
-	char missingChar, 
-	char gap, 
-	char matchingChar,
+	const std::wstring & symbolsStr,
+	wchar_t missingChar, 
+	wchar_t gap, 
+	wchar_t matchingChar,
 	bool respectingCase, 
-	const std::map<char, NxsString> & moreEquates)
+	const std::map<wchar_t, NxsString> & moreEquates)
 	:geneticCode(NXS_GCODE_NO_CODE),
 	cLookup(NULL),
 	stateCodeLookupPtr(NULL),
@@ -1413,23 +1414,23 @@ NxsDiscreteDatatypeMapper::NxsDiscreteDatatypeMapper(
 	if (symbols.empty())
 		symbols = NxsCharactersBlock::GetDefaultSymbolsForType(datatype);
 	if (datatype == NxsCharactersBlock::mixed)
-		throw NxsException("Cannot create a mixed datatype mapper"); // this should be the only empty string-generating datatype
+		throw NxsException(L"Cannot create a mixed datatype mapper"); // this should be the only empty wstring-generating datatype
 	RefreshMappings(0L);
 	}
 
-void NxsDiscreteDatatypeMapper::DebugPrint(std::ostream & out) const
+void NxsDiscreteDatatypeMapper::DebugPrint(std::wostream & out) const
 	{
-	out << GetNumStatesIncludingGap() << "states (";
+	out << GetNumStatesIncludingGap() << L"states (";
 	if (gapChar == '\0')
-		out << "no gaps";
+		out << L"no gaps";
 	else
-		out << "including the gap \"state\"";
+		out << L"including the gap \"state\"";
 	const int nsc = (int) stateSetsVec.size();
-	out << '\n' << nsc << " state codes.\n";
-	out << "NEXUS     State Code      States\n";
+	out << '\n' << nsc << L" state codes.\n";
+	out << L"NEXUS     State Code      States\n";
 	for (int sc = sclOffset; sc < sclOffset + nsc; ++sc)
 		{
-		std::string nex;
+		std::wstring nex;
 		for (int c = 0; c < 127; ++c)
 			{
 			if (cLookup[c] == sc)
@@ -1437,9 +1438,9 @@ void NxsDiscreteDatatypeMapper::DebugPrint(std::ostream & out) const
 			}
 		int buf =  (int) (10 - nex.size());
 		nex.append(buf, ' ');
-		out << nex << "    " << sc << "     ";
+		out << nex << L"    " << sc << L"     ";
 		const std::set<int>	&ss = GetStateSetForCode(sc);
-		std::string decoded;
+		std::wstring decoded;
 		for (std::set<int>::const_iterator s = ss.begin(); s != ss.end(); ++s)
 			decoded.append(StateCodeToNexusString(*s));
 		if (decoded.length() < 2)
@@ -1476,9 +1477,9 @@ void NxsCharactersBlock::CreateDatatypeMapperObjects(const NxsPartition & dtPart
 		//@@@TMP add code to fill  DataTypesEnum -> NxsUnsignedSet map  here ! for DZ and DS.
 		for (NxsPartition::const_iterator pIt = dtParts.begin(); pIt != dtParts.end(); ++pIt, ++cIt)
 			{
-			std::string mt;
+			std::wstring mt;
 			if (*cIt == standard)
-				mt.assign("0123456789"); /*mrbayes is the only program to support MIXED and it uses a default (not extendable) symbols list of 0123456789 rather than 01*/
+				mt.assign(L"0123456789"); /*mrbayes is the only program to support MIXED and it uses a default (not extendable) symbols list of 0123456789 rather than 01*/
 			NxsDiscreteDatatypeMapper d(*cIt, mt, missing, gap, matchchar, respectingCase, userEquates);
 			const NxsUnsignedSet & indexSet = pIt->second;
 			DatatypeMapperAndIndexSet das(d, pIt->second);
@@ -1519,14 +1520,14 @@ bool NxsCharactersBlock::AugmentedSymbolsToMixed()
 	DataTypesEnum odt = GetOriginalDataType();
 	if (IsMixedType() || (odt == GetDataType()))
 		return false;
-	const std::string origSymb = GetDefaultSymbolsForType(odt);
-	const std::string cutSymb = symbols.substr(0, origSymb.length());
+	const std::wstring origSymb = GetDefaultSymbolsForType(odt);
+	const std::wstring cutSymb = symbols.substr(0, origSymb.length());
 	if (origSymb != cutSymb)
 		return false;
-	const std::string augmentSymbols = symbols.substr(origSymb.length());
+	const std::wstring augmentSymbols = symbols.substr(origSymb.length());
 	if (augmentSymbols.empty())
 		return false;
-	for (std::string::const_iterator a = augmentSymbols.begin(); a != augmentSymbols.end(); ++a)
+	for (std::wstring::const_iterator a = augmentSymbols.begin(); a != augmentSymbols.end(); ++a)
 		{
 		if (!isdigit(*a))
 			return false;
@@ -1575,7 +1576,7 @@ bool NxsCharactersBlock::AugmentedSymbolsToMixed()
 		return false; /* dealing with equates correctly is not implemented below, so we'll bale out */
 
 	/* add the new mappers */
-	std::map<char, NxsString> noEquates;
+	std::map<wchar_t, NxsString> noEquates;
 	datatypeMapperVec.clear();
 	NxsDiscreteDatatypeMapper o(odt, origSymb, missing, gap, matchchar, respectingCase, noEquates);
 	datatypeMapperVec.push_back(DatatypeMapperAndIndexSet(o, origTypeChars));
@@ -1604,8 +1605,8 @@ bool NxsCharactersBlock::AugmentedSymbolsToMixed()
 					{
 					const bool isOrigT = origTypeChars.count(column) > 0;
 					const std::set<int> oldSymbols = oldMapper.GetStateSetForCode(initStateCode);
-					const std::string oldNexusString = oldMapper.StateCodeToNexusString(initStateCode);
-					const char oldNexusChar = (oldNexusString.length() == 1 ? oldNexusString[0] : '\0');
+					const std::wstring oldNexusString = oldMapper.StateCodeToNexusString(initStateCode);
+					const wchar_t oldNexusChar = (oldNexusString.length() == 1 ? oldNexusString[0] : '\0');
 					const bool isPoly =  oldMapper.IsPolymorphic(initStateCode);
 					int newStateCode ;
 					if (isOrigT)
@@ -1666,60 +1667,60 @@ void NxsCharactersBlock::HandleFormat(
 		restrictionDataype = false;
 		for (ProcessedNxsCommand::const_iterator wIt = tokenVec.begin(); wIt != tvEnd; ++wIt)
 			{
-			if (wIt->Equals("DATATYPE"))
+			if (wIt->Equals(L"DATATYPE"))
 				{
-				DemandEquals(wIt, tvEnd, " after keyword DATATYPE");
-				ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, " after \"DATATYPE =\" in FORMAT command");
-				if (wIt->Equals("STANDARD"))
+				DemandEquals(wIt, tvEnd, L" after keyword DATATYPE");
+				ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L" after \"DATATYPE =\" in FORMAT command");
+				if (wIt->Equals(L"STANDARD"))
 					{
 					datatype = standard;
-					symbols = "01";
+					symbols = L"01";
 					}
-				else if (wIt->Equals("DNA"))
+				else if (wIt->Equals(L"DNA"))
 					datatype = dna;
-				else if (wIt->Equals("RNA"))
+				else if (wIt->Equals(L"RNA"))
 					datatype = rna;
-				else if (wIt->Equals("NUCLEOTIDE"))
+				else if (wIt->Equals(L"NUCLEOTIDE"))
 					datatype = nucleotide;
-				else if (wIt->Equals("PROTEIN"))
+				else if (wIt->Equals(L"PROTEIN"))
 					datatype = protein;
-				else if (wIt->Equals("RESTRICTION"))
+				else if (wIt->Equals(L"RESTRICTION"))
 					{
 					datatype = standard;
 					restrictionDataype = true;
 					}
-				else if (wIt->Equals("CONTINUOUS"))
+				else if (wIt->Equals(L"CONTINUOUS"))
 					{
 					datatype = continuous;
 					statesFormat = INDIVIDUALS;
-					items = std::vector<std::string>(1, std::string("AVERAGE"));
+					items = std::vector<std::wstring>(1, std::wstring(L"AVERAGE"));
 					tokens = true;
 					}
-				else if (supportMixedDatatype && wIt->Equals("MIXED"))
+				else if (supportMixedDatatype && wIt->Equals(L"MIXED"))
 					{
 					datatype = mixed;
-					ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, " after \"DATATYPE=MIXED\" in FORMAT command. Expecting (");
-					if (!wIt->Equals("("))
+					ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L" after \"DATATYPE=MIXED\" in FORMAT command. Expecting (");
+					if (!wIt->Equals(L"("))
 						{
-						errormsg << "Expecting ( after \"DATATYPE=MIXED\" but found " << wIt->GetToken();
+						errormsg << L"Expecting ( after \"DATATYPE=MIXED\" but found " << wIt->GetToken();
 						throw NxsException(errormsg, *wIt);
 						}
-					ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, " after \"DATATYPE=MIXED(\" in FORMAT command. Expecting a datatype");
-					ostringstream fakestream;
-					while (!wIt->Equals(")"))
+					ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L" after \"DATATYPE=MIXED(\" in FORMAT command. Expecting a datatype");
+					wostringstream fakestream;
+					while (!wIt->Equals(L")"))
 						{
-						fakestream << ' ' << NxsString::GetEscaped(wIt->GetToken());
-						ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, " in \"DATATYPE=MIXED\" in FORMAT command. Expecting a closing ) to terminate the list.");
+                                                fakestream << ' ' <<  NxsString::GetEscaped(wIt->GetToken());
+						ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L" in \"DATATYPE=MIXED\" in FORMAT command. Expecting a closing ) to terminate the list.");
 						}
 					fakestream << ';';
-					const std::string accumulated = fakestream.str();
-					istringstream fakeinput(accumulated);
+					const std::wstring accumulated = fakestream.str();
+					wistringstream fakeinput(accumulated);
 					NxsToken subToken(fakeinput);
 					try
 						{
-						std::string mt("mixed datatype definition");
+						std::wstring mt(L"mixed datatype definition");
 						subToken.GetNextToken();
-						this->ReadPartitionDef(dtParts, *this, mt, "Character", "Datatype=Mixed", subToken, false, true, false);
+						this->ReadPartitionDef(dtParts, *this, mt, L"Character", L"Datatype=Mixed", subToken, false, true, false);
 						}
 					catch (NxsException & x)
 						{
@@ -1728,14 +1729,14 @@ void NxsCharactersBlock::HandleFormat(
 						}
 					catch (...)
 						{
-						errormsg << "Error parsing \"DATATYPE=MIXED\" subcommand in FORMAT the command.";
+						errormsg << L"Error parsing \"DATATYPE=MIXED\" subcommand in FORMAT the command.";
 						throw NxsException(errormsg, *wIt);
 						}
 					for (NxsPartition::const_iterator pIt = dtParts.begin(); pIt != dtParts.end(); ++pIt)
 						{
 						NxsString name(pIt->first.c_str());
 						name.ToUpper();
-						if (name == "RESTRICTION")
+						if (name == L"RESTRICTION")
 							{
 							dtv.push_back(standard);
 							isR.push_back(true);
@@ -1743,19 +1744,19 @@ void NxsCharactersBlock::HandleFormat(
 						else
 							{
 							isR.push_back(false);
-							if (name == "STANDARD")
+							if (name == L"STANDARD")
 								dtv.push_back(standard);
-							else if (name == "DNA")
+							else if (name == L"DNA")
 								dtv.push_back(dna);
-							else if (name == "RNA")
+							else if (name == L"RNA")
 								dtv.push_back(rna);
-							else if (name == "NUCLEOTIDE")
+							else if (name == L"NUCLEOTIDE")
 								dtv.push_back(nucleotide);
-							else if (name == "PROTEIN")
+							else if (name == L"PROTEIN")
 								dtv.push_back(protein);
 							else 
 								{
-								errormsg << pIt->first <<  " is not a valid DATATYPE within a " <<  id << " block";
+								errormsg << pIt->first <<  L" is not a valid DATATYPE within a " <<  id << L" block";
 								throw NxsException(errormsg, *wIt);
 								}
 							}
@@ -1763,7 +1764,7 @@ void NxsCharactersBlock::HandleFormat(
 					}
 				else
 					{
-					errormsg << wIt->GetToken() <<  " is not a valid DATATYPE within a " <<  id << " block";
+					errormsg << wIt->GetToken() <<  L" is not a valid DATATYPE within a " <<  id << L" block";
 					throw NxsException(errormsg, *wIt);
 					}
 				datatypeReadFromFormat = true;
@@ -1773,7 +1774,7 @@ void NxsCharactersBlock::HandleFormat(
 				if (!ignoreCaseAssumed)
 					break;
 				}
-			else if (wIt->Equals("RESPECTCASE"))
+			else if (wIt->Equals(L"RESPECTCASE"))
 				{
 				ignoreCaseAssumed = false;
 				respectingCase = true;
@@ -1785,91 +1786,91 @@ void NxsCharactersBlock::HandleFormat(
 	for (ProcessedNxsCommand::const_iterator wIt = tokenVec.begin(); wIt != tvEnd; ++wIt)
 		{
 		
-		if (wIt->Equals("DATATYPE"))// we should have already processed this
+		if (wIt->Equals(L"DATATYPE"))// we should have already processed this
 			{
-			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "after DATATYPE in FORMAT command"); // = 
-			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "after DATATYPE = in FORMAT command"); // datatype
+			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"after DATATYPE in FORMAT command"); // = 
+			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"after DATATYPE = in FORMAT command"); // datatype
 			}
-		else if (wIt->Equals("RESPECTCASE"))
+		else if (wIt->Equals(L"RESPECTCASE"))
 			{
 			if (!respectingCase)
 				{
-				errormsg << "Only one FORMAT command should occur per DATA or CHARACTERS block.";
+				errormsg << L"Only one FORMAT command should occur per DATA or CHARACTERS block.";
 				throw NxsException(errormsg, *wIt);
 				}
 			}
-		else if (wIt->Equals("MISSING"))
+		else if (wIt->Equals(L"MISSING"))
 			{
-			DemandEquals(wIt, tvEnd, "after keyword MISSING");
-			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "after \"MISSING = \" in FORMAT command");			
-			const std::string t = wIt->GetToken();
+			DemandEquals(wIt, tvEnd, L"after keyword MISSING");
+			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"after \"MISSING = \" in FORMAT command");			
+			const std::wstring t = wIt->GetToken();
 			if (t.length() != 1)
 				{
-				errormsg << "MISSING symbol should be a single character, but " << t << " was specified";
+				errormsg << L"MISSING symbol should be a single character, but " << t << L" was specified";
 				WarnDangerousContent(errormsg, *wIt);
 				}
 			else if (token.IsPunctuationToken(t) && !token.IsPlusMinusToken(t))
 				{
-				errormsg << "MISSING symbol specified cannot be a punctuation token (" << t << " was specified)";
+				errormsg << L"MISSING symbol specified cannot be a punctuation token (" << t << L" was specified)";
 				WarnDangerousContent(errormsg, *wIt);
 				}
 			else if (token.IsWhitespaceToken(t))
 				{
-				errormsg << "MISSING symbol specified cannot be a whitespace character (" << t << " was specified)";
+				errormsg << L"MISSING symbol specified cannot be a whitespace character (" << t << L" was specified)";
 				WarnDangerousContent(errormsg, *wIt);
 				}
 			missing = t[0];
 			}
-		else if (wIt->Equals("GAP"))
+		else if (wIt->Equals(L"GAP"))
 			{
-			DemandEquals(wIt, tvEnd, "after keyword GAP");
-			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "after \"GAP = \" in FORMAT command");		
-			const std::string t = wIt->GetToken();
+			DemandEquals(wIt, tvEnd, L"after keyword GAP");
+			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"after \"GAP = \" in FORMAT command");		
+			const std::wstring t = wIt->GetToken();
 			if (t.length() != 1)
 				{
-				errormsg << "GAP symbol should be a single character, but " << t << " was specified";
+				errormsg << L"GAP symbol should be a single character, but " << t << L" was specified";
 				WarnDangerousContent(errormsg, *wIt);
 				}
 			else if (token.IsPunctuationToken(t) && !token.IsPlusMinusToken(t))
 				{
-				errormsg << "GAP symbol specified cannot be a punctuation token " << t << " was specified";
+				errormsg << L"GAP symbol specified cannot be a punctuation token " << t << L" was specified";
 				WarnDangerousContent(errormsg, *wIt);
 				}
 			else if (token.IsWhitespaceToken(t))
 				{
-				errormsg << "GAP symbol specified cannot be a whitespace character " << t << " was specified";
+				errormsg << L"GAP symbol specified cannot be a whitespace character " << t << L" was specified";
 				WarnDangerousContent(errormsg, *wIt);
 				}
 			gap = t[0];
 			}
-		else if (wIt->Equals("MATCHCHAR"))
+		else if (wIt->Equals(L"MATCHCHAR"))
 			{
-			DemandEquals(wIt, tvEnd, "after keyword MATCHCHAR");
-			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "after \"MATCHCHAR = \" in FORMAT command");		
-			const std::string t = wIt->GetToken();
+			DemandEquals(wIt, tvEnd, L"after keyword MATCHCHAR");
+			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"after \"MATCHCHAR = \" in FORMAT command");		
+			const std::wstring t = wIt->GetToken();
 			if (t.length() != 1)
 				{
-				errormsg << "MATCHCHAR symbol should be a single character, but " << t << " was specified";
+				errormsg << L"MATCHCHAR symbol should be a single character, but " << t << L" was specified";
 				WarnDangerousContent(errormsg, *wIt);
 				}
 			else if (token.IsPunctuationToken(t) && !token.IsPlusMinusToken(t))
 				{
-				errormsg << "MATCHCHAR symbol specified cannot be a punctuation token (" << t << " was specified)";
+				errormsg << L"MATCHCHAR symbol specified cannot be a punctuation token (" << t << L" was specified)";
 				WarnDangerousContent(errormsg, *wIt);
 				}
 			else if (token.IsWhitespaceToken(t))
 				{
-				errormsg << "MATCHCHAR symbol specified cannot be a whitespace character (" << t << " was specified)";
+				errormsg << L"MATCHCHAR symbol specified cannot be a whitespace character (" << t << L" was specified)";
 				WarnDangerousContent(errormsg, *wIt);
 				}
 			matchchar = t[0];
 			}
-		else if (wIt->Equals("SYMBOLS") || wIt->Equals("SYMBOL"))
+		else if (wIt->Equals(L"SYMBOLS") || wIt->Equals(L"SYMBOL"))
 			{
 			if (datatype == NxsCharactersBlock::continuous)
-				throw NxsException("SYMBOLS subcommand not allowed for DATATYPE=CONTINUOUS", *wIt);
+				throw NxsException(L"SYMBOLS subcommand not allowed for DATATYPE=CONTINUOUS", *wIt);
 			if (restrictionDataype)
-				throw NxsException("SYMBOLS subcommand not allowed for DATATYPE=RESTRICTION", *wIt);
+				throw NxsException(L"SYMBOLS subcommand not allowed for DATATYPE=RESTRICTION", *wIt);
 			int numDefStates;
 			unsigned maxNewStates = NCL_MAX_STATES;
 			switch(datatype)
@@ -1891,64 +1892,64 @@ void NxsCharactersBlock::HandleFormat(
 					symbols.clear();
 					maxNewStates = NCL_MAX_STATES;
 				}
-			DemandEquals(wIt, tvEnd, "after keyword SYMBOLS");
-			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "\" to start the symbols list");
-			if (!wIt->Equals("\""))
+			DemandEquals(wIt, tvEnd, L"after keyword SYMBOLS");
+			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"\" to start the symbols list");
+			if (!wIt->Equals(L"\""))
 				{
-				errormsg << "Expecting \" after Symbols= but " << wIt->GetToken() << " was found";
+				errormsg << L"Expecting \" after Symbols= but " << wIt->GetToken() << L" was found";
 				throw NxsException(errormsg, *wIt);
 				}
-			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "closing \" of symbols list");
+			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"closing \" of symbols list");
 			NxsString s;
-			while (!wIt->Equals("\""))
+			while (!wIt->Equals(L"\""))
 				{
 				s += wIt->GetToken().c_str();
-				ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "closing \" of symbols list");
+				ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"closing \" of symbols list");
 				}
 				
-			const std::string tos = NxsString::strip_whitespace(s);
-			const char * to = tos.c_str();
+			const std::wstring tos = NxsString::strip_whitespace(s);
+			const wchar_t* to = tos.c_str();
 			unsigned tlen = (unsigned)tos.length();
 			if (tlen > maxNewStates)
 				{
-				errormsg << "SYMBOLS defines " << tlen << " new states but only " << maxNewStates << " new states allowed for this DATATYPE";
+				errormsg << L"SYMBOLS defines " << tlen << L" new states but only " << maxNewStates << L" new states allowed for this DATATYPE";
 				throw NxsException(errormsg, *wIt);
 				}
 			// Check to make sure user has not used any symbols already in the
 			// default symbols list for this data type
 			//
-			std::string preprocessedS;
+			std::wstring preprocessedS;
 			for (unsigned i = 0; i < tlen; i++)
 				{
 				if (to[i] == '~')
 					{
 					if (i == 0 || i == tlen -1)
 						{
-						errormsg << "A ~ in a SYMBOLS list is interpreted as a range of symbols.  The ~ cannot be the first or last character in the symbols list";
+						errormsg << L"A ~ in a SYMBOLS list is interpreted as a range of symbols.  The ~ cannot be the first or last character in the symbols list";
 						throw NxsException(errormsg, token);
 						}
 					const int jj = i - 1 ; 
-					const char prevChar = to[jj];
-					const char nextChar = to[i+1];
+					const wchar_t prevChar = to[jj];
+					const wchar_t nextChar = to[i+1];
 					if ((isdigit(prevChar) && isdigit(nextChar)) || (isalpha(prevChar) && isalpha(nextChar)))
 						{
 						if (nextChar > prevChar)
 							{
-							for (char c = (char)((int)prevChar + 1) ; c < nextChar;)
+							for (wchar_t c = (wchar_t)((int)prevChar + 1) ; c < nextChar;)
 								{
 								preprocessedS.append(1, c);
-								c = (char) ((int)c + 1);
+								c = (wchar_t) ((int)c + 1);
 								}
 							}
 						else
 							{
-							errormsg << "Endpoint of SYMBOLS range must be greater than the starting point.  This was not true of " << prevChar << '~' << nextChar;
+							errormsg << L"Endpoint of SYMBOLS range must be greater than the starting point.  This was not true of " << prevChar << '~' << nextChar;
 							throw NxsException(errormsg, token);
 							}
 						}
 					else
 						{
-						errormsg << prevChar << '~' << nextChar << " is an illegal SYMBOLS range. A range must go from a letter to a letter or from a number to number" ;
+						errormsg << prevChar << '~' << nextChar << L" is an illegal SYMBOLS range. A range must go from a letter to a letter or from a number to number" ;
 						throw NxsException(errormsg, token);
 						}
 					}
@@ -1956,12 +1957,12 @@ void NxsCharactersBlock::HandleFormat(
 					preprocessedS += to[i];
 				}
 			NxsString processedS;
-			for (std::string::const_iterator pp = preprocessedS.begin(); pp != preprocessedS.end(); ++pp)
+			for (std::wstring::const_iterator pp = preprocessedS.begin(); pp != preprocessedS.end(); ++pp)
 				{
-				const char c = *pp;
+				const wchar_t c = *pp;
 				if (IsInSymbols(c))
 					{
-					errormsg << "The character " << c << " defined in SYMBOLS is predefined for this DATATYPE and should not occur in a SYMBOLS statement";
+					errormsg << L"The character " << c << L" defined in SYMBOLS is predefined for this DATATYPE and should not occur in a SYMBOLS statement";
 					if (nexusReader)
 						{
 						nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
@@ -1971,7 +1972,7 @@ void NxsCharactersBlock::HandleFormat(
 				else if (   (respectingCase && (userEquates.find(c) != userEquates.end()))
 						 || (! respectingCase && (userEquates.find(toupper(c)) != userEquates.end() || userEquates.find(tolower(*pp)) != userEquates.end())))
 					{
-					errormsg << "The character " << *pp << " defined in SYMBOLS subcommand, has already been introduced as an EQUATE key.  The use of a character as both a state symbol and an equate key is not allowed.";
+					errormsg << L"The character " << *pp << L" defined in SYMBOLS subcommand, has already been introduced as an EQUATE key.  The use of a character as both a state symbol and an equate key is not allowed.";
 					throw NxsException(errormsg, token);
 					}
 				else
@@ -1983,18 +1984,18 @@ void NxsCharactersBlock::HandleFormat(
 					{
 					if (this->allowAugmentingOfSequenceSymbols)
 						{
-						errormsg << "Adding symbols to the " << GetNameOfDatatype(this->datatype) << " datatype will cause the matrix to be treated as if it were a";
+						errormsg << L"Adding symbols to the " << GetNameOfDatatype(this->datatype) << L" datatype will cause the matrix to be treated as if it were a";
 						if (this->convertAugmentedToMixed)
-							errormsg << " MIXED datatype matrix";
+							errormsg << L" MIXED datatype matrix";
 						else
-							errormsg << " STANDARD datatype matrix";
+							errormsg << L" STANDARD datatype matrix";
 						if (!this->convertAugmentedToMixed)
 							nexusReader->NexusWarnToken(errormsg, NxsReader::AMBIGUOUS_CONTENT_WARNING, token);
 						errormsg.clear();
 						}
 					else
 						{
-						errormsg << "Symbols cannot be added to the " << GetNameOfDatatype(this->datatype) << " datatype.";
+						errormsg << L"Symbols cannot be added to the " << GetNameOfDatatype(this->datatype) << L" datatype.";
 						throw NxsException(errormsg, token);
 						}
 					}
@@ -2005,28 +2006,28 @@ void NxsCharactersBlock::HandleFormat(
 				}
 			}
 
-		else if (wIt->Equals("EQUATE"))
+		else if (wIt->Equals(L"EQUATE"))
 			{
 			if (datatype == NxsCharactersBlock::continuous)
-				throw NxsException("EQUATE subcommand not allowed for DATATYPE=CONTINUOUS", *wIt);
+				throw NxsException(L"EQUATE subcommand not allowed for DATATYPE=CONTINUOUS", *wIt);
 
-			DemandEquals(wIt, tvEnd, "after keyword EQUATE");
-			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "\" to start the Equate definition");
-			if (!wIt->Equals("\""))
+			DemandEquals(wIt, tvEnd, L"after keyword EQUATE");
+			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"\" to start the Equate definition");
+			if (!wIt->Equals(L"\""))
 				{
-				errormsg << "Expecting '\"' after keyword EQUATE but found " << wIt->GetToken() << " instead";
+				errormsg << L"Expecting '\"' after keyword EQUATE but found " << wIt->GetToken() << L" instead";
 				throw NxsException(errormsg, *wIt);
 				}
-			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "\" to end the Equate definition");
-			while (!wIt->Equals("\""))
+			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"\" to end the Equate definition");
+			while (!wIt->Equals(L"\""))
 				{
-				std::string t = wIt->GetToken();
+				std::wstring t = wIt->GetToken();
 				if (t.length() != 1)
 					{
-					errormsg << "Expecting single-character EQUATE symbol but found " << wIt->GetToken() << " instead";
+					errormsg << L"Expecting single-character EQUATE symbol but found " << wIt->GetToken() << L" instead";
 					throw NxsException(errormsg, *wIt);
 					}
-				const char ch = t[0];
+				const wchar_t ch = t[0];
 				bool badEquateSymbol = false;
 
 				// Equate symbols cannot be punctuation (except for + and -)
@@ -2037,125 +2038,125 @@ void NxsCharactersBlock::HandleFormat(
 					badEquateSymbol = true;
 				if (badEquateSymbol)
 					{
-					errormsg << "EQUATE symbol specified (" << wIt->GetToken() <<  ") is not valid. Equate symbols cannot be any of the following: ()[]{}/\\,;:=*'\"`<>^";
+					errormsg << L"EQUATE symbol specified (" << wIt->GetToken() <<  L") is not valid. Equate symbols cannot be any of the following: ()[]{}/\\,;:=*'\"`<>^";
 					WarnDangerousContent(errormsg, *wIt);
 					}
 				if (ch == missing || ch == matchchar || ch == gap || IsInSymbols(ch))
 					{
-					errormsg << "EQUATE symbol specified (" << wIt->GetToken() <<  ") is not valid; An Equate symbol cannot be a state symbol or identical to the  missing,  gap, or matchchar symbols.";
+					errormsg << L"EQUATE symbol specified (" << wIt->GetToken() <<  L") is not valid; An Equate symbol cannot be a state symbol or identical to the  missing,  gap, or matchchar symbols.";
 					throw NxsException(errormsg, *wIt);
 					}
 				
-				DemandEquals(wIt, tvEnd, " in EQUATE definition");
-				ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "State or set of states in Equate definition");
+				DemandEquals(wIt, tvEnd, L" in EQUATE definition");
+				ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"State or set of states in Equate definition");
 				NxsString s;
 				s = wIt->GetToken().c_str();
-				if (wIt->Equals("{"))
+				if (wIt->Equals(L"{"))
 					{
-					while (!wIt->Equals("}"))
+					while (!wIt->Equals(L"}"))
 						{
-						ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "} to close the state set in an equate definition");
+						ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"} to close the state set in an equate definition");
 						s += wIt->GetToken().c_str();
 						}
 					}
-				else if (wIt->Equals("("))
+				else if (wIt->Equals(L"("))
 					{
-					while (!wIt->Equals(")"))
+					while (!wIt->Equals(L")"))
 						{
-						ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, ") to close the state set in an equate definition");
+						ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L") to close the state set in an equate definition");
 						s += wIt->GetToken().c_str();
 						}
 					}
-				const std::string nows = NxsString::strip_whitespace(s);
+				const std::wstring nows = NxsString::strip_whitespace(s);
 				userEquates[ch] = NxsString(nows.c_str());
-				ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "\" to end the Equate definition");
+				ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"\" to end the Equate definition");
 				}
 			}
 
-		else if (wIt->Equals("LABELS"))
+		else if (wIt->Equals(L"LABELS"))
 			labels = true;
-		else if (wIt->Equals("NOLABELS"))
+		else if (wIt->Equals(L"NOLABELS"))
 			labels = false;
-		else if (wIt->Equals("TRANSPOSE"))
+		else if (wIt->Equals(L"TRANSPOSE"))
 			transposing = true;
-		else if (wIt->Equals("INTERLEAVE"))
+		else if (wIt->Equals(L"INTERLEAVE"))
 			interleaving = true;
-		else if (wIt->Equals("ITEMS"))
+		else if (wIt->Equals(L"ITEMS"))
 			{
-			DemandEquals(wIt, tvEnd, "after keyword ITEMS");
+			DemandEquals(wIt, tvEnd, L"after keyword ITEMS");
 			items.clear();
 			// This should be STATES (no other item is supported at this time)
 			//
-			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "after \"ITEMS =\" in FORMAT command");
+			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"after \"ITEMS =\" in FORMAT command");
 			if (datatype == NxsCharactersBlock::continuous)
 				{
-				std::string s;
-				if (wIt->Equals("("))
+				std::wstring s;
+				if (wIt->Equals(L"("))
 					{
-					ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, ") to close Items list in FORMAT command");
-					while (!wIt->Equals(")"))
+					ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L") to close Items list in FORMAT command");
+					while (!wIt->Equals(L")"))
 						{
 						s = wIt->GetToken();
 						NxsString::to_upper(s);
-						items.push_back(std::string(s.c_str()));
-						ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, ") to close Items list in FORMAT command");
+						items.push_back(std::wstring(s.c_str()));
+						ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L") to close Items list in FORMAT command");
 						}
 					}
 				else
 					{
 					s = wIt->GetToken();
 					NxsString::to_upper(s);
-					items.push_back(std::string(s.c_str()));
+					items.push_back(std::wstring(s.c_str()));
 					}
 				}
 			else 
 				{
-				if (!wIt->Equals("STATES"))
-					throw NxsException("Sorry, only ITEMS=STATES is supported for discrete datatypes at this time", *wIt);
-				items = std::vector<std::string>(1, std::string("STATES"));
+				if (!wIt->Equals(L"STATES"))
+					throw NxsException(L"Sorry, only ITEMS=STATES is supported for discrete datatypes at this time", *wIt);
+				items = std::vector<std::wstring>(1, std::wstring(L"STATES"));
 				}
 			}
-		else if (wIt->Equals("STATESFORMAT"))
+		else if (wIt->Equals(L"STATESFORMAT"))
 			{
-			DemandEquals(wIt, tvEnd, "after keyword STATESFORMAT");
-			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, "after \"STATESFORMAT =\" in FORMAT command");
-			if (wIt->Equals("STATESPRESENT"))
+			DemandEquals(wIt, tvEnd, L"after keyword STATESFORMAT");
+			ProcessedNxsToken::IncrementNotLast(wIt, tvEnd, L"after \"STATESFORMAT =\" in FORMAT command");
+			if (wIt->Equals(L"STATESPRESENT"))
 				statesFormat = STATES_PRESENT;
 			else
 				{
 				if (datatype == NxsCharactersBlock::continuous)
 					{
-					if (wIt->Equals("INDIVIDUALS"))
+					if (wIt->Equals(L"INDIVIDUALS"))
 						statesFormat = INDIVIDUALS;
 					else
-						throw NxsException("Sorry, only STATESFORMAT=STATESPRESENT or STATESFORMAT=INDIVIDUALS are supported for continuous datatypes at this time", *wIt);
+						throw NxsException(L"Sorry, only STATESFORMAT=STATESPRESENT or STATESFORMAT=INDIVIDUALS are supported for continuous datatypes at this time", *wIt);
 					}
 				else
-					throw NxsException("Sorry, only STATESFORMAT=STATESPRESENT supported for discrete datatypes at this time", *wIt);
+					throw NxsException(L"Sorry, only STATESFORMAT=STATESPRESENT supported for discrete datatypes at this time", *wIt);
 				}
 			}
-		else if (wIt->Equals("TOKENS"))
+		else if (wIt->Equals(L"TOKENS"))
 			tokens = true;
-		else if (wIt->Equals("NOTOKENS"))
+		else if (wIt->Equals(L"NOTOKENS"))
 			{
 			if (datatype == NxsCharactersBlock::continuous)
-				throw NxsException("NOTOKENS is not allowed for the CONTINUOUS datatype", *wIt);
+				throw NxsException(L"NOTOKENS is not allowed for the CONTINUOUS datatype", *wIt);
 			tokens = false;
 			}
 		}
 	if (IsInSymbols(missing))
 		{
-		errormsg << "The \"missing\" character \'" << missing << "\' may not be included in the SYMBOLS list.";
+		errormsg << L"The \"missing\" character \'" << missing << L"\' may not be included in the SYMBOLS list.";
 		throw NxsException(errormsg, *tokenVec.begin());
 		}
 	if (IsInSymbols(matchchar))
 		{
-		errormsg << "The \"matchchar\" character \'" << matchchar << "\' may not be included in the SYMBOLS list.";
+		errormsg << L"The \"matchchar\" character \'" << matchchar << L"\' may not be included in the SYMBOLS list.";
 		throw NxsException(errormsg, *tokenVec.begin());
 		}
 	if (IsInSymbols(gap))
 		{
-		errormsg << "The \"gap\" character \'" << gap << "\' may not be included in the SYMBOLS list.";
+		errormsg << L"The \"gap\" character \'" << gap << L"\' may not be included in the SYMBOLS list.";
 		throw NxsException(errormsg, *tokenVec.begin());
 		}
 		
@@ -2163,31 +2164,31 @@ void NxsCharactersBlock::HandleFormat(
 		{
 		if ((matchchar == gap) || (!respectingCase && toupper(matchchar) == toupper(gap)))
 			{
-			errormsg << "MatchChar and Gap symbol cannot be identical!  Both were set to " << gap;
+			errormsg << L"MatchChar and Gap symbol cannot be identical!  Both were set to " << gap;
 			throw NxsException(errormsg, *tokenVec.begin());
 			}
 		if ((matchchar == missing) || (!respectingCase && toupper(matchchar) == toupper(missing)))
 			{
-			errormsg << "MatchChar and Missing symbol cannot be identical!  Both were set to " << missing;
+			errormsg << L"MatchChar and Missing symbol cannot be identical!  Both were set to " << missing;
 			throw NxsException(errormsg, *tokenVec.begin());
 			}
 		}
 	if ((gap != '\0') && ((gap == missing) || (!respectingCase && toupper(gap) == toupper(missing))))
 		{
-		errormsg << "Gap symbol and Missing symbol cannot be identical!  Both were set to " << missing;
+		errormsg << L"Gap symbol and Missing symbol cannot be identical!  Both were set to " << missing;
 		throw NxsException(errormsg, *tokenVec.begin());
 		}
 	
 	// Perform some last checks before leaving the FORMAT command
 	//
 	if (!tokens && datatype == continuous)
-		GenerateNxsException(token, "TOKENS must be defined for DATATYPE=CONTINUOUS");
+		GenerateNxsException(token, L"TOKENS must be defined for DATATYPE=CONTINUOUS");
 	if (tokens && (datatype == dna || datatype == rna || datatype == nucleotide))
-		GenerateNxsException(token, "TOKENS not allowed for the DATATYPEs DNA, RNA, or NUCLEOTIDE");
+		GenerateNxsException(token, L"TOKENS not allowed for the DATATYPEs DNA, RNA, or NUCLEOTIDE");
 	CreateDatatypeMapperObjects(dtParts, dtv);
 	if (IsMixedType() && tokens)
 		{
-		errormsg = "The combination of DATATYPE=Mixed  and TOKENS are not currently supported.";
+		errormsg = L"The combination of DATATYPE=Mixed  and TOKENS are not currently supported.";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 	unsigned mapInd = 0;
@@ -2208,7 +2209,7 @@ NxsDiscreteDatatypeMapper::NxsDiscreteDatatypeMapper()
 	restrictionDataype(false),
 	userDefinedEquatesBeforeConversion(false)
 	{
-	symbols.assign("01");
+	symbols.assign(L"01");
 	matchChar = '\0';
 	gapChar = '\0';
 	missing = '?';
@@ -2249,7 +2250,7 @@ void NxsDiscreteDatatypeMapper::RefreshMappings(NxsToken *token)
 	if (nStates ==  0)
 		{
 		if (datatype != NxsCharactersBlock::continuous)
-			throw NxsException("Cannot create a datatype mapper with no symbols");
+			throw NxsException(L"Cannot create a datatype mapper with no symbols");
 		return;
 		}
 	if (!respectCase)
@@ -2263,9 +2264,9 @@ void NxsDiscreteDatatypeMapper::RefreshMappings(NxsToken *token)
 	NxsString::to_lower(lcsymbols);
 
 	if (missing == '\0')
-		throw NxsException("Cannot create a datatype mapper with no missing data symbol");
+		throw NxsException(L"Cannot create a datatype mapper with no missing data symbol");
 	
-	charToStateCodeLookup.assign(384, NXS_INVALID_STATE_CODE); /*256+128 = 384 -- this way we can deal with signed or unsigned chars by pointing cLookup to element 128*/
+	charToStateCodeLookup.assign(384, NXS_INVALID_STATE_CODE); /*256+128 = 384 -- this way we can deal with signed or unsigned wchar_ts by pointing cLookup to element 128*/
 	cLookup = &charToStateCodeLookup[127];
 	stateIntersectionMatrix.clear();
 	isStateSubsetMatrix.clear();
@@ -2275,8 +2276,8 @@ void NxsDiscreteDatatypeMapper::RefreshMappings(NxsToken *token)
 	stateCodeLookupPtr = 0L;
 	sclOffset = (gapChar == '\0' ? -1 : -2);
 	
-	std::string bogus;
-	std::istringstream bogusStream(bogus);
+	std::wstring bogus;
+	std::wistringstream bogusStream(bogus);
 	NxsToken bogusToken(bogusStream);
 	token = (token == NULL ? &bogusToken : token);
 	
@@ -2306,7 +2307,7 @@ void NxsDiscreteDatatypeMapper::RefreshMappings(NxsToken *token)
 	for (int s = 0; s < (int) nStates; ++s)
 		missingSet.insert(s);
 	
-	char sym = (respectCase ? missing : (char) toupper(missing));
+	wchar_t sym = (respectCase ? missing : (wchar_t) toupper(missing));
 	stateSetsVec.push_back(NxsDiscreteStateSetInfo(missingSet, false, sym));
 	const int stateCode = (const int)stateSetsVec.size() + sclOffset - 1;
 	assert(NXS_MISSING_CODE == stateCode);
@@ -2326,14 +2327,14 @@ void NxsDiscreteDatatypeMapper::RefreshMappings(NxsToken *token)
 		}
 	
 	/* add the default equates */
-	std::map<char, NxsString> defEq = NxsCharactersBlock::GetDefaultEquates(datatype);
+	std::map<wchar_t, NxsString> defEq = NxsCharactersBlock::GetDefaultEquates(datatype);
 
 	bool convertToStandard = false;
-	if (((datatype == NxsCharactersBlock::nucleotide) || (datatype == NxsCharactersBlock::dna)) && symbols != "ACGT")
+	if (((datatype == NxsCharactersBlock::nucleotide) || (datatype == NxsCharactersBlock::dna)) && symbols != L"ACGT")
 		convertToStandard = true;
-	else if ((datatype == NxsCharactersBlock::rna) && symbols != "ACGU")
+	else if ((datatype == NxsCharactersBlock::rna) && symbols != L"ACGU")
 		convertToStandard = true;
-	else if ((datatype == NxsCharactersBlock::protein) && symbols != "ACDEFGHIKLMNPQRSTVWY*")
+	else if ((datatype == NxsCharactersBlock::protein) && symbols != L"ACDEFGHIKLMNPQRSTVWY*")
 		convertToStandard = true;
 	if (convertToStandard)
 		{
@@ -2348,9 +2349,9 @@ void NxsDiscreteDatatypeMapper::RefreshMappings(NxsToken *token)
 		*/
 		if (respectCase)
 			{
-			std::string lcsym = NxsCharactersBlock::GetDefaultSymbolsForType(datatype);
+			std::wstring lcsym = NxsCharactersBlock::GetDefaultSymbolsForType(datatype);
 			NxsString::to_lower(lcsym);
-			std::string ucsym = lcsym;
+			std::wstring ucsym = lcsym;
 			NxsString::to_upper(ucsym);
 			for (unsigned i = 0; i < ucsym.length(); ++i)
 				{
@@ -2366,12 +2367,12 @@ void NxsDiscreteDatatypeMapper::RefreshMappings(NxsToken *token)
 		}
 
 
-	std::map<char, NxsString>::const_iterator eqIt = defEq.begin();
+	std::map<wchar_t, NxsString>::const_iterator eqIt = defEq.begin();
 	NxsString taxonName;
 	for (; eqIt != defEq.end(); ++eqIt)
 		{
-		const char c = eqIt->first;
-		const char u = toupper(c);
+		const wchar_t c = eqIt->first;
+		const wchar_t u = toupper(c);
 		bool addEq = true;
 		if (c == missing || c == matchChar || c == gapChar)
 			addEq = false;
@@ -2387,11 +2388,11 @@ void NxsDiscreteDatatypeMapper::RefreshMappings(NxsToken *token)
 	
 
 	/* add user-defined equates, and only retain the new ones (those that are not datatype defaults). */
-	std::map<char, NxsString> neededExtraEquates;
+	std::map<wchar_t, NxsString> neededExtraEquates;
 	for (eqIt = extraEquates.begin(); eqIt != extraEquates.end(); ++eqIt)
 		{
-		const char c = eqIt->first;
-		const char u = toupper(c);
+		const wchar_t c = eqIt->first;
+		const wchar_t u = toupper(c);
 		if (PositionInSymbols(c) == NXS_INVALID_STATE_CODE)
 			{
 			bool addEq = true;
@@ -2428,7 +2429,7 @@ void NxsDiscreteDatatypeMapper::RefreshMappings(NxsToken *token)
 |	
 |	New "fundamental" states can NOT be introduced using this function -- if unknown states are encountered, an exception will be generated.
 */
-int NxsDiscreteDatatypeMapper::StateCodeForStateSet(const std::set<int> & sset, bool isPolymorphic, bool addToLookup, char nexusSymbol)
+int NxsDiscreteDatatypeMapper::StateCodeForStateSet(const std::set<int> & sset, bool isPolymorphic, bool addToLookup, wchar_t nexusSymbol)
 	{
 	if (sset.size() == 1)
 		{
@@ -2466,7 +2467,7 @@ int NxsDiscreteDatatypeMapper::StateCodeForStateSet(const std::set<int> & sset, 
 |	It is also MANDATORY that this function be called with the fundamental states first (and in order) before
 |	 being called with any multi state sets (this is done by RefreshMappings)
 */
-int NxsDiscreteDatatypeMapper::AddStateSet(const std::set<int> & states, char nexusSymbol, bool symRespectCase, bool isPolymorphic)
+int NxsDiscreteDatatypeMapper::AddStateSet(const std::set<int> & states, wchar_t nexusSymbol, bool symRespectCase, bool isPolymorphic)
 	{
 	stateIntersectionMatrix.clear();
 	isStateSubsetMatrix.clear();
@@ -2474,7 +2475,7 @@ int NxsDiscreteDatatypeMapper::AddStateSet(const std::set<int> & states, char ne
 		
 
 	bool reallyIsPoly = (states.size() > 1 && isPolymorphic);
-	char sym = (symRespectCase ? nexusSymbol : (char) toupper(nexusSymbol));
+	wchar_t sym = (symRespectCase ? nexusSymbol : (wchar_t) toupper(nexusSymbol));
 	stateSetsVec.push_back(NxsDiscreteStateSetInfo(states, reallyIsPoly, sym));
 	/* if we have gaps, then the sclOffset is -1 and we want to enable 
 		stateCodeLookup[-1], so we set stateCodeLookup to &stateSets[1]
@@ -2508,15 +2509,15 @@ void NxsDiscreteDatatypeMapper::ValidateStateIndex(int c) const
 		if (c == NXS_GAP_STATE_CODE)
 			{
 			if (gapChar == '\0')
-				throw NxsNCLAPIException("Illegal usage of NXS_GAP_STATE_CODE in a datatype without gaps");
+				throw NxsNCLAPIException(L"Illegal usage of NXS_GAP_STATE_CODE in a datatype without gaps");
 			return;
 			}
 		if (c == NXS_INVALID_STATE_CODE)
-			throw NxsNCLAPIException("Illegal usage of NXS_INVALID_STATE_CODE as a state index");
-		throw NxsNCLAPIException("Illegal usage of unknown negative state index");
+			throw NxsNCLAPIException(L"Illegal usage of NXS_INVALID_STATE_CODE as a state index");
+		throw NxsNCLAPIException(L"Illegal usage of unknown negative state index");
 		}
 	else if (c >= (int) nStates)
-		throw NxsNCLAPIException("Illegal usage of state index >= the number of states");
+		throw NxsNCLAPIException(L"Illegal usage of state index >= the number of states");
 	}	
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -2527,29 +2528,29 @@ void NxsDiscreteDatatypeMapper::ValidateStateCode(int c) const
 	if (c < sclOffset)
 		{
 		if (c == NXS_GAP_STATE_CODE)
-			throw NxsNCLAPIException("Illegal usage of NXS_GAP_STATE_CODE in a datatype without gaps");
+			throw NxsNCLAPIException(L"Illegal usage of NXS_GAP_STATE_CODE in a datatype without gaps");
 		if (c == NXS_INVALID_STATE_CODE)
-			throw NxsNCLAPIException("Illegal usage of NXS_INVALID_STATE_CODE as a state code");
-		throw NxsNCLAPIException("Illegal usage of unknown negative state index");
+			throw NxsNCLAPIException(L"Illegal usage of NXS_INVALID_STATE_CODE as a state code");
+		throw NxsNCLAPIException(L"Illegal usage of unknown negative state index");
 		}
 	else if (c >= (((int) stateSetsVec.size()) + sclOffset))
-		throw NxsNCLAPIException("Illegal usage of state code > the highest state code");
+		throw NxsNCLAPIException(L"Illegal usage of state code > the highest state code");
 	}	
 
 	
-void NxsDiscreteDatatypeMapper::GenerateNxsExceptionMatrixReading(char const* message, unsigned int taxInd, unsigned int charInd, 
+void NxsDiscreteDatatypeMapper::GenerateNxsExceptionMatrixReading(wchar_t const* message, unsigned int taxInd, unsigned int charInd, 
 NxsToken& token, const NxsString &nameStr)
 	{
-	NxsString e = "Error reading character ";
-	e << charInd + 1<<" for taxon " << taxInd + 1;
+	NxsString e = L"Error reading character ";
+	e << charInd + 1<<L" for taxon " << taxInd + 1;
 	if (!nameStr.empty())
 		{
 		NxsString nasn;
 		nasn << taxInd + 1;
 		if (nasn != nameStr)
-			e << " (name \""<< nameStr <<"\")";
+			e << L" (name \""<< nameStr <<L"\")";
 		}
-	e << ":\n" << message;
+	e << L":\n" << message;
 	throw NxsException(e, token);
 	}
 	
@@ -2571,7 +2572,7 @@ bool NxsDiscreteDatatypeMapper::IsPolymorphic(int c) const
 |	
 |	NOTE: the gap "state" and missing characters are NOT in the symbols list.
 */
-int NxsDiscreteDatatypeMapper::PositionInSymbols(char c) const
+int NxsDiscreteDatatypeMapper::PositionInSymbols(wchar_t c) const
 	{
 	int p = (int)symbols.find(c);
 	if (p >= 0 && p < (int) nStates)
@@ -2588,38 +2589,38 @@ int NxsDiscreteDatatypeMapper::PositionInSymbols(char c) const
 
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns the NEXUS reperesenation of the state code `scode` which may be a 
-|	multiple character string such as {DNY}
+|	multiple character wstring such as {DNY}
 |   Generates a NxsNCLAPIException if `c` is not a valid state code.
-|	If the string cannot be expressed (insufficient symbols are defined) then
+|	If the wstring cannot be expressed (insufficient symbols are defined) then
 |	`demandSymbols` controls the behavior.  If `demandSymbols` is true than a 
 |	NxsNCLAPIException is thrown. If `demandSymbols` is false then no output is
 |	written.
 */
-void NxsDiscreteDatatypeMapper::WriteStateCodeAsNexusString(std::ostream & out, int scode, bool demandSymbols) const
+void NxsDiscreteDatatypeMapper::WriteStateCodeAsNexusString(std::wostream & out, int scode, bool demandSymbols) const
 	{
 	ValidateStateCode(scode);
 	const NxsDiscreteStateSetInfo * ssi = &(stateSetsVec.at(scode-sclOffset)); 
 	const NxsDiscreteStateSetInfo & stateSetInfo =  stateCodeLookupPtr[scode];
 	assert (ssi == &stateSetInfo);
-	char c = stateSetInfo.nexusSymbol;
+	wchar_t c = stateSetInfo.nexusSymbol;
 	if (c != '\0')
 		{
 		out << c;
 		return;
 		}
-	std::string towrite;
+	std::wstring towrite;
 	std::set<int>::const_iterator sIt = stateSetInfo.states.begin();
 	const std::set<int>::const_iterator endIt = stateSetInfo.states.end();
 	for (; sIt != endIt; ++sIt)
 		{
 		const int state = *sIt;
 		const NxsDiscreteStateSetInfo & subStateSetInfo =  stateCodeLookupPtr[state];
-		const char subc = subStateSetInfo.nexusSymbol;
+		const wchar_t subc = subStateSetInfo.nexusSymbol;
 		if (subc != '\0')
 			towrite.append(1, subc);
 		else if (demandSymbols)
 			{
-			NxsString err("No symbol found for state code ");
+			NxsString err(L"No symbol found for state code ");
 			err << state;
 			throw NxsNCLAPIException(err);
 			}
@@ -2639,17 +2640,17 @@ unsigned NxsDiscreteDatatypeMapper::GetNumStatesInStateCode(int scode) const
 	return (unsigned)stateSetInfo.states.size();
 	}
 
-void NxsDiscreteDatatypeMapper::WriteStartOfFormatCommand(std::ostream & out) const
+void NxsDiscreteDatatypeMapper::WriteStartOfFormatCommand(std::wostream & out) const
 	{
-	out << "    FORMAT Datatype=" << NxsCharactersBlock::GetNameOfDatatype(datatype);
+	out << L"    FORMAT Datatype=" << NxsCharactersBlock::GetNameOfDatatype(datatype);
 	if (this->missing != '?')
 		{
-		out << " Missing=";
+		out << L" Missing=";
 		out << this->missing;
 		}
 	if (this->gapChar != '\0')
 		{
-		out << "  Gap=";
+		out << L"  Gap=";
 		out << this->gapChar;
 		}
 	if (this->datatype != NxsCharactersBlock::continuous)
@@ -2662,24 +2663,24 @@ void NxsDiscreteDatatypeMapper::WriteStartOfFormatCommand(std::ostream & out) co
 		unsigned nSym = (unsigned)this->symbols.length();
 		if (nSym > numDefStates && this->datatype != NxsCharactersBlock::codon)
 			{
-			out << " Symbols=\"";
+			out << L" Symbols=\"";
 			for (unsigned i = numDefStates; i < nSym; ++i)
 				{
-				char c = symbols[i];
+				wchar_t c = symbols[i];
 				if (c == '\0')
 					break;
 				out << c;
 				}
-			out <<"\"";
+			out <<L"\"";
 			}
 		}
-	const std::map<char, NxsString> defEquates = NxsCharactersBlock::GetDefaultEquates(datatype);
-	std::map<char, NxsString> toWrite;
-	const std::map<char, NxsString>::const_iterator notFound = defEquates.end();
-	std::map<char, NxsString>::const_iterator inDefEquates;
-	for (std::map<char, NxsString>::const_iterator i = extraEquates.begin(); i != extraEquates.end(); ++i)
+	const std::map<wchar_t, NxsString> defEquates = NxsCharactersBlock::GetDefaultEquates(datatype);
+	std::map<wchar_t, NxsString> toWrite;
+	const std::map<wchar_t, NxsString>::const_iterator notFound = defEquates.end();
+	std::map<wchar_t, NxsString>::const_iterator inDefEquates;
+	for (std::map<wchar_t, NxsString>::const_iterator i = extraEquates.begin(); i != extraEquates.end(); ++i)
 		{
-		const char key =  (*i).first;
+		const wchar_t key =  (*i).first;
 		const NxsString val =  i->second;
 		inDefEquates = defEquates.find(key);
 		if (inDefEquates == notFound || inDefEquates->second != val)
@@ -2687,8 +2688,8 @@ void NxsDiscreteDatatypeMapper::WriteStartOfFormatCommand(std::ostream & out) co
 		}
 	if (toWrite.size() > 0)
 		{
-		out << " Equate=\"";
-		for (std::map<char, NxsString>::const_iterator j = toWrite.begin(); j != toWrite.end(); ++j)
+		out << L" Equate=\"";
+		for (std::map<wchar_t, NxsString>::const_iterator j = toWrite.begin(); j != toWrite.end(); ++j)
 			out << ' ' << j->first << '=' << j->second;
 		out <<"\"";
 		}
@@ -2705,11 +2706,11 @@ bool NxsCharactersBlock::HandleNextContinuousState(NxsToken &token, unsigned tax
 	NxsString t;
 	if (interleaving && token.AtEOL())
 		return false;
-	if (token.Equals("("))
+	if (token.Equals(L"("))
 		{
 		token.SetLabileFlagBit(NxsToken::hyphenNotPunctuation);		   
 		token.GetNextToken();
-		while (!token.Equals(")"))
+		while (!token.Equals(L")"))
 			{
 			t = token.GetToken();
 			if (t.length() == 1 && (t[0] == missing || t[0] == gap))
@@ -2723,7 +2724,7 @@ bool NxsCharactersBlock::HandleNextContinuousState(NxsToken &token, unsigned tax
 				scored.push_back(2);
 				}
 			else if (!t.IsADouble())
-				GenerateUnexpectedTokenNxsException(token, "a number");
+				GenerateUnexpectedTokenNxsException(token, L"a number");
 			else
 				{
 				v.push_back(t.ConvertToDouble());
@@ -2747,7 +2748,7 @@ bool NxsCharactersBlock::HandleNextContinuousState(NxsToken &token, unsigned tax
 			scored.push_back(2);
 			}
 		else if (!t.IsADouble())
-			GenerateUnexpectedTokenNxsException(token, "a number");
+			GenerateUnexpectedTokenNxsException(token, L"a number");
 		else
 			{
 			v.push_back(t.ConvertToDouble());
@@ -2758,7 +2759,7 @@ bool NxsCharactersBlock::HandleNextContinuousState(NxsToken &token, unsigned tax
 	if (n_read < items.size())
 		{
 		errormsg.clear();
-		errormsg << "For each cell of the MATRIX a value for each of the " << (unsigned)items.size() <<  " ITEMS listed in the FORMAT command is expected.\nOnly " <<  n_read << " values read.";
+		errormsg << L"For each cell of the MATRIX a value for each of the " << (unsigned)items.size() <<  L" ITEMS listed in the FORMAT command is expected.\nOnly " <<  n_read << L" values read.";
 		GenerateNxsException(token);
 		}
 	// We've read in the state now, so if this character has been eliminated, we don't want to go any further with it
@@ -2767,13 +2768,13 @@ bool NxsCharactersBlock::HandleNextContinuousState(NxsToken &token, unsigned tax
 		return true;
 
 	if (charNum > row.size())
-		GenerateNxsException(token, "Internal Error: character index out of range in continuousMatrix.");
+		GenerateNxsException(token, L"Internal Error: character index out of range in continuousMatrix.");
 
 	ContinuousCharCell & cell = row[charNum];
 	cell.clear();
 
-	std::vector<std::string >::const_iterator itemIt = items.begin();
-	std::string key;
+	std::vector<std::wstring >::const_iterator itemIt = items.begin();
+	std::wstring key;
 	unsigned curr_ind_in_v = 0;
 	for (; itemIt != items.end(); ++itemIt, ++curr_ind_in_v)
 		{
@@ -2785,10 +2786,10 @@ bool NxsCharactersBlock::HandleNextContinuousState(NxsToken &token, unsigned tax
 		else
 			{
 			if (taxNum == 0)
-				GenerateNxsException(token, "MATCHCHAR cannot be used in the first taxon");
+				GenerateNxsException(token, L"MATCHCHAR cannot be used in the first taxon");
 			const vector<double> & first_taxon_vector = continuousMatrix[0][charNum][key];
 			if (first_taxon_vector.empty())
-				GenerateNxsException(token, "First taxon does not have a value to copy, but a MATCHCHAR was found.");
+				GenerateNxsException(token, L"First taxon does not have a value to copy, but a MATCHCHAR was found.");
 			else
 				cell[key] = vector<double>(1, first_taxon_vector[0]);
 			}
@@ -2806,10 +2807,10 @@ bool NxsCharactersBlock::HandleNextContinuousState(NxsToken &token, unsigned tax
 			else
 				{
 				if (taxNum == 0)
-					GenerateNxsException(token, "MATCHCHAR cannot be used in the first taxon");
+					GenerateNxsException(token, L"MATCHCHAR cannot be used in the first taxon");
 				const vector<double> & first_taxon_vector = continuousMatrix[0][charNum][key];
 				if (first_taxon_vector.size() < curr_ind_mapped+1)
-					GenerateNxsException(token, "First taxon does not have a value to copy, but a MATCHCHAR was found.");
+					GenerateNxsException(token, L"First taxon does not have a value to copy, but a MATCHCHAR was found.");
 				else
 					curr_cell_vector.push_back(first_taxon_vector[curr_ind_mapped]);
 				}
@@ -2819,7 +2820,7 @@ bool NxsCharactersBlock::HandleNextContinuousState(NxsToken &token, unsigned tax
 	}
 
 int NxsDiscreteDatatypeMapper::StateCodeForNexusChar(
-  const char currChar,
+  const wchar_t currChar,
   NxsToken &token,
   unsigned taxNum,		/* the taxon index, in range [0..`ntax') */
   unsigned charNum,		/* the character index, in range [0..`nChar') */
@@ -2833,17 +2834,17 @@ int NxsDiscreteDatatypeMapper::StateCodeForNexusChar(
 		if (currChar == matchChar)
 			{
 			if (firstTaxonRow == NULL)
-				GenerateNxsExceptionMatrixReading("Unexpected use of MatchChar in first taxon with data.", taxNum, charNum, token, nameStr);
+				GenerateNxsExceptionMatrixReading(L"Unexpected use of MatchChar in first taxon with data.", taxNum, charNum, token, nameStr);
 			if (firstTaxonRow->size() <= charNum)
 				{
-				emsg << "MatchChar found for character number "  << charNum+1 << " but the first taxon does not have a character state stored for this character.";
+				emsg << L"MatchChar found for character number "  << charNum+1 << L" but the first taxon does not have a character state stored for this character.";
 				GenerateNxsExceptionMatrixReading(emsg, taxNum, charNum, token, nameStr);
 				}
 			currState = (*firstTaxonRow)[charNum];
 			}
 		else
 			{
-			emsg << "Invalid state specified \"" << token.GetToken() << "\"";
+			emsg << L"Invalid state specified \"" << token.GetToken() << L"\"";
 			GenerateNxsExceptionMatrixReading(emsg, taxNum, charNum, token, nameStr);
 			}
 		}
@@ -2878,21 +2879,21 @@ bool NxsCharactersBlock::HandleNextDiscreteState(
 	}
 
 int NxsDiscreteDatatypeMapper::StateCodeForNexusPossibleMultiStateSet(
-  const char nexusSymbol,
-  const std::string &stateAsNexus,
+  const wchar_t nexusSymbol,
+  const std::wstring &stateAsNexus,
   NxsToken & token,	/* the token used to read from `in' */
   const unsigned taxNum,		/* the taxon index, in range [0..`ntax') */
   const unsigned charNum,		/* the character index, in range [0..`nChar') */
   const NxsDiscreteStateRow * firstTaxonRow, const NxsString &nameStr)
 	{
 	assert(stateAsNexus.length() > 0);
-	const char firstChar = stateAsNexus[0];
+	const wchar_t firstChar = stateAsNexus[0];
 	if (firstChar == '(' || firstChar == '{')
 		return StateCodeForNexusMultiStateSet(nexusSymbol, stateAsNexus, token, taxNum, charNum, firstTaxonRow, nameStr);
 	if (stateAsNexus.length() > 1)
 		{
 		NxsString emsg;
-		emsg << "Expecting  {} or () around a multiple character state set.  Found " << stateAsNexus << " for taxon " << nameStr;
+		emsg << L"Expecting  {} or () around a multiple character state set.  Found " << stateAsNexus << L" for taxon " << nameStr;
 		GenerateNxsExceptionMatrixReading(emsg, taxNum, charNum, token, nameStr);
 		}
 		
@@ -2902,40 +2903,40 @@ int NxsDiscreteDatatypeMapper::StateCodeForNexusPossibleMultiStateSet(
 	}
 
 int NxsDiscreteDatatypeMapper::StateCodeForNexusMultiStateSet(
-  const char nexusSymbol,
-  const std::string &stateAsNexus,
+  const wchar_t nexusSymbol,
+  const std::wstring &stateAsNexus,
   NxsToken & token,	/* the token used to read from `in' */
   const unsigned taxNum,		/* the taxon index, in range [0..`ntax') */
   const unsigned charNum,		/* the character index, in range [0..`nChar') */
   const NxsDiscreteStateRow * firstTaxonRow,
   const NxsString &nameStr)
   	{
-	const char firstChar = stateAsNexus[0];
+	const wchar_t firstChar = stateAsNexus[0];
 	NxsString emsg;
 	const bool poly = (firstChar == '(');
 	if ((!poly) && firstChar != '{')
 		{
-		emsg << "Expecting a state symbol of set of symbols in () or  {} braces.  Found " << stateAsNexus;
+		emsg << L"Expecting a state symbol of set of symbols in () or  {} braces.  Found " << stateAsNexus;
 		GenerateNxsExceptionMatrixReading(emsg, taxNum, charNum, token, nameStr);
 		}
 	bool tildeFound = false;
 	int prevState = NXS_INVALID_STATE_CODE;
 	char prevChar = firstChar;
-	std::string::const_iterator cIt = stateAsNexus.begin();
-	std::string::const_iterator endIt = stateAsNexus.end();
+	std::wstring::const_iterator cIt = stateAsNexus.begin();
+	std::wstring::const_iterator endIt = stateAsNexus.end();
 	--endIt;
 	assert((poly && *endIt == ')') || (!poly && *endIt == '}'));
 	std::set<int> sset;
 	for (++cIt; cIt != endIt; ++cIt)
 		{
-		const char currChar = *cIt;
+		const wchar_t currChar = *cIt;
 		if ((strchr("\n\r \t", currChar) == NULL) && currChar != ',')
 			{
 			if (currChar == '~')
 				{				
 				if (prevState < 0 || prevState >= (int)nStates)
 					{
-					emsg << "A state range cannot start with " << prevChar;
+					emsg << L"A state range cannot start with " << prevChar;
 					GenerateNxsExceptionMatrixReading(emsg, taxNum, charNum, token, nameStr);
 					}
 				tildeFound = true;
@@ -2949,12 +2950,12 @@ int NxsDiscreteDatatypeMapper::StateCodeForNexusMultiStateSet(
 					currState = PositionInSymbols(currChar);
 					if (currState == NXS_INVALID_STATE_CODE)
 						{
-						emsg << "A state range cannot end with " << currChar;
+						emsg << L"A state range cannot end with " << currChar;
 						GenerateNxsExceptionMatrixReading(emsg, taxNum, charNum, token, nameStr);
 						}
 					if (currState < prevState)
 						{
-						emsg << prevChar << '~' << currChar << " is not a valid state range (the end state is a lower index than the start)";
+						emsg << prevChar << '~' << currChar << L" is not a valid state range (the end state is a lower index than the start)";
 						GenerateNxsExceptionMatrixReading(emsg, taxNum, charNum, token, nameStr);
 						}
 					for (int i = prevState; i <= currState; ++i)
@@ -2973,12 +2974,12 @@ int NxsDiscreteDatatypeMapper::StateCodeForNexusMultiStateSet(
 		}
 	if (prevChar == '~')
 		{
-		emsg << "State range not terminated -- ending in ~" << *endIt;
+		emsg << L"State range not terminated -- ending in ~" << *endIt;
 		GenerateNxsExceptionMatrixReading(emsg, taxNum, charNum, token, nameStr);
 		}
 	if (sset.empty())
 		{
-		emsg << "An illegal (empty) state range was found \"" << stateAsNexus << '\"';
+		emsg << L"An illegal (empty) state range was found \"" << stateAsNexus << '\"';
 		GenerateNxsExceptionMatrixReading(emsg, taxNum, charNum, token, nameStr);
 		}
 	return StateCodeForStateSet(sset, poly, true, nexusSymbol);
@@ -3007,10 +3008,10 @@ bool NxsCharactersBlock::HandleNextTokenState(
 	if (interleaving && token.AtEOL())
 		return false;
 	if (token.GetTokenLength() ==  0)
-		GenerateNxsException(token, "Unexpected empty token encountered");
+		GenerateNxsException(token, L"Unexpected empty token encountered");
 
-	int polymorphism = token.Equals("(");
-	int uncertainty	 = token.Equals("{");
+	int polymorphism = token.Equals(L"(");
+	int uncertainty	 = token.Equals(L"{");
 	if (!uncertainty && !polymorphism)
 		{
 		row[charNum] = HandleTokenState(token, taxNum, charNum, mapper, firstTaxonRow, nameStr);
@@ -3019,13 +3020,13 @@ bool NxsCharactersBlock::HandleNextTokenState(
 		
 	/*TODO - supporting this requires more bookeeping to allow the mapper to deal with 
 	anonymous fundamental states  -- difficult because we don't know the number of symbols in TOKENS mode.*/
-	errormsg = "Currently polymorphism and ambiguity are not supported for matrices in TOKENS mode: ";
-	errormsg << token.GetToken() << " found while reading character " << charNum + 1 << " of taxon \"" << nameStr << '\"';
+	errormsg = L"Currently polymorphism and ambiguity are not supported for matrices in TOKENS mode: ";
+	errormsg << token.GetToken() << L" found while reading character " << charNum + 1 << L" of taxon \"" << nameStr << '\"';
 	throw NxsException(errormsg, token);
 	
 	bool tildeFound = false;
 	int prevState = NXS_INVALID_STATE_CODE;
-	std::string prevToken = token.GetToken();
+	std::wstring prevToken = token.GetToken();
 	std::set<int> sset;
 	for (;;)
 		{
@@ -3035,39 +3036,39 @@ bool NxsCharactersBlock::HandleNextTokenState(
 		token.SetLabileFlagBit(NxsToken::tildeIsPunctuation);
 		token.GetNextToken();
 
-		if (token.Equals(","))
+		if (token.Equals(L","))
 			{
 			; /*Mesquite exports with , in state sets. We'll ignore the comma*/
 			}
 		if (polymorphism)
 			{
-			if (token.Equals(")"))
+			if (token.Equals(L")"))
 				{
 				if (tildeFound)
-					mapper.GenerateNxsExceptionMatrixReading("Range of states still being specified when ')' encountered", taxNum, charNum, token, nameStr);
+					mapper.GenerateNxsExceptionMatrixReading(L"Range of states still being specified when ')' encountered", taxNum, charNum, token, nameStr);
 				break;
 				}
-			if (token.Equals("{"))
-				mapper.GenerateNxsExceptionMatrixReading("Illegal range of states '{' found inside '()'", taxNum, charNum, token, nameStr);
+			if (token.Equals(L"{"))
+				mapper.GenerateNxsExceptionMatrixReading(L"Illegal range of states '{' found inside '()'", taxNum, charNum, token, nameStr);
 
 			}
 		else if (uncertainty)
 			{ 
-			if (token.Equals("}"))
+			if (token.Equals(L"}"))
 				{
 				if (tildeFound)
-					mapper.GenerateNxsExceptionMatrixReading("Range of states still being specified when '}' encountered", taxNum, charNum, token, nameStr);
+					mapper.GenerateNxsExceptionMatrixReading(L"Range of states still being specified when '}' encountered", taxNum, charNum, token, nameStr);
 				break;
 				}
-			if (token.Equals("("))
-				mapper.GenerateNxsExceptionMatrixReading("Illegal range of states '(' found inside '{}'", taxNum, charNum, token, nameStr);
+			if (token.Equals(L"("))
+				mapper.GenerateNxsExceptionMatrixReading(L"Illegal range of states '(' found inside '{}'", taxNum, charNum, token, nameStr);
 			}
-		else if (token.Equals("~"))
+		else if (token.Equals(L"~"))
 			{
 			if (prevState < 0 || prevState >= (int)symbols.length())
 				{
 				errormsg.clear();
-				errormsg << "A state range cannot start with " << prevToken;
+				errormsg << L"A state range cannot start with " << prevToken;
 				mapper.GenerateNxsExceptionMatrixReading(errormsg, taxNum, charNum, token, nameStr);
 				}
 			tildeFound = true;
@@ -3080,8 +3081,8 @@ bool NxsCharactersBlock::HandleNextTokenState(
 				currState = HandleTokenState(token, taxNum, charNum, mapper, firstTaxonRow, nameStr);
 				if (currState <= prevState)
 					{
-					errormsg = "Last state in specified range (";
-					errormsg << token.GetToken() << ") must be greater than the first";
+					errormsg = L"Last state in specified range (";
+					errormsg << token.GetToken() << L") must be greater than the first";
 					mapper.GenerateNxsExceptionMatrixReading(errormsg, taxNum, charNum, token, nameStr);
 					}
 				for (int i = prevState; i <= currState; ++i)
@@ -3102,16 +3103,16 @@ bool NxsCharactersBlock::HandleNextTokenState(
 			}
 		}
 
-	if (prevToken == "~")
+	if (prevToken == L"~")
 		{
 		errormsg.clear();
-		errormsg << "State range not terminated -- ending in ~" << token.GetToken();
+		errormsg << L"State range not terminated -- ending in ~" << token.GetToken();
 		mapper.GenerateNxsExceptionMatrixReading(errormsg, taxNum, charNum, token, nameStr);
 		}
 	if (sset.empty())
 		{
 		errormsg.clear();
-		errormsg << "An illegal (empty) state range -- either  {} or ()";
+		errormsg << L"An illegal (empty) state range -- either  {} or ()";
 		mapper.GenerateNxsExceptionMatrixReading(errormsg, taxNum, charNum, token, nameStr);
 		}
 	row[charNum] = mapper.StateCodeForStateSet(sset, (const bool)(polymorphism != 0), true, '\0');
@@ -3127,7 +3128,7 @@ int NxsCharactersBlock::HandleTokenState(
   const NxsString & nameStr)
   	{
 	// Token may be one of the character states listed for character charNum in charStates
-	const std::string t = token.GetToken(respectingCase);
+	const std::wstring t = token.GetToken(respectingCase);
 	NxsStringVectorMap::const_iterator bagIter	= charStates.find(charNum);
 	/*
 	 if (bagIter == charStates.end())
@@ -3151,10 +3152,10 @@ int NxsCharactersBlock::HandleTokenState(
 			}
 		}
 	//return mapper.EncodeNexusStateString(t, token, taxNum, charNum, firstTaxonRow);
-	errormsg = "Unrecognized state ";
-	errormsg << t << " found while reading character " << charNum + 1 << " of taxon number " << taxNum + 1;
+	errormsg = L"Unrecognized state ";
+	errormsg << t << L" found while reading character " << charNum + 1 << L" of taxon number " << taxNum + 1;
 	if (!nameStr.empty())
-		errormsg << "(name \"" << nameStr << "\")";
+		errormsg << L"(name \"" << nameStr << L"\")";
 	throw NxsException(errormsg, token);
 	}
 
@@ -3171,7 +3172,7 @@ unsigned NxsCharactersBlock::GetMaxIndex() const
 | Returns the number of indices that correspond to the label (and the number 
 | of items that would be added to *inds if inds points to an empty set).
 */
-unsigned NxsCharactersBlock::GetIndicesForLabel(const std::string &label, NxsUnsignedSet *inds) const
+unsigned NxsCharactersBlock::GetIndicesForLabel(const std::wstring &label, NxsUnsignedSet *inds) const
 	{
 	NxsString emsg;
 	const unsigned numb = CharLabelToNumber(label);
@@ -3183,17 +3184,17 @@ unsigned NxsCharactersBlock::GetIndicesForLabel(const std::string &label, NxsUns
 		}
 	if (!defCodonPosPartitionName.empty())
 		{
-		std::string t(label);
+		std::wstring t(label);
 		NxsString::to_upper(t);
-		std::string n;
-		if (t == "POS1")
-			n.assign("1");
-		else if (t == "POS2")
-			n.assign("2");
-		else if (t == "POS3")
-			n.assign("3");
-		else if (t == "NONCODING")
-			n.assign("N");
+		std::wstring n;
+		if (t == L"POS1")
+			n.assign(L"1");
+		else if (t == L"POS2")
+			n.assign(L"2");
+		else if (t == L"POS3")
+			n.assign(L"3");
+		else if (t == L"NONCODING")
+			n.assign(L"N");
 		if (!n.empty())
 			{
 			NxsPartitionsByName::const_iterator pit = codonPosPartitions.find(defCodonPosPartitionName);
@@ -3213,7 +3214,7 @@ unsigned NxsCharactersBlock::GetIndicesForLabel(const std::string &label, NxsUns
 				}
 			}
 		}
-	if (NxsString::case_insensitive_equals(label.c_str(), "CONSTANT"))
+	if (NxsString::case_insensitive_equals(label.c_str(), L"CONSTANT"))
 		{
 		NxsUnsignedSet c;
 		FindConstantCharacters(c);
@@ -3221,7 +3222,7 @@ unsigned NxsCharactersBlock::GetIndicesForLabel(const std::string &label, NxsUns
 			inds->insert(c.begin(), c.end());
 		return (unsigned)c.size();
 		}
-	if (NxsString::case_insensitive_equals(label.c_str(), "GAPPED"))
+	if (NxsString::case_insensitive_equals(label.c_str(), L"GAPPED"))
 		{
 		NxsUnsignedSet c;
 		FindGappedCharacters(c);
@@ -3229,13 +3230,13 @@ unsigned NxsCharactersBlock::GetIndicesForLabel(const std::string &label, NxsUns
 			inds->insert(c.begin(), c.end());
 		return (unsigned)c.size();
 		}
-	return GetIndicesFromSetOrAsNumber(label, inds, charSets, GetMaxIndex(), "character");
+	return GetIndicesFromSetOrAsNumber(label, inds, charSets, GetMaxIndex(), L"character");
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns true if this set replaces an older definition.
 */
-bool NxsCharactersBlock::AddNewIndexSet(const std::string &label, const NxsUnsignedSet & inds)
+bool NxsCharactersBlock::AddNewIndexSet(const std::wstring &label, const NxsUnsignedSet & inds)
 	{
 	NxsString ls(label.c_str());
 	bool replaced = charSets.count(ls) > 0;
@@ -3246,7 +3247,7 @@ bool NxsCharactersBlock::AddNewIndexSet(const std::string &label, const NxsUnsig
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns true if this set replaces an older definition.
 */
-bool NxsCharactersBlock::AddNewPartition(const std::string &label, const NxsPartition & inds)
+bool NxsCharactersBlock::AddNewPartition(const std::wstring &label, const NxsPartition & inds)
 	{
 	NxsString ls(label.c_str());
 	ls.ToUpper();
@@ -3258,7 +3259,7 @@ bool NxsCharactersBlock::AddNewPartition(const std::string &label, const NxsPart
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns true if this set replaces an older definition.
 */
-bool NxsCharactersBlock::AddNewCodonPosPartition(const std::string &label, const NxsPartition & inds, bool isDef)
+bool NxsCharactersBlock::AddNewCodonPosPartition(const std::wstring &label, const NxsPartition & inds, bool isDef)
 	{
 	NxsString ls(label.c_str());
 	ls.ToUpper();
@@ -3272,7 +3273,7 @@ bool NxsCharactersBlock::AddNewCodonPosPartition(const std::string &label, const
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns true if this set replaces an older definition.
 */
-bool NxsCharactersBlock::AddNewExSet(const std::string &label, const NxsUnsignedSet & inds)
+bool NxsCharactersBlock::AddNewExSet(const std::wstring &label, const NxsUnsignedSet & inds)
 	{
 	NxsString ls(label.c_str());
 	bool replaced = exSets.count(ls) > 0;
@@ -3294,7 +3295,7 @@ NxsCharactersBlock::NxsCharactersBlock(
   	:NxsTaxaBlockSurrogate(tb, NULL)
 	{
 	assumptionsBlock = ab;
-	id = "CHARACTERS";
+	id = L"CHARACTERS";
 	supportMixedDatatype = false;
 	convertAugmentedToMixed = false;
 	allowAugmentingOfSequenceSymbols = false;
@@ -3331,11 +3332,11 @@ unsigned NxsCharactersBlock::ApplyIncludeset(
 |	If `s' is not a valid character label, returns the value 0.
 */
 unsigned NxsCharactersBlock::CharLabelToNumber(
-  const std::string &inp) const	/* the character label to convert */
+  const std::wstring &inp) const	/* the character label to convert */
 	{
 	NxsString s(inp.c_str());
 	s.ToUpper();
-	std::map<std::string, unsigned>::const_iterator ltindIt = ucCharLabelToIndex.find(s);
+	std::map<std::wstring, unsigned>::const_iterator ltindIt = ucCharLabelToIndex.find(s);
 	if (ltindIt == ucCharLabelToIndex.end())
 		return 0;
 	return 1 + ltindIt->second;
@@ -3400,7 +3401,7 @@ void NxsCharactersBlock::Consume(
 	
 
 void NxsCharactersBlock::WriteStatesForTaxonAsNexus(
-  std::ostream &out,			/* output stream on which to print matrix */
+  std::wostream &out,			/* output stream on which to print matrix */
   unsigned taxNum,
   unsigned beginCharInd,
   unsigned endCharInd) const	{
@@ -3443,7 +3444,7 @@ void NxsCharactersBlock::WriteStatesForTaxonAsNexus(
 				{
 				const NxsDiscreteDatatypeMapper * dm = GetDatatypeMapperForChar(0);
 				if (dm == NULL)
-					throw NxsNCLAPIException("No DatatypeMapper in WriteStatesForTaxonAsNexus");
+					throw NxsNCLAPIException(L"No DatatypeMapper in WriteStatesForTaxonAsNexus");
 				if (IsMixedType())
 					{
 					
@@ -3452,8 +3453,8 @@ void NxsCharactersBlock::WriteStatesForTaxonAsNexus(
 						dm = GetDatatypeMapperForChar(charInd);
 						if (dm == NULL)
 							{
-							errormsg = "No DatatypeMapper for character ";
-							errormsg << charInd + 1 << " in WriteStatesForTaxonAsNexus";
+							errormsg = L"No DatatypeMapper for character ";
+							errormsg << charInd + 1 << L" in WriteStatesForTaxonAsNexus";
 							throw NxsNCLAPIException(errormsg);
 							}
 						const int c = row.at(charInd);
@@ -3473,10 +3474,10 @@ void NxsCharactersBlock::WriteStatesForTaxonAsNexus(
 							else 
 								{
 								NxsString sl = GetStateLabel(charInd, sc);
-								if (sl == " ")
+								if (sl == L" ")
 									{
-									errormsg = "Writing character state ";
-									errormsg << 1 + sc << " for character " << 1+charInd << ", but no appropriate chararcter label or symbol was found.";
+									errormsg = L"Writing character state ";
+									errormsg << 1 + sc << L" for character " << 1+charInd << L", but no appropriate chararcter label or symbol was found.";
 									throw NxsNCLAPIException(errormsg);
 									}
 								else
@@ -3507,9 +3508,9 @@ void NxsCharactersBlock::WriteStatesForTaxonAsNexus(
 |	a tab character, specify "\t" for `marginText'.
 */
 void NxsCharactersBlock::DebugShowMatrix(
-  std::ostream &out,			/* output stream on which to print matrix */
+  std::wostream &out,			/* output stream on which to print matrix */
   bool ,	/* deprecated, matchchar no longer used for output */
-  const char *marginText) const /* for printing first on each line */
+  const wchar_t*marginText) const /* for printing first on each line */
 	{
 	if (!taxa)
 		return;
@@ -3536,7 +3537,7 @@ void NxsCharactersBlock::DebugShowMatrix(
 			out << currTaxonLabel;
 			unsigned currTaxonLabelLen = (unsigned)currTaxonLabel.size();
 			unsigned diff = width - currTaxonLabelLen;
-			std::string spacer(diff+5, ' ');
+			std::wstring spacer(diff+5, ' ');
 			out << spacer;
 			WriteStatesForTaxonAsNexus(out, i, 0, nChar);
 			out << endl;
@@ -3576,13 +3577,13 @@ unsigned NxsCharactersBlock::GetNumActiveChar() NCL_COULD_BE_CONST
 
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns label for character state `j' at character `i', if a label has been specified. If no label was specified, 
-|	returns string containing a single blank (i.e., " ").
+|	returns wstring containing a single blank (i.e., L" ").
 */
 NxsString NxsCharactersBlock::GetStateLabelImpl(
   unsigned i,	/* the locus in range [0..`nChar') */
   unsigned j) const	/* the 0-offset index of the state of interest */
 	{
-	NxsString s = " ";
+	NxsString s = L" ";
 	NxsStringVectorMap::const_iterator cib = charStates.find(i);
 	if (cib != charStates.end() && j < static_cast<unsigned>(cib->second.size()))
 		return cib->second[j];
@@ -3597,12 +3598,12 @@ NxsString NxsCharactersBlock::GetStateLabelImpl(
 |	whether or not the search should be case sensitive. Assumes `symbols' is non-NULL.
 */
 bool NxsCharactersBlock::IsInSymbols(
-  char ch) NCL_COULD_BE_CONST /* the symbol character to search for */
+  wchar_t ch) NCL_COULD_BE_CONST /* the symbol character to search for */
 	{
 	char char_in_question = (respectingCase ? ch : (char)toupper(ch));
-	for (std::string::const_iterator sIt = symbols.begin(); sIt != symbols.end(); ++sIt)
+	for (std::wstring::const_iterator sIt = symbols.begin(); sIt != symbols.end(); ++sIt)
 		{
-		const char char_in_symbols = (respectingCase ? *sIt : (char)toupper(*sIt));
+		const wchar_t char_in_symbols = (respectingCase ? *sIt : (char)toupper(*sIt));
 		if (char_in_symbols == char_in_question)
 			return true;
 		}
@@ -3623,14 +3624,14 @@ void NxsCharactersBlock::HandleCharlabels(
 	for (;;)
 		{
 		token.GetNextToken();
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			break;
 		else
 			{
 			if (ind >= nChar)
-				GenerateNxsException(token, "Number of character labels exceeds NCHAR specified in DIMENSIONS command");
+				GenerateNxsException(token, L"Number of character labels exceeds NCHAR specified in DIMENSIONS command");
 			NxsString t = token.GetToken();
-			if (t != " ")
+			if (t != L" ")
 				{
 				indToCharLabel[ind] = t;
 				t.ToUpper();
@@ -3672,18 +3673,18 @@ void NxsCharactersBlock::HandleCharstatelabels(
 		else
 			token.GetNextToken();
 
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			break;
 
 		// Token should be the character number; create a new association
 		//
-		int sn = atoi(token.GetToken().c_str());
+		int sn = (int)wcstol(token.GetToken().c_str(),NULL,10);
 		unsigned n = (unsigned)sn;
 		if (sn < 1 || n > nChar || n <= currChar)
 			{
-			errormsg = "Invalid character number (";
+			errormsg = L"Invalid character number (";
 			errormsg += token.GetToken();
-			errormsg += ") found in CHARSTATELABELS command (either out of range or not interpretable as an integer)";
+			errormsg += L") found in CHARSTATELABELS command (either out of range or not interpretable as an integer)";
 			throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 			}
 
@@ -3697,14 +3698,14 @@ void NxsCharactersBlock::HandleCharstatelabels(
 		if (save)
 			{
 			NxsString t = token.GetToken();
-			if (t != " " && !token.Equals("/"))
+			if (t != L" " && !token.Equals(L"/"))
 				{
 				indToCharLabel[currChar - 1] = t;
 				t.ToUpper();
 				ucCharLabelToIndex[t] = currChar - 1;
 				}
 			}
-		if (!token.Equals("/"))
+		if (!token.Equals(L"/"))
 			token.GetNextToken();
 
 		// Token should be a slash character if state labels were provided for this character; otherwise, 
@@ -3713,16 +3714,16 @@ void NxsCharactersBlock::HandleCharstatelabels(
 		//	  next token (which should be the next character number)
 		// 2) the semicolon indicating the end of the command
 		//
-		if (!token.Equals("/"))
+		if (!token.Equals(L"/"))
 			{
-			if (!token.Equals(",") && !token.Equals(";"))
+			if (!token.Equals(L",") && !token.Equals(L";"))
 				{
-				errormsg = "Expecting a comma or semicolon here, but found \"";
+				errormsg = L"Expecting a comma or semicolon here, but found \"";
 				errormsg += token.GetToken();
-				errormsg += "\" instead";
+				errormsg += L"\" instead";
 				throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 				}
-			if (token.Equals(","))
+			if (token.Equals(L","))
 				token.GetNextToken();
 			tokenAlreadyRead = true;
 			continue;
@@ -3734,19 +3735,19 @@ void NxsCharactersBlock::HandleCharstatelabels(
 			{
 			token.GetNextToken();
 
-			if (token.Equals(";"))
+			if (token.Equals(L";"))
 				{
 				semicolonFoundInInnerLoop = true;
 				break;
 				}
 
-			if (token.Equals(","))
+			if (token.Equals(L","))
 				break;
 
 			if (save)
 				{
 				if (datatype == continuous)
-					GenerateNxsException(token, "State Labels cannot be specified when the datatype is continuous");
+					GenerateNxsException(token, L"State Labels cannot be specified when the datatype is continuous");
 
 				// Token should be a character state label; add it to the list
 				NxsString cslabel = token.GetToken();
@@ -3760,7 +3761,7 @@ void NxsCharactersBlock::HandleCharstatelabels(
 /*----------------------------------------------------------------------------------------------------------------------
 |	Called when DIMENSIONS command needs to be parsed from within the CHARACTERS block. Deals with everything after 
 |	the token DIMENSIONS up to and including the semicolon that terminates the DIMENSIONs command. `newtaxaLabel', 
-|	`ntaxLabel' and `ncharLabel' are simply "NEWTAXA", "NTAX" and "NCHAR" for this class, but may be different for 
+|	`ntaxLabel' and `ncharLabel' are simply "NEWTAXA", L"NTAX" and "NCHAR" for this class, but may be different for 
 |	derived classes that use `newtaxa', `ntax' and `nChar' for other things (e.g., ntax is number of populations in 
 |	an ALLELES block)
 */
@@ -3779,31 +3780,31 @@ void NxsCharactersBlock::HandleDimensions(
 			newtaxa = true;
 		else if (token.Equals(ntaxLabel)) 
 			{
-			DemandEquals(token, "after NTAX in DIMENSIONS command");
+			DemandEquals(token, L"after NTAX in DIMENSIONS command");
 			ntaxRead = DemandPositiveInt(token, ntaxLabel.c_str());
 			}
 		else if (token.Equals(ncharLabel)) 
 			{
-			DemandEquals(token, "in DIMENSIONS command");
+			DemandEquals(token, L"in DIMENSIONS command");
 			nChar = DemandPositiveInt(token, ncharLabel.c_str());
 			}
-		else if (token.Equals(";"))
+		else if (token.Equals(L";"))
 			break;
 		}
 
 	if (nChar == 0)
 		{
-		errormsg = "DIMENSIONS command must have an NCHAR subcommand .";
+		errormsg = L"DIMENSIONS command must have an NCHAR subcommand .";
 		throw NxsException(errormsg, token);
 		}
 	if (newtaxa)
 		{
 		if (ntaxRead == 0)
 			{
-			errormsg = "DIMENSIONS command must have an NTAX subcommand when the NEWTAXA option is in effect.";
+			errormsg = L"DIMENSIONS command must have an NTAX subcommand when the NEWTAXA option is in effect.";
 			throw NxsException(errormsg, token);
 			}
-		AssureTaxaBlock(createImpliedBlock, token, "Dimensions");
+		AssureTaxaBlock(createImpliedBlock, token, L"Dimensions");
 		if (!createImpliedBlock)
 			{
 			taxa->Reset();
@@ -3815,22 +3816,22 @@ void NxsCharactersBlock::HandleDimensions(
 		}
 	else
 		{
-		AssureTaxaBlock(false, token, "Dimensions");
+		AssureTaxaBlock(false, token, L"Dimensions");
 		const unsigned ntaxinblock = taxa->GetNTax();
 		if (ntaxinblock == 0)
 			{
-			errormsg = "A TAXA block must be read before character data, or the DIMENSIONS command must use the NEWTAXA.";
+			errormsg = L"A TAXA block must be read before character data, or the DIMENSIONS command must use the NEWTAXA.";
 			throw NxsException(errormsg, token);
 			}
 
 		if (ntaxinblock < ntaxRead)
 			{
 			errormsg = ntaxLabel;
-			errormsg += " in ";
+			errormsg += L" in ";
 			errormsg += id;
-			errormsg += " block must be less than or equal to NTAX in TAXA block\nNote: one circumstance that can cause this error is \nforgetting to specify ";
+			errormsg += L" block must be less than or equal to NTAX in TAXA block\nNote: one circumstance that can cause this error is \nforgetting to specify ";
 			errormsg += ntaxLabel;
-			errormsg += " in DIMENSIONS command when \na TAXA block has not been provided";
+			errormsg += L" in DIMENSIONS command when \na TAXA block has not been provided";
 			throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 			}
 		nTaxWithData = (ntaxRead == 0 ? ntaxinblock : ntaxRead);
@@ -3851,9 +3852,9 @@ void NxsCharactersBlock::HandleEliminate(
   NxsToken &token)	/* the token used to read from `in' */
 	{
 	if (!eliminated.empty() && nexusReader)
-		nexusReader->NexusWarnToken("Only one ELIMINATE command should be used in a CHARACTERS or DATA block (it must appear before the MATRIX command).\n   New character eliminations will be added to the previous eliminated characters (the previously eliminated characters will continue to be excluded).", NxsReader::UNCOMMON_SYNTAX_WARNING, token);
+		nexusReader->NexusWarnToken(L"Only one ELIMINATE command should be used in a CHARACTERS or DATA block (it must appear before the MATRIX command).\n   New character eliminations will be added to the previous eliminated characters (the previously eliminated characters will continue to be excluded).", NxsReader::UNCOMMON_SYNTAX_WARNING, token);
 	token.GetNextToken();
-	NxsSetReader::ReadSetDefinition(token, *this, "Character", "Eliminate", &eliminated);
+	NxsSetReader::ReadSetDefinition(token, *this, L"Character", L"Eliminate", &eliminated);
 	assert(eliminated.size() <= nChar);
 	}
 
@@ -3880,7 +3881,7 @@ void NxsCharactersBlock::HandleStdMatrix(
 	bool taxaBlockNeedsLabels = (ntlabels == 0);
 	if (!taxaBlockNeedsLabels && ntlabels < nTaxWithData)
 		{
-		errormsg << "Not enough taxlabels are known to read characters for " << nTaxWithData << " taxa in the Matrix command.";
+		errormsg << L"Not enough taxlabels are known to read characters for " << nTaxWithData << L" taxa in the Matrix command.";
 		throw NxsException(errormsg, token);
 		}
 	ContinuousCharRow emptyContRow;
@@ -3910,7 +3911,7 @@ void NxsCharactersBlock::HandleStdMatrix(
 					{
 					if (taxa->IsAlreadyDefined(nameStr))
 						{
-						errormsg << "Data for this taxon (" << nameStr << ") has already been saved";
+						errormsg << L"Data for this taxon (" << nameStr << L") has already been saved";
 						throw NxsException(errormsg, token);
 						}
 					indOfTaxInMemory = taxa->AddTaxonLabel(nameStr);
@@ -3920,12 +3921,12 @@ void NxsCharactersBlock::HandleStdMatrix(
 					unsigned numOfTaxInMemory = taxa->TaxLabelToNumber(nameStr);
 					if (numOfTaxInMemory == 0)
 						{
-						if (token.Equals(";"))
-							errormsg << "Unexpected ; (after only " << currChar << " characters were read)";
+						if (token.Equals(L";"))
+							errormsg << L"Unexpected ; (after only " << currChar << L" characters were read)";
 						else
-							errormsg << "Could not find taxon named \"" << nameStr << "\" among stored taxon labels";
+							errormsg << L"Could not find taxon named \"" << nameStr << L"\" among stored taxon labels";
 						if (currChar > 0)
-							errormsg << "\n   Expecting data for taxon \"" << taxa->GetTaxonLabel(toInMem[indOfTaxInCommand]) << "\"";
+							errormsg << L"\n   Expecting data for taxon \"" << taxa->GetTaxonLabel(toInMem[indOfTaxInCommand]) << L"\"";
 						throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 						}
 					indOfTaxInMemory = numOfTaxInMemory - 1;
@@ -3950,7 +3951,7 @@ void NxsCharactersBlock::HandleStdMatrix(
 					}
 				if (toInMem[indOfTaxInCommand] != UINT_MAX)
 					{
-					errormsg << "Characters for taxon \"" << nameStr << "\" (number " << indOfTaxInMemory + 1 << "and \"" << taxa->GetTaxonLabel(indOfTaxInMemory) << "\" according to the taxa block) have already been stored";
+					errormsg << L"Characters for taxon \"" << nameStr << L"\" (number " << indOfTaxInMemory + 1 << L"and \"" << taxa->GetTaxonLabel(indOfTaxInMemory) << L"\" according to the taxa block) have already been stored";
 					throw NxsException(errormsg, token);
 					}
 				toInMem[indOfTaxInCommand] = indOfTaxInMemory;
@@ -3959,14 +3960,14 @@ void NxsCharactersBlock::HandleStdMatrix(
 				{
 				if (toInMem[indOfTaxInCommand] != indOfTaxInMemory)
 					{
-					errormsg << "Ordering of taxa must be identical to that in first interleave page. Taxon \"" << nameStr << "\" was not expected.";
+					errormsg << L"Ordering of taxa must be identical to that in first interleave page. Taxon \"" << nameStr << L"\" was not expected.";
 					throw NxsException(errormsg, token);
 					}
 				}		
 
 			if (firstChar > 0 && nCharsRead[indOfTaxInCommand] >= firstChar)
 				{
-				errormsg << "Data for this taxon (" << nameStr << ") have already been saved";
+				errormsg << L"Data for this taxon (" << nameStr << L") have already been saved";
 				throw NxsException(errormsg, token);
 				}
 			if (isContinuous)
@@ -4004,7 +4005,7 @@ void NxsCharactersBlock::HandleStdMatrix(
 					{
 					if (lastChar < nChar && currChar != lastChar)
 						{
-						errormsg << "Each line within an interleave page must comprise the same number of characters.  Error reading taxon \"" << nameStr << '\"'; 
+						errormsg << L"Each line within an interleave page must comprise the same number of characters.  Error reading taxon \"" << nameStr << '\"'; 
 						throw NxsException(errormsg, token);
 						}
 
@@ -4024,16 +4025,16 @@ void NxsCharactersBlock::HandleStdMatrix(
 				token.GetNextToken();
 				if (!token.AtEOL())
 					{
-					errormsg << "Each line within an interleave page must comprise the same number of characters\n. Expecting the end of a line, but found " << token.GetToken() << " when reading data for taxon \"" << nameStr << '\"';
+					errormsg << L"Each line within an interleave page must comprise the same number of characters\n. Expecting the end of a line, but found " << token.GetToken() << L" when reading data for taxon \"" << nameStr << '\"';
 					throw NxsException(errormsg, token);
 					}
 				}
 			else
 				{
-				const char nextch = token.PeekAtNextChar();
-				if (indOfTaxInCommand > 0 && (!atEOL) && (strchr(";[\n\r \t", nextch) == NULL) && nexusReader)
+				const wchar_t nextch = token.PeekAtNextChar();
+				if (indOfTaxInCommand > 0 && (!atEOL) && (wcschr(L";[\n\r \t", nextch) == NULL) && nexusReader)
 					{
-					errormsg << "Expecting a whitespace character at the end of the characters for taxon \""<< nameStr << "\" but found " << nextch;
+					errormsg << L"Expecting a whitespace character at the end of the characters for taxon \""<< nameStr << L"\" but found " << nextch;
 					nexusReader->NexusWarnToken(errormsg, NxsReader::UNCOMMON_SYNTAX_WARNING, token); 
 					errormsg.clear();
 					}
@@ -4091,7 +4092,7 @@ void NxsCharactersBlock::HandleTransposedMatrix(
 					s.ToUpper();
 					if (ucCharLabelToIndex.count(s) > 0)
 						{
-						errormsg << "Data for this character (" << token.GetToken() << ") has already been saved";
+						errormsg << L"Data for this character (" << token.GetToken() << L") has already been saved";
 						throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 						}
 					ucCharLabelToIndex[s] = indOfCharInCommand;
@@ -4106,7 +4107,7 @@ void NxsCharactersBlock::HandleTransposedMatrix(
 					LabelToIndexMap::const_iterator iter = ucCharLabelToIndex.find(s);
 					if (iter == ucCharLabelToIndex.end())
 						{
-						errormsg << "Could not find character named " << token.GetToken() <<  " among stored character labels";
+						errormsg << L"Could not find character named " << token.GetToken() <<  L" among stored character labels";
 						throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 						}
 					indOfCharInMemory = iter->second;
@@ -4119,10 +4120,10 @@ void NxsCharactersBlock::HandleTransposedMatrix(
 				{
 				if (toInMem[indOfCharInCommand] != UINT_MAX)
 					{
-					errormsg << "States for character " << indOfCharInCommand;
+					errormsg << L"States for character " << indOfCharInCommand;
 					if (!rawToken.empty())
-						errormsg << " (" << rawToken << ") ";
-					errormsg << "have already been stored";
+						errormsg << L" (" << rawToken << L") ";
+					errormsg << L"have already been stored";
 					throw NxsException(errormsg, token);
 					}
 				toInMem[indOfCharInCommand] = indOfCharInMemory;
@@ -4131,16 +4132,16 @@ void NxsCharactersBlock::HandleTransposedMatrix(
 				{
 				if (toInMem[indOfCharInCommand] != indOfCharInMemory)
 					{
-					errormsg << "The order of characters must be in the same order in each page of the interleaved matrix. Character " << rawToken << " was unexpected.";
+					errormsg << L"The order of characters must be in the same order in each page of the interleaved matrix. Character " << rawToken << L" was unexpected.";
 					throw NxsException(errormsg, token);
 					}
 				}
 			if (firstTaxon > 0 && nTaxRead[indOfCharInCommand] >= firstTaxon)
 				{
-				errormsg << "Data for this character ";
+				errormsg << L"Data for this character ";
 				if (!rawToken.empty())
-					errormsg << '(' << rawToken << ") ";
-				errormsg << "has already been saved";
+					errormsg << '(' << rawToken << L") ";
+				errormsg << L"has already been saved";
 				throw NxsException(errormsg, token);
 				}
 
@@ -4167,7 +4168,7 @@ void NxsCharactersBlock::HandleTransposedMatrix(
 				if (interleaving && !atEOL)
 					{
 					if (lastTaxon < nTaxWithData && currTaxon != lastTaxon)
-						GenerateNxsException(token, "Each line within an interleave page must comprise the same number of taxa");
+						GenerateNxsException(token, L"Each line within an interleave page must comprise the same number of taxa");
 
 					// currTaxon should be firstChar in next go around
 					nextFirst = currTaxon;
@@ -4185,8 +4186,8 @@ void NxsCharactersBlock::HandleTransposedMatrix(
 				token.GetNextToken();
 				if (!token.AtEOL())
 					{
-					errormsg = "Each line within an interleave page must comprise the same number of taxa\n.";
-					errormsg << "Expecting the end of a line, but found " << token.GetToken();
+					errormsg = L"Each line within an interleave page must comprise the same number of taxa\n.";
+					errormsg << L"Expecting the end of a line, but found " << token.GetToken();
 					throw NxsException(errormsg, token);
 					}
 				}			
@@ -4211,7 +4212,7 @@ void NxsCharactersBlock::HandleMatrix(
 	if (datatypeMapperVec.empty())
 		CreateDatatypeMapperObjects(dtParts, dtv);
 	if (taxa == NULL)
-		AssureTaxaBlock(false, token, "Matrix");
+		AssureTaxaBlock(false, token, L"Matrix");
 	
 	if (tokens && GetDataType() == standard)
 		{
@@ -4239,8 +4240,8 @@ void NxsCharactersBlock::HandleMatrix(
 	const unsigned ntax = taxa->GetNTax();
 	if (ntax == 0)
 		{
-		errormsg = "Must precede ";
-		errormsg << id << " block with a TAXA block or specify NEWTAXA and NTAX in the DIMENSIONS command";
+		errormsg = L"Must precede ";
+		errormsg << id << L" block with a TAXA block or specify NEWTAXA and NTAX in the DIMENSIONS command";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 	
@@ -4260,14 +4261,14 @@ void NxsCharactersBlock::HandleMatrix(
 	if (IsMixedType())
 		{
 		if (transposing)
-			throw NxsUnimplementedException("Reading of transposed, mixed datatype matrices will probably never be supported by NCL");
+			throw NxsUnimplementedException(L"Reading of transposed, mixed datatype matrices will probably never be supported by NCL");
 		/*	HandleMixedDatatypeMatrix(token); */
 		}
 	if (transposing)
 		HandleTransposedMatrix(token);
 	else
 		HandleStdMatrix(token);
-	DemandEndSemicolon(token, "MATRIX");
+	DemandEndSemicolon(token, L"MATRIX");
 	if (assumptionsBlock)
 		assumptionsBlock->SetCallback(this);
 	if (convertAugmentedToMixed)
@@ -4284,26 +4285,26 @@ void NxsCharactersBlock::HandleStatelabels(
   NxsToken &token)	/* the token used to read from `in' */
 	{
 	if (datatype == continuous)
-		GenerateNxsException(token, "STATELABELS cannot be specified when the datatype is continuous");
+		GenerateNxsException(token, L"STATELABELS cannot be specified when the datatype is continuous");
 	charStates.clear();
 	for (;;)
 		{
 		token.GetNextToken();
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			break;
 
-		int n = atoi(token.GetToken().c_str());
+		int n = wcstol(token.GetToken().c_str(), NULL, 10);
 		if (n < 1 || n > (int)nChar)
 			{
-			errormsg = "Invalid character number (";
-			errormsg << token.GetToken() << ") found in STATELABELS command (either out of range or not interpretable as an integer)";
+			errormsg = L"Invalid character number (";
+			errormsg << token.GetToken() << L") found in STATELABELS command (either out of range or not interpretable as an integer)";
 			throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 			}
 		NxsStringVector & v = charStates[n - 1];
 		for (;;)
 			{
 			token.GetNextToken();
-			if (token.Equals(";") || token.Equals(","))
+			if (token.Equals(L";") || token.Equals(L","))
 				break;
 			v.push_back(token.GetToken());
 			} 
@@ -4322,7 +4323,7 @@ void NxsCharactersBlock::Read(
 	isUserSupplied = true;
 
 	NxsString s;
-	s = "BEGIN ";
+	s = L"BEGIN ";
 	s += id;
 	DemandEndSemicolon(token, s.c_str());
 	nTaxWithData = 0;
@@ -4336,28 +4337,28 @@ void NxsCharactersBlock::Read(
 			if (discreteMatrix.empty() && continuousMatrix.empty())
 				{
 				errormsg.clear();
-				errormsg << "\nA " << id << " block must contain a Matrix command";
+				errormsg << L"\nA " << id << L" block must contain a Matrix command";
 				throw NxsException(errormsg, token);
 				}
 			return;
 			}
 		if (res != NxsBlock::NxsCommandResult(HANDLED_COMMAND))
 			{
-			if (token.Equals("DIMENSIONS"))
-				HandleDimensions(token, "NEWTAXA", "NTAX", "NCHAR");
-			else if (token.Equals("FORMAT"))
+			if (token.Equals(L"DIMENSIONS"))
+				HandleDimensions(token, L"NEWTAXA", L"NTAX", L"NCHAR");
+			else if (token.Equals(L"FORMAT"))
 				HandleFormat(token);
-			else if (token.Equals("ELIMINATE"))
+			else if (token.Equals(L"ELIMINATE"))
 				HandleEliminate(token);
-			else if (token.Equals("TAXLABELS"))
+			else if (token.Equals(L"TAXLABELS"))
 				HandleTaxLabels(token);
-			else if (token.Equals("CHARSTATELABELS"))
+			else if (token.Equals(L"CHARSTATELABELS"))
 				HandleCharstatelabels(token);
-			else if (token.Equals("CHARLABELS"))
+			else if (token.Equals(L"CHARLABELS"))
 				HandleCharlabels(token);
-			else if (token.Equals("STATELABELS"))
+			else if (token.Equals(L"STATELABELS"))
 				HandleStatelabels(token);
-			else if (token.Equals("MATRIX"))
+			else if (token.Equals(L"MATRIX"))
 				HandleMatrix(token);
 			else
 				SkipCommand(token);
@@ -4370,54 +4371,54 @@ void NxsCharactersBlock::Read(
 |	function in the base class.
 */
 void NxsCharactersBlock::Report(
-  std::ostream &out) NCL_COULD_BE_CONST  /* the output stream to which to write the report */
+  std::wostream &out) NCL_COULD_BE_CONST  /* the output stream to which to write the report */
 	{
-	out << '\n' << id << " block contains ";
+	out << '\n' << id << L" block contains ";
 	if (nTaxWithData == 0)
-		out << "no taxa";
+		out << L"no taxa";
 	else if (nTaxWithData == 1)
-		out << "one taxon";
+		out << L"one taxon";
 	else
-		out << nTaxWithData << " taxa";
-	out << " and ";
+		out << nTaxWithData << L" taxa";
+	out << L" and ";
 	if (nChar == 0)
-		out << "no characters";
+		out << L"no characters";
 	else if (nChar == 1)
-		out << "one character";
+		out << L"one character";
 	else
-		out << nChar << " characters";
+		out << nChar << L" characters";
 	out << endl;
 
-	out << "  Data type is \"" << this->GetDatatypeName() << "\"" << endl;
+	out << L"  Data type is \"" << this->GetDatatypeName() << L"\"" << endl;
 	
 	if (respectingCase)
-		out << "  Respecting case" << endl;
+		out << L"  Respecting case" << endl;
 	else
-		out << "  Ignoring case" << endl;
+		out << L"  Ignoring case" << endl;
 
 	if (tokens)
-		out << "  Multicharacter tokens allowed in data matrix" << endl;
+		out << L"  Multicharacter tokens allowed in data matrix" << endl;
 	else
-		out << "  Data matrix entries are expected to be single symbols" << endl;
+		out << L"  Data matrix entries are expected to be single symbols" << endl;
 
 	if (labels && transposing)
-		out << "  Character labels are expected on left side of matrix" << endl;
+		out << L"  Character labels are expected on left side of matrix" << endl;
 	else if (labels && !transposing)
-		out << "  Taxon labels are expected on left side of matrix" << endl;
+		out << L"  Taxon labels are expected on left side of matrix" << endl;
 	else
-		out << "  No labels are expected on left side of matrix" << endl;
+		out << L"  No labels are expected on left side of matrix" << endl;
 
 	if (!indToCharLabel.empty())
 		{
-		out << "  Character and character state labels:" << endl;
+		out << L"  Character and character state labels:" << endl;
 		for (unsigned k = 0; k < nChar; k++) 
 			{
-			const std::map<unsigned, std::string>::const_iterator toLit = indToCharLabel.find(k);
+			const std::map<unsigned, std::wstring>::const_iterator toLit = indToCharLabel.find(k);
 			const unsigned kNum = 1 + k;
 			if (toLit == indToCharLabel.end())
-				out << "    " << kNum << "    (no label provided for this character)" << endl;
+				out << L"    " << kNum << L"    (no label provided for this character)" << endl;
 			else
-				out << "    " << kNum << "    " << toLit->second << endl;
+				out << L"    " << kNum << L"    " << toLit->second << endl;
 
 			// Output state labels if any are defined for this character
 			//
@@ -4426,82 +4427,82 @@ void NxsCharactersBlock::Report(
 				{
 				int ns = (int)cib->second.size();
 				for (int m = 0; m < ns; m++)
-					out << "        " << cib->second[m] << endl;
+					out << L"        " << cib->second[m] << endl;
 				}
 			}
 		}
 
 	if (transposing && interleaving)
-		out << "  Matrix transposed and interleaved" << endl;
+		out << L"  Matrix transposed and interleaved" << endl;
 	else if (transposing && !interleaving)
-		out << "  Matrix transposed but not interleaved" << endl;
+		out << L"  Matrix transposed but not interleaved" << endl;
 	else if (!transposing && interleaving)
-		out << "  Matrix interleaved but not transposed" << endl;
+		out << L"  Matrix interleaved but not transposed" << endl;
 	else
-		out << "  Matrix neither transposed nor interleaved" << endl;
+		out << L"  Matrix neither transposed nor interleaved" << endl;
 
-	out << "  Missing data symbol is '" << missing << '\'' << endl;
+	out << L"  Missing data symbol is '" << missing << '\'' << endl;
 
 	if (matchchar != '\0')
-		out << "  Match character is '" << matchchar << '\'' << endl;
+		out << L"  Match character is '" << matchchar << '\'' << endl;
 	else
-		out << "  No match character specified" << endl;
+		out << L"  No match character specified" << endl;
 
 	if (gap != '\0')
-		out << "  Gap character specified is '" << gap << '\'' << endl;
+		out << L"  Gap character specified is '" << gap << '\'' << endl;
 	else
-		out << "  No gap character specified" << endl;
+		out << L"  No gap character specified" << endl;
 
-	out << "  Valid symbols are: " << symbols << endl;
+	out << L"  Valid symbols are: " << symbols << endl;
 
 	int numEquateMacros = (int)(userEquates.size() + defaultEquates.size());
 	if (numEquateMacros > 0)
 		{
-		out << "  Equate macros in effect:" << endl;
-		std::map<char, NxsString>::const_iterator i = defaultEquates.begin();
+		out << L"  Equate macros in effect:" << endl;
+		std::map<wchar_t, NxsString>::const_iterator i = defaultEquates.begin();
 		for (; i != defaultEquates.end(); ++i)
 			{
-			out << "   " << (*i).first << " = " << i->second << endl;
+			out << L"   " << (*i).first << L" = " << i->second << endl;
 			}
 		i = userEquates.begin();
 		for (; i != userEquates.end(); ++i)
 			{
-			out << "   " << (*i).first << " = " << i->second << endl;
+			out << L"   " << (*i).first << L" = " << i->second << endl;
 			}
 		}
 	else
-		out << "  No equate macros have been defined" << endl;
+		out << L"  No equate macros have been defined" << endl;
 
 	if (eliminated.empty())
-		out << "  No characters were eliminated" << endl;
+		out << L"  No characters were eliminated" << endl;
 	else
 		{
-		out << "  The following characters were eliminated:" << endl;
+		out << L"  The following characters were eliminated:" << endl;
 		NxsUnsignedSet::const_iterator k;
 		for (k = eliminated.begin(); k != eliminated.end(); k++)
 			{
-			out << "   " << ((*k)+1) << endl;
+			out << L"   " << ((*k)+1) << endl;
 			}
 		}
 
 	
 	if (excluded.empty())
-		out << "  no characters excluded" << endl;
+		out << L"  no characters excluded" << endl;
 	else
 		{
-		out << "  The following characters have been excluded:\n";
+		out << L"  The following characters have been excluded:\n";
 		for (NxsUnsignedSet::const_iterator eIt = excluded.begin(); eIt != excluded.end(); ++eIt)
-			out << "   " << (*eIt+1) << endl;
+			out << L"   " << (*eIt+1) << endl;
 		}
-	out << "  Data matrix:" << endl;
-	DebugShowMatrix(out, false, "    ");
+	out << L"  Data matrix:" << endl;
+	DebugShowMatrix(out, false, L"    ");
 	}
 
-void NxsCharactersBlock::WriteAsNexus(std::ostream &out) const
+void NxsCharactersBlock::WriteAsNexus(std::wostream &out) const
 	{
-	out << "BEGIN CHARACTERS;\n";
+	out << L"BEGIN CHARACTERS;\n";
 	WriteBasicBlockCommands(out);
-	out << "    DIMENSIONS";
+	out << L"    DIMENSIONS";
 	if (this->taxa)
 		{
 		const unsigned wod = GetNTaxWithData();
@@ -4509,40 +4510,40 @@ void NxsCharactersBlock::WriteAsNexus(std::ostream &out) const
 			{
 			const unsigned tnt = taxa->GetNTax();
 			if (wod != tnt)
-				out << " NTax=" << wod;
+				out << L" NTax=" << wod;
 			}
 		}
 	const unsigned multiplier = (this->datatype == NxsCharactersBlock::codon ? 3 : 1);
-	out << " NChar=" << multiplier*(this->nChar) << ";\n";
+	out << L" NChar=" << multiplier*(this->nChar) << L";\n";
 	this->WriteEliminateCommand(out);
 	this->WriteFormatCommand(out);
 	this->WriteCharStateLabelsCommand(out);
 	this->WriteMatrixCommand(out);
 	WriteSkippedCommands(out);
-	out << "END;\n";
+	out << L"END;\n";
 	}
 
 
 void NxsCharactersBlock::WriteEliminateCommand(
-  std::ostream &out) const /* output stream on which to print matrix */
+  std::wostream &out) const /* output stream on which to print matrix */
 	{
 	if (eliminated.empty())
 		return;
-	out << "    ELIMINATE";
+	out << L"    ELIMINATE";
 	for (NxsUnsignedSet::const_iterator u = this->eliminated.begin(); u != this->eliminated.end(); ++u)
 		out << ' ' << (1 + *u);
-	out << ";\n";
+	out << L";\n";
 	}
 
 
 void NxsCharactersBlock::WriteMatrixCommand(
-  std::ostream &out) const /* output stream on which to print matrix */
+  std::wostream &out) const /* output stream on which to print matrix */
 	{
 	if (taxa == NULL)
 		return;
 	unsigned width = taxa->GetMaxTaxonLabelLength();
 	const unsigned ntaxTotal = taxa->GetNTax();
-	out << "Matrix\n";
+	out << L"Matrix\n";
 	int prec = 6;
 	if (datatype == continuous)
 		prec = out.precision(10);
@@ -4557,7 +4558,7 @@ void NxsCharactersBlock::WriteMatrixCommand(
 			{
 			if (this->TaxonIndHasData(i))
 				{
-				const std::string currTaxonLabel = NxsString::GetEscaped(taxa->GetTaxonLabel(i));
+				const std::wstring currTaxonLabel = NxsString::GetEscaped(taxa->GetTaxonLabel(i));
 				out << currTaxonLabel;
 				unsigned currTaxonLabelLen = (unsigned)currTaxonLabel.size();
 				unsigned diff = width - currTaxonLabelLen;
@@ -4570,13 +4571,13 @@ void NxsCharactersBlock::WriteMatrixCommand(
 			}
 		begChar = endChar;
 		}
-	out << ";\n";
+	out << L";\n";
 	if (datatype == continuous)
 		out.precision(prec);
 	}
 
 void NxsCharactersBlock::WriteStatesForMatrixRow(
-  std::ostream &out,				/* the output stream on which to write */
+  std::wostream &out,				/* the output stream on which to write */
   unsigned currTaxonIndex,	/* the taxon, in range [0..`ntax') */
   unsigned ,
   unsigned beginChar,
@@ -4586,13 +4587,13 @@ void NxsCharactersBlock::WriteStatesForMatrixRow(
 	}
 	
 
-void NxsCharactersBlock::WriteCharLabelsCommand(std::ostream &out) const
+void NxsCharactersBlock::WriteCharLabelsCommand(std::wostream &out) const
 	{
 	if (indToCharLabel.empty())
 		return;
-	out << "    CHARLABELS";
-	std::map<unsigned, std::string>::const_iterator resultSearchIt;
-	const std::map<unsigned, std::string>::const_iterator endIt = indToCharLabel.end();
+	out << L"    CHARLABELS";
+	std::map<unsigned, std::wstring>::const_iterator resultSearchIt;
+	const std::map<unsigned, std::wstring>::const_iterator endIt = indToCharLabel.end();
 	unsigned emptyLabelsToWrite = 0;
 	for (unsigned oit = 0; oit < nChar; ++oit)
 		{
@@ -4602,15 +4603,15 @@ void NxsCharactersBlock::WriteCharLabelsCommand(std::ostream &out) const
 		else
 			{
 			for (unsigned j = 0; j < emptyLabelsToWrite; ++j)
-				out << " _";
+				out << L" _";
 			emptyLabelsToWrite = 0;
 			out << ' ' << NxsString::GetEscaped(resultSearchIt->second);
 			}
 		}
-	out << ";\n";
+	out << L";\n";
 	}
 
-void NxsCharactersBlock::WriteCharStateLabelsCommand(std::ostream &out) const
+void NxsCharactersBlock::WriteCharStateLabelsCommand(std::wostream &out) const
 	{
 	if (charStates.empty())
 		{
@@ -4619,8 +4620,8 @@ void NxsCharactersBlock::WriteCharStateLabelsCommand(std::ostream &out) const
 		}
 	const NxsString mtString;
 	bool isFirst = true;
-	std::map<unsigned, std::string>::const_iterator resultSearchIt;
-	const std::map<unsigned, std::string>::const_iterator endIt = indToCharLabel.end();
+	std::map<unsigned, std::wstring>::const_iterator resultSearchIt;
+	const std::map<unsigned, std::wstring>::const_iterator endIt = indToCharLabel.end();
 	const NxsStringVectorMap::const_iterator endCSIt = this->charStates.end();
 	for (unsigned oit = 0; oit < nChar; ++oit)
 		{
@@ -4631,11 +4632,11 @@ void NxsCharactersBlock::WriteCharStateLabelsCommand(std::ostream &out) const
 		const NxsStringVectorMap::const_iterator cib = this->charStates.find(oit);
 		if (isFirst)
 			{
-			out << "    CharStateLabels \n      ";
+			out << L"    CharStateLabels \n      ";
 			isFirst = false;
 			}
 		else
-			out << ",\n      ";
+			out << L",\n      ";
 		out << 1 + oit << ' ';
 		if (cib != endCSIt)
 			{
@@ -4643,143 +4644,143 @@ void NxsCharactersBlock::WriteCharStateLabelsCommand(std::ostream &out) const
 			unsigned ns = (int)stateLabelsVec.size();
 			if (!escapedCLabel.empty())
 				out << escapedCLabel;				
-			out << " / ";
+			out << L" / ";
 			for (unsigned m = 0; m < ns; m++)
-				out << " " << NxsString::GetEscaped(stateLabelsVec[m]);
+				out << L" " << NxsString::GetEscaped(stateLabelsVec[m]);
 			}
 		else if (!escapedCLabel.empty())
 			out << escapedCLabel;
 		else out << '/';
 		}
-	out << ";\n";
+	out << L";\n";
 	}
 
-void NxsCharactersBlock::WriteFormatCommand(std::ostream &out) const
+void NxsCharactersBlock::WriteFormatCommand(std::wostream &out) const
 	{
 	const NxsDiscreteDatatypeMapper * mapper =  GetDatatypeMapperForChar(0);
 	if (IsMixedType())
 		{
-		out << "    FORMAT Datatype=MIXED(";
+		out << L"    FORMAT Datatype=MIXED(";
 		bool first = true;
 		for (std::vector<DatatypeMapperAndIndexSet>::const_iterator mIt = datatypeMapperVec.begin(); mIt != datatypeMapperVec.end(); ++mIt)
 			{
 			if (first)
 				first = false;
 			else
-				out << ", ";
+				out << L", L";
 			out << GetNameOfDatatype(mIt->first.GetDatatype()) << ':';
 			NxsSetReader::WriteSetAsNexusValue(mIt->second, out);
 			}
 		out << ')';
 		if (this->missing != '?')
-			out << " Missing=" << this->missing;
+			out << L" Missing=" << this->missing;
 		if (this->gap != '\0')
-			out << "  Gap=" << this->gap;
+			out << L"  Gap=" << this->gap;
 		}
 	else
 		mapper->WriteStartOfFormatCommand(out);
 		
 	if (this->respectingCase)
-		out << " RespectCase"; 
+		out << L" RespectCase"; 
 
 	if (this->matchchar != '\0')
-		out << "  MatchChar=" << this->matchchar;
+		out << L"  MatchChar=" << this->matchchar;
 	if (this->datatype == continuous)
 		{
-		out << " Items = (";
-		for (vector<std::string>::const_iterator iIt = items.begin(); iIt != items.end(); ++iIt)
+		out << L" Items = (";
+		for (vector<std::wstring>::const_iterator iIt = items.begin(); iIt != items.end(); ++iIt)
 			out << *iIt << ' '; 
-		out << ")";
+		out << L")";
 		if (this->statesFormat == STATES_PRESENT)
-			out << " StatesFormat=StatesPresent";
+			out << L" StatesFormat=StatesPresent";
 		}
 	else if (this->statesFormat == INDIVIDUALS)
-			out << " StatesFormat=Individuals";
+			out << L" StatesFormat=Individuals";
 	
 	if (this->tokens && this->datatype != NxsCharactersBlock::continuous) /*TOKENS is the only choice for continuous data*/
-		out << " Tokens";
+		out << L" Tokens";
 	if (this->writeInterleaveLen > 1 && (this->nChar > (unsigned)this->writeInterleaveLen ))
 		{
-		out << " Interleave";
+		out << L" Interleave";
 		}
-	out << ";\n";
+	out << L";\n";
 	}
 
-std::map<char, NxsString> NxsCharactersBlock::GetDefaultEquates(DataTypesEnum dt)
+std::map<wchar_t, NxsString> NxsCharactersBlock::GetDefaultEquates(DataTypesEnum dt)
 	{
-	std::map<char, NxsString> defEquates;
+	std::map<wchar_t, NxsString> defEquates;
 	if (dt == NxsCharactersBlock::dna || dt == NxsCharactersBlock::rna || dt == NxsCharactersBlock::nucleotide)
 		{
-		defEquates['R'] = NxsString("{AG}");
-		defEquates['M'] = NxsString("{AC}");
-		defEquates['S'] = NxsString("{CG}");
-		defEquates['V'] = NxsString("{ACG}");
+		defEquates['R'] = NxsString(L"{AG}");
+		defEquates['M'] = NxsString(L"{AC}");
+		defEquates['S'] = NxsString(L"{CG}");
+		defEquates['V'] = NxsString(L"{ACG}");
 		if (dt == NxsCharactersBlock::dna || dt == NxsCharactersBlock::nucleotide)
 			{
-			defEquates['Y'] = NxsString("{CT}");
-			defEquates['K'] = NxsString("{GT}");
-			defEquates['W'] = NxsString("{AT}");
-			defEquates['H'] = NxsString("{ACT}");
-			defEquates['B'] = NxsString("{CGT}");
-			defEquates['D'] = NxsString("{AGT}");
-			defEquates['N'] = NxsString("{ACGT}");
-			defEquates['X'] = NxsString("{ACGT}");
+			defEquates['Y'] = NxsString(L"{CT}");
+			defEquates['K'] = NxsString(L"{GT}");
+			defEquates['W'] = NxsString(L"{AT}");
+			defEquates['H'] = NxsString(L"{ACT}");
+			defEquates['B'] = NxsString(L"{CGT}");
+			defEquates['D'] = NxsString(L"{AGT}");
+			defEquates['N'] = NxsString(L"{ACGT}");
+			defEquates['X'] = NxsString(L"{ACGT}");
 			if (dt == NxsCharactersBlock::nucleotide)
 				defEquates['U'] ='T';			
 			}
 		else
 			{
-			defEquates['Y'] = NxsString("{CU}");
-			defEquates['K'] = NxsString("{GU}");
-			defEquates['W'] = NxsString("{AU}");
-			defEquates['H'] = NxsString("{ACU}");
-			defEquates['B'] = NxsString("{CGU}");
-			defEquates['D'] = NxsString("{AGU}");
-			defEquates['N'] = NxsString("{ACGU}");
-			defEquates['X'] = NxsString("{ACGU}");
+			defEquates['Y'] = NxsString(L"{CU}");
+			defEquates['K'] = NxsString(L"{GU}");
+			defEquates['W'] = NxsString(L"{AU}");
+			defEquates['H'] = NxsString(L"{ACU}");
+			defEquates['B'] = NxsString(L"{CGU}");
+			defEquates['D'] = NxsString(L"{AGU}");
+			defEquates['N'] = NxsString(L"{ACGU}");
+			defEquates['X'] = NxsString(L"{ACGU}");
 			}
 		}
 	else if (dt == NxsCharactersBlock::protein)
 		{
-		defEquates['B'] = NxsString("{DN}");
-		defEquates['Z'] = NxsString("{EQ}");
-		defEquates['X'] = NxsString("{ACDEFGHIKLMNPQRSTVWY*}");
+		defEquates['B'] = NxsString(L"{DN}");
+		defEquates['Z'] = NxsString(L"{EQ}");
+		defEquates['X'] = NxsString(L"{ACDEFGHIKLMNPQRSTVWY*}");
 		}
 	/* molecular datatypes are the only datatypes with default equates and 
 		keys of either case are equivalent.
 	*/
 	NxsString upperKeys;
-	for (std::map<char, NxsString>::const_iterator k = defEquates.begin(); k != defEquates.end(); ++k)
+	for (std::map<wchar_t, NxsString>::const_iterator k = defEquates.begin(); k != defEquates.end(); ++k)
 		{
 		upperKeys += k->first;
 		}
-	for (std::string::const_iterator k = upperKeys.begin(); k != upperKeys.end(); ++k)
+	for (std::wstring::const_iterator k = upperKeys.begin(); k != upperKeys.end(); ++k)
 		{
-		const char c = *k;
-		const char lc = (char)tolower(c);
+		const wchar_t c = *k;
+		const wchar_t lc = (char)tolower(c);
 		defEquates[lc] = defEquates[c];
 		}
 
 	return defEquates;
 	}
 
-const char * NxsCharactersBlock::GetNameOfDatatype(DataTypesEnum datatype)
+const wchar_t* NxsCharactersBlock::GetNameOfDatatype(DataTypesEnum datatype)
 	{
 	switch(datatype)
 		{
 		case NxsCharactersBlock::codon:
 		case NxsCharactersBlock::dna:
-			return "DNA";
+			return L"DNA";
 		case NxsCharactersBlock::rna:
-			return "RNA";
+			return L"RNA";
 		case NxsCharactersBlock::nucleotide:
-			return "Nucleotide";
+			return L"Nucleotide";
 		case NxsCharactersBlock::protein:
-			return "Protein";
+			return L"Protein";
 		case NxsCharactersBlock::continuous:
-			return "Continuous";
+			return L"Continuous";
 		default:
-			return "Standard";
+			return L"Standard";
 		}
 	}
 
@@ -4822,29 +4823,29 @@ void NxsCharactersBlock::Reset()
 	datatypeMapperVec.clear();
 	discreteMatrix.clear();
 	continuousMatrix.clear();
-	items = std::vector<std::string>(1, std::string("STATES"));
+	items = std::vector<std::wstring>(1, std::wstring(L"STATES"));
 	statesFormat = STATES_PRESENT;
 	restrictionDataype = false;
 	}
 
-std::string NxsCharactersBlock::GetDefaultSymbolsForType(NxsCharactersBlock::DataTypesEnum dt)
+std::wstring NxsCharactersBlock::GetDefaultSymbolsForType(NxsCharactersBlock::DataTypesEnum dt)
 	{
 	switch(dt)
 		{
 		case NxsCharactersBlock::nucleotide:
 		case NxsCharactersBlock::dna:
-			return std::string("ACGT");
+			return std::wstring(L"ACGT");
 		case NxsCharactersBlock::rna:
-			return std::string("ACGU");
+			return std::wstring(L"ACGU");
 		case NxsCharactersBlock::protein:
-			return std::string("ACDEFGHIKLMNPQRSTVWY*");
+			return std::wstring(L"ACDEFGHIKLMNPQRSTVWY*");
 		case NxsCharactersBlock::standard:
-			return std::string("01");
+			return std::wstring(L"01");
 		default:
-			return std::string();
+			return std::wstring();
 
 		}
-	return std::string();
+	return std::wstring();
 	}
 /*----------------------------------------------------------------------------------------------------------------------
 |	Resets standard symbol set after a change in `datatype' is made. Also flushes equates list and installs standard 
@@ -4865,7 +4866,7 @@ void NxsCharactersBlock::ResetSymbols()
 |	state labels; otherwise, the correct symbol is looked up in `symbols' and output.
 */
 void NxsCharactersBlock::ShowStateLabels(
-  std::ostream &out,				/* the output stream on which to write */
+  std::wostream &out,				/* the output stream on which to write */
   unsigned taxInd,				/* the taxon, in range [0..`ntax') */
   unsigned charInd,				/* the character, in range [0..`nChar') */
   unsigned ) const		/* the index of the first taxon (if UINT_MAX, don't use matchchar) */
@@ -4873,7 +4874,7 @@ void NxsCharactersBlock::ShowStateLabels(
 	if (datatype == continuous)
 		{
 		const ContinuousCharCell & cell = continuousMatrix.at(taxInd).at(charInd);
-		std::vector<std::string>::const_iterator itemIt = items.begin();
+		std::vector<std::wstring>::const_iterator itemIt = items.begin();
 		bool parensNeeded = items.size() > 1;
 		if (items.size() == 1)
 			{
@@ -4906,7 +4907,7 @@ void NxsCharactersBlock::ShowStateLabels(
 				}
 			}
 		if (parensNeeded)
-			out	 << ") ";
+			out	 << L") ";
 		else
 			out << ' ';
 		return;
@@ -4949,15 +4950,15 @@ void NxsCharactersBlock::ShowStateLabels(
 */
 void NxsCharactersBlock::WriteStates(
   NxsDiscreteDatum &d,	/* the datum to be queried */
-  char *s,				/* the buffer to which to print */
+  wchar_t *s,				/* the buffer to which to print */
   unsigned slen) NCL_COULD_BE_CONST /* the length of the buffer `s' */
 	{
-	std::ostringstream outs;
+	std::wostringstream outs;
 	ShowStates(outs, d.taxInd, d.charInd);
-	std::string sfo = outs.str();
+	std::wstring sfo = outs.str();
 	if (s == NULL || sfo.length() > slen)
-		throw NxsNCLAPIException("Char buffer too small in NxsCharactersBlock::WriteStates");
-	strcpy(s, sfo.c_str());
+		throw NxsNCLAPIException(L"Char buffer too small in NxsCharactersBlock::WriteStates");
+	wcscpy(s, sfo.c_str());
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -4985,7 +4986,7 @@ void NxsCharactersBlock::ExcludeCharacter(
 	{
 	if (i >= nChar)
 		{
-		errormsg  = "Character index is ExcludeCharacter out-of-range.   Must be < ";
+		errormsg  = L"Character index is ExcludeCharacter out-of-range.   Must be < ";
 		errormsg << nChar;
 		throw NxsNCLAPIException(errormsg);
 		}
@@ -4999,7 +5000,7 @@ void NxsCharactersBlock::IncludeCharacter(
 	{
 	if (i >= nChar)
 		{
-		errormsg  = "Character index is ExcludeCharacter out-of-range.   Must be < ";
+		errormsg  = L"Character index is ExcludeCharacter out-of-range.   Must be < ";
 		errormsg << nChar;
 		throw NxsNCLAPIException(errormsg);
 		}
@@ -5035,7 +5036,7 @@ void NxsCharactersBlock::FindConstantCharacters(NxsUnsignedSet &c) const
 		{
 		const NxsDiscreteDatatypeMapper * mapper = GetDatatypeMapperForChar(colIndex);
 		if (mapper == NULL)
-			throw NxsNCLAPIException("No DatatypeMapper in FindConstantCharacters");
+			throw NxsNCLAPIException(L"No DatatypeMapper in FindConstantCharacters");
 		
 		std::set<int> intersectionSet = mapper->GetStateSetForCode(NXS_MISSING_CODE);
 		for (NxsDiscreteStateMatrix::const_iterator rowIt = discreteMatrix.begin(); rowIt != discreteMatrix.end(); ++rowIt)
@@ -5082,7 +5083,7 @@ std::set<int> NxsCharactersBlock::GetNamedStateSetOfColumn(const unsigned colInd
 	{
 	const NxsDiscreteDatatypeMapper * mapper = GetDatatypeMapperForChar(colIndex);
 	if (mapper == NULL)
-		throw NxsNCLAPIException("No DatatypeMapper in GetNamedStateSetOfColumn");
+		throw NxsNCLAPIException(L"No DatatypeMapper in GetNamedStateSetOfColumn");
 
 	std::set<int> sset;
 	std::set<int> scodes;
@@ -5110,7 +5111,7 @@ std::set<int> NxsCharactersBlock::GetMaximalStateSetOfColumn(const unsigned colI
 	{
 	const NxsDiscreteDatatypeMapper * mapper = GetDatatypeMapperForChar(colIndex);
 	if (mapper == NULL)
-		throw NxsNCLAPIException("No DatatypeMapper in GetNamedStateSetOfColumn");
+		throw NxsNCLAPIException(L"No DatatypeMapper in GetNamedStateSetOfColumn");
 
 	std::set<int> sset;
 	std::set<int> scodes;
@@ -5146,10 +5147,10 @@ std::set<int> NxsCharactersBlock::GetMaximalStateSetOfColumn(const unsigned colI
 	const NxsDiscreteDatatypeMapper * mapper = GetDatatypeMapperForChar(charInd);
 	assert(mapper);
 	if (taxInd >= discreteMatrix.size())
-		throw NxsNCLAPIException("Taxon index out of range of NxsCharactersBlock::IsPolymorphic");
+		throw NxsNCLAPIException(L"Taxon index out of range of NxsCharactersBlock::IsPolymorphic");
 	const NxsDiscreteStateRow & row = discreteMatrix[taxInd];
 	if (row.size() <= charInd)
-		throw NxsNCLAPIException("Character index out of range of NxsCharactersBlock::IsPolymorphic");
+		throw NxsNCLAPIException(L"Character index out of range of NxsCharactersBlock::IsPolymorphic");
 	return mapper->IsPolymorphic(row[charInd]);
 	}
 
@@ -5160,7 +5161,7 @@ std::set<int> NxsCharactersBlock::GetMaximalStateSetOfColumn(const unsigned colI
 |	range [0..`ntax') and `j' is in the range [0..`nChar'). Also assumes `matrix' is non-NULL.
 */
 void NxsCharactersBlock::ShowStates(
-  std::ostream &out, /* the stream on which to show the state(s) */
+  std::wostream &out, /* the stream on which to show the state(s) */
   unsigned taxInd,	/* the (0-offset) index of the taxon in question */
   unsigned charInd) NCL_COULD_BE_CONST /* the (0-offset) index of the character in question */
 	{
@@ -5214,9 +5215,9 @@ void NxsCharactersBlock::CopyCharactersContents(const NxsCharactersBlock &other)
 	}
 
 
-NxsCharactersBlock *NxsCharactersBlockFactory::GetBlockReaderForID(const std::string & idneeded, NxsReader *reader, NxsToken *)
+NxsCharactersBlock *NxsCharactersBlockFactory::GetBlockReaderForID(const std::wstring & idneeded, NxsReader *reader, NxsToken *)
 	{
-	if (reader == NULL || idneeded != "CHARACTERS")
+	if (reader == NULL || idneeded != L"CHARACTERS")
 		return NULL;
 	NxsCharactersBlock * nb  = new NxsCharactersBlock(NULL, NULL);
 	nb->SetCreateImpliedBlock(true);

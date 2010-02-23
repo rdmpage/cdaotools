@@ -35,7 +35,7 @@ void NxsSetReader::AddRangeToSet(unsigned first, unsigned last, unsigned stride,
 		if (taboo != NULL && taboo->count(curr) > 0)
 			{
 			NxsString errormsg;
-			errormsg << "Illegal repitition of an index (" << curr + 1 << ") in multiple subsets.";
+			errormsg << L"Illegal repitition of an index (" << curr + 1 << L") in multiple subsets.";
 			throw NxsException(errormsg, token);
 			}
 		dIt = destination->insert(dIt, curr);
@@ -47,13 +47,13 @@ void NxsSetReader::AddRangeToSet(unsigned first, unsigned last, unsigned stride,
 */
 unsigned NxsSetReader::InterpretTokenAsIndices(NxsToken &token, 
   const NxsLabelToIndicesMapper & mapper, 
-  const char * setType, 
-  const char * cmdName, 
+  const wchar_t* setType, 
+  const wchar_t* cmdName, 
   NxsUnsignedSet * destination)
 	{
 	try {
-		const std::string t = token.GetToken();
-		if (NxsString::case_insensitive_equals(t.c_str(), "ALL"))
+		const std::wstring t = token.GetToken();
+		if (NxsString::case_insensitive_equals(t.c_str(), L"ALL"))
 			{
 			unsigned m = mapper.GetMaxIndex();
 			NxsUnsignedSet s;
@@ -66,15 +66,15 @@ unsigned NxsSetReader::InterpretTokenAsIndices(NxsToken &token,
 		}
 	catch (const NxsException & x)
 		{
-		NxsString errormsg = "Error in the ";
-		errormsg << setType << " descriptor of a " << cmdName << " command.\n";
+		NxsString errormsg = L"Error in the ";
+		errormsg << setType << L" descriptor of a " << cmdName << L" command.\n";
 		errormsg += x.msg;
 		throw NxsException(errormsg, token);
 		}
 	catch (...)
 		{
-		NxsString errormsg = "Expecting a ";
-		errormsg << setType << " descriptor (number or label) in the " << cmdName << ".  Encountered ";
+		NxsString errormsg = L"Expecting a ";
+		errormsg << setType << L" descriptor (number or label) in the " << cmdName << L".  Encountered ";
 		errormsg <<  token.GetToken();
 		throw NxsException(errormsg, token);
 		}
@@ -83,8 +83,8 @@ unsigned NxsSetReader::InterpretTokenAsIndices(NxsToken &token,
 void NxsSetReader::ReadSetDefinition(
   NxsToken &token, 
   const NxsLabelToIndicesMapper & mapper, 
-  const char * setType, /* "TAXON" or "CHARACTER" -- for error messages only */ 
-  const char * cmdName, /* command name -- "TAXSET" or "EXSET"-- for error messages only */ 
+  const wchar_t* setType, /* "TAXON" or "CHARACTER" -- for error messages only */ 
+  const wchar_t* cmdName, /* command name -- "TAXSET" or "EXSET"-- for error messages only */ 
   NxsUnsignedSet * destination, /** to be filled */
   const NxsUnsignedSet * taboo)
 	{
@@ -95,27 +95,27 @@ void NxsSetReader::ReadSetDefinition(
 		destination = & dummy;
 	unsigned previousInd = UINT_MAX;
 	std::vector<unsigned> intersectVec;
-	while (!token.Equals(";"))
+	while (!token.Equals(L";"))
 		{
-		if (taboo && token.Equals(","))
+		if (taboo && token.Equals(L","))
 			return;
-		if (token.Equals("-"))
+		if (token.Equals(L"-"))
 			{
 			if (previousInd == UINT_MAX)
 				{
-				errormsg = "The '-' must be preceded by number or a ";
-				errormsg << setType << " label in the " << cmdName << " command.";
+				errormsg = L"The '-' must be preceded by number or a ";
+				errormsg << setType << L" label in the " << cmdName << L" command.";
 				throw NxsException(errormsg, token);
 				}
 			token.GetNextToken();
-			if (token.Equals(";") || token.Equals("\\"))
+			if (token.Equals(L";") || token.Equals(L"\\"))
 				{
-				errormsg = "Range in the ";
-				errormsg << setType << " set definition in the " << cmdName << " command must be closed with a number or label.";
+				errormsg = L"Range in the ";
+				errormsg << setType << L" set definition in the " << cmdName << L" command must be closed with a number or label.";
 				throw NxsException(errormsg, token);
 				}
 			unsigned endpoint;
-			if (token.Equals("."))
+			if (token.Equals(L"."))
 				endpoint = mapper.GetMaxIndex();
 			else
 				{
@@ -123,21 +123,21 @@ void NxsSetReader::ReadSetDefinition(
 				unsigned nAdded = NxsSetReader::InterpretTokenAsIndices(token, mapper, setType, cmdName, &tmpset);
 				if (nAdded != 1)
 					{
-					errormsg = "End of a range in a ";
-					errormsg << setType << " set definition in the " << cmdName << " command must be closed with a single number or label (not a set).";
+					errormsg = L"End of a range in a ";
+					errormsg << setType << L" set definition in the " << cmdName << L" command must be closed with a single number or label (not a set).";
 					throw NxsException(errormsg, token);
 					}
 				endpoint = *(tmpset.begin());
 				if (endpoint < previousInd)
 					{
-					errormsg = "End of a range in a ";
-					errormsg << setType << " set definition in the " << cmdName << " command must be a larger index than the start of the range (found ";
-					errormsg << previousInd + 1 << " - " << token.GetToken();
+					errormsg = L"End of a range in a ";
+					errormsg << setType << L" set definition in the " << cmdName << L" command must be a larger index than the start of the range (found ";
+					errormsg << previousInd + 1 << L" - " << token.GetToken();
 					throw NxsException(errormsg, token);
 					}
 				}
 			token.GetNextToken();
-			if (token.Equals("\\"))
+			if (token.Equals(L"\\"))
 				{
 				token.GetNextToken();
 				NxsString t = token.GetToken(); 
@@ -150,8 +150,8 @@ void NxsSetReader::ReadSetDefinition(
 					{}
 				if (stride == 0)
 					{
-					errormsg = "Expecting a positive number indicating the 'stride' after the \\ in the ";
-					errormsg << setType << " set definition in the " << cmdName << " command. Encountered ";
+					errormsg = L"Expecting a positive number indicating the 'stride' after the \\ in the ";
+					errormsg << setType << L" set definition in the " << cmdName << L" command. Encountered ";
 					errormsg << t;
 					throw NxsException(errormsg, token);
 					}
@@ -171,7 +171,7 @@ void NxsSetReader::ReadSetDefinition(
 				set_intersection(taboo->begin(), taboo->end(), tmpset.begin(), tmpset.end(), back_inserter(intersectVec));
 				if (!intersectVec.empty())
 					{
-					errormsg << "Illegal repitition of an index (" << 1 + *(intersectVec.begin()) << ") in multiple subsets.";
+					errormsg << L"Illegal repitition of an index (" << 1 + *(intersectVec.begin()) << L") in multiple subsets.";
 					throw NxsException(errormsg, token);
 					}
 				}
@@ -240,7 +240,7 @@ bool NxsSetReader::AddRange(
 */
 unsigned NxsSetReader::GetTokenValue()
 	{
-	unsigned v = atoi(token.GetToken().c_str());
+	unsigned v = wcstol(token.GetToken().c_str(), NULL, 10);
 
 	if (v == 0 && settype != NxsSetReader::generic)
 		{
@@ -252,13 +252,13 @@ unsigned NxsSetReader::GetTokenValue()
 
 	if (v == 0)
 		{
-		block.errormsg = "Set element (";
+		block.errormsg = L"Set element (";
 		block.errormsg += token.GetToken();
-		block.errormsg += ") not a number ";
+		block.errormsg += L") not a number ";
 		if (settype == NxsSetReader::charset)
-			block.errormsg += "and not a valid character label";
+			block.errormsg += L"and not a valid character label";
 		else if (settype == NxsSetReader::taxset)
-			block.errormsg += "and not a valid taxon label";
+			block.errormsg += L"and not a valid taxon label";
 
 		throw NxsException(block.errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
@@ -266,7 +266,7 @@ unsigned NxsSetReader::GetTokenValue()
 	return v;
 	}
 
-void NxsSetReader::WriteSetAsNexusValue(const NxsUnsignedSet & nxsset, std::ostream & out)
+void NxsSetReader::WriteSetAsNexusValue(const NxsUnsignedSet & nxsset, std::wostream & out)
 	{
 	NxsUnsignedSet::const_iterator currIt = nxsset.begin();
 	const NxsUnsignedSet::const_iterator endIt = nxsset.end();
@@ -302,7 +302,7 @@ void NxsSetReader::WriteSetAsNexusValue(const NxsUnsignedSet & nxsset, std::ostr
 				else
 					{
 					if (stride > 1)
-						out << ' ' << rangeBegin << '-' << prev << " \\ " << stride;
+						out << ' ' << rangeBegin << '-' << prev << L" \\ " << stride;
 					else
 						out << ' ' << rangeBegin << '-' << prev ;
 					inRange = false;
@@ -328,7 +328,7 @@ void NxsSetReader::WriteSetAsNexusValue(const NxsUnsignedSet & nxsset, std::ostr
 			else
 				{
 				if (stride > 1)
-					out << ' ' << rangeBegin << '-' << prev << " \\ " << stride;
+					out << ' ' << rangeBegin << '-' << prev << L" \\ " << stride;
 				else
 					out << ' ' << rangeBegin << '-' << prev ;
 				}
@@ -337,7 +337,7 @@ void NxsSetReader::WriteSetAsNexusValue(const NxsUnsignedSet & nxsset, std::ostr
 		else
 			{
 			if (stride > 1)
-				out << ' ' << rangeBegin << '-' << curr << " \\ " << stride;
+				out << ' ' << rangeBegin << '-' << curr << L" \\ " << stride;
 			else
 				out << ' ' << rangeBegin << '-' << curr ;
 			}
@@ -369,46 +369,46 @@ bool NxsSetReader::Run()
 		//
 		token.GetNextToken();
 
-		if (token.Equals("-"))
+		if (token.Equals(L"-"))
 			{
 			// We should not be inside a range when we encounter a hyphenation symbol.
 			// The hyphen is what _puts_ us inside a range!
 			//
 			if (insideRange)
 				{
-				block.errormsg = "The symbol '-' is out of place here";
+				block.errormsg = L"The symbol '-' is out of place here";
 				throw NxsException(block.errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 				}
 			insideRange = true;
 			}
 
-		else if (token.Equals("."))
+		else if (token.Equals(L"."))
 			{
 			// We _should_ be inside a range if we encounter a period, as this
 			// is a range termination character
 			//
 			if (!insideRange)
 				{
-				block.errormsg = "The symbol '.' can only be used to specify the end of a range";
+				block.errormsg = L"The symbol '.' can only be used to specify the end of a range";
 				throw NxsException(block.errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 				}
 			rangeEnd = max;
 			}
 
-		else if (token.Equals("\\"))
+		else if (token.Equals(L"\\"))
 			{
 			// The backslash character is used to specify a modulus to a range, and
 			// thus should only be encountered if currently inside a range
 			//
 			if (!insideRange)
 				{
-				block.errormsg = "The symbol '\\' can only be used after the end of a range has been specified";
+				block.errormsg = L"The symbol '\\' can only be used after the end of a range has been specified";
 				throw NxsException(block.errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 				}
 
 			// This should be the modulus value
 			//
-			modValue = NxsToken::DemandPositiveInt(token, block.errormsg, "The modulus value");
+			modValue = NxsToken::DemandPositiveInt(token, block.errormsg, L"The modulus value");
 			}
 
 		else if (insideRange && rangeEnd == UINT_MAX)
@@ -431,19 +431,19 @@ bool NxsSetReader::Run()
 
 			if (!ok)
 				{
-				block.errormsg = "Character number out of range (or range incorrectly specified) in set specification";
+				block.errormsg = L"Character number out of range (or range incorrectly specified) in set specification";
 				throw NxsException(block.errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 				}
 
 			// We have actually already read in the next token, so deal with it
 			// now so that we don't end up skipping a token
 			//
-			if (token.Equals(";"))
+			if (token.Equals(L";"))
 				{
 				retval = true;
 				break;
 				}
-			else if (token.Equals(","))
+			else if (token.Equals(L","))
 				{
 				break;
 				}
@@ -465,16 +465,16 @@ bool NxsSetReader::Run()
 
 			if (!ok)
 				{
-				block.errormsg = "Number out of range (or range incorrectly specified) in set specification";
+				block.errormsg = L"Number out of range (or range incorrectly specified) in set specification";
 				throw NxsException(block.errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 				}
 
-			if (token.Equals(";"))
+			if (token.Equals(L";"))
 				{
 				retval = true;
 				break;
 				}
-			else if (token.Equals(","))
+			else if (token.Equals(L","))
 				{
 				break;
 				}
@@ -483,18 +483,18 @@ bool NxsSetReader::Run()
 			rangeEnd = UINT_MAX;
 			}
 
-		else if (token.Equals(";"))
+		else if (token.Equals(L";"))
 			{
 			retval = true;
 			break;
 			}
 
-		else if (token.Equals(","))
+		else if (token.Equals(L","))
 			{
 			break;
 			}
 
-		else if (token.Equals("ALL"))
+		else if (token.Equals(L"ALL"))
 			{
 			rangeBegin = 1;
 			rangeEnd = max;

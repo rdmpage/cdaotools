@@ -26,9 +26,9 @@
 using namespace std;
 
 
-int NxsString::index_in_vector(const std::string &t, const std::vector<std::string> &v)
+int NxsString::index_in_vector(const std::wstring &t, const std::vector<std::wstring> &v)
 	{
-	std::vector<std::string>::const_iterator vIt = v.begin();
+	std::vector<std::wstring>::const_iterator vIt = v.begin();
 	int i = 0;
 	for (; vIt != v.end(); ++vIt, ++i)
 		{
@@ -38,7 +38,7 @@ int NxsString::index_in_vector(const std::string &t, const std::vector<std::stri
 	return -1;
 	}
 
-int NxsString::index_in_array(const std::string &t, const char * * v, const unsigned n)
+int NxsString::index_in_array(const std::wstring &t, const wchar_t* * v, const unsigned n)
 	{
 	if (n > 0 && v)
 		{
@@ -51,11 +51,11 @@ int NxsString::index_in_array(const std::string &t, const char * * v, const unsi
 	return -1;
 	}
 
-std::string NxsString::strip_whitespace(const std::string & s)
+std::wstring NxsString::strip_whitespace(const std::wstring & s)
 	{
-	std::string	t;
+	std::wstring	t;
 	t.reserve(s.length());
-	for (std::string::const_iterator sIt = s.begin(); sIt != s.end(); ++sIt)
+	for (std::wstring::const_iterator sIt = s.begin(); sIt != s.end(); ++sIt)
 		{
 		if (isgraph(*sIt))
 			t.push_back(*sIt);
@@ -64,17 +64,17 @@ std::string NxsString::strip_whitespace(const std::string & s)
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Returns true if `o` points to a string that represents a long (and `o` has no other characters than the long).
+|	Returns true if `o` points to a wstring that represents a long (and `o` has no other characters than the long).
 |	if n is not NULL, then when the function returns true, *n will be the long.	
 */
-bool NxsString::to_long(const char *o, long *n)
+bool NxsString::to_long(const wchar_t*o, long *n)
 	{
 	if (o == NULL)
 		return false;
-	if (strchr("0123456789-+",*o) != NULL) // strtol skips leading whitespace, but we don't  do that in 
+	if (wcschr(L"0123456789-+",*o) != NULL) // strtol skips leading whitespace, but we don't  do that in 
 		{
-		char * pEnd;
-		const long i = strtol (o, &pEnd, 10);
+		wchar_t * pEnd;
+		const long i = wcstol (o, &pEnd, 10);
 		if (*pEnd != '\0')
 			return false;
 		if (n != NULL)
@@ -85,17 +85,17 @@ bool NxsString::to_long(const char *o, long *n)
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Returns true if `o` points to a string that represents a double (and `o` has no other characters than the long).
+|	Returns true if `o` points to a wstring that represents a double (and `o` has no other characters than the long).
 |	if n is not NULL, then when the function returns true, *n will be the long.	
 */
-bool NxsString::to_double(const char *o, double *n)
+bool NxsString::to_double(const wchar_t*o, double *n)
 	{
 	if (o == NULL)
 		return false;
-	if (strchr("0123456789-.+",*o) != NULL ) // strtol skips leading whitespace, but we don't  do that in 
+	if (wcschr(L"0123456789-.+",*o) != NULL ) // strtol skips leading whitespace, but we don't  do that in 
 		{
-		char * pEnd;
-		const double i = strtod (o, &pEnd);
+		wchar_t * pEnd;
+		const double i = wcstod (o, &pEnd);
 		if (*pEnd != '\0')
 			return false;
 		if (n != NULL)
@@ -105,7 +105,7 @@ bool NxsString::to_double(const char *o, double *n)
 	return false;
 	}
 
-bool NxsString::case_insensitive_equals(const char *o, const char * t)
+bool NxsString::case_insensitive_equals(const wchar_t*o, const wchar_t* t)
 	{
 	if (o == 0L || t == 0L)
 		return false;
@@ -120,37 +120,37 @@ bool NxsString::case_insensitive_equals(const char *o, const char * t)
 /*--------------------------------------------------------------------------------------------------------------------------
 |	Capitalizes every character in s.
 */
-std::string & NxsString::to_upper(std::string &s)
+std::wstring & NxsString::to_upper(std::wstring &s)
 	{
-	for (std::string::iterator sIt = s.begin(); sIt != s.end(); sIt++)
+	for (std::wstring::iterator sIt = s.begin(); sIt != s.end(); sIt++)
 		*sIt = (char) toupper(*sIt);
 	return s;
 	}
 /*--------------------------------------------------------------------------------------------------------------------------
 |	Capitalizes every character in s.
 */
-std::string & NxsString::to_lower(std::string &s)
+std::wstring & NxsString::to_lower(std::wstring &s)
 	{
-	for (std::string::iterator sIt = s.begin(); sIt != s.end(); sIt++)
+	for (std::wstring::iterator sIt = s.begin(); sIt != s.end(); sIt++)
 		*sIt = (char) tolower(*sIt);
 	return s;
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
-|	Appends a string representation of the supplied double to the stored string and returns a reference to itself.
+|	Appends a wstring representation of the supplied double to the stored wstring and returns a reference to itself.
 */
 NxsString &NxsString::operator+=(
   const double d)	/* the double value to append */
 	{
-	char tmp[81];
+	wchar_t tmp[81];
 
-	// Create a C-string representing the supplied double value. 
+	// Create a C-wstring representing the supplied double value. 
 	// The # causes a decimal point to always be output.
 	//
-	sprintf(tmp, "%#3.6f", d);
-	unsigned tmplen = (unsigned)strlen(tmp);
+	swprintf(tmp, 81, L"%#3.6f", d);
+	unsigned tmplen = (unsigned)wcslen(tmp);
 
-	// If the C-string has a lot of trailing zeros, lop them off
+	// If the C-wstring has a lot of trailing zeros, lop them off
 	//
 	for (;;)
 		{
@@ -165,13 +165,13 @@ NxsString &NxsString::operator+=(
 	}
 
 /*-------------------------------------------------------------------------------------------------------------------------- 
-|	Adds `n' copies of the character `c' to the end of the stored string and returns a reference to itself.
+|	Adds `n' copies of the character `c' to the end of the stored wstring and returns a reference to itself.
 */
 NxsString &NxsString::AddTail(
-  char c,		/* the character to use in the appended tail */
+  wchar_t c,		/* the character to use in the appended tail */
   unsigned n)	/* the number of times `c' is to be appended */
 	{
-	char s[2];
+	wchar_t s[2];
 	s[0] = c;
 	s[1] = '\0';
 
@@ -183,8 +183,8 @@ NxsString &NxsString::AddTail(
 
  
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Appends a printf-style formatted string onto the end of this NxsString and returns the number of characters added to the 
-|	string. For example, the following code would result in the string s being set to "ts-tv rate ratio = 4.56789":
+|	Appends a printf-style formatted wstring onto the end of this NxsString and returns the number of characters added to the 
+|	wstring. For example, the following code would result in the wstring s being set to "ts-tv rate ratio = 4.56789":
 |>
 |	double kappa = 4.56789;
 |	NxsString s;
@@ -192,11 +192,11 @@ NxsString &NxsString::AddTail(
 |>
 */
 int NxsString::PrintF(
-  const char *formatStr,	/* the printf-style format string */
-  ...)						/* other arguments referred to by the format string */
+  const wchar_t*formatStr,	/* the printf-style format wstring */
+  ...)						/* other arguments referred to by the format wstring */
   	{
   	const int kInitialBufferSize = 256;
-  	char buf[kInitialBufferSize];
+  	wchar_t buf[kInitialBufferSize];
 
 	// Create a pointer to the list of optional arguments
 	//
@@ -210,14 +210,14 @@ int NxsString::PrintF(
 	// If vsnprintf returns -1, means kInitialBufferSize was not large enough.
 	// In this case, only kInitialBufferSize bytes are written.
 	//
-  	int nAdded = vsnprintf(buf, kInitialBufferSize, formatStr, argList);
+  	int nAdded = vswprintf(buf, kInitialBufferSize, formatStr, argList);
 
 	// Reset the argument list pointer
 	//
   	va_end(argList);
 
-	// Currently, if formatted string is too long to fit into the supplied buf,
-	// just adding a terminating '\0' and returning the truncated string
+	// Currently, if formatted wstring is too long to fit into the supplied buf,
+	// just adding a terminating '\0' and returning the truncated wstring
 	// Need to think of a better solution
 	//
 	if (nAdded  < 0 || nAdded >= kInitialBufferSize)
@@ -229,21 +229,21 @@ int NxsString::PrintF(
   	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Returns true if the string is a abbreviation (or complete copy) of the argument `s'.
+|	Returns true if the wstring is a abbreviation (or complete copy) of the argument `s'.
 */
 bool NxsString::IsStdAbbreviation(
-  const NxsString &s,	/* the string for which the stored string is potentially an abbreviation */
+  const NxsString &s,	/* the wstring for which the stored wstring is potentially an abbreviation */
   bool respectCase)		/* if true, comparison will be case-sensitive */
   const
 	{
 	if (empty())
 		return false;
 
-	// s is the unabbreviated comparison string
+	// s is the unabbreviated comparison wstring
 	//
 	const unsigned slen = static_cast<unsigned long>(s.size());
 
-	// t is the stored string
+	// t is the stored wstring
 	//
 	const unsigned tlen = static_cast<unsigned long>(size());
 
@@ -270,27 +270,27 @@ bool NxsString::IsStdAbbreviation(
 	}
 	
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Returns true if the stored string is a case-insensitive abbreviation (or complete copy) of `s' and the stored string 
+|	Returns true if the stored wstring is a case-insensitive abbreviation (or complete copy) of `s' and the stored wstring 
 | 	has all of the characters that are in the initial capitalized portion of `s'. For example if `s' is "KAPpa" then 
-|	"kappa", "kapp", or "kap" (with any capitalization pattern) will return true and all other strings will return false. 
-|	Always returns false if the stored string has length of zero.
+|	"kappa", L"kapp", or "kap" (with any capitalization pattern) will return true and all other wstrings will return false. 
+|	Always returns false if the stored wstring has length of zero.
 */
 bool NxsString::IsCapAbbreviation(
-  const NxsString &s)	/* the string for which the stored string is potentially an abbreviation */
+  const NxsString &s)	/* the wstring for which the stored wstring is potentially an abbreviation */
   const
 	{
 	if (empty())
 		return false;
 
-	// s is the unabbreviated comparison string
+	// s is the unabbreviated comparison wstring
 	//
 	const unsigned slen = static_cast<unsigned>(s.size());
 
-	// t is the stored string
+	// t is the stored wstring
 	//
 	const unsigned tlen = static_cast<unsigned>(size());
 
-	// If the stored string is longer than s then it cannot be an abbreviation of s
+	// If the stored wstring is longer than s then it cannot be an abbreviation of s
 	//
 	if (tlen > slen)
 		return false;
@@ -346,8 +346,8 @@ bool NxsString::IsCapAbbreviation(
 	//
 	for (; k < tlen; k++)
 		{
-  		const char tokenChar = (char)toupper((*this)[k]);
-  		const char otherChar = (char)toupper(s[k]);
+  		const wchar_t tokenChar = (wchar_t)toupper((*this)[k]);
+  		const wchar_t otherChar = (wchar_t)toupper(s[k]);
 		if (tokenChar != otherChar)
 			return false;
 		}
@@ -357,13 +357,13 @@ bool NxsString::IsCapAbbreviation(
 
 /*----------------------------------------------------------------------------------------------------------------------
 |	Right-justifies `x' in a field `w' characters wide, using blank spaces to fill in unused portions on the left-hand 
-|	side of the field. Specify true for `clear_first' to first empty the string. Assumes `w' is large enough to 
-|	accommodate the string representation of `x'.
+|	side of the field. Specify true for `clear_first' to first empty the wstring. Assumes `w' is large enough to 
+|	accommodate the wstring representation of `x'.
 */
 NxsString &NxsString::RightJustifyLong(
   long x,			/* long value to right justify */
   unsigned int w,	/* width of field */
-  bool clear_first)	/* if true, initialize string first to empty string */
+  bool clear_first)	/* if true, initialize wstring first to empty wstring */
 	{
 	bool x_negative = (x < 0L ? true : false);
 	unsigned long xabs = (x_negative ? (-x) : x);
@@ -395,20 +395,20 @@ NxsString &NxsString::RightJustifyLong(
 
 /*----------------------------------------------------------------------------------------------------------------------
 |	Right-justifies `x' in a field `w' characters wide with precision `p', using blank spaces to fill in unused 
-|	portions on the left-hand side of the field. Specify true for `clear_first' to first empty the string. Assumes that
-|	the specified width is enough to accommodate the string representation of `x'.
+|	portions on the left-hand side of the field. Specify true for `clear_first' to first empty the wstring. Assumes that
+|	the specified width is enough to accommodate the wstring representation of `x'.
 */
 NxsString &NxsString::RightJustifyDbl(
   double x,				/* double value to right justify */
   unsigned w,			/* width of field */
   unsigned p,			/* precision to use when displaying `x' */
-  bool clear_first)		/* if true, initialize stored string first to the empty string */
+  bool clear_first)		/* if true, initialize stored wstring first to the empty wstring */
 	{
 	if (clear_first)
 		erase();
 
-	char fmtstr[81];
-	sprintf(fmtstr, "%%.%df", p);
+	wchar_t fmtstr[81];
+	swprintf(fmtstr, 81, L"%%.%df", p);
 	NxsString tmp;
 	tmp.PrintF(fmtstr, x);
 
@@ -424,13 +424,13 @@ NxsString &NxsString::RightJustifyDbl(
 
 /*----------------------------------------------------------------------------------------------------------------------
 |	Right-justifies `s' in a field `w' characters wide, using blank spaces to fill in unused portions on the left-hand
-|	side of the field. Specify true for `clear_first' to first empty the string. Assumes that the specified width is 
+|	side of the field. Specify true for `clear_first' to first empty the wstring. Assumes that the specified width is 
 |	enough to accommodate `s'.
 */
 NxsString &NxsString::RightJustifyString(
-  const NxsString &s,	/* string to right justify */
+  const NxsString &s,	/* wstring to right justify */
   unsigned w,			/* width of field */
-  bool clear_first)		/* if true, initialize string first to the empty string */
+  bool clear_first)		/* if true, initialize wstring first to the empty wstring */
 	{
 	if (clear_first)
 		erase();
@@ -444,22 +444,22 @@ NxsString &NxsString::RightJustifyString(
 	*this += s;
 	return *this;
 	}
-void NxsString::blanks_to_underscores(std::string &s)
+void NxsString::blanks_to_underscores(std::wstring &s)
 	{
-	for (std::string::iterator sIt = s.begin(); sIt != s.end(); sIt++)
+	for (std::wstring::iterator sIt = s.begin(); sIt != s.end(); sIt++)
 		{
 		if (*sIt == ' ')
 			*sIt =  '_';
 		}
 	}
 
-void NxsString::add_nxs_quotes(std::string &s)
+void NxsString::add_nxs_quotes(std::wstring &s)
 	{
-	std::string withQuotes;
+	std::wstring withQuotes;
 	unsigned len = (unsigned)s.length();
 	withQuotes.reserve(len + 4);
 	withQuotes.append(1,'\'');
-	for (std::string::const_iterator sIt = s.begin(); sIt != s.end(); sIt++)
+	for (std::wstring::const_iterator sIt = s.begin(); sIt != s.end(); sIt++)
 		{
 		withQuotes.append(1, *sIt);
 		if (*sIt == '\'')
@@ -469,10 +469,10 @@ void NxsString::add_nxs_quotes(std::string &s)
 	s.swap(withQuotes);
 	}
 
-NxsString::NxsQuotingRequirements NxsString::determine_quoting_requirements(const std::string & s) 
+NxsString::NxsQuotingRequirements NxsString::determine_quoting_requirements(const std::wstring & s) 
 	{
 	NxsQuotingRequirements nrq = kNoQuotesNeededForNexus;
-	for (std::string::const_iterator sIt = s.begin(); sIt != s.end(); ++sIt)
+	for (std::wstring::const_iterator sIt = s.begin(); sIt != s.end(); ++sIt)
 		{
 		if (!isgraph(*sIt))
 			{
@@ -491,7 +491,7 @@ NxsString::NxsQuotingRequirements NxsString::determine_quoting_requirements(cons
 		else if (strchr("\'[_", *sIt) != NULL)
 			{
 			// Get here if c is either an apostrophe or left square bracket. Quotes are needed if one of these
-			// characters is all there is to this string
+			// characters is all there is to this wstring
 			//
 			return kSingleQuotesNeededForNexus;
 			}
@@ -500,7 +500,7 @@ NxsString::NxsQuotingRequirements NxsString::determine_quoting_requirements(cons
 	}
 
 /*-------------------------------------------------------------------------------------------------------------------------- 
-|	Returns true if the string needs to be surrounded by single-quotes to make it a single nexus token.
+|	Returns true if the wstring needs to be surrounded by single-quotes to make it a single nexus token.
 */
 bool NxsString::QuotesNeeded() const
 	{
@@ -518,14 +518,14 @@ bool NxsString::QuotesNeeded() const
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
-|	Converts any blank spaces found in the stored string to the underscore character.
+|	Converts any blank spaces found in the stored wstring to the underscore character.
 */
 NxsString &NxsString::BlanksToUnderscores()
 	{
 	unsigned len = (unsigned)length();
 	for (unsigned k = 0; k < len; k++)
 		{
-		char &ch = at(k);
+		wchar_t &ch = at(k);
 		if (ch == ' ')
 			ch = '_';
 		}
@@ -533,14 +533,14 @@ NxsString &NxsString::BlanksToUnderscores()
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
-|	Converts any underscore characters found in the stored string to blank spaces.
+|	Converts any underscore characters found in the stored wstring to blank spaces.
 */
 NxsString &NxsString::UnderscoresToBlanks()
 	{
 	unsigned len = (unsigned)length();
 	for (unsigned k = 0; k < len; k++)
 		{
-		char &ch = at(k);
+		wchar_t &ch = at(k);
 		if (ch == '_')
 			ch = ' ';
 		}
@@ -548,13 +548,13 @@ NxsString &NxsString::UnderscoresToBlanks()
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
-|	Shortens stored string to `n' - 3 characters, making the last three characters "...". If string is already less than 
+|	Shortens stored wstring to `n' - 3 characters, making the last three characters "...". If wstring is already less than 
 |	`n' characters in length, this function has no effect. This is useful when it is desirable to show some of the
-|	contents of a string, even when the string will not fit in its entirety into the space available for displaying it.
+|	contents of a wstring, even when the wstring will not fit in its entirety into the space available for displaying it.
 |	Assumes that `n' is at least 4.
 */
 NxsString &NxsString::ShortenTo(
-  unsigned n)	/* maximum number of characters available for displaying the string */
+  unsigned n)	/* maximum number of characters available for displaying the wstring */
 	{
 	assert(n > 3);
 	if (length() <= static_cast<unsigned>(n))
@@ -567,7 +567,7 @@ NxsString &NxsString::ShortenTo(
 		if (s.length() >= n - 3)
 			break;
 		}
-	s += "...";
+	s += L"...";
 
 	*this = s;
 	return *this;
@@ -575,11 +575,11 @@ NxsString &NxsString::ShortenTo(
 
 
 /*----------------------------------------------------------------------------------------------------------------------
-|	Returns true if the stored string can be interpreted as a double value, and returns false otherwise.
+|	Returns true if the stored wstring can be interpreted as a double value, and returns false otherwise.
 */
 bool NxsString::IsADouble() const
 	{
-	const char	*str			= c_str();
+	const wchar_t	*str			= c_str();
 	unsigned	i				= 0;
 	bool		hadDecimalPt	= false;
 	bool		hadExp			= false;
@@ -643,11 +643,11 @@ bool NxsString::IsADouble() const
 	}
 	
 /*----------------------------------------------------------------------------------------------------------------------
-|	Returns true if stored string can be interpreted as a long integer.
+|	Returns true if stored wstring can be interpreted as a long integer.
 */
 bool NxsString::IsALong() const
 	{
-	const char *str	= c_str();
+	const wchar_t*str	= c_str();
 	unsigned i		= 0;
 
 	//	First char can be -
@@ -669,11 +669,11 @@ bool NxsString::IsALong() const
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Returns true if the stored string is a non-case-sensitive copy of the argument `s'. Note: will return true if both the
-|	stored string and `s' are empty strings.
+|	Returns true if the stored wstring is a non-case-sensitive copy of the argument `s'. Note: will return true if both the
+|	stored wstring and `s' are empty wstrings.
 */
 bool NxsString::EqualsCaseInsensitive(
-  const NxsString &s)	/* the comparison string */
+  const NxsString &s)	/* the comparison wstring */
   const
 	{
 	unsigned k;
@@ -692,9 +692,9 @@ bool NxsString::EqualsCaseInsensitive(
 	}
 	
 /*----------------------------------------------------------------------------------------------------------------------
-|	Creates a string representation of the hexadecimal version of the long integer `p'. For example, if `p' equals 123,
-|	and if 2 was specified for `nFours', the resulting string would be "7B". If 4 was specified for `nFours', then the
-|	resulting string would be "007B". 
+|	Creates a wstring representation of the hexadecimal version of the long integer `p'. For example, if `p' equals 123,
+|	and if 2 was specified for `nFours', the resulting wstring would be "7B". If 4 was specified for `nFours', then the
+|	resulting wstring would be "007B". 
 */
 NxsString NxsString::ToHex(
   long p,			/* the value to display in hexadecimal */
@@ -712,8 +712,8 @@ NxsString NxsString::ToHex(
 	}
 	
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Checks to see if the stored string begins with upper case letters and, if so, returns all of the contiguous capitalized
-|	prefix. If the stored string begins with lower case letters, an empty string is returned.
+|	Checks to see if the stored wstring begins with upper case letters and, if so, returns all of the contiguous capitalized
+|	prefix. If the stored wstring begins with lower case letters, an empty wstring is returned.
 */
 NxsString NxsString::UpperCasePrefix() const
 	{
@@ -725,7 +725,7 @@ NxsString NxsString::UpperCasePrefix() const
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Converts the stored string to an unsigned int using the standard C function strtol, throwing NxsX_NotANumber if the 
+|	Converts the stored wstring to an unsigned int using the standard C function strtol, throwing NxsX_NotANumber if the 
 |	conversion fails. Returns UINT_MAX if the number is too large to fit in an unsigned (or was a negative number).
 */
 unsigned NxsString::ConvertToUnsigned() const
@@ -737,7 +737,7 @@ unsigned NxsString::ConvertToUnsigned() const
 	}
 
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Converts the stored string to an int using the standard C function strtol, throwing NxsX_NotANumber if the conversion 
+|	Converts the stored wstring to an int using the standard C function strtol, throwing NxsX_NotANumber if the conversion 
 |	fails. Returns INT_MAX if the number is too large to fit in an int or -INT_MAX if it is too small.
 */
 int NxsString::ConvertToInt() const
@@ -751,16 +751,16 @@ int NxsString::ConvertToInt() const
 	}
 	
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Converts the stored string to a long using the standard C function strtol, throwing NxsX_NotANumber if the conversion 
+|	Converts the stored wstring to a long using the standard C function strtol, throwing NxsX_NotANumber if the conversion 
 |	fails.
 */
 long NxsString::ConvertToLong() const
 	{
 	if (length() == 0 || !(isdigit(at(0)) || at(0) == '-'))
 		throw NxsX_NotANumber();
-	const char *b = c_str();
-	char *endP;
-	long l = strtol(b, &endP, 10);
+	const wchar_t*b = c_str();
+	wchar_t *endP;
+	long l = wcstol(b, &endP, 10);
 #if defined(_MSC_VER)
 	if ((l == 0 && (endP - b) == 0))
 		throw NxsX_NotANumber();
@@ -772,7 +772,7 @@ long NxsString::ConvertToLong() const
 	}
 	
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Converts the stored string to a double using the standard C function strtod, throwing NxsX_NotANumber if the conversion
+|	Converts the stored wstring to a double using the standard C function strtod, throwing NxsX_NotANumber if the conversion
 |	fails. Returns DBL_MAX or -DBL_MAX if the number is out of bounds.
 */
 double NxsString::ConvertToDouble() const
@@ -783,9 +783,9 @@ double NxsString::ConvertToDouble() const
 	char ch = at(0);
 	if (isdigit(ch) || ch == '-' || ch == '.'|| toupper(ch) == 'E')
 		{
-		const char *b = c_str();
-		char *endP;
-		double d = strtod(b, &endP);
+		const wchar_t*b = c_str();
+		wchar_t *endP;
+		double d = wcstod(b, &endP);
 #if defined(_MSC_VER)
 		if ((d == 0.0 && (endP - b) == 0))
 			throw NxsX_NotANumber();
@@ -807,7 +807,7 @@ double NxsString::ConvertToDouble() const
 
 /*--------------------------------------------------------------------------------------------------------------------------
 |	Transforms the vector of NxsString objects by making them all lower case and then capitalizing the first portion of 
-|	them so that the capitalized portion is enough to uniquely specify each. Returns true if the strings are long enough 
+|	them so that the capitalized portion is enough to uniquely specify each. Returns true if the wstrings are long enough 
 |	to uniquely specify each. Horrendously bad algorithm, but shouldn't be called often.
 */
 bool SetToShortestAbbreviation(
@@ -818,7 +818,7 @@ bool SetToShortestAbbreviation(
 	unsigned i;
 	for (i = 0; i < strVec.size(); i++)
 		{
-		// Change the next string to lower case
+		// Change the next wstring to lower case
 		//
 		strVec[i].ToLower();
 
@@ -830,7 +830,7 @@ bool SetToShortestAbbreviation(
 		pref += (char) toupper(strVec[i][prefLen++]);
 		bool moreChars = true;
 
-		// Keep adding letters from the current string until pref is unique.
+		// Keep adding letters from the current wstring until pref is unique.
 		// Then add this pref to upperCasePortion (vector of previous prefs)
 		//
 		for (;moreChars;)
@@ -921,7 +921,7 @@ bool SetToShortestAbbreviation(
 |	Returns a vector of NxsString objects that match the entire `testStr'.
 */
 NxsStringVector GetVecOfPossibleAbbrevMatches(
-  const NxsString		&testStr,		/* string to match */
+  const NxsString		&testStr,		/* wstring to match */
   const NxsStringVector	&possMatches)	/* vector of possible matches */
 	{
 	NxsStringVector matches;
@@ -934,11 +934,11 @@ NxsStringVector GetVecOfPossibleAbbrevMatches(
 	}
 	
 /*--------------------------------------------------------------------------------------------------------------------------
-|	Written to make it easy to initialize a vector of strings. Similar to the perl split function. Converts a string like
-|	this -- "A|bro|ken strin|g" -- to a vector of strings with four elements:  "A", "bro", "ken string", and "g".
+|	Written to make it easy to initialize a vector of wstrings. Similar to the perl split function. Converts a wstring like
+|	this -- "A|bro|ken strin|g" -- to a vector of wstrings with four elements:  "A", L"bro", L"ken wstring", and "g".
 */
 NxsStringVector BreakPipeSeparatedList(
-  const NxsString &strList)	/* the string submitted for splitting */
+  const NxsString &strList)	/* the wstring submitted for splitting */
   	{
 	NxsString::const_iterator p = strList.begin();
 	NxsString ss;
@@ -959,3 +959,22 @@ NxsStringVector BreakPipeSeparatedList(
 		}
 	return retVec;
 	}
+
+std::wstring str_to_wstr( const std::string& src){ 
+    std::wstring ret = L"";
+    for (std::string::const_iterator i = src.begin(); i != src.end(); ++i ){
+        ret += (wchar_t)(*i);
+    }
+    return ret;
+}
+std::string wstr_to_str( const std::wstring& src ){
+
+    char pret[ src.size() * sizeof( wchar_t ) ];
+    const wchar_t* srcp =src.c_str();
+    
+    memcpy( pret, srcp, sizeof(char) );
+    string ret( pret );
+    return ret;
+}
+
+

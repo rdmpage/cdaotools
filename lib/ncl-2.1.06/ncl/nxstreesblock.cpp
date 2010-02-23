@@ -65,7 +65,7 @@ void NxsSimpleTree::RerootAt(unsigned leafIndex)
 	if (newRoot == NULL)
 		{
 		NxsString eMsg;
-		eMsg << "Reroot failed. Leaf number " << (leafIndex + 1) << " was not found in the tree.";
+		eMsg << L"Reroot failed. Leaf number " << (leafIndex + 1) << L" was not found in the tree.";
 		throw NxsNCLAPIException(eMsg);
 		}
 	NxsSimpleNode * p = newRoot->edgeToPar.parent;
@@ -201,7 +201,7 @@ void NxsSimpleTree::FlipRootsChildToRoot(NxsSimpleNode *subRoot)
 		}
 }
 
-void NxsSimpleEdge::WriteAsNewick(std::ostream &out, bool nhx) const
+void NxsSimpleEdge::WriteAsNewick(std::wostream &out, bool nhx) const
 	{
 	if (!defaultEdgeLen)
 		{
@@ -218,14 +218,14 @@ void NxsSimpleEdge::WriteAsNewick(std::ostream &out, bool nhx) const
 		out << '[' << uc->GetText() << ']';
 	if (nhx && !parsedInfo.empty())
 		{
-		out << "[&&NHX";
-		for (std::map<std::string, std::string>::const_iterator p = parsedInfo.begin(); p != parsedInfo.end(); ++p)
+		out << L"[&&NHX";
+		for (std::map<std::wstring, std::wstring>::const_iterator p = parsedInfo.begin(); p != parsedInfo.end(); ++p)
 			out << ':' << p->first << '=' << p->second;
 		out << ']';
 		}
 	}
 
-void NxsSimpleNode::WriteAsNewick(std::ostream &out, bool nhx) const
+void NxsSimpleNode::WriteAsNewick(std::wostream &out, bool nhx) const
 	{
 	if (lChild)
 		{
@@ -493,35 +493,35 @@ std::vector<std::vector<double> > NxsSimpleTree::GetDblPathDistances(bool toMRCA
 |		&&NHX
 | returns unparsed component
 */
-std::string parseNHXComment(const std::string comment, std::map<std::string, std::string> *infoMap)
+std::wstring parseNHXComment(const std::wstring comment, std::map<std::wstring, std::wstring> *infoMap)
 	{
 	if (comment.length() < 6 || comment[0] != '&' || comment[1] != '&' || comment[2] != 'N' ||comment[3] != 'H' || comment[4] != 'X' )
 		return comment;
 	size_t colonPos = comment.find(':', 5);
-	if (colonPos == string::npos)
-		return comment.substr(5, string::npos);
+	if (colonPos == wstring::npos)
+		return comment.substr(5, wstring::npos);
 	for (;;)
 		{
 		size_t eqPos = comment.find('=', colonPos);
-		if (eqPos == string::npos || (eqPos <= (colonPos + 1)))
-			return comment.substr(colonPos, string::npos);
-		std::string key = comment.substr(colonPos + 1, eqPos - 1 - colonPos);
+		if (eqPos == wstring::npos || (eqPos <= (colonPos + 1)))
+			return comment.substr(colonPos, wstring::npos);
+		std::wstring key = comment.substr(colonPos + 1, eqPos - 1 - colonPos);
 		colonPos = comment.find(':', eqPos + 1);
 		if (colonPos == eqPos + 1)
 			{
 			if (infoMap)
-				(*infoMap)[key] = string();
+				(*infoMap)[key] = wstring();
 			}
-		else if (colonPos == string::npos)
+		else if (colonPos == wstring::npos)
 			{
-			std::string lastVal = comment.substr(eqPos + 1);
+			std::wstring lastVal = comment.substr(eqPos + 1);
 			if (infoMap)
 				(*infoMap)[key] = lastVal;
-			return std::string();
+			return std::wstring();
 			}
 		else 
 			{
-			std::string value = comment.substr(eqPos + 1, colonPos - eqPos - 1);
+			std::wstring value = comment.substr(eqPos + 1, colonPos - eqPos - 1);
 			if (infoMap)
 				(*infoMap)[key] = value;
 			}
@@ -534,13 +534,13 @@ void NxsSimpleEdge::DealWithNexusComments(const std::vector<NxsComment> & ecs, b
 		{
 		if (NHXComments)
 			{
-			std::string ns = ecsIt->GetText();
-			std::map<std::string, std::string> currCmt;
-			std::string unparsed = parseNHXComment(ns, &currCmt);
-			for (std::map<std::string, std::string>::const_iterator c = currCmt.begin(); c != currCmt.end(); ++c)
+			std::wstring ns = ecsIt->GetText();
+			std::map<std::wstring, std::wstring> currCmt;
+			std::wstring unparsed = parseNHXComment(ns, &currCmt);
+			for (std::map<std::wstring, std::wstring>::const_iterator c = currCmt.begin(); c != currCmt.end(); ++c)
 				{
-				const std::string & k = c->first;
-				const std::string & v = c->second;
+				const std::wstring & k = c->first;
+				const std::wstring & v = c->second;
 				this->parsedInfo[k] = v;
 				}
 			if (!unparsed.empty())
@@ -562,14 +562,14 @@ void NxsSimpleEdge::DealWithNexusComments(const std::vector<NxsComment> & ecs, b
 void NxsSimpleTree::Initialize(const NxsFullTreeDescription & td)
 	{
 	if (!td.IsProcessed())
-		throw NxsNCLAPIException("A tree description must be processed by ProcessTree before calling NxsSimpleTree::NxsSimpleTree");
+		throw NxsNCLAPIException(L"A tree description must be processed by ProcessTree before calling NxsSimpleTree::NxsSimpleTree");
 	Clear();
-	std::string s;
-	const std::string & n = td.GetNewick();
+	std::wstring s;
+	const std::wstring & n = td.GetNewick();
 	s.reserve(n.length() + 1);
 	s.assign(n.c_str());
 	s.append(1, ';');
-	istringstream newickstream(s);
+	wistringstream newickstream(s);
 	NxsToken token(newickstream);
 	token.SetEOFAllowed(false);
 	realEdgeLens = td.SomeEdgesHaveLengths() && (! td.EdgeLengthsAreAllIntegers());
@@ -579,7 +579,7 @@ void NxsSimpleTree::Initialize(const NxsFullTreeDescription & td)
 	long lastIntEdgeLen;
 	long currTaxNumber;
 	token.GetNextToken();
-	assert(token.Equals("("));
+	assert(token.Equals(L"("));
 	root = AllocNewNode(0L);
 	NxsSimpleNode * currNd = root;
 	NxsSimpleEdge * currEdge = &(currNd->edgeToPar);
@@ -589,14 +589,14 @@ void NxsSimpleTree::Initialize(const NxsFullTreeDescription & td)
 	for (;;)
 		{
 		currEdge->DealWithNexusComments(token.GetEmbeddedComments(), NHXComments);
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			{
 			if (currNd != root)
-				throw NxsNCLAPIException("Semicolon found before the end of the tree description.  This means that more \"(\" characters  than \")\"  were found.");
+				throw NxsNCLAPIException(L"Semicolon found before the end of the tree description.  This means that more \"(\" characters  than \")\"  were found.");
 			break;
 			}
 		const NxsString & tstr = token.GetTokenReference();
-		const char * t = tstr.c_str();
+		const wchar_t* t = tstr.c_str();
 		bool handled;
 		handled = false;
 		prevInternalOrLength = currInternalOrLength;
@@ -629,7 +629,7 @@ void NxsSimpleTree::Initialize(const NxsFullTreeDescription & td)
 					{
 					if (!NxsString::to_double(t, &lastFltEdgeLen))
 						{
-						emsg << "Expecting a number as a branch length. Found " << tstr;
+						emsg << L"Expecting a number as a branch length. Found " << tstr;
 						throw NxsException(emsg, token);
 						}
 					currEdge->SetDblEdgeLen(lastFltEdgeLen, t);
@@ -638,7 +638,7 @@ void NxsSimpleTree::Initialize(const NxsFullTreeDescription & td)
 					{
 					if (!NxsString::to_long(t, &lastIntEdgeLen))
 						{
-						emsg << "Expecting a number as a branch length. Found " << tstr;
+						emsg << L"Expecting a number as a branch length. Found " << tstr;
 						throw NxsException(emsg, token);
 						}
 					currEdge->SetIntEdgeLen(lastIntEdgeLen, t);
@@ -666,7 +666,7 @@ void NxsSimpleTree::Initialize(const NxsFullTreeDescription & td)
 					{
 					if (!prevInternalOrLength)
 						{
-						emsg << "Expecting a taxon number greater than 1. Found " << tstr;
+						emsg << L"Expecting a taxon number greater than 1. Found " << tstr;
 						throw NxsException(emsg, token);
 						}
 					wasReadAsNumber = false;
@@ -688,11 +688,11 @@ void NxsSimpleTree::Initialize(const NxsFullTreeDescription & td)
 		token.GetNextToken();
 		}
 	}
-unsigned NxsTreesBlock::TreeLabelToNumber(const std::string & name) const
+unsigned NxsTreesBlock::TreeLabelToNumber(const std::wstring & name) const
 	{
 	NxsString r(name.c_str());
 	r.ToUpper();
-	std::map<std::string, unsigned>::const_iterator cntiIt = capNameToInd.find(r);
+	std::map<std::wstring, unsigned>::const_iterator cntiIt = capNameToInd.find(r);
 	if (cntiIt == capNameToInd.end())
 		return 0;
 	return cntiIt->second + 1;
@@ -707,7 +707,7 @@ unsigned NxsTreesBlock::GetMaxIndex() const
 | Returns the number of indices that correspond to the label (and the number
 | of items that would be added to *inds if inds points to an empty set).
 */
-unsigned NxsTreesBlock::GetIndicesForLabel(const std::string &label, NxsUnsignedSet *inds) const
+unsigned NxsTreesBlock::GetIndicesForLabel(const std::wstring &label, NxsUnsignedSet *inds) const
 	{
 	NxsString emsg;
 	const unsigned numb = TreeLabelToNumber(label);
@@ -717,9 +717,9 @@ unsigned NxsTreesBlock::GetIndicesForLabel(const std::string &label, NxsUnsigned
 			inds->insert(numb - 1);
 		return 1;
 		}
-	return GetIndicesFromSetOrAsNumber(label, inds, treeSets, GetMaxIndex(), "tree");
+	return GetIndicesFromSetOrAsNumber(label, inds, treeSets, GetMaxIndex(), L"tree");
 	}
-bool NxsTreesBlock::AddNewIndexSet(const std::string &label, const NxsUnsignedSet & inds)
+bool NxsTreesBlock::AddNewIndexSet(const std::wstring &label, const NxsUnsignedSet & inds)
 	{
 	NxsString  nlabel(label.c_str());
 	const bool replaced = treeSets.count(nlabel) > 0;
@@ -729,7 +729,7 @@ bool NxsTreesBlock::AddNewIndexSet(const std::string &label, const NxsUnsignedSe
 /*----------------------------------------------------------------------------------------------------------------------
 |	Returns true if this set replaces an older definition.
 */
-bool NxsTreesBlock::AddNewPartition(const std::string &label, const NxsPartition & inds)
+bool NxsTreesBlock::AddNewPartition(const std::wstring &label, const NxsPartition & inds)
 	{
 	NxsString ls(label.c_str());
 	bool replaced = treePartitions.count(ls) > 0;
@@ -745,7 +745,7 @@ NxsTreesBlock::NxsTreesBlock(
   processedTreeValidationFunction(NULL),
   ptvArg(NULL)
 	{
-	id			= "TREES";
+	id			= L"TREES";
 	defaultTreeInd = UINT_MAX;
 	allowImplicitNames = false;
 	processAllTreesDuringParse = true;
@@ -813,30 +813,30 @@ const NxsFullTreeDescription & NxsTreesBlock::GetFullTreeDescription(unsigned i)
 |	base class.
 */
 void NxsTreesBlock::Report(
-  std::ostream &out) NCL_COULD_BE_CONST /* the output stream to which to write the report */
+  std::wostream &out) NCL_COULD_BE_CONST /* the output stream to which to write the report */
 	{
 	const unsigned ntrees = GetNumTrees();
-	out << '\n' <<  id << " block contains ";
+	out << '\n' <<  id << L" block contains ";
 	if (ntrees == 0)
 		{
-		out << "no trees" << endl;
+		out << L"no trees" << endl;
 		return;
 		}
 	if (ntrees == 1)
-		out << "one tree" << endl;
+		out << L"one tree" << endl;
 	else
-		out << ntrees << " trees" << endl;
+		out << ntrees << L" trees" << endl;
 	for (unsigned k = 0; k < ntrees; k++)
 		{
 		const NxsFullTreeDescription & tree = GetFullTreeDescription(k);
-		out << "    " << (k+1) << "    " << tree.GetName();
-		out << "    (";
+		out << L"    " << (k+1) << L"    " << tree.GetName();
+		out << L"    (";
 		if (tree.IsRooted())
-			out << "rooted";
+			out << L"rooted";
 		else
-			out << "unrooted";
+			out << L"unrooted";
 		if (defaultTreeInd == k)
-			out << ",default tree)" << endl;
+			out << L",default tree)" << endl;
 		else
 			out << ')' << endl;
 		}
@@ -849,16 +849,16 @@ void NxsTreesBlock::Report(
 |>
 */
 void NxsTreesBlock::BriefReport(
-  NxsString &s) NCL_COULD_BE_CONST /* reference to the string in which to store the contents of the brief report */
+  NxsString &s) NCL_COULD_BE_CONST /* reference to the wstring in which to store the contents of the brief report */
 	{
 	const unsigned ntrees = GetNumTrees();
-	s << "\n\n" << id << " block contains ";
+	s << L"\n\n" << id << L" block contains ";
 	if (ntrees == 0)
-		s += "no trees\n";
+		s += L"no trees\n";
 	else if (ntrees == 1)
-		s += "one tree\n";
+		s += L"one tree\n";
 	else
-		s << ntrees << " trees\n";
+		s << ntrees << L" trees\n";
 	}
 /*----------------------------------------------------------------------------------------------------------------------
 |	Flushes `treeName', `treeDescription', `translateList' and `rooted', and sets `ntrees' and `defaultTree' both to 0
@@ -899,28 +899,28 @@ unsigned NxsTreesBlock::GetNumTrees()
 	{
 	return (unsigned)trees.size();
 	}
-void NxsTreesBlock::WriteTranslateCommand(std::ostream & out) const
+void NxsTreesBlock::WriteTranslateCommand(std::wostream & out) const
 	{
 	assert(taxa);
-	out << "    TRANSLATE" << "\n";
+	out << L"    TRANSLATE" << L"\n";
 	const unsigned nt = taxa->GetNTaxTotal();
 	for (unsigned i = 0; i < nt; ++i)
 		{
 		if (i > 0)
-				out << ",\n";
-		out << "        " << i + 1 << ' ' << NxsString::GetEscaped(taxa->GetTaxonLabel(i));
+				out << L",\n";
+		out << L"        " << i + 1 << ' ' << NxsString::GetEscaped(taxa->GetTaxonLabel(i));
 		}
-	out << ";\n";
+	out << L";\n";
 	}
 
-void NxsTreesBlock::WriteTreesCommand(std::ostream & out) const
+void NxsTreesBlock::WriteTreesCommand(std::wostream & out) const
 	{
 	if (constructingTaxaBlock)
 		{
 		// this check is intended to make sure that ProcessTree really behaves
 		//	as a const function.
 		// If we are constructingTaxaBlock, then the it can modify the contained taxa block
-		throw NxsNCLAPIException("WriteTreesCommand block cannot be called while the Trees Block is still being constructed");
+		throw NxsNCLAPIException(L"WriteTreesCommand block cannot be called while the Trees Block is still being constructed");
 		}
 	NxsTreesBlock *ncthis = const_cast<NxsTreesBlock *>(this);
 	NxsSimpleTree nst(0, 0.0);
@@ -932,11 +932,11 @@ void NxsTreesBlock::WriteTreesCommand(std::ostream & out) const
 #		endif
 		NxsFullTreeDescription & treeDesc = trees.at(k);
 		ncthis->ProcessTree(treeDesc);
-		const std::string & name = treeDesc.GetName();
-		out << "    TREE ";
+		const std::wstring & name = treeDesc.GetName();
+		out << L"    TREE ";
 		if (k == defaultTreeInd)
-			out << "* ";
-		out << NxsString::GetEscaped(name) << " = [&";
+			out << L"* ";
+		out << NxsString::GetEscaped(name) << L" = [&";
 		out << (treeDesc.IsRooted() ? 'R' : 'U');
 		out << ']';
 		if (writeFromNodeEdgeDataStructure)
@@ -946,38 +946,38 @@ void NxsTreesBlock::WriteTreesCommand(std::ostream & out) const
 			}
 		else
 			out << treeDesc.GetNewick();
-		out << ";\n";
+		out << L";\n";
 		}
 	}
 /*----------------------------------------------------------------------------------------------------------------------
 |	Writes contents of this block in NEXUS format to `out'.
 */
-void NxsTreesBlock::WriteAsNexus(std::ostream &out) const
+void NxsTreesBlock::WriteAsNexus(std::wostream &out) const
 	{
 	if (GetNumTrees() == 0)
 		return;
-	out << "BEGIN TREES;\n";
+	out << L"BEGIN TREES;\n";
 	WriteBasicBlockCommands(out);
 	WriteTranslateCommand(out);
 	WriteTreesCommand(out);
 	WriteSkippedCommands(out);
-	out << "END;\n";
+	out << L"END;\n";
 	}
-NxsTreesBlock *NxsTreesBlockFactory::GetBlockReaderForID(const std::string & idneeded, NxsReader *reader, NxsToken *)
+NxsTreesBlock *NxsTreesBlockFactory::GetBlockReaderForID(const std::wstring & idneeded, NxsReader *reader, NxsToken *)
 	{
-	if (reader == NULL || idneeded != "TREES")
+	if (reader == NULL || idneeded != L"TREES")
 		return NULL;
 	NxsTreesBlock * nb = new NxsTreesBlock(NULL);
 	nb->SetCreateImpliedBlock(true);
 	nb->SetImplementsLinkAPI(true);
 	return nb;
 	}
-void NxsTreesBlock::ConstructDefaultTranslateTable(NxsToken &token, const char * cmd)
+void NxsTreesBlock::ConstructDefaultTranslateTable(NxsToken &token, const wchar_t* cmd)
 	{
 	if (taxa == NULL)
 		{
 		if (nxsReader == NULL)
-			GenerateNxsException(token, "A Taxa block must be read before the Trees block can be read.");
+			GenerateNxsException(token, L"A Taxa block must be read before the Trees block can be read.");
 		unsigned nTb;
 		nxsReader->GetTaxaBlockByTitle(NULL, &nTb);
 		AssureTaxaBlock(nTb == 0 && allowImplicitNames && createImpliedBlock, token, cmd);
@@ -988,12 +988,12 @@ void NxsTreesBlock::ConstructDefaultTranslateTable(NxsToken &token, const char *
 		if (allowImplicitNames)
 			{
 			if (nexusReader)
-				nexusReader->NexusWarnToken("A TAXA block should be read before the TREES block (but no TAXA block was found).  Taxa will be inferred from their usage in the TREES block.", NxsReader::AMBIGUOUS_CONTENT_WARNING , token);
+				nexusReader->NexusWarnToken(L"A TAXA block should be read before the TREES block (but no TAXA block was found).  Taxa will be inferred from their usage in the TREES block.", NxsReader::AMBIGUOUS_CONTENT_WARNING , token);
 			constructingTaxaBlock = true;
 			newtaxa = true;
 			}
 		else
-			GenerateNxsException(token, "Taxa block must be read before the Trees block can be read.");
+			GenerateNxsException(token, L"Taxa block must be read before the Trees block can be read.");
 		}
 	if (!constructingTaxaBlock)
 		{
@@ -1013,7 +1013,7 @@ void NxsTreesBlock::HandleTranslateCommand(NxsToken &token)
 	for (unsigned n = 0;; ++n)
 		{
 		token.GetNextToken();
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			break;
 		NxsString key(token.GetTokenReference().c_str());
 		unsigned keyInd = taxa->TaxLabelToNumber(key);
@@ -1033,7 +1033,7 @@ void NxsTreesBlock::HandleTranslateCommand(NxsToken &token)
 				}
 			else if (nexusReader)
 				{
-				errormsg << "Unknown taxon " << value << " in TRANSLATE command.\nThe translate key "<< key << " has NOT been added to the translation table!";
+				errormsg << L"Unknown taxon " << value << L" in TRANSLATE command.\nThe translate key "<< key << L" has NOT been added to the translation table!";
 				nexusReader->NexusWarnToken(errormsg, NxsReader::PROBABLY_INCORRECT_CONTENT_WARNING, token);
 				errormsg.clear();
 				}
@@ -1042,7 +1042,7 @@ void NxsTreesBlock::HandleTranslateCommand(NxsToken &token)
 			{
 			if (keyInd != 0 && keyInd != valueInd && nexusReader)
 				{
-				errormsg << "TRANSLATE command overwriting the taxon " << key << " with a redirection to " << value;
+				errormsg << L"TRANSLATE command overwriting the taxon " << key << L" with a redirection to " << value;
 				nexusReader->NexusWarnToken(errormsg, NxsReader::OVERWRITING_CONTENT_WARNING, token);
 				errormsg.clear();
 				}
@@ -1050,11 +1050,11 @@ void NxsTreesBlock::HandleTranslateCommand(NxsToken &token)
 			capNameToInd[key] = valueInd - 1;
 			}
 		token.GetNextToken();
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			break;
-		if (!token.Equals(","))
+		if (!token.Equals(L","))
 			{
-			errormsg << "Expecting a , or ; after a translate key-value pair. Found " << token.GetTokenReference();
+			errormsg << L"Expecting a , or ; after a translate key-value pair. Found " << token.GetTokenReference();
 			throw NxsException(errormsg, token);
 			}
 		}
@@ -1068,13 +1068,13 @@ void NxsTreesBlock::ProcessTokenVecIntoTree(
   const ProcessedNxsCommand & tokenVec,
   NxsFullTreeDescription & td,
   NxsLabelToIndicesMapper *taxa,
-  std::map<std::string, unsigned> &capNameToInd,
+  std::map<std::wstring, unsigned> &capNameToInd,
   bool allowNewTaxa,
   NxsReader * nexusReader,
   const bool respectCase)
 	{
 	ProcessedNxsCommand::const_iterator tvIt = tokenVec.begin();
-	ostringstream tokenStream;
+	wostringstream tokenStream;
 	long line = 0;
 	long col = 0;
 	file_pos pos = 0;
@@ -1087,8 +1087,8 @@ void NxsTreesBlock::ProcessTokenVecIntoTree(
 			tokenStream << NxsString::GetEscaped(tvIt->GetToken());
 		tokenStream << ';';
 		}
-	std::string s = tokenStream.str();
-	istringstream newickstream(s);
+	std::wstring s = tokenStream.str();
+	wistringstream newickstream(s);
 	NxsToken token(newickstream);
 	try
 		{
@@ -1107,7 +1107,7 @@ void NxsTreesBlock::ProcessTokenStreamIntoTree(
   NxsToken & token,
   NxsFullTreeDescription & td,
   NxsLabelToIndicesMapper *taxa,
-  std::map<std::string, unsigned> &capNameToInd,
+  std::map<std::wstring, unsigned> &capNameToInd,
   bool allowNewTaxa,
   NxsReader * nexusReader,
   const bool respectCase)
@@ -1132,10 +1132,10 @@ void NxsTreesBlock::ProcessTokenStreamIntoTree(
 	long lastIntEdgeLen;
 	bool taxsetRead = false;
 	token.GetNextToken();
-	ostringstream newickStream;
-	if (!token.Equals("("))
+	wostringstream newickStream;
+	if (!token.Equals(L"("))
 		{
-		errormsg << "Expecting a ( to start the tree description, but found " << token.GetTokenReference();
+		errormsg << L"Expecting a ( to start the tree description, but found " << token.GetTokenReference();
 		throw NxsException(errormsg, token);
 		}
 	nchildren.push(0);
@@ -1149,20 +1149,20 @@ void NxsTreesBlock::ProcessTokenStreamIntoTree(
 			{
 			if (!NHXComments)
 				{
-				const std::string & ns = ecsIt->GetText();
+				const std::wstring & ns = ecsIt->GetText();
 				if (ns.length() > 5 && ns[0] == '&' && ns[1] == '&' && ns[2] == 'N' &&ns[3] == 'H' && ns[4] == 'X')
 					NHXComments = true;
 				}
 			ecsIt->WriteAsNexus(newickStream);
 			}
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			{
 			if (!nchildren.empty())
-				throw NxsException("Semicolon found before the end of the tree description.  This means that more \"(\" characters  than \")\"  were found.", token);
+				throw NxsException(L"Semicolon found before the end of the tree description.  This means that more \"(\" characters  than \")\"  were found.", token);
 			break;
 			}
 		const NxsString & tstr = token.GetTokenReference();
-		const char * t = tstr.c_str();
+		const wchar_t* t = tstr.c_str();
 		bool handled;
 		handled = false;
 		if (tstr.length() == 1)
@@ -1170,10 +1170,10 @@ void NxsTreesBlock::ProcessTokenStreamIntoTree(
 			if (t[0] == '(')
 				{
 				if (nchildren.empty())
-					throw NxsException("End of tree description.  Expected ; but found (", token);
+					throw NxsException(L"End of tree description.  Expected ; but found (", token);
 				if (prevToken == NXS_TREE_CLOSE_PARENS_TOKEN || prevToken == NXS_TREE_CLADE_NAME_TOKEN || prevToken == NXS_TREE_BRLEN_TOKEN)
 					{
-					errormsg << "Expecting a , before a new subtree definition:\n \")(\"\n \"name(\" and\n \"branch-length(\"\n are prohibited.";
+					errormsg << L"Expecting a , before a new subtree definition:\n \")(\"\n \"name(\" and\n \"branch-length(\"\n are prohibited.";
 					if (nexusReader)
 						nexusReader->NexusWarnToken(errormsg, NxsReader::PROBABLY_INCORRECT_CONTENT_WARNING, token);
 					else
@@ -1188,7 +1188,7 @@ void NxsTreesBlock::ProcessTokenStreamIntoTree(
 					prevToken = NXS_TREE_COMMA_TOKEN;
 					}
 				else if (prevToken == NXS_TREE_COLON_TOKEN)
-					throw NxsException("Expecting a branch length after a : but found (", token);
+					throw NxsException(L"Expecting a branch length after a : but found (", token);
 				nchildren.top() += 1;
 				nchildren.push(0);
 				newickStream << '(';
@@ -1198,11 +1198,11 @@ void NxsTreesBlock::ProcessTokenStreamIntoTree(
 			else if (t[0] == ')')
 				{
 				if (nchildren.empty())
-					throw NxsException("End of tree description.  Expected ; but found )", token);
+					throw NxsException(L"End of tree description.  Expected ; but found )", token);
 				if (prevToken == NXS_TREE_OPEN_PARENS_TOKEN || prevToken == NXS_TREE_COMMA_TOKEN)
-					throw NxsException("Expecting a clade description before the subtree's closing )\n \"()\" and \",)\" are prohibited.", token);
+					throw NxsException(L"Expecting a clade description before the subtree's closing )\n \"()\" and \",)\" are prohibited.", token);
 				if (prevToken == NXS_TREE_COLON_TOKEN)
-					throw NxsException("Expecting a branch length after a : but found (", token);
+					throw NxsException(L"Expecting a branch length after a : but found (", token);
 				if (!someMissingEdgeLens && (prevToken == NXS_TREE_CLOSE_PARENS_TOKEN || prevToken == NXS_TREE_CLADE_NAME_TOKEN))
 					someMissingEdgeLens = true;
 				if (nchildren.top() == 1)
@@ -1225,9 +1225,9 @@ void NxsTreesBlock::ProcessTokenStreamIntoTree(
 			else if (t[0] == ':')
 				{
 				if (prevToken != NXS_TREE_CLOSE_PARENS_TOKEN && prevToken != NXS_TREE_CLADE_NAME_TOKEN)
-					throw NxsException("Found a : separator for a subtree at an inappropriate location. A colon is only permitted after a clade name or )-symbol.", token);
+					throw NxsException(L"Found a : separator for a subtree at an inappropriate location. A colon is only permitted after a clade name or )-symbol.", token);
 				if (taxsetRead && prevToken == NXS_TREE_CLADE_NAME_TOKEN)
-					throw NxsException("Found a : separator after a taxset name. Branch lengths cannot be assigned to multi-taxon taxsets.", token);
+					throw NxsException(L"Found a : separator after a taxset name. Branch lengths cannot be assigned to multi-taxon taxsets.", token);
 				newickStream << ':';
 				prevToken = NXS_TREE_COLON_TOKEN;
 				handled = true;
@@ -1236,11 +1236,11 @@ void NxsTreesBlock::ProcessTokenStreamIntoTree(
 			else if (t[0] == ',')
 				{
 				if (prevToken == NXS_TREE_OPEN_PARENS_TOKEN)
-					throw NxsException("Found a empty subclade found. The combination \"(,\" is prohibited.", token);
+					throw NxsException(L"Found a empty subclade found. The combination \"(,\" is prohibited.", token);
 				if (prevToken == NXS_TREE_COMMA_TOKEN)
-					throw NxsException("Found a empty subclade found. The combination \",,\" is prohibited.", token);
+					throw NxsException(L"Found a empty subclade found. The combination \",,\" is prohibited.", token);
 				if (prevToken == NXS_TREE_COLON_TOKEN)
-					throw NxsException("Found a , when a branch length was expected found. The combination \":,\" is prohibited.", token);
+					throw NxsException(L"Found a , when a branch length was expected found. The combination \":,\" is prohibited.", token);
 				if (!someMissingEdgeLens && (prevToken == NXS_TREE_CLOSE_PARENS_TOKEN || prevToken == NXS_TREE_CLADE_NAME_TOKEN))
 					someMissingEdgeLens = true;
 				nchildren.top() += 1;
@@ -1267,7 +1267,7 @@ void NxsTreesBlock::ProcessTokenStreamIntoTree(
 					{
 					if (!NxsString::to_double(t, &lastFltEdgeLen))
 						{
-						errormsg << "Expecting a number as a branch length. Found " << tstr;
+						errormsg << L"Expecting a number as a branch length. Found " << tstr;
 						throw NxsException(errormsg, token);
 						}
 					someRealEdgeLens = true;
@@ -1282,7 +1282,7 @@ void NxsTreesBlock::ProcessTokenStreamIntoTree(
 				{
 				if (prevToken == NXS_TREE_BRLEN_TOKEN || prevToken == NXS_TREE_CLADE_NAME_TOKEN)
 					{
-					errormsg << "Found a name " << tstr << " which should be preceded by a ( or a ,";
+					errormsg << L"Found a name " << tstr << L" which should be preceded by a ( or a ,";
 					throw NxsException(errormsg, token);
 					}
 				taxsetRead = false;
@@ -1290,11 +1290,11 @@ void NxsTreesBlock::ProcessTokenStreamIntoTree(
 				if (!respectCase)
 					ucl.ToUpper();
 				NxsString toAppend;
-				std::map<std::string, unsigned>::const_iterator tt = capNameToInd.find(ucl);
+				std::map<std::wstring, unsigned>::const_iterator tt = capNameToInd.find(ucl);
 				unsigned ind = (tt == capNameToInd.end() ? UINT_MAX : tt->second);
 				if (taxaEncountered.find(ind) != taxaEncountered.end())
 					{
-					errormsg << "Taxon number " << ind + 1 << " (coded by the token " << tstr << ") has already been encountered in this tree. Duplication of taxa in a tree is prohibited.";
+					errormsg << L"Taxon number " << ind + 1 << L" (coded by the token " << tstr << L") has already been encountered in this tree. Duplication of taxa in a tree is prohibited.";
 					throw NxsException(errormsg, token);
 					}
 				if (prevToken == NXS_TREE_CLOSE_PARENS_TOKEN)
@@ -1322,18 +1322,18 @@ void NxsTreesBlock::ProcessTokenStreamIntoTree(
 							{
 							if (!allowNewTaxa)
 								{
-								errormsg << "Expecting a Taxon label after a \"" << (prevToken == NXS_TREE_OPEN_PARENS_TOKEN ? '(' : ',') << "\" character. Found \"" << tstr << "\" but this is not a recognized taxon label.";
+								errormsg << L"Expecting a Taxon label after a \"" << (prevToken == NXS_TREE_OPEN_PARENS_TOKEN ? '(' : ',') << L"\" character. Found \"" << tstr << L"\" but this is not a recognized taxon label.";
 								throw NxsException(errormsg, token);
 								}
-							std::string tasstring(tstr.c_str());
-							unsigned valueInd = taxa->AppendNewLabel(tasstring);
+							std::wstring taswstring(tstr.c_str());
+							unsigned valueInd = taxa->AppendNewLabel(taswstring);
 							NxsString numV;
 							numV += (valueInd+1);
 							if (capNameToInd.find(numV) == capNameToInd.end())
 								capNameToInd[numV] = valueInd;
 							if (!respectCase)
-								NxsString::to_upper(tasstring);
-							capNameToInd[tasstring] = valueInd;
+								NxsString::to_upper(taswstring);
+							capNameToInd[taswstring] = valueInd;
 							toAppend += (1 + valueInd);
 							}
 						else
@@ -1343,7 +1343,7 @@ void NxsTreesBlock::ProcessTokenStreamIntoTree(
 								{
 								if (taxaEncountered.find(*cit) != taxaEncountered.end())
 									{
-									errormsg << "Taxon number " << *cit + 1 << " (one of the members of the taxset " << tstr << ") has already been encountered in this tree. Duplication of taxa in a tree is prohibited.";
+									errormsg << L"Taxon number " << *cit + 1 << L" (one of the members of the taxset " << tstr << L") has already been encountered in this tree. Duplication of taxa in a tree is prohibited.";
 									throw NxsException(errormsg, token);
 									}
 								taxaEncountered.insert(*cit);
@@ -1412,9 +1412,9 @@ void NxsTreesBlock::ProcessTree(NxsFullTreeDescription & ftd) const
 	if (ftd.flags & NxsFullTreeDescription::NXS_TREE_PROCESSED)
 		return;
 	ftd.newick.append(1, ';');
-	const std::string incomingNewick = ftd.newick;
+	const std::wstring incomingNewick = ftd.newick;
 	ftd.newick.clear();
-	istringstream newickstream(incomingNewick);
+	wistringstream newickstream(incomingNewick);
 	NxsToken token(newickstream);
 	ProcessTokenStreamIntoTree(token, ftd, taxa, capNameToInd, constructingTaxaBlock, nexusReader);
 	}
@@ -1423,18 +1423,18 @@ void NxsTreesBlock::HandleTreeCommand(NxsToken &token, bool rooted)
 	{
 	assert(taxa);
 	token.GetNextToken();
-	if (token.Equals("*"))
+	if (token.Equals(L"*"))
 		{
 		defaultTreeInd = (unsigned)trees.size();
 		token.GetNextToken();
 		}
 	NxsString treeName = token.GetToken();
 #	if defined(DEBUGGING_TREES_BLOCK) && DEBUGGING_TREES_BLOCK
-		for (std::map<std::string, unsigned>::const_iterator tt =  capNameToInd.begin(); tt != capNameToInd.end(); ++tt)
-			std::cerr << tt->first << " ==> " << 1+tt->second << '\n';
+		for (std::map<std::wstring, unsigned>::const_iterator tt =  capNameToInd.begin(); tt != capNameToInd.end(); ++tt)
+			std::cerr << tt->first << L" ==> " << 1+tt->second << '\n';
 		std::cerr <<   '\n';
 #	endif
-	DemandEquals(token, "after tree name in TREE command");
+	DemandEquals(token, L"after tree name in TREE command");
 	file_pos fp = 0;
 	int fline = token.GetFileLine();
 	int fcol = token.GetFileColumn();
@@ -1455,7 +1455,7 @@ void NxsTreesBlock::HandleTreeCommand(NxsToken &token, bool rooted)
 				rooted = false;
 			else
 				{
-				errormsg << "[" << token.GetToken() << "] is not a valid command comment in a TREE command";
+				errormsg << L"[" << token.GetToken() << L"] is not a valid command comment in a TREE command";
 				throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 				}
 			// now grab the tree description
@@ -1465,17 +1465,17 @@ void NxsTreesBlock::HandleTreeCommand(NxsToken &token, bool rooted)
 			}
 		if (!s.empty() && s[0] != '(')
 			{
-			errormsg << "Expecting command comment or tree description in TREE (or UTREE) command, but found " << token.GetToken() << " instead";
+			errormsg << L"Expecting command comment or tree description in TREE (or UTREE) command, but found " << token.GetToken() << L" instead";
 			throw NxsException(errormsg);
 			}
 		}
 	catch (NxsX_UnexpectedEOF &)
 		{
-		errormsg << "Unexpected end of file in tree description.\n";
-		errormsg << "This probably indicates that the parentheses in the newick description are not balanced, and one or more closing parentheses are needed.";
+		errormsg << L"Unexpected end of file in tree description.\n";
+		errormsg << L"This probably indicates that the parentheses in the newick description are not balanced, and one or more closing parentheses are needed.";
 		throw NxsException(errormsg, fp, fline, fcol);
 		}
-	std::string mt;
+	std::wstring mt;
 	int f = (rooted ? NxsFullTreeDescription::NXS_IS_ROOTED_BIT : 0);
 	trees.push_back(NxsFullTreeDescription(mt, treeName, f));
 	NxsFullTreeDescription & td = trees[trees.size() -1];
@@ -1487,16 +1487,16 @@ void NxsTreesBlock::ReadTreeFromOpenParensToken(NxsFullTreeDescription &td, NxsT
 	file_pos fp = 0;
 	int fline = token.GetFileLine();
 	int fcol = token.GetFileColumn();
-	ostringstream newickStream;
+	wostringstream newickStream;
 	newickStream << token.GetTokenReference();
 	token.GetNextToken();
 	const std::vector<NxsComment> & ecs = token.GetEmbeddedComments();
 	for (std::vector<NxsComment>::const_iterator ecsIt = ecs.begin(); ecsIt != ecs.end(); ++ecsIt)
 		ecsIt->WriteAsNexus(newickStream);
-	while (!token.Equals(";"))
+	while (!token.Equals(L";"))
 		{
-		if (token.Equals("(") || token.Equals(")") || token.Equals(","))
-			GenerateUnexpectedTokenNxsException(token, "root taxon information");
+		if (token.Equals(L"(") || token.Equals(L")") || token.Equals(L","))
+			GenerateUnexpectedTokenNxsException(token, L"root taxon information");
 		newickStream << token.GetTokenReference();
 		token.GetNextToken();
 		const std::vector<NxsComment> & iecs = token.GetEmbeddedComments();
@@ -1534,8 +1534,8 @@ void NxsTreesBlock::Read(
 	{
 	isEmpty = false;
 	isUserSupplied = true;
-	DemandEndSemicolon(token, "BEGIN TREES");
-	//AssureTaxaBlock(createImpliedBlock, token, "BEGIN TREES");
+	DemandEndSemicolon(token, L"BEGIN TREES");
+	//AssureTaxaBlock(createImpliedBlock, token, L"BEGIN TREES");
 	bool readTranslate = false;
 	bool readTree = false;
 	errormsg.clear();
@@ -1558,23 +1558,23 @@ void NxsTreesBlock::Read(
 			}
 		if (res != NxsBlock::NxsCommandResult(HANDLED_COMMAND))
 			{
-			if (token.Equals("TRANSLATE"))
+			if (token.Equals(L"TRANSLATE"))
 				{
 				if (readTree)
-					WarnDangerousContent("TRANSLATE command must precede any TREE commands in a TREES block", token);
+					WarnDangerousContent(L"TRANSLATE command must precede any TREE commands in a TREES block", token);
 				if (readTranslate)
 					{
-					WarnDangerousContent("Only one TRANSLATE command may be read in a TREES block", token);
+					WarnDangerousContent(L"Only one TRANSLATE command may be read in a TREES block", token);
 					capNameToInd.clear();
 					}
 				readTranslate = true;
-				ConstructDefaultTranslateTable(token, "TRANSLATE");
+				ConstructDefaultTranslateTable(token, L"TRANSLATE");
 				HandleTranslateCommand(token);
 				}
 			else
 				{
-				bool utreeCmd = token.Equals("UTREE");
-				bool treeCmd = token.Equals("TREE");
+				bool utreeCmd = token.Equals(L"UTREE");
+				bool treeCmd = token.Equals(L"TREE");
 				if (utreeCmd || treeCmd)
 					{
 					if (!readTranslate && ! readTree)
@@ -1600,26 +1600,26 @@ NxsString NxsTreesBlock::GetTranslatedTreeDescription(
 	assert(taxa);
 	NxsFullTreeDescription & ftd = trees.at(i);
 	ProcessTree(ftd);
-	std::string incomingNewick = ftd.newick;
+	std::wstring incomingNewick = ftd.newick;
 	incomingNewick.append(1, ';');
-	istringstream newickstream(incomingNewick);
+	wistringstream newickstream(incomingNewick);
 	NxsToken token(newickstream);
 	token.GetNextToken();
-	if (!token.Equals("("))
+	if (!token.Equals(L"("))
 		{
-		errormsg << "Expecting a ( to start the tree description, but found " << token.GetTokenReference();
+		errormsg << L"Expecting a ( to start the tree description, but found " << token.GetTokenReference();
 		throw NxsException(errormsg, token);
 		}
 	int prevToken = NXS_TREE_OPEN_PARENS_TOKEN;
 	long taxIndLong;
 	const unsigned ntax = taxa->GetNTaxTotal();
-	ostringstream translated;
+	wostringstream translated;
 	for (;;)
 		{
 		const std::vector<NxsComment> & ecs = token.GetEmbeddedComments();
 		for (std::vector<NxsComment>::const_iterator ecsIt = ecs.begin(); ecsIt != ecs.end(); ++ecsIt)
 			ecsIt->WriteAsNexus(translated);
-		if (token.Equals(";"))
+		if (token.Equals(L";"))
 			break;
 		const NxsString & t = token.GetTokenReference();
 		bool handled;
@@ -1667,7 +1667,7 @@ NxsString NxsTreesBlock::GetTranslatedTreeDescription(
 					translated << t;
 				else
 					{
-					errormsg << "Expecting a taxon index in a tree description, but found " << t;
+					errormsg << L"Expecting a taxon index in a tree description, but found " << t;
 					throw NxsException(errormsg, token);
 					}
 				}
@@ -1696,7 +1696,7 @@ void NxsTreesBlock::ReadPhylipTreeFile(NxsToken & token)
 				rooted = false;
 			else
 				{
-				errormsg << "[" << token.GetToken() << "] is not a valid command comment in a TREE command";
+				errormsg << L"[" << token.GetToken() << L"] is not a valid command comment in a TREE command";
 				throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 				}
 			// now grab the tree description
@@ -1706,12 +1706,12 @@ void NxsTreesBlock::ReadPhylipTreeFile(NxsToken & token)
 			}
 		if (!s.empty() && s[0] != '(')
 			{
-			errormsg << "Expecting a tree description, but found \"" << token.GetToken() << "\" instead";
+			errormsg << L"Expecting a tree description, but found \"" << token.GetToken() << L"\" instead";
 			throw NxsException(errormsg);
 			}
 		ConstructDefaultTranslateTable(token, token.GetTokenReference().c_str());
 		int f = (rooted ? NxsFullTreeDescription::NXS_IS_ROOTED_BIT : 0);
-		std::string mt;
+		std::wstring mt;
 		trees.push_back(NxsFullTreeDescription(mt, mt, f));
 		NxsFullTreeDescription & td = trees[trees.size() -1];
 		ReadTreeFromOpenParensToken(td, token);
@@ -1720,8 +1720,8 @@ void NxsTreesBlock::ReadPhylipTreeFile(NxsToken & token)
 	catch (NxsX_UnexpectedEOF &)
 		{
 		allowImplicitNames = prevAIN;
-		errormsg << "Unexpected end of file in tree description.\n";
-		errormsg << "This probably indicates that the parentheses in the newick description are not balanced, and one or more closing parentheses are needed.";
+		errormsg << L"Unexpected end of file in tree description.\n";
+		errormsg << L"This probably indicates that the parentheses in the newick description are not balanced, and one or more closing parentheses are needed.";
 		throw NxsException(errormsg);
 		}
 	catch (...)

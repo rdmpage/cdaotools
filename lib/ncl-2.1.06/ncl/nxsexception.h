@@ -21,7 +21,7 @@
 #define NCL_NXSEXCEPTION_H
 
 #include "ncl/nxsstring.h"
-
+#include <algorithm>
 class NxsToken;
 class ProcessedNxsToken;
 class NxsTokenPosInfo;
@@ -39,13 +39,15 @@ class NxsException: public std::exception
 			{
 			}
 
-		NxsException(const std::string & s, file_pos fp = 0, long fl = 0L, long fc = 0L);
-		NxsException(const std::string &s, const NxsToken &t);
-		NxsException(const std::string &s, const ProcessedNxsToken &t);
-		NxsException(const std::string &s, const NxsTokenPosInfo &t);
-		const char * what () const throw ()
+		NxsException(const std::wstring & s, file_pos fp = 0, long fl = 0L, long fc = 0L);
+		NxsException(const std::wstring &s, const NxsToken &t);
+		NxsException(const std::wstring &s, const ProcessedNxsToken &t);
+		NxsException(const std::wstring &s, const NxsTokenPosInfo &t);
+		const char* what () const throw ()
 			{
-			return msg.empty() ? "Unknown Nexus Exception" : msg.c_str();
+                          std::string strmsg = "";
+                          std::copy( msg.begin(), msg.end(), strmsg.begin() );
+			return msg.empty() ? "Unknown Nexus Exception" : strmsg.c_str();
 			}
 	};
 

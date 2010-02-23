@@ -31,22 +31,26 @@ using namespace std;
 /*----------------------------------------------------------------------------------------------------------------------
 |	Reads a filename with NxsToken object. Calls NexusError on failures
 */
-void NxsReader::ReadFilepath(const char *filename)
+void NxsReader::ReadFilepath(const char*filename)
 	{
-	std::ifstream inf;
+          //std::string temp(filename);
+          std::wstring fn = str_to_wstr( filename );
+          //std::copy( temp.begin(), temp.end(), fn.begin() );
+          
+	std::wifstream inf;
 	try{
 		inf.open(filename, ios::binary);
 		if (!inf.good())
 			{
 			NxsString err;
-			err << "Could not open the file \"" << filename <<"\"";
+                        err << L"Could not open the file \"" << fn << L"\"";
 			this->NexusError(err, 0, -1, -1);
 			}
 		}
 	catch (...)
 		{
 		NxsString err;
-		err << '\"' << filename <<"\" does not refer to a valid file." ;
+		err << '\"' << fn <<L"\" does not refer to a valid file." ;
 		this->NexusError(err, 0, -1, -1);
 		}
 	this->ReadFilestream(inf);
@@ -55,7 +59,7 @@ void NxsReader::ReadFilepath(const char *filename)
 /*----------------------------------------------------------------------------------------------------------------------
 |	Reads a filename with NxsToken object. Calls NexusError on failures
 */
-void NxsReader::ReadFilestream(std::istream & inf)
+void NxsReader::ReadFilestream(std::wistream & inf)
 	{
 	NxsToken token(inf);	
 	this->Execute(token);
@@ -98,7 +102,7 @@ bool NxsReader::BlockIsASingeltonReader(NxsBlock *b) const
 |	On output *nMatches will be the number of matches (if `nMatches` is not NULL).
 |	NULL will be returned if there are no matches.
 */
-NxsBlock *NxsReader::FindBlockByTitle(const BlockReaderList & chosenBlockList, const char *title, unsigned *nMatches)
+NxsBlock *NxsReader::FindBlockByTitle(const BlockReaderList & chosenBlockList, const wchar_t*title, unsigned *nMatches)
 	{
 	if (chosenBlockList.empty())
 		{
@@ -113,14 +117,14 @@ NxsBlock *NxsReader::FindBlockByTitle(const BlockReaderList & chosenBlockList, c
 		return static_cast<NxsTaxaBlockAPI *>(chosenBlockList.front());
 		}
 	NxsBlock * toReturn = NULL;
-	bool emptyTitle = strlen(title) == 0;
+	bool emptyTitle = wcslen(title) == 0;
 	for (BlockReaderList::const_iterator cblIt = chosenBlockList.begin(); cblIt != chosenBlockList.end(); ++cblIt)
 		{
 		bool isMatch = false;
-		std::vector<std::string> v = this->GetAllTitlesForBlock(*cblIt);
-		for (std::vector<std::string>::const_iterator vIt = v.begin(); vIt != v.end(); ++vIt) 
+		std::vector<std::wstring> v = this->GetAllTitlesForBlock(*cblIt);
+		for (std::vector<std::wstring>::const_iterator vIt = v.begin(); vIt != v.end(); ++vIt) 
 			{
-			const std::string & n = *vIt;
+			const std::wstring & n = *vIt;
 			if ((emptyTitle && n.empty()) || (NxsString::case_insensitive_equals(title, n.c_str())))
 				{
 				isMatch = true;
@@ -144,23 +148,23 @@ NxsBlock *NxsReader::FindBlockByTitle(const BlockReaderList & chosenBlockList, c
 	return toReturn;
 	}
 
-std::vector<std::string> NxsReader::GetAllTitlesForBlock(const NxsBlock *b) const
+std::vector<std::wstring> NxsReader::GetAllTitlesForBlock(const NxsBlock *b) const
 	{
-	std::vector<std::string> v;
+	std::vector<std::wstring> v;
 	v.push_back(b->GetTitle());
-	std::map<const NxsBlock *, std::list<std::string> >::const_iterator a = blockTitleAliases.find(b);
+	std::map<const NxsBlock *, std::list<std::wstring> >::const_iterator a = blockTitleAliases.find(b);
 	if (a != blockTitleAliases.end())
 		std::copy(a->second.begin(), a->second.end(), back_inserter(v));
 	return v;
 	}
 
-void NxsReader::RegisterAltTitle(const NxsBlock * b, std::string t)
+void NxsReader::RegisterAltTitle(const NxsBlock * b, std::wstring t)
 	{
-	std::list<std::string> & v = blockTitleAliases[b];
+	std::list<std::wstring> & v = blockTitleAliases[b];
 	v.push_back(t);
 	}
 
-NxsBlock *NxsReader::FindBlockOfTypeByTitle(const std::string &btype, const char *title, unsigned *nMatches)
+NxsBlock *NxsReader::FindBlockOfTypeByTitle(const std::wstring &btype, const wchar_t*title, unsigned *nMatches)
 	{
 	BlockTypeToBlockList::const_iterator btblIt = blockTypeToBlockList.find(btype);
 	if (btblIt == blockTypeToBlockList.end())
@@ -179,9 +183,9 @@ NxsBlock *NxsReader::FindBlockOfTypeByTitle(const std::string &btype, const char
 |	NxsTaxaBlockAPI, or the behavior will be undefined.
 |	This requirement also applies to "implied" taxa blocks that are returned from CHARACTERS (or other) blocks.
 */
-NxsTaxaBlockAPI *NxsReader::GetTaxaBlockByTitle(const char *title, unsigned *nMatches)
+NxsTaxaBlockAPI *NxsReader::GetTaxaBlockByTitle(const wchar_t*title, unsigned *nMatches)
 	{
-	const std::string btype("TAXA");
+	const std::wstring btype(L"TAXA");
 	return static_cast<NxsTaxaBlockAPI *>(FindBlockOfTypeByTitle(btype, title, nMatches));
 	}
 
@@ -190,9 +194,9 @@ NxsTaxaBlockAPI *NxsReader::GetTaxaBlockByTitle(const char *title, unsigned *nMa
 |	When using these APIs, block readers that read "CHARACTERS" or "DATA" blocks in a NEXUS file must inherit from 
 |	NxsCharactersBlockAPI, or the behavior will be undefined.
 */
-NxsCharactersBlockAPI	*NxsReader::GetCharBlockByTitle(const char *title, unsigned *nMatches)
+NxsCharactersBlockAPI	*NxsReader::GetCharBlockByTitle(const wchar_t*title, unsigned *nMatches)
 	{
-	const std::string btype("CHARACTERS");
+	const std::wstring btype(L"CHARACTERS");
 	return static_cast<NxsCharactersBlockAPI *>(FindBlockOfTypeByTitle(btype, title, nMatches));
 	}
 /*----------------------------------------------------------------------------------------------------------------------
@@ -200,9 +204,9 @@ NxsCharactersBlockAPI	*NxsReader::GetCharBlockByTitle(const char *title, unsigne
 |	this case block readers that read "TREES" blocks in a NEXUS file must inherit from NxsTaxaBlockAPI, or the
 |	behavior will be undefined.
 */
-NxsTreesBlockAPI *NxsReader::GetTreesBlockByTitle(const char *title, unsigned *nMatches)
+NxsTreesBlockAPI *NxsReader::GetTreesBlockByTitle(const wchar_t*title, unsigned *nMatches)
 	{
-	const std::string btype("TREES");
+	const std::wstring btype(L"TREES");
 	return static_cast<NxsTreesBlockAPI *>(FindBlockOfTypeByTitle(btype, title, nMatches));
 	}
 
@@ -446,7 +450,7 @@ void NxsReader::PostBlockReadingHook(
 |	if sourceOfBlock is not NULL, then *sourceOfBlock will alias to the NxsBlockFactory used.
 |	Returns NULL (and does not modify *sourceOfBlock), if no Factory is found that returns a block
 */
-NxsBlock *NxsReader::CreateBlockFromFactories(const std::string & currBlockName, NxsToken &token, NxsBlockFactory **sourceOfBlock)
+NxsBlock *NxsReader::CreateBlockFromFactories(const std::wstring & currBlockName, NxsToken &token, NxsBlockFactory **sourceOfBlock)
 	{
 	for (BlockFactoryList::iterator fIt = factories.begin(); currBlock == NULL && fIt != factories.end(); ++fIt)
 		{
@@ -499,16 +503,16 @@ void NxsReader::Execute(
 		return;
 		}
 
-	if (token.Equals("#NEXUS")) 
+	if (token.Equals(L"#NEXUS")) 
 		{
 		token.SetLabileFlagBit(NxsToken::saveCommandComments);
 		token.GetNextToken();
 		}
 	else
 		{
-		errormsg = "Expecting #NEXUS to be the first token in the file, but found ";
+		errormsg = L"Expecting #NEXUS to be the first token in the file, but found ";
 		errormsg += token.GetToken();
-		errormsg += " instead";
+		errormsg += L" instead";
 		/*mth changed this to a warning instead of an error	 because of the large number
 			of files that violate this requirement.
 		*/
@@ -520,7 +524,7 @@ void NxsReader::Execute(
 	bool keepReading = true;
 	for (;keepReading && !token.AtEOF();)
 		{
-		if (token.Equals("BEGIN"))
+		if (token.Equals(L"BEGIN"))
 			{
 			token.SetEOFAllowed(false); /*must exit the block before and EOF*/
 			token.GetNextToken();
@@ -574,13 +578,13 @@ void NxsReader::Execute(
 			currBlock = NULL;
 			token.SetEOFAllowed(true);
 			token.SetBlockName(0L);
-			}	// if (token.Equals("BEGIN"))
-		else if (token.Equals("&SHOWALL"))
+			}	// if (token.Equals(L"BEGIN"))
+		else if (token.Equals(L"&SHOWALL"))
 			{
 			for (NxsBlock*	showBlock = blockList; showBlock != NULL; showBlock = showBlock->next)
 				DebugReportBlock(*showBlock);
 			}
-		else if (token.Equals("&LEAVE"))
+		else if (token.Equals(L"&LEAVE"))
 			break;
 		if (keepReading)
 			{
@@ -614,22 +618,22 @@ NxsTaxaBlockAPI * NxsReader::GetOriginalTaxaBlock(const NxsTaxaBlockAPI * testB)
 	{
 	if (!testB)
 		return false;
-	const std::string idstring("TAXA");
-	BlockTypeToBlockList::const_iterator bttblIt = blockTypeToBlockList.find(idstring);
+	const std::wstring idwstring(L"TAXA");
+	BlockTypeToBlockList::const_iterator bttblIt = blockTypeToBlockList.find(idwstring);
 	if (bttblIt == blockTypeToBlockList.end())
 		return false;
 	const BlockReaderList & brl = bttblIt->second;
 	const unsigned ntt = testB->GetNumTaxonLabels();
-	const std::vector<std::string> testL = testB->GetAllLabels();
+	const std::vector<std::wstring> testL = testB->GetAllLabels();
 	for (BlockReaderList::const_iterator bIt = brl.begin(); bIt != brl.end(); ++bIt)
 		{
 		const NxsBlock * nb = *bIt;
 		const NxsTaxaBlockAPI * prev = (const NxsTaxaBlockAPI *) nb;
 		if (prev->GetNumTaxonLabels() == ntt)
 			{
-			const std::vector<std::string> prevL = prev->GetAllLabels();
-			std::vector<std::string>::const_iterator pIt = prevL.begin();
-			std::vector<std::string>::const_iterator testIt = testL.begin();
+			const std::vector<std::wstring> prevL = prev->GetAllLabels();
+			std::vector<std::wstring>::const_iterator pIt = prevL.begin();
+			std::vector<std::wstring>::const_iterator testIt = testL.begin();
 			
 			for (; (testIt != testL.end()) && (pIt != prevL.end()) ; ++testIt, ++pIt)
 				{
@@ -679,16 +683,16 @@ bool NxsReader::ExecuteBlock(NxsToken &token, const NxsString &currBlockName, Nx
 			if (!currentBlock->TolerateEOFInBlock())
 				throw eofx;
 			NxsString m;
-			m << "Unexpected End of file in " << currBlockName << "block";
+			m << L"Unexpected End of file in " << currBlockName << L"block";
 			currentBlock->WarnDangerousContent(m, token);
 			eofFound = true;
 			}
-		if (destroyRepeatedTaxaBlocks && currBlockName.EqualsCaseInsensitive("TAXA"))
+		if (destroyRepeatedTaxaBlocks && currBlockName.EqualsCaseInsensitive(L"TAXA"))
 			{
 			NxsTaxaBlockAPI * oldTB = this->GetOriginalTaxaBlock((NxsTaxaBlockAPI *) currentBlock);
 			if (oldTB)
 				{
-				const std::string altTitle = currentBlock->GetTitle();
+				const std::wstring altTitle = currentBlock->GetTitle();
 				this->RegisterAltTitle(oldTB, altTitle);
 				if (sourceOfBlock)
 					sourceOfBlock->BlockError(currentBlock);
@@ -725,13 +729,13 @@ void NxsReader::BlockReadHook(const NxsString &currBlockName, NxsBlock *currentB
 		assert(nb);
 		NxsString impID = nb->GetID();
 		bool storeBlock = true;
-		if (destroyRepeatedTaxaBlocks && impID.EqualsCaseInsensitive("TAXA"))
+		if (destroyRepeatedTaxaBlocks && impID.EqualsCaseInsensitive(L"TAXA"))
 			{
 			NxsTaxaBlockAPI * oldTB = this->GetOriginalTaxaBlock((NxsTaxaBlockAPI *) nb);
 			if (oldTB)
 				{
 				storeBlock = ! currentBlock->SwapEquivalentTaxaBlock(oldTB);
-				const std::string altTitle = nb->GetTitle();
+				const std::wstring altTitle = nb->GetTitle();
 				this->RegisterAltTitle(oldTB, altTitle);
 				if (!storeBlock)
 					{
@@ -742,36 +746,36 @@ void NxsReader::BlockReadHook(const NxsString &currBlockName, NxsBlock *currentB
 			}
 		if (storeBlock) 
 			{
-			std::cerr << "storing implied block: " << impID << std::endl;
+			std::wcerr << L"storing implied block: " << impID << std::endl;
 			this->AddBlockToUsedBlockList(impID, nb, token);
 			}
 		}
-	std::cerr << "storing read block: " << currentBlock->GetID() << std::endl;
+	std::wcerr << L"storing read block: " << currentBlock->GetID() << std::endl;
 	this->AddBlockToUsedBlockList(currBlockName, currentBlock, token);
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
-|	Returns a string containing the copyright notice for the NxsReader Class Library, useful for reporting the use of 
+|	Returns a wstring containing the copyright notice for the NxsReader Class Library, useful for reporting the use of 
 |	this library by programs that interact with the user.
 */
-const char * NxsReader::NCLCopyrightNotice()
+const wchar_t* NxsReader::NCLCopyrightNotice()
 	{
 	return NCL_COPYRIGHT;
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
-|	Returns a string containing the URL for the NxsReader Class Library internet home page.
+|	Returns a wstring containing the URL for the NxsReader Class Library internet home page.
 */
-const char * NxsReader::NCLHomePageURL()
+const wchar_t* NxsReader::NCLHomePageURL()
 	{
 	return NCL_HOMEPAGEURL;
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
-|	Returns a string containing the name and current version of the NxsReader Class Library, useful for reporting the 
+|	Returns a wstring containing the name and current version of the NxsReader Class Library, useful for reporting the 
 |	use of this library by programs that interact with the user.
 */
-const char * NxsReader::NCLNameAndVersion()
+const wchar_t* NxsReader::NCLNameAndVersion()
 	{
 	return NCL_NAME_AND_VERSION;
 	}
@@ -839,19 +843,19 @@ void NxsReader::SkippingDisabledBlock(
 	{
 	}
 
-bool NxsReader::ReadUntilEndblock(NxsToken &token, const std::string & )
+bool NxsReader::ReadUntilEndblock(NxsToken &token, const std::wstring & )
 	{
 	for (;;)
 		{
 		token.GetNextToken();
-		if (token.Equals("END") || token.Equals("ENDBLOCK")) 
+		if (token.Equals(L"END") || token.Equals(L"ENDBLOCK")) 
 			{
 			token.GetNextToken();
-			if (!token.Equals(";")) 
+			if (!token.Equals(L";")) 
 				{
-				std::string errormsg = "Expecting ';' after END or ENDBLOCK command, but found ";
+				std::wstring errormsg = L"Expecting ';' after END or ENDBLOCK command, but found ";
 				errormsg += token.GetToken();
-				errormsg += " instead";
+				errormsg += L" instead";
 				NexusError(NxsString(errormsg.c_str()), token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 				return false;
 				}
@@ -888,26 +892,26 @@ void NxsReader::SetTreesBlockFactory(NxsTreesBlockFactory *f)
 */
 NxsTaxaBlockAPI *NxsReader::GetLastStoredTaxaBlock()
 	{
-	const std::string idstring("TAXA");
-	NxsBlock * nb = GetLastStoredBlockByID(idstring);
+	const std::wstring idwstring(L"TAXA");
+	NxsBlock * nb = GetLastStoredBlockByID(idwstring);
 	return static_cast<NxsTaxaBlockAPI *>(nb); //dynamic_cast<NxsTaxaBlockAPI *>(nb);
 	}
 
 NxsCharactersBlockAPI *NxsReader::GetLastStoredCharactersBlock()
 	{
-	const std::string idstring("CHARACTERS");
-	NxsBlock * nb = GetLastStoredBlockByID(idstring);
+	const std::wstring idwstring(L"CHARACTERS");
+	NxsBlock * nb = GetLastStoredBlockByID(idwstring);
 	return static_cast<NxsCharactersBlockAPI *>(nb); //dynamic_cast<NxsCharactersBlockAPI *>(nb);
 	}
 
 NxsTreesBlockAPI *NxsReader::GetLastStoredTreesBlock()
 	{
-	const std::string idstring("TREES");
-	NxsBlock * nb = GetLastStoredBlockByID(idstring);
+	const std::wstring idwstring(L"TREES");
+	NxsBlock * nb = GetLastStoredBlockByID(idwstring);
 	return static_cast<NxsTreesBlockAPI *>(nb); //dynamic_cast<NxsTreesBlockAPI *>(nb);
 	}
 
-NxsBlock *NxsReader::GetLastStoredBlockByID(const std::string &key)
+NxsBlock *NxsReader::GetLastStoredBlockByID(const std::wstring &key)
 	{
 	BlockTypeToBlockList::iterator bttblIt = blockTypeToBlockList.find(key);
 	if (bttblIt == blockTypeToBlockList.end())
@@ -916,30 +920,30 @@ NxsBlock *NxsReader::GetLastStoredBlockByID(const std::string &key)
 	}
 
 
-void NxsReader::NewBlockTitleCheckHook(const std::string &blockname, NxsBlock *p, NxsToken *token)
+void NxsReader::NewBlockTitleCheckHook(const std::wstring &blockname, NxsBlock *p, NxsToken *token)
 	{
 	NxsBlockTitleHistoryMap::iterator mIt = blockTitleHistoryMap.find(blockname);
 	if (mIt == blockTitleHistoryMap.end())
 		{
-		std::list<std::string> mt;
+		std::list<std::wstring> mt;
 		blockTitleHistoryMap[blockname] = NxsBlockTitleHistory(1, mt);
 		mIt = blockTitleHistoryMap.find(blockname);
 		assert(mIt != blockTitleHistoryMap.end());
 		}
 	NxsBlockTitleHistory & titleHist = mIt->second;
 	unsigned n = titleHist.first;
-	std::list<std::string> & previousTitles = titleHist.second;
-	std::list<std::string>::iterator lsIt;
-	std::string pTitle = p->GetTitle();
-	std::string origTitle = pTitle;
+	std::list<std::wstring> & previousTitles = titleHist.second;
+	std::list<std::wstring>::iterator lsIt;
+	std::wstring pTitle = p->GetTitle();
+	std::wstring origTitle = pTitle;
 	NxsString::to_upper(pTitle);
 	if (pTitle.empty())
 		{
 		while (pTitle.empty())
 			{
-			NxsString autoName = "Untitled ";
+			NxsString autoName = L"Untitled ";
 			autoName += p->GetID().c_str();
-			autoName += " Block ";
+			autoName += L" Block ";
 			autoName += n++;
 			pTitle.assign(autoName.c_str());
 			NxsString::to_upper(pTitle);
@@ -958,11 +962,11 @@ void NxsReader::NewBlockTitleCheckHook(const std::string &blockname, NxsBlock *p
         lsIt = find(previousTitles.begin(), previousTitles.end(), pTitle);
 		if (lsIt != previousTitles.end())
 			{
-			NxsString msg = "Block titles cannot be repeated. The TITLE ";
+			NxsString msg = L"Block titles cannot be repeated. The TITLE ";
 			msg += origTitle;
-			msg += " has already been used for a ";
+			msg += L" has already been used for a ";
 			msg += blockname;
-			msg += " block.";
+			msg += L" block.";
 			if (token)
 				throw NxsException(msg, *token);
 			else
@@ -972,14 +976,14 @@ void NxsReader::NewBlockTitleCheckHook(const std::string &blockname, NxsBlock *p
 	previousTitles.push_back(pTitle);
 	}
 
-void NxsReader::AddBlockToUsedBlockList(const std::string &instring, NxsBlock *p, NxsToken *token)
+void NxsReader::AddBlockToUsedBlockList(const std::wstring &inwstring, NxsBlock *p, NxsToken *token)
 	{
 	assert(p);
-	std::string n;
-	if (instring == "DATA")
-		n = std::string("CHARACTERS");
+	std::wstring n;
+	if (inwstring == L"DATA")
+		n = std::wstring(L"CHARACTERS");
 	else
-		n = instring;
+		n = inwstring;
 	NewBlockTitleCheckHook(n, p, token);
 	BlockTypeToBlockList::iterator bttblIt = blockTypeToBlockList.find(n);
 	if (bttblIt == blockTypeToBlockList.end())
@@ -996,7 +1000,7 @@ unsigned NxsReader::RemoveBlockFromUsedBlockList(NxsBlock *p)
 	{
 	unsigned totalDel = 0;
 	unsigned before, after;
-	std::vector<std::string> keysToDel;
+	std::vector<std::wstring> keysToDel;
 	for (BlockTypeToBlockList::iterator bttblIt = blockTypeToBlockList.begin(); bttblIt != blockTypeToBlockList.end(); ++bttblIt)
 		{
 		BlockReaderList & brl = bttblIt->second;
@@ -1007,18 +1011,18 @@ unsigned NxsReader::RemoveBlockFromUsedBlockList(NxsBlock *p)
 			keysToDel.push_back(bttblIt->first);
 		totalDel += before - after;
 		}
-	for (std::vector<std::string>::const_iterator keyIt = keysToDel.begin(); keyIt != keysToDel.end(); ++keyIt)
+	for (std::vector<std::wstring>::const_iterator keyIt = keysToDel.begin(); keyIt != keysToDel.end(); ++keyIt)
 		blockTypeToBlockList.erase(*keyIt);
 	blocksInOrder.remove(p);
 	lastExecuteBlocksInOrder.remove(p);
-	std::string blockID =  p->GetID();
+	std::wstring blockID =  p->GetID();
 	NxsBlockTitleHistoryMap::iterator mIt = blockTitleHistoryMap.find(blockID);
 	if (mIt != blockTitleHistoryMap.end()) 
 		{
-		std::string blockName = p->GetTitle();
+		std::wstring blockName = p->GetTitle();
 		NxsBlockTitleHistory & titleHist = mIt->second;
-		std::list<std::string> & previousTitles = titleHist.second;
-		std::list<std::string>::iterator ptIt = previousTitles.begin();
+		std::list<std::wstring> & previousTitles = titleHist.second;
+		std::list<std::wstring>::iterator ptIt = previousTitles.begin();
 		while (ptIt != previousTitles.end())
 			{
 			if (*ptIt == blockName)
@@ -1042,7 +1046,7 @@ std::set<NxsBlock*> NxsReader::GetSetOfAllUsedBlocks()
 	return s;
 	}
 
-void ExceptionRaisingNxsReader::NexusWarn(const std::string &msg, NxsWarnLevel warnLevel, file_pos pos, long line, long col)
+void ExceptionRaisingNxsReader::NexusWarn(const std::wstring &msg, NxsWarnLevel warnLevel, file_pos pos, long line, long col)
 	{
 	if (warnLevel >= this->warningToErrorThreshold)
 		{
@@ -1054,23 +1058,23 @@ void ExceptionRaisingNxsReader::NexusWarn(const std::string &msg, NxsWarnLevel w
 		return;
 	if (warnMode == NxsReader::WARNINGS_TO_STDERR)
 		{
-		std::cerr << "\nWarning:  ";
-		std::cerr << "\n " << msg << std::endl;
+		std::wcerr << L"\nWarning:  ";
+		std::wcerr << L"\n " << msg << std::endl;
 		if (line >= 0)
-			std::cerr << "at line " << line << ", column (approximately) " << col << " (file position " << pos << ")\n";
+			std::cerr << L"at line " << line << L", column (approximately) " << col << L" (file position " << pos << L")\n";
 		}
 	else if (warnMode != NxsReader::WARNINGS_TO_STDOUT)
 		{
-		std::cout << "\nWarning:  ";
+		std::cout << L"\nWarning:  ";
 		if (line >= 0)
-			std::cout << "at line " << line << ", column " << col << " (file position " << pos << "):\n";
-		std::cout << "\n " << msg << '\n';
+			std::cout << L"at line " << line << L", column " << col << L" (file position " << pos << L"):\n";
+		std::wcout << L"\n " << msg << '\n';
 		if (line >= 0)
-			std::cout << "at line " << line << ", column (approximately) " << col << " (file position " << pos << ')' << std::endl;
+			std::cout << L"at line " << line << L", column (approximately) " << col << L" (file position " << pos << ')' << std::endl;
 		}
 	else
 		{
-		NxsString m("WARNING:\n ");
+		NxsString m(L"WARNING:\n ");
 		m += msg.c_str();
 		NexusError(m, pos, line, col);
 		}
@@ -1081,9 +1085,9 @@ void ExceptionRaisingNxsReader::SkippingBlock(NxsString blockName)
 	if (warnMode == NxsReader::IGNORE_WARNINGS)
 		return;
 	if (warnMode == NxsReader::WARNINGS_TO_STDERR)
-		std::cerr << "[!Skipping unknown block (" << blockName << ")...]" << std::endl;
+		std::wcerr << L"[!Skipping unknown block (" << blockName << L")...]" << std::endl;
 	else if (warnMode != NxsReader::WARNINGS_TO_STDOUT)
-		std::cout << "[!Skipping unknown block (" << blockName << ")...]" << std::endl;
+		std::wcout << L"[!Skipping unknown block (" << blockName << L")...]" << std::endl;
 	}
 
 void ExceptionRaisingNxsReader::SkippingDisabledBlock(NxsString blockName)
@@ -1091,8 +1095,8 @@ void ExceptionRaisingNxsReader::SkippingDisabledBlock(NxsString blockName)
 	if (warnMode == NxsReader::IGNORE_WARNINGS)
 		return;
 	if (warnMode == NxsReader::WARNINGS_TO_STDERR)
-		std::cerr << "[!Skipping disabled block (" << blockName << ")...]" << std::endl;
+		std::wcerr << L"[!Skipping disabled block (" << blockName << L")...]" << std::endl;
 	else if (warnMode != NxsReader::WARNINGS_TO_STDOUT)
-		std::cout << "[!Skipping disabled block (" << blockName << ")...]" << std::endl;
+		std::wcout << L"[!Skipping disabled block (" << blockName << L")...]" << std::endl;
 	}
 

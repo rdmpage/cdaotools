@@ -70,7 +70,7 @@ class NxsCXXDiscreteMatrix
 			return nativeCMatrix.nStates;
 			}
 
-		const char *	getSymbolsList() const   //POL added 15-Nov-2005 
+		const wchar_t*	getSymbolsList() const   //POL added 15-Nov-2005 
 			{
 			return nativeCMatrix.symbolsList;
 			}
@@ -161,7 +161,7 @@ class NxsCXXDiscreteMatrix
 		typedef ScopedTwoDMatrix<NxsCDiscreteStateSet> ScopedStateSetTwoDMatrix;
 		
 		NxsCDiscreteMatrix			nativeCMatrix; 		/** taxa x characters matrix in a C struct*/
-		std::string					symbolsStringAlias;	/** memory management alias to symbols field of nativeCMatrix */
+		std::wstring					symbolsStringAlias;	/** memory management alias to symbols field of nativeCMatrix */
 		ScopedStateSetTwoDMatrix	matrixAlias;		/** memory management alias to matrix field of nativeCMatrix */
 		std::vector<NxsCDiscreteState_t>	stateListAlias;		/** memory management alias to ambigList field of nativeCMatrix */
 		std::vector<unsigned>		stateListPosAlias;		/** memory management alias to symbolsList field of nativeCMatrix */

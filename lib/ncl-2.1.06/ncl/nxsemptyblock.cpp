@@ -89,10 +89,10 @@ void NxsEmptyBlock::Reset()
 |	the base class.
 */
 void NxsEmptyBlock::Report(
-  std::ostream &out) NCL_COULD_BE_CONST /* the output stream to which to write the report */
+  std::wostream &out) NCL_COULD_BE_CONST /* the output stream to which to write the report */
 	{
 	out << endl;
-	out << id << " block contains...";
+	out << id << L" block contains...";
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------

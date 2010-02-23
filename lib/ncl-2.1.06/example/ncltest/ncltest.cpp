@@ -33,8 +33,8 @@ long gStrictLevel = 2;
 class NormalizingReader : public NxsReader
 	{
 	public:
-		ostream * outf;
-		NormalizingReader(ostream * outStream)
+		wostream * outf;
+		NormalizingReader(wostream * outStream)
 			:NxsReader(),
 			outf(outStream),
 			storingBlocks(false),
@@ -57,7 +57,7 @@ class NormalizingReader : public NxsReader
 		{
 		if (outf != 0L)
 			{
-			*outf << "[!Skipping unknown block (" << blockName << ")...]\n";
+			*outf << L"[!Skipping unknown block (" << blockName << ")...]\n";
 			outf->flush();
 			}
 		}
@@ -66,7 +66,7 @@ class NormalizingReader : public NxsReader
 		{
 		if (outf != 0L)
 			{
-			*outf << "[!Skipping disabled block (" << blockName << ")...]\n";
+			*outf << L"[!Skipping disabled block (" << blockName << ")...]\n";
 			outf->flush();
 			}
 		}
@@ -74,13 +74,13 @@ class NormalizingReader : public NxsReader
 	void PostBlockReadingHook(NxsBlock & block);
 	void NexusError(NxsString msg, file_pos pos, long line, long col)
 		{
-		cerr << "\nError found at line " << line << ", column " << col ;
-		cerr << " (file position " << pos << "):\n" << msg << endl;
+		wcerr << L"\nError found at line " << line << ", column " << col ;
+		wcerr << L" (file position " << pos << "):\n" << msg << endl;
 
 		if (outf != 0L)
 			{
-			*outf << "\nError found at line " << line << ", column " << col ;
-			*outf << " (file position " << pos << "):\n" << msg;
+			*outf << L"\nError found at line " << line << ", column " << col ;
+			*outf << L" (file position " << pos << "):\n" << msg;
 			outf->flush();
 			}
 		exit(2);
@@ -102,7 +102,7 @@ class NormalizingReader : public NxsReader
 class NormalizingToken : public NxsToken
 	{
 	public:
-		NormalizingToken(istream &is, ostream * os)
+		NormalizingToken(wistream &is, wostream * os)
 			:NxsToken(is),
 			out(os)
 			{
@@ -111,11 +111,11 @@ class NormalizingToken : public NxsToken
 			{
 			if (out == NULL)
 				return;
-			*out << "[!" << msg << "]\n";
+			*out << L"[!" << msg << L"]\n";
 			out->flush();
 			}
 	private:
-		ostream * out;
+		wostream * out;
 	};
 
 NormalizingReader::~NormalizingReader()
@@ -131,20 +131,20 @@ void NormalizingReader::Clear()
 		delete *it;
 	}
 
-void WriteCharactersBlock(ostream & out, NxsCharactersBlock *ncb)
+void WriteCharactersBlock(wostream & out, NxsCharactersBlock *ncb)
 	{
 	const unsigned nt = ncb->GetNTax();
 	const unsigned nc = ncb->GetNChar();
 	int status;
 	NxsTaxaBlockAPI* tb = ncb->GetTaxaBlockPtr(&status);
 	assert(tb);
-	out << "BEGIN DATA;\n";
-	out << "    DIMENSIONS NTax="<< ncb->GetNTaxWithData() << " NChar=" << ncb->GetNumActiveChar() << ";\n";
-	out << "    FORMAT Datatype = "<< ncb->GetDatatypeName() << " missing=" << ncb->GetMissingSymbol();
+	out << L"BEGIN DATA;\n";
+	out << L"    DIMENSIONS NTax="<< ncb->GetNTaxWithData() << L" NChar=" << ncb->GetNumActiveChar() << L";\n";
+	out << L"    FORMAT Datatype = "<< ncb->GetDatatypeName() << L" missing=" << ncb->GetMissingSymbol();
 	const char gap = ncb->GetGapSymbol();
 	if (gap != '\0')
 		out << " gap=" << gap;
-	out << ";\nMatrix\n";
+	out << L";\nMatrix\n";
 	for (unsigned i = 0; i < nt; ++i)
 		{
 		if (ncb->TaxonIndHasData(i))
@@ -166,21 +166,21 @@ void WriteCharactersBlock(ostream & out, NxsCharactersBlock *ncb)
 			out << '\n';
 			}
 		}
-	out << ";\nEND;\n";
+	out << L";\nEND;\n";
 	}
 
 
-void processNexusBlock(ostream & out, NxsBlock *nb)
+void processNexusBlock(wostream & out, NxsBlock *nb)
 	{
 	NxsString id = nb->GetID();
-	if (NxsString::case_insensitive_equals(id.c_str(), "DATA")
-		|| NxsString::case_insensitive_equals(id.c_str(), "CHARACTERS"))
+	if (NxsString::case_insensitive_equals(id.c_str(), L"DATA")
+		|| NxsString::case_insensitive_equals(id.c_str(), L"CHARACTERS"))
 		{
 		NxsCharactersBlock * ncb = static_cast<NxsCharactersBlock *>(nb);
 		WriteCharactersBlock(out, ncb);
 		}
-	else if (NxsString::case_insensitive_equals(id.c_str(), "SETS")
-		|| NxsString::case_insensitive_equals(id.c_str(), "ASSUMPTIONS"))
+	else if (NxsString::case_insensitive_equals(id.c_str(), L"SETS")
+		|| NxsString::case_insensitive_equals(id.c_str(), L"ASSUMPTIONS"))
 		{}
 	else
 		nb->WriteAsNexus(out);
@@ -197,7 +197,7 @@ void NormalizingReader::PostBlockReadingHook(NxsBlock & block)
 			}
 		catch (...)
 			{
-			cerr << "CloneBlock of " << GetBlockIDTitleString(block) << " failed with an exception.  Only Clonable blocks can be normalized." << endl;
+			wcerr << L"CloneBlock of " << GetBlockIDTitleString(block) << L" failed with an exception.  Only Clonable blocks can be normalized." << endl;
 			throw;
 			}
 		blocksToDelete.push_back(toStore);
@@ -235,37 +235,42 @@ void NormalizingReader::PostBlockReadingHook(NxsBlock & block)
 		}
 	catch (...)
 		{
-		cerr << GetBlockIDTitleString(block) << " raised an exception when writing as NEXUS." << endl;
+		wcerr << GetBlockIDTitleString(block) << L" raised an exception when writing as NEXUS." << endl;
 		throw;
 		}
 	writtenBlocks.insert(toStoreBlockID);
 	}
 
-void filepathToNormalizedNEXUS(const char * filename, ostream *os)
+void filepathToNormalizedNEXUS(const char * filename, wostream *os)
 	{
-	ifstream inf(filename, ios::binary);
+	wifstream inf(filename, ios::binary);
 	toNormalizedNEXUS(inf, os);
 	}
 
 
-void readFilesListedIsFile(const char *masterFilepath, ostream *out)
+void readFilesListedIsFile(const char *masterFilepath, wostream *out)
 {
-	ifstream masterStream(masterFilepath);
+	wifstream masterStream(masterFilepath);
 	if (masterStream.bad())
 	{
 		cerr << "Could not open " << masterFilepath << "." << endl;
 		exit(3);
 	}
-	char filename[1024];
+	wchar_t filename[1024];
 	while ((!masterStream.eof())  && masterStream.good())
 	{
+          
 		masterStream.getline(filename, 1024);
-		if (strlen(filename) > 0 && filename[0] != '#')
-			filepathToNormalizedNEXUS(filename, out);
+		if (wcslen(filename) > 0 && filename[0] != '#'){
+                        //wstring temp( filename );
+                        string fn = wstr_to_str( filename );
+                        //std::copy( temp.begin(), temp.end(), fn.begin() );
+			filepathToNormalizedNEXUS(fn.c_str(), out);
+                }
 	}
 }
 
-void toNormalizedNEXUS(ifstream & inf, ostream *os)
+void toNormalizedNEXUS(wifstream & inf, wostream *os)
 	{
 	NxsTaxaBlock taxa;
 	NxsTreesBlock trees(&taxa);
@@ -293,22 +298,22 @@ void toNormalizedNEXUS(ifstream & inf, ostream *os)
 	nexus.Execute(token);
 	}
 
-void printHelp(ostream & out)
+void printHelp(wostream & out)
 	{
-	out << "NCLtest NEXUS normalizer takes reads a NEXUS file and rewrites the file to standard out with consistent indentation and syntax.\n";
-	out << "\nThe most common usage is simply:\n    NEXUSnormalizer <path to NEXUS file>\n";
-	out << "\nCommand-line flags:\n\n";
-	out << "    -h on the command line shows this help message\n\n";
-	out << "    -l<path> reads a file and treats each line of the file as a path to NEXUS file\n\n";
-	out << "    -s<non-negative integer> controls the NEXUS strictness level.\n";
-	out << "        the default level is equivalent to -s2 invoking the program with \n";
-	out << "        -s3 or a higher number will convert some warnings into fatal errors.\n";
-	out << "        Running with -s1 will cause the parser to accept dangerous constructs,\n";
-	out << "        and running with -s0 will cause the parser make every attempt to finish\n";
-	out << "        parsing the file (warning about very serious errors).\n\n";
-	out << "        Note that when -s0 strictness level is used, and the parser fails to\n";
-	out << "        finish, it will often be the result of an earlier error than the \n";
-	out << "        error that is reported in the last message.\n";
+	out << L"NCLtest NEXUS normalizer takes reads a NEXUS file and rewrites the file to standard out with consistent indentation and syntax.\n";
+	out << L"\nThe most common usage is simply:\n    NEXUSnormalizer <path to NEXUS file>\n";
+	out << L"\nCommand-line flags:\n\n";
+	out << L"    -h on the command line shows this help message\n\n";
+	out << L"    -l<path> reads a file and treats each line of the file as a path to NEXUS file\n\n";
+	out << L"    -s<non-negative integer> controls the NEXUS strictness level.\n";
+	out << L"        the default level is equivalent to -s2 invoking the program with \n";
+	out << L"        -s3 or a higher number will convert some warnings into fatal errors.\n";
+	out << L"        Running with -s1 will cause the parser to accept dangerous constructs,\n";
+	out << L"        and running with -s0 will cause the parser make every attempt to finish\n";
+	out << L"        parsing the file (warning about very serious errors).\n\n";
+	out << L"        Note that when -s0 strictness level is used, and the parser fails to\n";
+	out << L"        finish, it will often be the result of an earlier error than the \n";
+	out << L"        error that is reported in the last message.\n";
 	}
 
 int main(int argc, char *argv[])
@@ -324,20 +329,23 @@ int main(int argc, char *argv[])
 		cerr << "[Reading " << filename << "     ]" << endl;
 		try {
 #			if defined(JUST_VALIDATE_NEXUS) && JUST_VALIDATE_NEXUS
-				ostream * outStream = 0L;
+				wostream * outStream = 0L;
 #			else	
-				ostream * outStream = &cout;
+				wostream * outStream = &wcout;
 #			endif	
 			
 			const char * filepath = argv[i];
 			if (strlen(filepath) > 1 && filepath[0] == '-' && filepath[1] == 'h')
-				printHelp(cout);
+				printHelp(wcout);
 			else if (strlen(filepath) > 2 && filepath[0] == '-' && filepath[1] == 's')
 				{
-				if (!NxsString::to_long(filepath + 2, &gStrictLevel))
+                                  string temp(filepath);
+                                  wstring fp= str_to_wstr( filepath );
+                                  //std::copy( temp.begin(), temp.end(), fp.begin());
+				if (!NxsString::to_long(fp.c_str() + 2, &gStrictLevel))
 					{
-					cerr << "Expecting an integer after -s\n" << endl;
-					printHelp(cerr);
+					wcerr << L"Expecting an integer after -s\n" << endl;
+					printHelp(wcerr);
 					return 2;
 					}
 				}

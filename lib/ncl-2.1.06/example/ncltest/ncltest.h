@@ -18,6 +18,6 @@
 //
 #include <iostream>
 
-void toNormalizedNEXUS(ifstream & inf, std::ostream * os);
-void filepathToNormalizedNEXUS(const char * filename, std::ostream * os);
+void toNormalizedNEXUS(wifstream & inf, std::wostream * os);
+void filepathToNormalizedNEXUS(const char * filename, std::wostream * os);
 

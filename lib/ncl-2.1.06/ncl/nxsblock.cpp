@@ -23,7 +23,7 @@ using namespace std;
 
 /// returns the number of indices added (could be zero if the set name is not found.
 
-unsigned NxsLabelToIndicesMapper::GetIndicesFromSets(const std::string &label, 
+unsigned NxsLabelToIndicesMapper::GetIndicesFromSets(const std::wstring &label, 
   NxsUnsignedSet *inds, 
   const NxsUnsignedSetMap & itemSets)
 	{
@@ -44,11 +44,11 @@ unsigned NxsLabelToIndicesMapper::GetIndicesFromSets(const std::string &label,
 	}
 
 /// returns the number of indices added (will generate an NxsException if the name is neither a set name or a number).
-unsigned NxsLabelToIndicesMapper::GetIndicesFromSetOrAsNumber(const std::string &label, 
+unsigned NxsLabelToIndicesMapper::GetIndicesFromSetOrAsNumber(const std::wstring &label, 
   NxsUnsignedSet *inds, 
   const NxsUnsignedSetMap & itemSets, 
   const unsigned maxInd, 
-  const char * itemType) /* "tree", "character"... */
+  const wchar_t* itemType) /* "tree", L"character"... */
 	{
 	unsigned n = GetIndicesFromSets(label, inds, itemSets);
 	if (n > 0)
@@ -57,15 +57,15 @@ unsigned NxsLabelToIndicesMapper::GetIndicesFromSetOrAsNumber(const std::string 
 	if (!NxsString::to_long(label.c_str(), &i))
 		{
 		NxsString emsg;
-		emsg << "Expecting a  number or " << itemType << " label, found " <<  label;
+		emsg << L"Expecting a  number or " << itemType << L" label, found " <<  label;
 		throw NxsException(emsg);
 		}
 	i--;
 	if (i > (long)maxInd  || i < 0)
 		{
-		NxsString emsg = "Expecting a ";
-		emsg << itemType << " name or a number corresponding to a " << itemType << "\'s number (a number from 1 to ";
-		emsg << maxInd + 1 << "). Found " << label;
+		NxsString emsg = L"Expecting a ";
+		emsg << itemType << L" name or a number corresponding to a " << itemType << L"\'s number (a number from 1 to ";
+		emsg << maxInd + 1 << L"). Found " << label;
 		throw NxsException(emsg);
 		}
 	unsigned asu = (unsigned) (i);
@@ -74,7 +74,7 @@ unsigned NxsLabelToIndicesMapper::GetIndicesFromSetOrAsNumber(const std::string 
 	return 1;
 	}
 
-void NxsBlock::WarnDangerousContent(const std::string &s, const NxsToken &token)
+void NxsBlock::WarnDangerousContent(const std::wstring &s, const NxsToken &token)
 	{
 	if (nexusReader)
 		nexusReader->NexusWarnToken(s, NxsReader::PROBABLY_INCORRECT_CONTENT_WARNING, token);
@@ -82,7 +82,7 @@ void NxsBlock::WarnDangerousContent(const std::string &s, const NxsToken &token)
 		throw NxsException(s, token);
 	}
 	
-void NxsBlock::WarnDangerousContent(const std::string &s, const ProcessedNxsToken &token)
+void NxsBlock::WarnDangerousContent(const std::wstring &s, const ProcessedNxsToken &token)
 	{
 	if (nexusReader)
 		nexusReader->NexusWarnToken(s, NxsReader::PROBABLY_INCORRECT_CONTENT_WARNING, token);
@@ -93,12 +93,12 @@ void NxsBlock::SkipCommand(NxsToken & token)
 	{
 	if (nexusReader)
 		{
-		errormsg = "Skipping command: ";
+		errormsg = L"Skipping command: ";
 		errormsg << token.GetTokenReference();
 		nexusReader->NexusWarnToken(errormsg, NxsReader::SKIPPING_CONTENT_WARNING, token);
 		errormsg.clear();
 		}
-	if (!token.Equals(";"))
+	if (!token.Equals(L";"))
 		SkippingCommand(token.GetToken());
 	if (storeSkippedCommands)
 		{
@@ -110,7 +110,7 @@ void NxsBlock::SkipCommand(NxsToken & token)
 		token.ProcessAsCommand(NULL);
 	}
 
-void NxsBlock::WriteSkippedCommands(std::ostream & out) const 
+void NxsBlock::WriteSkippedCommands(std::wostream & out) const 
 	{
 	for (list<ProcessedNxsCommand>::const_iterator cIt = skippedCommands.begin(); cIt != skippedCommands.end(); ++cIt)
 		{
@@ -131,22 +131,22 @@ void NxsBlock::WriteSkippedCommands(std::ostream & out) const
 */
 NxsBlock::NxsCommandResult NxsBlock::HandleBasicBlockCommands(NxsToken & token)
 	{
-	if (token.Equals("TITLE"))
+	if (token.Equals(L"TITLE"))
 		{
 		HandleTitleCommand(token);
 		return NxsBlock::NxsCommandResult(HANDLED_COMMAND);
 		}
-	if (false && token.Equals("BLOCKID")) /*now we are skipping this to put it at the end of blocks*/
+	if (false && token.Equals(L"BLOCKID")) /*now we are skipping this to put it at the end of blocks*/
 		{
 		HandleBlockIDCommand(token);
 		return NxsBlock::NxsCommandResult(HANDLED_COMMAND);
 		}
-	if (token.Equals("LINK") && this->ImplementsLinkAPI())
+	if (token.Equals(L"LINK") && this->ImplementsLinkAPI())
 		{
 		HandleLinkCommand(token);
 		return NxsBlock::NxsCommandResult(HANDLED_COMMAND);
 		}
-	if (token.Equals("END") || token.Equals("ENDBLOCK"))
+	if (token.Equals(L"END") || token.Equals(L"ENDBLOCK"))
 		{
 		HandleEndblock(token);
 		return NxsBlock::NxsCommandResult(STOP_PARSING_BLOCK);
@@ -160,21 +160,21 @@ NxsBlock::NxsCommandResult NxsBlock::HandleBasicBlockCommands(NxsToken & token)
 void NxsBlock::HandleTitleCommand(NxsToken & token)
 	{
 	token.GetNextToken();
-	if (token.Equals(";"))
-		GenerateUnexpectedTokenNxsException(token, "a title for the block");
+	if (token.Equals(L";"))
+		GenerateUnexpectedTokenNxsException(token, L"a title for the block");
 	if (!title.empty() && nexusReader)
 		{
-		errormsg = "Multiple TITLE commands were encountered the title \"";
+		errormsg = L"Multiple TITLE commands were encountered the title \"";
 		errormsg += title;
-		errormsg += "\" will be replaced by \"";
+		errormsg += L"\" will be replaced by \"";
 		errormsg += token.GetToken() ;
-		errormsg += '\"';
+		errormsg += (wchar_t)'\"';
 		nexusReader->NexusWarnToken(errormsg, NxsReader::OVERWRITING_CONTENT_WARNING, token);
 		errormsg.clear();
 		}
 	title = token.GetToken();
 	autoTitle = false;
-	DemandEndSemicolon(token, "TITLE");
+	DemandEndSemicolon(token, L"TITLE");
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -183,10 +183,10 @@ void NxsBlock::HandleTitleCommand(NxsToken & token)
 void NxsBlock::HandleBlockIDCommand(NxsToken & token)
 	{
 	token.GetNextToken();
-	if (token.Equals(";"))
-		GenerateUnexpectedTokenNxsException(token, "an id for the block");
+	if (token.Equals(L";"))
+		GenerateUnexpectedTokenNxsException(token, L"an id for the block");
 	blockIDString = token.GetToken();
-	DemandEndSemicolon(token, "BLOCKID");
+	DemandEndSemicolon(token, L"BLOCKID");
 	}
 	
 /*----------------------------------------------------------------------------------------------------------------------
@@ -214,12 +214,12 @@ void NxsBlock::HandleBlockIDCommand(NxsToken & token)
 */
 void NxsBlock::HandleLinkCommand(NxsToken & )
 	{
-	throw NxsUnimplementedException("NxsBlock::HandleLinkCommand");
+	throw NxsUnimplementedException(L"NxsBlock::HandleLinkCommand");
 	}
 /*----------------------------------------------------------------------------------------------------------------------
 |	
 */
-void NxsBlock::WriteBasicBlockCommands(std::ostream &out) const
+void NxsBlock::WriteBasicBlockCommands(std::wostream &out) const
 	{
 	WriteTitleCommand(out);
 	WriteBlockIDCommand(out);
@@ -249,36 +249,36 @@ NxsBlock::NxsBlock()
 | 	Sets errormsg and raises a NxsException on failure.
 |	`contextString` is used in error messages:
 |		"Expecting '=' ${contextString} but found..."
-*/void NxsBlock::DemandIsAtEquals(NxsToken &token, const char *contextString) const
+*/void NxsBlock::DemandIsAtEquals(NxsToken &token, const wchar_t*contextString) const
 	{
-	if (!token.Equals("="))
+	if (!token.Equals(L"="))
 		{
-		errormsg = "Expecting '=' ";
+		errormsg = L"Expecting '=' ";
 		if (contextString)
 			errormsg.append(contextString);
-		errormsg << " but found " << token.GetToken() << " instead";
+		errormsg << L" but found " << token.GetToken() << L" instead";
 		throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
 		}
 	}
 
-void NxsBlock::DemandEquals(ProcessedNxsCommand::const_iterator & tokIt, const ProcessedNxsCommand::const_iterator & endIt, const char *contextString) const
+void NxsBlock::DemandEquals(ProcessedNxsCommand::const_iterator & tokIt, const ProcessedNxsCommand::const_iterator & endIt, const wchar_t*contextString) const
 	{
 	++tokIt;
 	if (tokIt == endIt)
 		{
-		errormsg = "Expecting '=' ";
+		errormsg = L"Expecting '=' ";
 		if (contextString)
 			errormsg.append(contextString);
-		errormsg << " but found ; instead";
+		errormsg << L" but found ; instead";
 		--tokIt;
 		throw NxsException(errormsg, *tokIt);
 		}
-	if (!tokIt->Equals("="))
+	if (!tokIt->Equals(L"="))
 		{
-		errormsg = "Expecting '=' ";
+		errormsg = L"Expecting '=' ";
 		if (contextString)
 			errormsg.append(contextString);
-		errormsg << " but found " << tokIt->GetToken() << " instead";
+		errormsg << L" but found " << tokIt->GetToken() << L" instead";
 		throw NxsException(errormsg, *tokIt);
 		}
 	}
@@ -291,7 +291,7 @@ void NxsBlock::DemandEquals(ProcessedNxsCommand::const_iterator & tokIt, const P
 |
 | Sets this->errormsg
 */
-void NxsBlock::GenerateNxsException(NxsToken &token, const char *message) const
+void NxsBlock::GenerateNxsException(NxsToken &token, const wchar_t*message) const
 	{
 	if (message)
 		errormsg = message;
@@ -305,18 +305,18 @@ void NxsBlock::GenerateNxsException(NxsToken &token, const char *message) const
 |
 | Sets this->errormsg
 */
-void NxsBlock::GenerateUnexpectedTokenNxsException(NxsToken &token, const char *expected) const
+void NxsBlock::GenerateUnexpectedTokenNxsException(NxsToken &token, const wchar_t*expected) const
 	{
-	errormsg = "Unexpected token";
+	errormsg = L"Unexpected token";
 	if (expected)
 		{
-		errormsg += ". Expecting ";
+		errormsg += L". Expecting ";
 		errormsg += expected;
-		errormsg += ", but found: ";
+		errormsg += L", but found: ";
 		}
 	else
 		{
-		errormsg += ": ";
+		errormsg += L": ";
 		}
 	errormsg += token.GetToken();
 	throw NxsException(errormsg, token.GetFilePosition(), token.GetFileLine(), token.GetFileColumn());
@@ -331,7 +331,7 @@ void NxsBlock::GenerateUnexpectedTokenNxsException(NxsToken &token, const char *
 void NxsBlock::HandleEndblock(
   NxsToken &token)	/* the token used to read from in */
 	{
-	DemandEndSemicolon(token, "END or ENDBLOCK");
+	DemandEndSemicolon(token, L"END or ENDBLOCK");
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -436,7 +436,7 @@ void NxsBlock::Read(
 */
 void NxsBlock::Reset()
 	{
-	title = std::string();
+	title = std::wstring();
 	autoTitle = false;
 	// Reset base class data members that could have changed
 	//
@@ -452,7 +452,7 @@ void NxsBlock::Reset()
 |	This virtual function provides a brief report of the contents of the block.
 */
 void NxsBlock::Report(
-  std::ostream &) NCL_COULD_BE_CONST /* the output stream to which the report is sent */
+  std::wostream &) NCL_COULD_BE_CONST /* the output stream to which the report is sent */
 	{
 	}
 
@@ -509,30 +509,30 @@ NxsBlock * NxsBlock::CloneBlock(
   NxsBlockMapper & /// memo is an mapper of an old block to a new instance (used when groups of blocks are being cloned)
   ) const
 	{
-	throw NxsUnimplementedException(NxsString("CloneBlock"));
+	throw NxsUnimplementedException(NxsString(L"CloneBlock"));
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
 |	Should serialize the content of the block as NEXUS.
 |	NxsBlock version throws NxsUnimplementedException (in future versions of NCL this will be a pure virtual.
 */
-void NxsBlock::WriteAsNexus(std::ostream &) const
+void NxsBlock::WriteAsNexus(std::wostream &) const
 	{
-	throw NxsUnimplementedException(NxsString("NxsBlock::WriteAsNexus"));
+	throw NxsUnimplementedException(NxsString(L"NxsBlock::WriteAsNexus"));
 	}
 
-void NxsBlock::WriteTitleCommand(std::ostream &out) const
+void NxsBlock::WriteTitleCommand(std::wostream &out) const
 	{
-	const std::string &t = this->GetInstanceName();
+	const std::wstring &t = this->GetInstanceName();
 	if (t.length() > 0)
-		out << "    TITLE " << NxsString::GetEscaped(t) << ";\n";
+		out << L"    TITLE " << NxsString::GetEscaped(t) << L";\n";
 	}
 
-void NxsBlock::WriteBlockIDCommand(std::ostream &out) const
+void NxsBlock::WriteBlockIDCommand(std::wostream &out) const
 	{
-	const std::string & t = this->blockIDString;
+	const std::wstring & t = this->blockIDString;
 	if (t.length() > 0)
-		out << "    BLOCKID " << NxsString::GetEscaped(t) << ";\n";
+		out << L"    BLOCKID " << NxsString::GetEscaped(t) << L";\n";
 	}
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -540,21 +540,21 @@ void NxsBlock::WriteBlockIDCommand(std::ostream &out) const
 |	NxsBlock versio merely raises NxsUnimplementedException. 
 |	See notes on HandleLinkCommand.
 */
-void NxsBlock::WriteLinkCommand(std::ostream &) const
+void NxsBlock::WriteLinkCommand(std::wostream &) const
 	{
-	throw NxsUnimplementedException("NxsBlock::WriteLinkCommand");
+	throw NxsUnimplementedException(L"NxsBlock::WriteLinkCommand");
 	}
 
-std::string GetBlockIDTitleString(NxsBlock &b)
+std::wstring GetBlockIDTitleString(NxsBlock &b)
 	{
-	const std::string &t = b.GetInstanceName();
-	std::string r = b.GetID();
-	r.append(" block");
+	const std::wstring &t = b.GetInstanceName();
+	std::wstring r = b.GetID();
+	r.append(L" block");
 	if (t.length() > 0)
 		{
-		r.append(" (");
+		r.append(L" (");
 		r.append(t);
-		r.append(")");
+		r.append(L")");
 		}
 	return r;
 	}
@@ -585,12 +585,12 @@ void NxsBlock::SetImplementsLinkAPI(bool v)
 |	`contextString` is used in error messages:
 |		"${contextString} must be a number greater than 0"
 */
-unsigned NxsBlock::DemandPositiveInt(NxsToken &token, const char *contextString) const
+unsigned NxsBlock::DemandPositiveInt(NxsToken &token, const wchar_t*contextString) const
 	{
 	return NxsToken::DemandPositiveInt(token, this->errormsg, contextString);
 	}
 
-void NxsBlock::DemandEndSemicolon(NxsToken &token, const char *contextString) const
+void NxsBlock::DemandEndSemicolon(NxsToken &token, const wchar_t*contextString) const
 	{
 	NxsToken::DemandEndSemicolon(token, this->errormsg, contextString);
 	}
