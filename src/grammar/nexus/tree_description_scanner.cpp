@@ -28,6 +28,8 @@ TokenPackage TreeDescriptionScanner::lex(){
   wstring token_in_progress;
    Token_t next_tok_type;
    Token_t prev_tok_type;
+   
+
    /* Consume leading white-space */
    while (!isDone() && (next_tok_type = lookAheadString(current_position_, target_)) == SPACE){ current_position_++;  }
    //wcerr << L"extracted leading whitespace\n";
