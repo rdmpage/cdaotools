@@ -1,23 +1,23 @@
-#include <string>
-#include "treebase-node.hpp"
-/* A Bison parser, made by GNU Bison 2.4.1.  */
+/* A Bison parser, made by GNU Bison 2.3.  */
 
 /* Skeleton interface for Bison GLR parsers in C
-   
-      Copyright (C) 2002, 2003, 2004, 2005, 2006 Free Software Foundation, Inc.
-   
-   This program is free software: you can redistribute it and/or modify
+
+   Copyright (C) 2002, 2003, 2004, 2005, 2006 Free Software Foundation, Inc.
+
+   This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-   
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-   
+
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor,
+   Boston, MA 02110-1301, USA.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -28,10 +28,9 @@
    special exception, which will cause the skeleton and the resulting
    Bison output files to be licensed under the GNU General Public
    License without this special exception.
-   
+
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
-
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -75,13 +74,25 @@
 #endif
 
 
-#ifndef YYSTYPE
-typedef union YYSTYPE
-{
+/* Copy the first part of user declarations.  */
+#line 1 "parser.yy"
 
-/* Line 2638 of glr.c  */
+#include "treebase-node.hpp"
+#include <iostream>
+#include <string>
+extern int yylex();
+void yyerror( const wchar_t* );
+void yyerror( const char* );
+
+using namespace std;
+using namespace Treebase;
+
+
+
+#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+typedef union YYSTYPE 
 #line 15 "parser.yy"
-
+{
     char chtok;
     unsigned long int reference;
     std::wstring* string_literal;
@@ -103,12 +114,11 @@ typedef union YYSTYPE
     Treebase::ListNode<Treebase::InputMatrixNode>* input_matrix_list;
     Treebase::ListNode<Treebase::OutputTreeNode>* output_tree_list;
     Treebase::ListNode<Treebase::AnalysisNode>* analysis_list;
-
-
-
-/* Line 2638 of glr.c  */
-#line 110 "parser.hpp"
-} YYSTYPE;
+}
+/* Line 2616 of glr.c.  */
+#line 120 "parser.hpp"
+	YYSTYPE;
+# define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
 #endif
 
@@ -122,7 +132,6 @@ typedef struct YYLTYPE
 # define YYLTYPE_IS_DECLARED 1
 # define YYLTYPE_IS_TRIVIAL 1
 #endif
-
 
 
 extern YYSTYPE yylval;
