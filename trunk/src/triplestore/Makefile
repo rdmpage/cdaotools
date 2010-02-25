@@ -10,7 +10,7 @@ REMOTE_DAT_DIR=~/bin/
 LOCAL_STATIC_WEB_DIR=html
 REMOTE_STATIC_WEB_DIR=cdao-store
 
-deploy: do_html_nca_query.sh.deployed do_html_tree_query.sh.deployed do_prolog_nca_query.sh.deployed do_prolog_tree_query.sh.deployed query_template_script.sh.deployed do_prolog_tu_query.sh.deployed do_tu_query_construct.sh.deployed tree_to_file.dat.deployed sparql.py.deployed import.py.deployed store.py.deployed index.py.deployed html.py.deployed
+deploy: do_html_author_query.sh.deployed do_html_nca_query.sh.deployed do_html_tree_query.sh.deployed do_prolog_nca_query.sh.deployed do_prolog_tree_query.sh.deployed query_template_script.sh.deployed do_prolog_tu_query.sh.deployed do_author_work_list_query_construct.sh.deployed do_tu_query_construct.sh.deployed tree_to_file.dat.deployed do_query.py.deployed sparql.py.deployed import.py.deployed store.py.deployed index.py.deployed html.py.deployed
 	(cd html && make deploy)
 
 

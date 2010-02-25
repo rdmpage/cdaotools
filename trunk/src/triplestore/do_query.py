@@ -37,7 +37,10 @@ cdaoURI= "http://www.evolutionaryontology.org/cdao.owl"
 cdaoNS= "http://www.evolutionaryontology.org/cdao.owl#"
 rdfNS="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 owlNS="http://www.w3.org/2002/07/owl#"
-nsdict=dict(owl=Namespace(owlNS), cdao=Namespace(cdaoNS), rdf=Namespace(rdfNS), data=Namespace(fileURI))
+studyNS="http://www.cs.nmsu.edu/~bchisham/study.owl#"
+contactNS="http://www.w3.org/2000/10/swap/pim/contact#"
+foafNS="http://www.mindswap.org/2003/owl/foaf#"
+nsdict=dict(owl=Namespace(owlNS), cdao=Namespace(cdaoNS), rdf=Namespace(rdfNS), data=Namespace(fileURI), study=Namespace(studyNS), contact=Namespace(contactNS), foaf=Namespace(foafNS))
 
 graph = get_graph( configString, fileURI )
 
