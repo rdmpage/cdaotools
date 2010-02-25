@@ -146,19 +146,17 @@ std::wstring str_to_wstr( const std::string& src){
     std::wstring ret = L"";
     //std::copy( src.begin(), src.end(), ret.begin() );
     for (std::string::const_iterator i = src.begin(); i != src.end(); ++i ){
-        ret += (wchar_t)(*i);
+        ret +=  std::cin.widen( *i );
     }
     return ret;
 }
 std::string wstr_to_str( const std::wstring& src ){
-    //string ret = "";
+    string ret = "";
     //std::copy( src.begin(), src.end(), ret.begin() );
-
-    char pret[ src.size() * sizeof( wchar_t ) ];
-    const wchar_t* srcp =src.c_str();
+    for (std::wstring::const_iterator i = src.begin(); i != src.end(); ++i){
+        ret += std::cin.narrow( *i, '\0' );
+    }
     
-    memcpy( pret, srcp, sizeof(char) );
-    string ret( pret );
     return ret;
 }
 

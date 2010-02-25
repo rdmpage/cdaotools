@@ -67,7 +67,7 @@ ListNode<StudyNode>* treebase_study_list = NULL;
 
 %%
 //the tree base file is represented as a list of studies.
-treebase: study_list { cerr << "parsed file\n"; treebase_study_list = $1;}
+treebase: study_list { wcerr << "parsed file\n"; treebase_study_list = $1;}
         ;
 //rule for creating a list of studies.
 study_list: study { $$ = new ListNode<StudyNode>( $1 );  }
@@ -75,32 +75,32 @@ study_list: study { $$ = new ListNode<StudyNode>( $1 );  }
           ;
 //Rules for individual studies.
 study: '>' STUDY_TOK '[' CONSTANT ']' study_id citation abstract author_list history_list matrix_list analysis_list 
-         {  //cerr << "Parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n"; 
+         {  //wcerr << "Parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
             $$ = new StudyNode($6,$7,$8,$9,$10,$11,$12);
           }
       | '>' STUDY_TOK '[' CONSTANT ']' study_id citation abstract history_list matrix_list analysis_list 
-         {  //cerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
+         {  //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
             $$ = new StudyNode($6,$7,$8,new ListNode<AuthorNode>(),$9,$10,$11); 
          }
       | '>' STUDY_TOK '[' CONSTANT ']' study_id citation abstract author_list matrix_list analysis_list
-         { //cerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
+         { //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
            $$ = new StudyNode($6,$7,$8,$9,new ListNode<HistoryNode>(),$10,$11);
          }
        | '>' STUDY_TOK '[' CONSTANT ']' study_id citation abstract author_list history_list analysis_list
-          { //cerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
+          { //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
             $$ = new StudyNode($6,$7,$8,$9,$10,new ListNode<MatrixNode>(),$11);
           }
        | '>' STUDY_TOK '[' CONSTANT ']' study_id citation abstract author_list analysis_list 
-           {   //cerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
+           {   //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
                $$ = new StudyNode($6,$7,$8,$9,new ListNode<HistoryNode>(),new ListNode<MatrixNode>(),$10);
            }
         | '>' STUDY_TOK '[' CONSTANT ']' study_id citation abstract history_list analysis_list
-           {  //cerr << "Parsed Study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
+           {  //wcerr << "Parsed Study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
               $$ = new StudyNode($6,$7,$8,new ListNode<AuthorNode>(),$9,new ListNode<MatrixNode>(),$10);
 
            }
         | '>' STUDY_TOK '[' CONSTANT ']' study_id citation abstract  analysis_list
-          {  //cerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
+          {  //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
              $$ = new StudyNode($6,$7,$8,new ListNode<AuthorNode>(),new ListNode<HistoryNode>(),new ListNode<MatrixNode>(),$9);
           }
        ;
@@ -117,22 +117,22 @@ author_list: author { $$ = new ListNode<AuthorNode>( $1 );}
            ;
 
 author: '>' AUTHOR_TOK '[' CONSTANT ']' author_id first_name last_name email 
-                     {  //cerr << "parsed author: " << *$6 <<"\n";
+                     {  //wcerr << "parsed author: " << *$6 <<"\n";
                         $$ = new AuthorNode($6,$7,$8,$9);
                      }
       ;
 author_id: AUTHOR_ID '=' QUOTED_STRING_TOK { QuotedStringNode* a = new QuotedStringNode( *$3 ); /*cerr << "parsed author id: " << a->getcontents() << "\n"; */
                                              $$ = a; delete $3;  }
       ;
-first_name: FIRST_NAME '=' QUOTED_STRING_TOK { //cerr << "first_name: " << $3->c_str() << "\n"; 
+first_name: FIRST_NAME '=' QUOTED_STRING_TOK { //wcerr << "first_name: " << $3->c_str() << "\n";
                                                $$ = new QuotedStringNode( $3->c_str() ); delete $3; }
       ;
-last_name: LAST_NAME '=' QUOTED_STRING_TOK { //cerr << "last_name: " << $3->c_str() << "\n"; 
+last_name: LAST_NAME '=' QUOTED_STRING_TOK { //wcerr << "last_name: " << $3->c_str() << "\n";
                                               $$ = new QuotedStringNode( $3->c_str() ); delete $3;  }
       ;
-email: EMAIL '=' QUOTED_STRING_TOK { //cerr << "email: " << $3->c_str() << "\n"; 
+email: EMAIL '=' QUOTED_STRING_TOK { //wcerr << "email: " << $3->c_str() << "\n";
                                      QuotedStringNode* em = new QuotedStringNode( $3->c_str() );
-                                     //cerr << "email: " << em << "\n"; 
+                                     //wcerr << "email: " << em << "\n";
                                      $$ = em; delete $3; /*cerr << em;*/ }
       ;
 history_list: history { $$ = new ListNode<HistoryNode>( dynamic_cast<HistoryNode*>( $1 ) ); }

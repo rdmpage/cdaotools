@@ -1,6 +1,6 @@
 #include "parser.hpp"
 #include "codegen.hpp"
-#include <iwostream>
+#include <iostream>
 using namespace std;
 using namespace Treebase;
 

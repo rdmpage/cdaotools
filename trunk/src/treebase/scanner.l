@@ -1,7 +1,7 @@
 %{
 
 #include "parser.hpp"
-#include "../util.hpp"
+#include "util.hpp"
 #include <string>
 #include <cstdlib>
 using namespace std;
@@ -43,7 +43,7 @@ tree_label { return TREE_LABEL; }
 tree_title { return TREE_TITLE; }
 tree_type { return TREE_TYPE;}
 \'.*\' { 
-        wstring ret = wstring(yytext); 
+        wstring ret = wstring(str_to_wstr( yytext ));
         //cerr << "quoted string: \"" << ret << "\" size: " << ret.size() <<"\n";
         ret = ret.substr(1);
         ret = ret.substr(0, ret.size()-1 );
@@ -51,7 +51,7 @@ tree_type { return TREE_TYPE;}
         yylval.string_literal = new wstring(ret.c_str()); 
         return QUOTED_STRING_TOK; 
 }
-[1-9][0-9]* { yylval.reference = wcstol(yytext, NULL, 10); return CONSTANT;}
+[1-9][0-9]* { yylval.reference = atol( yytext ); return CONSTANT;}
 0 {yylval.reference = 0; return CONSTANT;}
 \n 
 . 

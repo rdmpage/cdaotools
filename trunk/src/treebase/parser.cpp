@@ -1,22 +1,23 @@
-
-/* A Bison parser, made by GNU Bison 2.4.1.  */
+/* A Bison parser, made by GNU Bison 2.3.  */
 
 /* Skeleton implementation for Bison GLR parsers in C
-   
-      Copyright (C) 2002, 2003, 2004, 2005, 2006 Free Software Foundation, Inc.
-   
-   This program is free software: you can redistribute it and/or modify
+
+   Copyright (C) 2002, 2003, 2004, 2005, 2006 Free Software Foundation, Inc.
+
+   This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-   
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-   
+
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor,
+   Boston, MA 02110-1301, USA.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -27,7 +28,7 @@
    special exception, which will cause the skeleton and the resulting
    Bison output files to be licensed under the GNU General Public
    License without this special exception.
-   
+
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
@@ -37,7 +38,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "2.4.1"
+#define YYBISON_VERSION "2.3"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "glr.c"
@@ -50,26 +51,6 @@
 
 
 
-
-/* Copy the first part of user declarations.  */
-
-/* Line 172 of glr.c  */
-#line 1 "parser.yy"
-
-#include "treebase-node.hpp"
-#include <iostream>
-#include <string>
-extern int yylex();
-void yyerror( const wchar_t* );
-void yyerror( const char* );
-
-using namespace std;
-using namespace Treebase;
-
-
-
-/* Line 172 of glr.c  */
-#line 73 "parser.cpp"
 
 
 
@@ -101,8 +82,6 @@ using namespace Treebase;
 static YYSTYPE yyval_default;
 
 /* Copy the second part of user declarations.  */
-
-/* Line 243 of glr.c  */
 #line 62 "parser.yy"
 
 using namespace std;
@@ -110,15 +89,16 @@ using namespace Treebase;
 ListNode<StudyNode>* treebase_study_list = NULL;
 
 
-/* Line 243 of glr.c  */
-#line 115 "parser.cpp"
+/* Line 234 of glr.c.  */
+#line 94 "parser.cpp"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
 #ifndef YY_
-# if YYENABLE_NLS
+# if defined YYENABLE_NLS && YYENABLE_NLS
 #  if ENABLE_NLS
 #   include <libintl.h> /* INFRINGES ON USER NAME SPACE */
 #   define YY_(msgid) dgettext ("bison-runtime", msgid)
@@ -228,7 +208,8 @@ YYID (i)
 #define YYMAXUTOK   289
 
 #define YYTRANSLATE(YYX)						\
-  ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
+  ((YYX <= 0) ? YYEOF :							\
+   (unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
 
 /* YYTRANSLATE[YYLEX] -- Bison symbol number corresponding to YYLEX.  */
 static const unsigned char yytranslate[] =
@@ -995,185 +976,139 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
   switch (yyn)
     {
         case 2:
-
-/* Line 936 of glr.c  */
 #line 70 "parser.yy"
-    { cerr << "parsed file\n"; treebase_study_list = (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.study_list);;}
+    { wcerr << "parsed file\n"; treebase_study_list = (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.study_list);;}
     break;
 
   case 3:
-
-/* Line 936 of glr.c  */
 #line 73 "parser.yy"
     { ((*yyvalp).study_list) = new ListNode<StudyNode>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.study) );  ;}
     break;
 
   case 4:
-
-/* Line 936 of glr.c  */
 #line 74 "parser.yy"
     { ((*yyvalp).study_list) = new ListNode<StudyNode>((((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval.study), (((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval.study_list)); ;}
     break;
 
   case 5:
-
-/* Line 936 of glr.c  */
 #line 78 "parser.yy"
-    {  //cerr << "Parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n"; 
+    {  //wcerr << "Parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
             ((*yyvalp).study) = new StudyNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (12))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (12))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (12))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (12))].yystate.yysemantics.yysval.author_list),(((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (12))].yystate.yysemantics.yysval.history_list),(((yyGLRStackItem const *)yyvsp)[YYFILL ((11) - (12))].yystate.yysemantics.yysval.matrix_list),(((yyGLRStackItem const *)yyvsp)[YYFILL ((12) - (12))].yystate.yysemantics.yysval.analysis_list));
           ;}
     break;
 
   case 6:
-
-/* Line 936 of glr.c  */
 #line 82 "parser.yy"
-    {  //cerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
+    {  //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
             ((*yyvalp).study) = new StudyNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (11))].yystate.yysemantics.yysval.quoted_string),new ListNode<AuthorNode>(),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (11))].yystate.yysemantics.yysval.history_list),(((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (11))].yystate.yysemantics.yysval.matrix_list),(((yyGLRStackItem const *)yyvsp)[YYFILL ((11) - (11))].yystate.yysemantics.yysval.analysis_list)); 
          ;}
     break;
 
   case 7:
-
-/* Line 936 of glr.c  */
 #line 86 "parser.yy"
-    { //cerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
+    { //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
            ((*yyvalp).study) = new StudyNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (11))].yystate.yysemantics.yysval.author_list),new ListNode<HistoryNode>(),(((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (11))].yystate.yysemantics.yysval.matrix_list),(((yyGLRStackItem const *)yyvsp)[YYFILL ((11) - (11))].yystate.yysemantics.yysval.analysis_list));
          ;}
     break;
 
   case 8:
-
-/* Line 936 of glr.c  */
 #line 90 "parser.yy"
-    { //cerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
+    { //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
             ((*yyvalp).study) = new StudyNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (11))].yystate.yysemantics.yysval.author_list),(((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (11))].yystate.yysemantics.yysval.history_list),new ListNode<MatrixNode>(),(((yyGLRStackItem const *)yyvsp)[YYFILL ((11) - (11))].yystate.yysemantics.yysval.analysis_list));
           ;}
     break;
 
   case 9:
-
-/* Line 936 of glr.c  */
 #line 94 "parser.yy"
-    {   //cerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
+    {   //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
                ((*yyvalp).study) = new StudyNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (10))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (10))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (10))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (10))].yystate.yysemantics.yysval.author_list),new ListNode<HistoryNode>(),new ListNode<MatrixNode>(),(((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (10))].yystate.yysemantics.yysval.analysis_list));
            ;}
     break;
 
   case 10:
-
-/* Line 936 of glr.c  */
 #line 98 "parser.yy"
-    {  //cerr << "Parsed Study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
+    {  //wcerr << "Parsed Study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
               ((*yyvalp).study) = new StudyNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (10))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (10))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (10))].yystate.yysemantics.yysval.quoted_string),new ListNode<AuthorNode>(),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (10))].yystate.yysemantics.yysval.history_list),new ListNode<MatrixNode>(),(((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (10))].yystate.yysemantics.yysval.analysis_list));
 
            ;}
     break;
 
   case 11:
-
-/* Line 936 of glr.c  */
 #line 103 "parser.yy"
-    {  //cerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
+    {  //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
              ((*yyvalp).study) = new StudyNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (9))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (9))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (9))].yystate.yysemantics.yysval.quoted_string),new ListNode<AuthorNode>(),new ListNode<HistoryNode>(),new ListNode<MatrixNode>(),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (9))].yystate.yysemantics.yysval.analysis_list));
           ;}
     break;
 
   case 12:
-
-/* Line 936 of glr.c  */
 #line 108 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( wstring((((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str()) ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 13:
-
-/* Line 936 of glr.c  */
 #line 110 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( wstring((((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str()) ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 14:
-
-/* Line 936 of glr.c  */
 #line 112 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( wstring((((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str()) ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 15:
-
-/* Line 936 of glr.c  */
 #line 115 "parser.yy"
     { ((*yyvalp).author_list) = new ListNode<AuthorNode>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.author) );;}
     break;
 
   case 16:
-
-/* Line 936 of glr.c  */
 #line 116 "parser.yy"
     { ((*yyvalp).author_list) = new ListNode<AuthorNode>((((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval.author), (((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval.author_list));;}
     break;
 
   case 17:
-
-/* Line 936 of glr.c  */
 #line 120 "parser.yy"
-    {  //cerr << "parsed author: " << *$6 <<"\n";
+    {  //wcerr << "parsed author: " << *$6 <<"\n";
                         ((*yyvalp).author) = new AuthorNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (9))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (9))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (9))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (9))].yystate.yysemantics.yysval.quoted_string));
                      ;}
     break;
 
   case 18:
-
-/* Line 936 of glr.c  */
 #line 124 "parser.yy"
     { QuotedStringNode* a = new QuotedStringNode( *(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal) ); /*cerr << "parsed author id: " << a->getcontents() << "\n"; */
                                              ((*yyvalp).quoted_string) = a; delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal);  ;}
     break;
 
   case 19:
-
-/* Line 936 of glr.c  */
 #line 127 "parser.yy"
-    { //cerr << "first_name: " << $3->c_str() << "\n"; 
+    { //wcerr << "first_name: " << $3->c_str() << "\n";
                                                ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 20:
-
-/* Line 936 of glr.c  */
 #line 130 "parser.yy"
-    { //cerr << "last_name: " << $3->c_str() << "\n"; 
+    { //wcerr << "last_name: " << $3->c_str() << "\n";
                                               ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal);  ;}
     break;
 
   case 21:
-
-/* Line 936 of glr.c  */
 #line 133 "parser.yy"
-    { //cerr << "email: " << $3->c_str() << "\n"; 
+    { //wcerr << "email: " << $3->c_str() << "\n";
                                      QuotedStringNode* em = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() );
-                                     //cerr << "email: " << em << "\n"; 
+                                     //wcerr << "email: " << em << "\n";
                                      ((*yyvalp).quoted_string) = em; delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); /*cerr << em;*/ ;}
     break;
 
   case 22:
-
-/* Line 936 of glr.c  */
 #line 138 "parser.yy"
     { ((*yyvalp).history_list) = new ListNode<HistoryNode>( dynamic_cast<HistoryNode*>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.history) ) ); ;}
     break;
 
   case 23:
-
-/* Line 936 of glr.c  */
 #line 139 "parser.yy"
     { ((*yyvalp).history_list) = new ListNode<HistoryNode>( dynamic_cast<HistoryNode*>((((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval.history)), dynamic_cast<ListNode<HistoryNode>*>((((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval.history_list)) ); ;}
     break;
 
   case 24:
-
-/* Line 936 of glr.c  */
 #line 142 "parser.yy"
     { //cerr << "parsed history: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
                                      ((*yyvalp).history) = new HistoryNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (9))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (9))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (9))].yystate.yysemantics.yysval.quoted_string));
@@ -1181,100 +1116,72 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     break;
 
   case 25:
-
-/* Line 936 of glr.c  */
 #line 146 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 26:
-
-/* Line 936 of glr.c  */
 #line 148 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 27:
-
-/* Line 936 of glr.c  */
 #line 150 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 28:
-
-/* Line 936 of glr.c  */
 #line 152 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 29:
-
-/* Line 936 of glr.c  */
 #line 155 "parser.yy"
     { ((*yyvalp).matrix_list) = new ListNode<MatrixNode>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.matrix) ); ;}
     break;
 
   case 30:
-
-/* Line 936 of glr.c  */
 #line 156 "parser.yy"
     { ((*yyvalp).matrix_list) = new ListNode<MatrixNode>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval.matrix), (((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval.matrix_list) ); ;}
     break;
 
   case 31:
-
-/* Line 936 of glr.c  */
 #line 160 "parser.yy"
     { ((*yyvalp).matrix) = new MatrixNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (9))].yystate.yysemantics.yysval.constant) ); 
                                       ;}
     break;
 
   case 32:
-
-/* Line 936 of glr.c  */
 #line 163 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 33:
-
-/* Line 936 of glr.c  */
 #line 165 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 34:
-
-/* Line 936 of glr.c  */
 #line 167 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 35:
-
-/* Line 936 of glr.c  */
 #line 169 "parser.yy"
     { ((*yyvalp).constant) = new ConstNode( wcstol((((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str(), NULL, 10) ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 36:
-
-/* Line 936 of glr.c  */
 #line 172 "parser.yy"
     { ((*yyvalp).analysis_list) = new ListNode<AnalysisNode>( dynamic_cast<AnalysisNode*>((((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.analysis)) );;}
     break;
 
   case 37:
-
-/* Line 936 of glr.c  */
 #line 173 "parser.yy"
     { ((*yyvalp).analysis_list) = new ListNode<AnalysisNode>(dynamic_cast<AnalysisNode*>((((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval.analysis)), dynamic_cast<ListNode<AnalysisNode>*>((((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval.analysis_list)));;}
     break;
 
   case 38:
-
-/* Line 936 of glr.c  */
 #line 176 "parser.yy"
     { //cerr << "Parsed analysis: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
             ((*yyvalp).analysis) = new  AnalysisNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (11))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (11))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (11))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (11))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (11))].yystate.yysemantics.yysval.input_matrix_list), (((yyGLRStackItem const *)yyvsp)[YYFILL ((11) - (11))].yystate.yysemantics.yysval.output_tree_list) );
@@ -1282,8 +1189,6 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     break;
 
   case 39:
-
-/* Line 936 of glr.c  */
 #line 180 "parser.yy"
     {   //cerr << "parsed analysis: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
            ((*yyvalp).analysis) = new  AnalysisNode(  (((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (10))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (10))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (10))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (10))].yystate.yysemantics.yysval.quoted_string), new ListNode<InputMatrixNode>(), (((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (10))].yystate.yysemantics.yysval.output_tree_list));
@@ -1291,8 +1196,6 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     break;
 
   case 40:
-
-/* Line 936 of glr.c  */
 #line 184 "parser.yy"
     {  //cerr << "parsed analysis: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
           ((*yyvalp).analysis) = new  AnalysisNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (10))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (10))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (10))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (10))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (10))].yystate.yysemantics.yysval.input_matrix_list), new ListNode<OutputTreeNode>() );
@@ -1300,8 +1203,6 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     break;
 
   case 41:
-
-/* Line 936 of glr.c  */
 #line 188 "parser.yy"
     {   //cerr << "parsed analysis: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
            ((*yyvalp).analysis) = new  AnalysisNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (9))].yystate.yysemantics.yysval.quoted_string), new ListNode<InputMatrixNode>(), new ListNode<OutputTreeNode>() );
@@ -1309,108 +1210,79 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     break;
 
   case 42:
-
-/* Line 936 of glr.c  */
 #line 192 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal);  ;}
     break;
 
   case 43:
-
-/* Line 936 of glr.c  */
 #line 194 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 44:
-
-/* Line 936 of glr.c  */
 #line 196 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 45:
-
-/* Line 936 of glr.c  */
 #line 198 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 46:
-
-/* Line 936 of glr.c  */
 #line 201 "parser.yy"
     { ((*yyvalp).input_matrix_list) = new ListNode<InputMatrixNode>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.input_matrix) );  ;}
     break;
 
   case 47:
-
-/* Line 936 of glr.c  */
 #line 202 "parser.yy"
     { ((*yyvalp).input_matrix_list) = new ListNode<InputMatrixNode>((((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval.input_matrix), (((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval.input_matrix_list));;}
     break;
 
   case 48:
-
-/* Line 936 of glr.c  */
 #line 204 "parser.yy"
     { ((*yyvalp).input_matrix) = new InputMatrixNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (6))].yystate.yysemantics.yysval.quoted_string) ); ;}
     break;
 
   case 49:
-
-/* Line 936 of glr.c  */
 #line 206 "parser.yy"
     { ((*yyvalp).output_tree_list) = new ListNode<OutputTreeNode>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.output_tree) ); ;}
     break;
 
   case 50:
-
-/* Line 936 of glr.c  */
 #line 207 "parser.yy"
     { ((*yyvalp).output_tree_list) = new ListNode<OutputTreeNode>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval.output_tree), (((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval.output_tree_list)); ;}
     break;
 
   case 51:
-
-/* Line 936 of glr.c  */
 #line 210 "parser.yy"
     { ((*yyvalp).output_tree) = new OutputTreeNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (9))].yystate.yysemantics.yysval.quoted_string) );
                    ;}
     break;
 
   case 52:
-
-/* Line 936 of glr.c  */
 #line 213 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 53:
-
-/* Line 936 of glr.c  */
 #line 215 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal);;}
     break;
 
   case 54:
-
-/* Line 936 of glr.c  */
 #line 217 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal);;}
     break;
 
   case 55:
-
-/* Line 936 of glr.c  */
 #line 219 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal);;}
     break;
 
 
-
-/* Line 936 of glr.c  */
-#line 1414 "parser.cpp"
+/* Line 930 of glr.c.  */
+#line 1286 "parser.cpp"
       default: break;
     }
 
@@ -1933,11 +1805,11 @@ yy_reduce_print (yyGLRStack* yystackp, size_t yyk, yyRuleNum yyrule,
   /* The symbols being reduced.  */
   for (yyi = 0; yyi < yynrhs; yyi++)
     {
-      YYFPRINTF (stderr, "   $%d = ", yyi + 1);
+      fprintf (stderr, "   $%d = ", yyi + 1);
       yy_symbol_print (stderr, yyrhs[yyprhs[yyrule] + yyi],
 		       &(((yyGLRStackItem const *)yyvsp)[YYFILL ((yyi + 1) - (yynrhs))].yystate.yysemantics.yysval)
 		       		       );
-      YYFPRINTF (stderr, "\n");
+      fprintf (stderr, "\n");
     }
 }
 #endif
@@ -2528,19 +2400,11 @@ yyprocessOneStack (yyGLRStack* yystackp, size_t yyk,
 	    {
 	      YYDPRINTF ((stderr, "Reading a token: "));
 	      yychar = YYLEX;
-	    }
-
-	  if (yychar <= YYEOF)
-	    {
-	      yychar = yytoken = YYEOF;
-	      YYDPRINTF ((stderr, "Now at end of input.\n"));
-	    }
-	  else
-	    {
 	      yytoken = YYTRANSLATE (yychar);
 	      YY_SYMBOL_PRINT ("Next token is", yytoken, &yylval, &yylloc);
 	    }
-
+	  else
+	    yytoken = YYTRANSLATE (yychar);
 	  yygetLRActions (yystate, yytoken, &yyaction, &yyconflicts);
 
 	  while (*yyconflicts != 0)
@@ -2676,7 +2540,7 @@ yyreportSyntaxError (yyGLRStack* yystackp)
 
 /* Recover from a syntax error on *YYSTACKP, assuming that *YYSTACKP->YYTOKENP,
    yylval, and yylloc are the syntactic category, semantic value, and location
-   of the lookahead.  */
+   of the look-ahead.  */
 /*ARGSUSED*/ static void
 yyrecoverSyntaxError (yyGLRStack* yystackp)
 {
@@ -2699,16 +2563,8 @@ yyrecoverSyntaxError (yyGLRStack* yystackp)
 	  }
 	YYDPRINTF ((stderr, "Reading a token: "));
 	yychar = YYLEX;
-	if (yychar <= YYEOF)
-	  {
-	    yychar = yytoken = YYEOF;
-	    YYDPRINTF ((stderr, "Now at end of input.\n"));
-	  }
-	else
-	  {
-	    yytoken = YYTRANSLATE (yychar);
-	    YY_SYMBOL_PRINT ("Next token is", yytoken, &yylval, &yylloc);
-	  }
+	yytoken = YYTRANSLATE (yychar);
+	YY_SYMBOL_PRINT ("Next token is", yytoken, &yylval, &yylloc);
 	yyj = yypact[yystackp->yytops.yystates[0]->yylrState];
 	if (yyis_pact_ninf (yyj))
 	  return;
@@ -2756,8 +2612,7 @@ yyrecoverSyntaxError (yyGLRStack* yystackp)
 	    }
 	}
 
-      if (yys->yypred != NULL)
-	yydestroyGLRState ("Error: popping", yys);
+      yydestroyGLRState ("Error: popping", yys);
       yystackp->yytops.yystates[0] = yys->yypred;
       yystackp->yynextFree -= 1;
       yystackp->yyspaceLeft += 1;
@@ -2847,26 +2702,19 @@ yyparse (void)
 		{
 		  YYDPRINTF ((stderr, "Reading a token: "));
 		  yychar = YYLEX;
-		}
-
-	      if (yychar <= YYEOF)
-		{
-		  yychar = yytoken = YYEOF;
-		  YYDPRINTF ((stderr, "Now at end of input.\n"));
-		}
-	      else
-		{
 		  yytoken = YYTRANSLATE (yychar);
 		  YY_SYMBOL_PRINT ("Next token is", yytoken, &yylval, &yylloc);
 		}
-
+	      else
+		yytoken = YYTRANSLATE (yychar);
 	      yygetLRActions (yystate, yytoken, &yyaction, &yyconflicts);
 	      if (*yyconflicts != 0)
 		break;
 	      if (yyisShiftAction (yyaction))
 		{
 		  YY_SYMBOL_PRINT ("Shifting", yytoken, &yylval, &yylloc);
-		  yychar = YYEMPTY;
+		  if (yychar != YYEOF)
+		    yychar = YYEMPTY;
 		  yyposn += 1;
 		  yyglrShift (&yystack, 0, yyaction, yyposn, &yylval, &yylloc);
 		  if (0 < yystack.yyerrState)
@@ -2982,7 +2830,7 @@ yyparse (void)
   goto yyreturn;
 
  yyreturn:
-  if (yychar != YYEMPTY)
+  if (yychar != YYEOF && yychar != YYEMPTY)
     yydestruct ("Cleanup: discarding lookahead",
 		YYTRANSLATE (yychar),
 		&yylval);
@@ -3003,8 +2851,7 @@ yyparse (void)
 		while (yystates[yyk])
 		  {
 		    yyGLRState *yys = yystates[yyk];
-		    if (yys->yypred != NULL)
-		      yydestroyGLRState ("Cleanup: popping", yys);
+		    yydestroyGLRState ("Cleanup: popping", yys);
 		    yystates[yyk] = yys->yypred;
 		    yystack.yynextFree -= 1;
 		    yystack.yyspaceLeft += 1;
@@ -3020,7 +2867,7 @@ yyparse (void)
 }
 
 /* DEBUGGING ONLY */
-#if YYDEBUG
+#ifdef YYDEBUG
 static void yypstack (yyGLRStack* yystackp, size_t yyk)
   __attribute__ ((__unused__));
 static void yypdumpstack (yyGLRStack* yystackp) __attribute__ ((__unused__));
@@ -3031,20 +2878,19 @@ yy_yypstack (yyGLRState* yys)
   if (yys->yypred)
     {
       yy_yypstack (yys->yypred);
-      YYFPRINTF (stderr, " -> ");
+      fprintf (stderr, " -> ");
     }
-  YYFPRINTF (stderr, "%d@%lu", yys->yylrState,
-             (unsigned long int) yys->yyposn);
+  fprintf (stderr, "%d@%lu", yys->yylrState, (unsigned long int) yys->yyposn);
 }
 
 static void
 yypstates (yyGLRState* yyst)
 {
   if (yyst == NULL)
-    YYFPRINTF (stderr, "<null>");
+    fprintf (stderr, "<null>");
   else
     yy_yypstack (yyst);
-  YYFPRINTF (stderr, "\n");
+  fprintf (stderr, "\n");
 }
 
 static void
@@ -3064,39 +2910,35 @@ yypdumpstack (yyGLRStack* yystackp)
   size_t yyi;
   for (yyp = yystackp->yyitems; yyp < yystackp->yynextFree; yyp += 1)
     {
-      YYFPRINTF (stderr, "%3lu. ",
-                 (unsigned long int) (yyp - yystackp->yyitems));
+      fprintf (stderr, "%3lu. ", (unsigned long int) (yyp - yystackp->yyitems));
       if (*(yybool *) yyp)
 	{
-	  YYFPRINTF (stderr, "Res: %d, LR State: %d, posn: %lu, pred: %ld",
-		     yyp->yystate.yyresolved, yyp->yystate.yylrState,
-		     (unsigned long int) yyp->yystate.yyposn,
-		     (long int) YYINDEX (yyp->yystate.yypred));
+	  fprintf (stderr, "Res: %d, LR State: %d, posn: %lu, pred: %ld",
+		   yyp->yystate.yyresolved, yyp->yystate.yylrState,
+		   (unsigned long int) yyp->yystate.yyposn,
+		   (long int) YYINDEX (yyp->yystate.yypred));
 	  if (! yyp->yystate.yyresolved)
-	    YYFPRINTF (stderr, ", firstVal: %ld",
-		       (long int) YYINDEX (yyp->yystate
-                                             .yysemantics.yyfirstVal));
+	    fprintf (stderr, ", firstVal: %ld",
+		     (long int) YYINDEX (yyp->yystate.yysemantics.yyfirstVal));
 	}
       else
 	{
-	  YYFPRINTF (stderr, "Option. rule: %d, state: %ld, next: %ld",
-		     yyp->yyoption.yyrule - 1,
-		     (long int) YYINDEX (yyp->yyoption.yystate),
-		     (long int) YYINDEX (yyp->yyoption.yynext));
+	  fprintf (stderr, "Option. rule: %d, state: %ld, next: %ld",
+		   yyp->yyoption.yyrule - 1,
+		   (long int) YYINDEX (yyp->yyoption.yystate),
+		   (long int) YYINDEX (yyp->yyoption.yynext));
 	}
-      YYFPRINTF (stderr, "\n");
+      fprintf (stderr, "\n");
     }
-  YYFPRINTF (stderr, "Tops:");
+  fprintf (stderr, "Tops:");
   for (yyi = 0; yyi < yystackp->yytops.yysize; yyi += 1)
-    YYFPRINTF (stderr, "%lu: %ld; ", (unsigned long int) yyi,
-	       (long int) YYINDEX (yystackp->yytops.yystates[yyi]));
-  YYFPRINTF (stderr, "\n");
+    fprintf (stderr, "%lu: %ld; ", (unsigned long int) yyi,
+	     (long int) YYINDEX (yystackp->yytops.yystates[yyi]));
+  fprintf (stderr, "\n");
 }
 #endif
 
 
-
-/* Line 2634 of glr.c  */
 #line 221 "parser.yy"
 
 void yyerror(const wchar_t* err){ std::wcerr << err; }
