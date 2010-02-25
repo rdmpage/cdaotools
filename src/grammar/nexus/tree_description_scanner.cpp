@@ -60,6 +60,7 @@ TokenPackage TreeDescriptionScanner::lex(){
    //wcerr << "current character is: " << target_.at( current_position_ ) << "current postion: " << current_position_ << endl;
    while (!isDone() && (next_tok_type = lookAheadString(current_position_, target_)) == LABEL){
        	prev_tok_type = next_tok_type;
+
         token_in_progress += target_.at(current_position_);
 	current_position_++;
 
@@ -119,6 +120,7 @@ Token_t lookAheadString( int pos, const wstring& target ){
         lookupTable[ '\"' ] = QUOTED_STRING_MARKER;
         lookupTable[ '{' ]  = LABEL;
         lookupTable[ '}' ]  = LABEL;
+        lookupTable[ '/' ]  = SPACE;
        // lookupTable[ 0x9a ] = LABEL;
         //lookupTable[ ':' ] = LABEL;
         //lookupTable[ '[' ] = LABEL;
