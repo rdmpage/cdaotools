@@ -1,6 +1,7 @@
 %{
 #include "treebase-node.hpp"
 #include <iostream>
+#include <wchar.h>
 #include <string>
 extern int yylex();
 void yyerror( const wchar_t* );

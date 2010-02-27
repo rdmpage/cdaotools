@@ -79,6 +79,7 @@
 
 #include "treebase-node.hpp"
 #include <iostream>
+#include <wchar.h>
 #include <string>
 extern int yylex();
 void yyerror( const wchar_t* );
@@ -91,7 +92,7 @@ using namespace Treebase;
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE 
-#line 15 "parser.yy"
+#line 16 "parser.yy"
 {
     char chtok;
     unsigned long int reference;
@@ -116,7 +117,7 @@ typedef union YYSTYPE
     Treebase::ListNode<Treebase::AnalysisNode>* analysis_list;
 }
 /* Line 2616 of glr.c.  */
-#line 120 "parser.hpp"
+#line 121 "parser.hpp"
 	YYSTYPE;
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
