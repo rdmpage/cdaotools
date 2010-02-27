@@ -9,7 +9,7 @@ std::wstring str_to_wstr( const std::string& src){
     std::wstring ret = L"";
     //std::copy( src.begin(), src.end(), ret.begin() );
     for (std::string::const_iterator i = src.begin(); i != src.end(); ++i ){
-        ret += std::cin.widen( *i );
+        ret +=  (wchar_t) *i ;
     }
     return ret;
 }

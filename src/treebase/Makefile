@@ -23,7 +23,7 @@ scanner.o: scanner.cpp
 	$(CXX) $(CXXFLAGS) -c -o scanner.o scanner.cpp
 
 scanner.cpp: parser.cpp scanner.l
-	$(FLEX) -o scanner.cpp scanner.l
+	$(FLEX) -8 -o scanner.cpp scanner.l
 parser.cpp: parser.yy treebase-node.o
 	$(BISON) -d -oparser.cpp parser.yy
 	echo -e "#include <string>\n#include \"treebase-node.hpp\"" parser.hpp.tmp

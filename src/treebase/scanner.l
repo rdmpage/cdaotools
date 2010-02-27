@@ -2,16 +2,17 @@
 
 #include "parser.hpp"
 #include "util.hpp"
+#include <wchar.h>
 #include <string>
 #include <cstdlib>
 using namespace std;
 %}
 %%
 
-= { return '=';}
->|&#62; { return '>';}
-\[ { return '[';}
-\] { return ']';}
+= { return L'=';}
+>|&#62; { return L'>';}
+\[ { return L'[';}
+\] { return L']';}
 STUDY { return STUDY_TOK;}
 AUTHOR { return AUTHOR_TOK; }
 HISTORY { return HISTORY_TOK; }
@@ -43,11 +44,11 @@ tree_label { return TREE_LABEL; }
 tree_title { return TREE_TITLE; }
 tree_type { return TREE_TYPE;}
 \'.*\' { 
-        wstring ret = wstring(str_to_wstr( yytext ));
-        //cerr << "quoted string: \"" << ret << "\" size: " << ret.size() <<"\n";
+        wstring ret = wstring( str_to_wstr( yytext ) );
+        //wcerr << L"quoted string: \"" << ret << L"\" size: " << ret.size() << L"\n";
         ret = ret.substr(1);
         ret = ret.substr(0, ret.size()-1 );
-        //cerr  << "unquoted string: \"" << ret << "\" size: " << ret.size() << "\n";
+        //wcerr  << L"unquoted string: \"" << ret << L"\" size: " << ret.size() << L"\n";
         yylval.string_literal = new wstring(ret.c_str()); 
         return QUOTED_STRING_TOK; 
 }
