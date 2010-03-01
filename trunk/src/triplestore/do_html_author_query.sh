@@ -51,15 +51,15 @@ Content-type: text/html; charset: utf-8
       xml:lang="en">
  <head profile="http://www.w3.org/1999/xhtml/vocab">
  <title>Cdao Store Query System</title>
-      <link rel="stylesheet" type="text/css" href="../../../style.css"/>
+      <link rel="stylesheet" type="text/css" href="../../style.css"/>
       <link rel="alternate" title="Project News" href="http://sourceforge.net/export/rss2_keepsake.php?group_id=282379" type="application/rss+xml"/>
-      <link rel="SHORTCUT ICON" href="../../../cdao-store-favicon.ico" />
+      <link rel="SHORTCUT ICON" href="../../cdao-store-favicon.ico" />
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  </head>
  <body about="http://www.evolutionaryontology.org/cdao.owl">
    <div class="main-content" style="scroll: auto;">
      <h1>Cdao Store Query System</h1>
-     <p><a href="../../../cdao-store/index.html"><img src="../../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a></p>
+     <p><a href="../../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a></p>
 
 
 EOM
@@ -84,8 +84,10 @@ function print_result {
    TMP_QUERY_FILE=`mktemp`".rql";
    echo "$AUTHOR_QUERY" > $TMP_QUERY_FILE;
    echo "<p>";
-   sparql -q --results text --query "$TMP_QUERY_FILE" --graph "$GRAPH_FILE" 
-      
+   for result in $(sparql -q --results text --query "$TMP_QUERY_FILE" --graph "$GRAPH_FILE"  | grep -oE "<.*>" | sed "s/<$ESCAPED_DUMP_URI\(.*\)>/\1/g" );
+   do
+        echo "<a href=\"../study/html?study=$result\">$result</a><br/>";
+   done
    echo "</p>";
    rm -f $TMP_QUERY_FILE
 }
