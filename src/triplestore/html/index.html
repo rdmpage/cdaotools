@@ -22,31 +22,51 @@
     <div class="menu">
         <ul>
            <li><a href="../cgi-bin/import">Import</a></li>
+           <li>
+                 <form action="../cgi-bin/author/html" method="get">
+                    Author: <input type="text" class="text" id="last" name="last"/>
+                   <input type="submit" class="button" id="submit" />
+                </form>
+           </li>
            <li><h3>Tree Lookup Services</h3>
                <ul>
-                  <li><a href="../cgi-bin/tree/nexml">NeXML</a></li>
-                  <li><a href="../cgi-bin/tree/prolog">Prolog</a></li>
-                  <li><a href="../cgi-bin/tree/graphml">GraphML</a></li>
+                  <li>
+                       <form action="../cgi-bin/tree/nexml" method="get">
+                        Tree: <input type="text" class="text" id="nex-tree" name="tree"/>
+                        <input type="submit" class="button" id="nex-tree-sumbit" value="NeXML"/>
+                       </form>
+                  </li>
+                  <li>
+                       <form action="../cgi-bin/tree/prolog" method="get">
+                         Tree: <input type="text" class="text" id="pro-tree" name="tree"/>
+                         <input type="submit" class="button" id="pro-tree-submit" value="Prolog"/>
+                       </form>
+                  </li>
+                  <li>
+                      <form action="../cgi-bin/tree/graphml" method="get">
+                       Tree:  <input type="text" class="text" id="graph-tree" name="tree"/>
+                        <input type="submit" class="button" id="graph-tree-sbumit" value="GraphML"/>
+                      </form>
+                  </li>
                </ul>
             </li>
             <li><h3>TU Lookup Services</h3>
                 <ul>
-                   <li><a href="../cgi-bin/tu/prolog">Prolog</a></li>
-                   <li><a href="../cgi-bin/tu/html">HTML</a></li>
-
+                   <li>
+                       <form action="../cgi-bin/tu/prolog" method="get">
+                         Tree:  <input type="text" class="text" id="pro-tu" name="tree" />
+                          <input type="submit" class="button"  value="Prolog"/>
+                       </form>
+                   </li>
+                   <li>
+                       <form action="../cgi-bin/tu/html" method="get">
+                        Tree:  <input type="text" class="text" id="html-tu" name="tree" />
+                          <input type="submit" class="button" id="html-tu-submit" value="HTML"/>
+                       </form>
+                   </li>
                 </ul>
             </li>
-            <li><h3>Node Lookup Services</h3>
-                <ul>
-                    <li><h4>Nearest Common-Ancestor</h4>
-                       <ul>
-                            <li><a href="../cgi-bin/nca/prolog">Prolog</a></li>
-                            <li><a href="../cgi-bin/tu/html">HTML</a></li>
-                       </ul>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+         </ul>
     </div>    
     <p about=""
      resource="http://www.w3.org/TR/rdfa-syntax"
