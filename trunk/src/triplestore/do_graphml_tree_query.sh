@@ -54,7 +54,7 @@ echo "<key id=\"boostrap\" for=\"edge\" attr.name=\"weight\" attr.type=\"double\
 echo "<graph id=\"data:$TREEE_NAME\" edgedefault=\"$TYPE\">"
 
 #Query to get the nodes.
-do_query.py "$GRAPH_CONFIG"  "$XMLNS" "$NODE_QUERY" "<node id=\"%s\"><data key=\"name\">%s</data></node>" "$EDGE_QUERY" "<edge id=\"%s\" source=\"%s\" target=\"%s\"><data key=\"d1\"></data></edge>" | perl -p -n -e 's/$ENV{XMLNS}/&data;/g' | sed 's/<data key="name">&data;\(.*\)<\/data>/<data key="name">\1<\/data>/g'
+do_query.py "$GRAPH_CONFIG"  "$XMLNS" "$NODE_QUERY" "<node id=\"%s\"><data key=\"name\">%s</data></node>" "$EDGE_QUERY" "<edge id=\"%s\" source=\"%s\" target=\"%s\"><data key=\"boostrap\"></data></edge>" | perl -p -n -e 's/$ENV{XMLNS}/&data;/g' | sed 's/<data key="name">&data;\(.*\)<\/data>/<data key="name">\1<\/data>/g'
 
 echo "</graph>"
 
