@@ -12,7 +12,7 @@ export GRAPH_CONFIG="$1"
 export TREE_NAME="$2"
 export XMLNS="$3"
 export TYPE="$4"
-export NODE_SET=`echo $5 |  sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g" | sed "s/%23/#/g" | sed "s/%20/ /g"`
+export NODE_SET=`echo "$5" |  sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g" | sed "s/%23/#/g" | sed "s/%20/ /g"`
 
 
 
@@ -59,6 +59,11 @@ NCA_NODE=`cat "$PROLOG_OUT" | grep  -oE "'http.*'" | sed "s/'//g"`
 rm -f "$TMP_RULES" "$PROLOG_OUT" #$TMP_GOAL
 
 cat << EOM
+   <!-- 
+         GOAL: "$QUERY_GOAL"
+         RULES: "$TMP_RULES"
+         PROLOG_OUT: "$PROLOG_OUT"
+    -->
    <div resource="$XMLNS$TREE_NAME">
       <div resource="$NCA_NODE">
           In $TREE_NAME, $NCA_NODE is the nearest common ancestor of....
