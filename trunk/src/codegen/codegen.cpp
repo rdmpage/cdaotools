@@ -57,7 +57,7 @@ namespace CDAO {
   };
   
   
-  wstring XMLizeName(const wstring& in);
+  wstring XMLizeName( wstring in);
  
   
   /*
@@ -148,8 +148,9 @@ namespace CDAO {
     return;
   }
   
-  wstring XMLizeName(const wstring& in){
+  wstring XMLizeName(wstring in){
     wstring ret = L"";
+    if ( isdigit(in.at(0)) ){ in = L"n" + in; }
     for (unsigned int i = 0; i < in.size(); ++i){
       if (isalnum(in.at(i))){ ret+= in.at(i);  }
       else { ret += L"_"; }
@@ -447,14 +448,14 @@ namespace CDAO {
   //write edge definition.
   void writeEdge( wostream& out, const Node* parent, const Node* child){
     
-    static vector< wstring > edgesWritten = vector< wstring >();
+    static set< wstring > edgesWritten = set< wstring >();
     
     if (parent && child ){
       wstring edge_name = XMLizeName( parent->getLabel() ) + L"_" + XMLizeName( child->getLabel() );
       
 
       if (find( edgesWritten.begin(), edgesWritten.end(), edge_name  ) == edgesWritten.end()){
-      
+        edgesWritten.insert( edge_name );
 	//open definition.
 	out << L"\t<" << NSDefs::CDAO << L":" << Classes::DIRECTED_EDGE << L" " 
 	    << Builtins::ID << L"=\"" << edge_name  << L"\">" << endl;
