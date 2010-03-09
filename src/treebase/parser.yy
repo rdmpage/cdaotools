@@ -3,6 +3,7 @@
 #include <iostream>
 #include <wchar.h>
 #include <string>
+#include <cctype>
 extern int yylex();
 void yyerror( const wchar_t* );
 void yyerror( const char* );
@@ -64,6 +65,7 @@ using namespace Treebase;
 using namespace std;
 using namespace Treebase;
 ListNode<StudyNode>* treebase_study_list = NULL;
+wstring& tolower( wstring& in );
 %}
 
 %%
@@ -144,9 +146,9 @@ history: '>' HISTORY_TOK '[' CONSTANT ']' date time person event
                                      $$ = new HistoryNode($6,$7,$8, $9);
                                    }
       ;
-date: DATE '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_str() ); delete $3; }
+date: DATE '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_str()  ); delete $3; }
       ;
-time: TIME '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_str() ); delete $3; }
+time: TIME '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_str()  ); delete $3; }
       ;
 person: PERSON '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_str() ); delete $3; }
       ;
@@ -165,7 +167,7 @@ matrix_id: MATRIX_ID '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_st
       ;
 matrix_name: MATRIX_NAME '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_str() ); delete $3; }
       ;
-data_type: DATA_TYPE '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_str() ); delete $3; }
+data_type: DATA_TYPE '=' QUOTED_STRING_TOK { wstring dt = $3->c_str(); $$ = new QuotedStringNode( tolower( dt ) ); delete $3; }
       ;
 nchar: NCHAR '=' QUOTED_STRING_TOK { $$ = new ConstNode( wcstol($3->c_str(), NULL, 10) ); delete $3; }
       ;
@@ -194,9 +196,17 @@ analysis_id: ANALYSIS_ID '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->
       ;
 analysis_name: ANALYSIS_NAME '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_str() ); delete $3; }
       ;
-software: SOFTWARE '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_str() ); delete $3; }
+software: SOFTWARE '=' QUOTED_STRING_TOK {
+            wstring soft = $3->c_str();
+            $$ = new QuotedStringNode( tolower( soft ).c_str() ); delete $3; 
+          
+          }
       ;
-algorithm: ALGORITHM '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_str() ); delete $3; }
+algorithm: ALGORITHM '=' QUOTED_STRING_TOK { 
+             wstring alg = $3->c_str();
+             $$ = new QuotedStringNode( tolower( alg ) ); delete $3; 
+           
+           }
       ;
 
 input_matrix_list: input_matrix { $$ = new ListNode<InputMatrixNode>( $1 );  }
@@ -222,3 +232,7 @@ tree_title: TREE_TITLE '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_
 %%
 void yyerror(const wchar_t* err){ std::wcerr << err; }
 void yyerror( const char* err ){ std::cerr << err;  }
+wstring& tolower( wstring& in ){
+   for (unsigned i = 0; i < in.size(); ++i){ in[ i ] = std::tolower( in[ i ] ); }
+   return in;
+}

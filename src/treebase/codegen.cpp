@@ -1,6 +1,8 @@
 #include "codegen.hpp"
 #include <set>
 #include <iostream>
+#include <cctype>
+
 using namespace std;
 using namespace Treebase;
 
@@ -330,9 +332,9 @@ void define_analysis( wostream& out, const AnalysisNode* analysis ){
           define_outputtrees(out, analysis->getoutputtree());
           out << L"\t<rdf:Description rdf:ID=\""  << analysis->getanalysisid()->getcontents() << "\">\n";
           out << L"\t\t<rdf:type rdf:resource=\"&study;Analysis\"/>\n";
-          out << L"\t\t<study:has_analysisname>" << analysis->getanalysisname()->getcontents() << L"</study:has_analysisname>\n";
+          out << L"\t\t<study:has_analysisname>" << analysis->getanalysisname()->getcontents()<< L"</study:has_analysisname>\n";
           out << L"\t\t<study:has_software>" << analysis->getsoftware()->getcontents() << L"</study:has_software>\n";
-          out << L"\t\t<study:has_algorithm>" << analysis->getalgorithm()->getcontents() << L"</study:has_algorithm>\n";
+          out << L"\t\t<study:has_algorithm>" << analysis->getalgorithm()->getcontents()<< L"</study:has_algorithm>\n";
 
           inputmatrix_list( out, analysis->getinputmatrix());
           outputtree_list( out, analysis->getoutputtree());

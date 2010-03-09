@@ -82,15 +82,16 @@
 static YYSTYPE yyval_default;
 
 /* Copy the second part of user declarations.  */
-#line 63 "parser.yy"
+#line 64 "parser.yy"
 
 using namespace std;
 using namespace Treebase;
 ListNode<StudyNode>* treebase_study_list = NULL;
+wstring& tolower( wstring& in );
 
 
 /* Line 234 of glr.c.  */
-#line 94 "parser.cpp"
+#line 95 "parser.cpp"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -297,12 +298,12 @@ static const signed char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned char yyrline[] =
 {
-       0,    71,    71,    74,    75,    78,    82,    86,    90,    94,
-      98,   103,   109,   111,   113,   116,   117,   120,   125,   128,
-     131,   134,   139,   140,   142,   147,   149,   151,   153,   156,
-     157,   160,   164,   166,   168,   170,   173,   174,   176,   180,
-     184,   188,   193,   195,   197,   199,   202,   203,   205,   207,
-     208,   210,   214,   216,   218,   220
+       0,    73,    73,    76,    77,    80,    84,    88,    92,    96,
+     100,   105,   111,   113,   115,   118,   119,   122,   127,   130,
+     133,   136,   141,   142,   144,   149,   151,   153,   155,   158,
+     159,   162,   166,   168,   170,   172,   175,   176,   178,   182,
+     186,   190,   195,   197,   199,   205,   212,   213,   215,   217,
+     218,   220,   224,   226,   228,   230
 };
 #endif
 
@@ -976,57 +977,57 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
   switch (yyn)
     {
         case 2:
-#line 71 "parser.yy"
+#line 73 "parser.yy"
     { wcerr << "parsed file\n"; treebase_study_list = (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.study_list);;}
     break;
 
   case 3:
-#line 74 "parser.yy"
+#line 76 "parser.yy"
     { ((*yyvalp).study_list) = new ListNode<StudyNode>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.study) );  ;}
     break;
 
   case 4:
-#line 75 "parser.yy"
+#line 77 "parser.yy"
     { ((*yyvalp).study_list) = new ListNode<StudyNode>((((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval.study), (((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval.study_list)); ;}
     break;
 
   case 5:
-#line 79 "parser.yy"
+#line 81 "parser.yy"
     {  //wcerr << "Parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
             ((*yyvalp).study) = new StudyNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (12))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (12))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (12))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (12))].yystate.yysemantics.yysval.author_list),(((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (12))].yystate.yysemantics.yysval.history_list),(((yyGLRStackItem const *)yyvsp)[YYFILL ((11) - (12))].yystate.yysemantics.yysval.matrix_list),(((yyGLRStackItem const *)yyvsp)[YYFILL ((12) - (12))].yystate.yysemantics.yysval.analysis_list));
           ;}
     break;
 
   case 6:
-#line 83 "parser.yy"
+#line 85 "parser.yy"
     {  //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
             ((*yyvalp).study) = new StudyNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (11))].yystate.yysemantics.yysval.quoted_string),new ListNode<AuthorNode>(),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (11))].yystate.yysemantics.yysval.history_list),(((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (11))].yystate.yysemantics.yysval.matrix_list),(((yyGLRStackItem const *)yyvsp)[YYFILL ((11) - (11))].yystate.yysemantics.yysval.analysis_list)); 
          ;}
     break;
 
   case 7:
-#line 87 "parser.yy"
+#line 89 "parser.yy"
     { //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
            ((*yyvalp).study) = new StudyNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (11))].yystate.yysemantics.yysval.author_list),new ListNode<HistoryNode>(),(((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (11))].yystate.yysemantics.yysval.matrix_list),(((yyGLRStackItem const *)yyvsp)[YYFILL ((11) - (11))].yystate.yysemantics.yysval.analysis_list));
          ;}
     break;
 
   case 8:
-#line 91 "parser.yy"
+#line 93 "parser.yy"
     { //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
             ((*yyvalp).study) = new StudyNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (11))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (11))].yystate.yysemantics.yysval.author_list),(((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (11))].yystate.yysemantics.yysval.history_list),new ListNode<MatrixNode>(),(((yyGLRStackItem const *)yyvsp)[YYFILL ((11) - (11))].yystate.yysemantics.yysval.analysis_list));
           ;}
     break;
 
   case 9:
-#line 95 "parser.yy"
+#line 97 "parser.yy"
     {   //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
                ((*yyvalp).study) = new StudyNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (10))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (10))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (10))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (10))].yystate.yysemantics.yysval.author_list),new ListNode<HistoryNode>(),new ListNode<MatrixNode>(),(((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (10))].yystate.yysemantics.yysval.analysis_list));
            ;}
     break;
 
   case 10:
-#line 99 "parser.yy"
+#line 101 "parser.yy"
     {  //wcerr << "Parsed Study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
               ((*yyvalp).study) = new StudyNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (10))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (10))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (10))].yystate.yysemantics.yysval.quoted_string),new ListNode<AuthorNode>(),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (10))].yystate.yysemantics.yysval.history_list),new ListNode<MatrixNode>(),(((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (10))].yystate.yysemantics.yysval.analysis_list));
 
@@ -1034,64 +1035,64 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     break;
 
   case 11:
-#line 104 "parser.yy"
+#line 106 "parser.yy"
     {  //wcerr << "parsed study: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
              ((*yyvalp).study) = new StudyNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (9))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (9))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (9))].yystate.yysemantics.yysval.quoted_string),new ListNode<AuthorNode>(),new ListNode<HistoryNode>(),new ListNode<MatrixNode>(),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (9))].yystate.yysemantics.yysval.analysis_list));
           ;}
     break;
 
   case 12:
-#line 109 "parser.yy"
-    { ((*yyvalp).quoted_string) = new QuotedStringNode( wstring((((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str()) ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
-    break;
-
-  case 13:
 #line 111 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( wstring((((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str()) ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
-  case 14:
+  case 13:
 #line 113 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( wstring((((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str()) ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
+  case 14:
+#line 115 "parser.yy"
+    { ((*yyvalp).quoted_string) = new QuotedStringNode( wstring((((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str()) ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
+    break;
+
   case 15:
-#line 116 "parser.yy"
+#line 118 "parser.yy"
     { ((*yyvalp).author_list) = new ListNode<AuthorNode>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.author) );;}
     break;
 
   case 16:
-#line 117 "parser.yy"
+#line 119 "parser.yy"
     { ((*yyvalp).author_list) = new ListNode<AuthorNode>((((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval.author), (((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval.author_list));;}
     break;
 
   case 17:
-#line 121 "parser.yy"
+#line 123 "parser.yy"
     {  //wcerr << "parsed author: " << *$6 <<"\n";
                         ((*yyvalp).author) = new AuthorNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (9))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (9))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (9))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (9))].yystate.yysemantics.yysval.quoted_string));
                      ;}
     break;
 
   case 18:
-#line 125 "parser.yy"
+#line 127 "parser.yy"
     { QuotedStringNode* a = new QuotedStringNode( *(((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal) ); /*cerr << "parsed author id: " << a->getcontents() << "\n"; */
                                              ((*yyvalp).quoted_string) = a; delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal);  ;}
     break;
 
   case 19:
-#line 128 "parser.yy"
+#line 130 "parser.yy"
     { //wcerr << "first_name: " << $3->c_str() << "\n";
                                                ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 20:
-#line 131 "parser.yy"
+#line 133 "parser.yy"
     { //wcerr << "last_name: " << $3->c_str() << "\n";
                                               ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal);  ;}
     break;
 
   case 21:
-#line 134 "parser.yy"
+#line 136 "parser.yy"
     { //wcerr << "email: " << $3->c_str() << "\n";
                                      QuotedStringNode* em = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() );
                                      //wcerr << "email: " << em << "\n";
@@ -1099,190 +1100,198 @@ yyuserAction (yyRuleNum yyn, int yyrhslen, yyGLRStackItem* yyvsp,
     break;
 
   case 22:
-#line 139 "parser.yy"
+#line 141 "parser.yy"
     { ((*yyvalp).history_list) = new ListNode<HistoryNode>( dynamic_cast<HistoryNode*>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.history) ) ); ;}
     break;
 
   case 23:
-#line 140 "parser.yy"
+#line 142 "parser.yy"
     { ((*yyvalp).history_list) = new ListNode<HistoryNode>( dynamic_cast<HistoryNode*>((((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval.history)), dynamic_cast<ListNode<HistoryNode>*>((((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval.history_list)) ); ;}
     break;
 
   case 24:
-#line 143 "parser.yy"
+#line 145 "parser.yy"
     { //cerr << "parsed history: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
                                      ((*yyvalp).history) = new HistoryNode((((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (9))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (9))].yystate.yysemantics.yysval.quoted_string),(((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (9))].yystate.yysemantics.yysval.quoted_string));
                                    ;}
     break;
 
   case 25:
-#line 147 "parser.yy"
-    { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
+#line 149 "parser.yy"
+    { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str()  ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 26:
-#line 149 "parser.yy"
-    { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
+#line 151 "parser.yy"
+    { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str()  ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 27:
-#line 151 "parser.yy"
-    { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
-    break;
-
-  case 28:
 #line 153 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
+  case 28:
+#line 155 "parser.yy"
+    { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
+    break;
+
   case 29:
-#line 156 "parser.yy"
+#line 158 "parser.yy"
     { ((*yyvalp).matrix_list) = new ListNode<MatrixNode>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.matrix) ); ;}
     break;
 
   case 30:
-#line 157 "parser.yy"
+#line 159 "parser.yy"
     { ((*yyvalp).matrix_list) = new ListNode<MatrixNode>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval.matrix), (((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval.matrix_list) ); ;}
     break;
 
   case 31:
-#line 161 "parser.yy"
+#line 163 "parser.yy"
     { ((*yyvalp).matrix) = new MatrixNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (9))].yystate.yysemantics.yysval.constant) ); 
                                       ;}
     break;
 
   case 32:
-#line 164 "parser.yy"
-    { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
-    break;
-
-  case 33:
 #line 166 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
-  case 34:
+  case 33:
 #line 168 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
-  case 35:
+  case 34:
 #line 170 "parser.yy"
+    { wstring dt = (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str(); ((*yyvalp).quoted_string) = new QuotedStringNode( tolower( dt ) ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
+    break;
+
+  case 35:
+#line 172 "parser.yy"
     { ((*yyvalp).constant) = new ConstNode( wcstol((((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str(), NULL, 10) ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 36:
-#line 173 "parser.yy"
+#line 175 "parser.yy"
     { ((*yyvalp).analysis_list) = new ListNode<AnalysisNode>( dynamic_cast<AnalysisNode*>((((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.analysis)) );;}
     break;
 
   case 37:
-#line 174 "parser.yy"
+#line 176 "parser.yy"
     { ((*yyvalp).analysis_list) = new ListNode<AnalysisNode>(dynamic_cast<AnalysisNode*>((((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval.analysis)), dynamic_cast<ListNode<AnalysisNode>*>((((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval.analysis_list)));;}
     break;
 
   case 38:
-#line 177 "parser.yy"
+#line 179 "parser.yy"
     { //cerr << "Parsed analysis: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
             ((*yyvalp).analysis) = new  AnalysisNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (11))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (11))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (11))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (11))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (11))].yystate.yysemantics.yysval.input_matrix_list), (((yyGLRStackItem const *)yyvsp)[YYFILL ((11) - (11))].yystate.yysemantics.yysval.output_tree_list) );
          ;}
     break;
 
   case 39:
-#line 181 "parser.yy"
+#line 183 "parser.yy"
     {   //cerr << "parsed analysis: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
            ((*yyvalp).analysis) = new  AnalysisNode(  (((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (10))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (10))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (10))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (10))].yystate.yysemantics.yysval.quoted_string), new ListNode<InputMatrixNode>(), (((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (10))].yystate.yysemantics.yysval.output_tree_list));
        ;}
     break;
 
   case 40:
-#line 185 "parser.yy"
+#line 187 "parser.yy"
     {  //cerr << "parsed analysis: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
           ((*yyvalp).analysis) = new  AnalysisNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (10))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (10))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (10))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (10))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((10) - (10))].yystate.yysemantics.yysval.input_matrix_list), new ListNode<OutputTreeNode>() );
        ;}
     break;
 
   case 41:
-#line 189 "parser.yy"
+#line 191 "parser.yy"
     {   //cerr << "parsed analysis: " << dynamic_cast<QuotedStringNode*>($6) << "\n";
            ((*yyvalp).analysis) = new  AnalysisNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (9))].yystate.yysemantics.yysval.quoted_string), new ListNode<InputMatrixNode>(), new ListNode<OutputTreeNode>() );
        ;}
     break;
 
   case 42:
-#line 193 "parser.yy"
+#line 195 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal);  ;}
     break;
 
   case 43:
-#line 195 "parser.yy"
-    { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
-    break;
-
-  case 44:
 #line 197 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
-  case 45:
+  case 44:
 #line 199 "parser.yy"
-    { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
+    {
+            wstring soft = (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str();
+            ((*yyvalp).quoted_string) = new QuotedStringNode( tolower( soft ).c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); 
+          
+          ;}
+    break;
+
+  case 45:
+#line 205 "parser.yy"
+    { 
+             wstring alg = (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str();
+             ((*yyvalp).quoted_string) = new QuotedStringNode( tolower( alg ) ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); 
+           
+           ;}
     break;
 
   case 46:
-#line 202 "parser.yy"
+#line 212 "parser.yy"
     { ((*yyvalp).input_matrix_list) = new ListNode<InputMatrixNode>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.input_matrix) );  ;}
     break;
 
   case 47:
-#line 203 "parser.yy"
+#line 213 "parser.yy"
     { ((*yyvalp).input_matrix_list) = new ListNode<InputMatrixNode>((((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval.input_matrix), (((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval.input_matrix_list));;}
     break;
 
   case 48:
-#line 205 "parser.yy"
+#line 215 "parser.yy"
     { ((*yyvalp).input_matrix) = new InputMatrixNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (6))].yystate.yysemantics.yysval.quoted_string) ); ;}
     break;
 
   case 49:
-#line 207 "parser.yy"
+#line 217 "parser.yy"
     { ((*yyvalp).output_tree_list) = new ListNode<OutputTreeNode>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (1))].yystate.yysemantics.yysval.output_tree) ); ;}
     break;
 
   case 50:
-#line 208 "parser.yy"
+#line 218 "parser.yy"
     { ((*yyvalp).output_tree_list) = new ListNode<OutputTreeNode>( (((yyGLRStackItem const *)yyvsp)[YYFILL ((1) - (2))].yystate.yysemantics.yysval.output_tree), (((yyGLRStackItem const *)yyvsp)[YYFILL ((2) - (2))].yystate.yysemantics.yysval.output_tree_list)); ;}
     break;
 
   case 51:
-#line 211 "parser.yy"
+#line 221 "parser.yy"
     { ((*yyvalp).output_tree) = new OutputTreeNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((6) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((7) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((8) - (9))].yystate.yysemantics.yysval.quoted_string), (((yyGLRStackItem const *)yyvsp)[YYFILL ((9) - (9))].yystate.yysemantics.yysval.quoted_string) );
                    ;}
     break;
 
   case 52:
-#line 214 "parser.yy"
+#line 224 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal); ;}
     break;
 
   case 53:
-#line 216 "parser.yy"
+#line 226 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal);;}
     break;
 
   case 54:
-#line 218 "parser.yy"
+#line 228 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal);;}
     break;
 
   case 55:
-#line 220 "parser.yy"
+#line 230 "parser.yy"
     { ((*yyvalp).quoted_string) = new QuotedStringNode( (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal)->c_str() ); delete (((yyGLRStackItem const *)yyvsp)[YYFILL ((3) - (3))].yystate.yysemantics.yysval.string_literal);;}
     break;
 
 
 /* Line 930 of glr.c.  */
-#line 1286 "parser.cpp"
+#line 1295 "parser.cpp"
       default: break;
     }
 
@@ -2939,8 +2948,12 @@ yypdumpstack (yyGLRStack* yystackp)
 #endif
 
 
-#line 222 "parser.yy"
+#line 232 "parser.yy"
 
 void yyerror(const wchar_t* err){ std::wcerr << err; }
 void yyerror( const char* err ){ std::cerr << err;  }
+wstring& tolower( wstring& in ){
+   for (unsigned i = 0; i < in.size(); ++i){ in[ i ] = std::tolower( in[ i ] ); }
+   return in;
+}
 
