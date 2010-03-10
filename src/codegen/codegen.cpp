@@ -279,7 +279,7 @@ namespace CDAO {
   void writeTree( wostream& out, const DataRepresentation* model){
     if ( model ){
       for (unsigned i = 0; i < model->getNumTrees(); ++i ){
-          out << L"<" << NSDefs::CDAO << L":" << Classes::TREE << L" " << Builtins::ID << L"=\"node_" << XMLizeName( model->getTreeLabel( i ) ) << L"\" />" << endl;
+          out << L"<" << NSDefs::CDAO << L":" << Classes::TREE << L" " << Builtins::ID << L"=\"" << XMLizeName( model->getTreeLabel( i ) ) << L"\" />" << endl;
       }
     }
     return;
@@ -291,12 +291,12 @@ namespace CDAO {
         vector< const Node* > leaves = model->getParseTree( tree )->getLeaves( model->getParseTree( tree ) );
         for (vector< const Node* >::const_iterator i = leaves.begin(); i != leaves.end(); ++i){
           out << L"\t<" << NSDefs::CDAO << L":" << Classes::LINEAGE << L" " << Builtins::ID << L"=\"Lineage_" << XMLizeName( model->getTreeLabel( tree ) ) << L"_" << XMLizeName( (*i)->getLabel() ) << L"\">" << endl;
-          out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::SUBTREE_OF << L" " << Builtins::RESOURCE << L"=\"#node_" << XMLizeName( model->getTreeLabel( 0 ) ) << L"\" />" << endl;
+          out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::SUBTREE_OF << L" " << Builtins::RESOURCE << L"=\"#" << XMLizeName( model->getTreeLabel( 0 ) ) << L"\" />" << endl;
           vector< const Node* > ancestors = (*i)->getAncestors();
           //add the current node to it's own lineage
-          out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::HAS_LINEAGE_NODE << L" " << Builtins::RESOURCE << L"=\"#node_" << XMLizeName( (*i)->getLabel() ) << L"\" />" << endl;
+          out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::HAS_LINEAGE_NODE << L" " << Builtins::RESOURCE << L"=\"#" << XMLizeName( (*i)->getLabel() ) << L"\" />" << endl;
           for ( vector< const Node* >::const_iterator j = ancestors.begin(); j != ancestors.end(); ++j){
-	    out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::HAS_LINEAGE_NODE << L" " << Builtins::RESOURCE << L"=\"#node_" << XMLizeName( (*j)->getLabel() ) << L"\" />" << endl;
+	    out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::HAS_LINEAGE_NODE << L" " << Builtins::RESOURCE << L"=\"#" << XMLizeName( (*j)->getLabel() ) << L"\" />" << endl;
           }
           out << L"\t</" << NSDefs::CDAO << L":" << Classes::LINEAGE << L">" << endl;
         }
@@ -404,6 +404,7 @@ namespace CDAO {
    * Print a TU and it's edges
    */
   void writeTU( wostream& out, const DataRepresentation* model, const Node* current){
+    static set< wstring > nodes_defined = set< wstring >();
     if ( model && current ){
       //if the node has children it must be the MRCA of those children.
       static const wstring NODE_TYPE[] = {Classes::NODE, /*Classes::MRCA_NODE*/ Classes::NODE}; 
@@ -411,10 +412,15 @@ namespace CDAO {
         //write the edge for this TU
 
         writeEdge( out,  current->getAncestor(), current );
+        if ( nodes_defined.find(current->getLabel()) == nodes_defined.end()  ){
+             nodes_defined.insert( current->getLabel() );
+             out << L"\t\t<" << NSDefs::CDAO << L":" << NODE_TYPE[ current->hasChildren() ] << L" "
+                 << Builtins::ID << L"=\"" << XMLizeName( current->getLabel() ) << L"\"/>" << endl;
+        }
 
         //write the node definition.
         out << L"\t<" << NSDefs::CDAO << L":" <<  NODE_TYPE[ current->hasChildren() ]  << L" " 
-	    << Builtins::ID << L"=\"node_" << XMLizeName( current->getLabel() )<< L"\">" << endl;
+	    << Builtins::ABOUT << L"=\"" << XMLizeName( current->getLabel() )<< L"\">" << endl;
         if (model->getTaxonNumber( current->getLabel()) != NO_TAXON){
   	//connect the node to this corresponding TU.
   	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::REPRESENTS_TU << L" " 
@@ -423,9 +429,9 @@ namespace CDAO {
         //if the node has an ancestor connect the node to it.
         if (current->getAncestor()){
 	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::HAS_PARENT << L" " 
-	      << Builtins::RESOURCE << L"=\"#node_" << XMLizeName( current->getAncestor()->getLabel() )  << L"\" />" << endl;
+	      << Builtins::RESOURCE << L"=\"#" << XMLizeName( current->getAncestor()->getLabel() )  << L"\" />" << endl;
 	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::BELONGS_TO_EDGE_CH << L" "
-	      << Builtins::RESOURCE << L"=\"#node_" << XMLizeName( current->getAncestor()->getLabel()  ) << L"_" << XMLizeName( current->getLabel() ) << L"\" />" << endl;
+	      << Builtins::RESOURCE << L"=\"#" << XMLizeName( current->getAncestor()->getLabel()  ) << L"_" << XMLizeName( current->getLabel() ) << L"\" />" << endl;
         } 
         //if the node has children connect it to them.
         if (current->hasChildren()){

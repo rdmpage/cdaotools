@@ -41,7 +41,8 @@ namespace CDAO {
    * Parse a subtree.
    * Cases:
    * TREE -> ( TREE_LIST ) LABEL
-   * TREE -> ( TREE_LIST ) 
+   * TREE -> ( TREE_LIST )
+   * TREE -> ( , ) 
    */
   void  TreeDescriptionParser::consume_tree(  Node* current, unsigned level ){
     
@@ -125,7 +126,7 @@ namespace CDAO {
 	print_parse_error_message( L"consume_tree_list:" + continue_list_or_end_tree.getContents()  );
       }
     }
-    else if ( next_token.getType() == LABEL || next_token.getType() == QUOTED_STRING_MARKER){
+    else if ( next_token.getType() == LABEL || next_token.getType() == QUOTED_STRING_MARKER ){
       Node* subtree = new Node();
       consume_label( subtree, level );
       current->addDescendant( subtree );
@@ -146,6 +147,14 @@ namespace CDAO {
         print_parse_error_message( L"expected LABEL or \'LABEL\': " + continue_list_or_end_tree.getContents() );
        }
     }
+    else if (next_token.getType() == DELIMITER ){
+         //<skip empty label.
+      consume_delimiter( current );
+    
+    }/*
+    else if ( next_token.getType() == END_TREE){
+       //done
+    }*/
     else {
       print_parse_error_message( next_token.getContents() );
     }
@@ -168,7 +177,7 @@ namespace CDAO {
     TokenPackage label = scanner.lex();
     if ( label.getType() == LABEL ){
      // indent( wcerr, level );
-     // wcerr << "consumed a label: \"" <<  label.getContents()<<  "\n";
+      //wcerr << L"consumed a label: \"" <<  label.getContents()<<  L"\n";
         current->setLabel( label.getContents()  );
     }
     else if (label.getType() == QUOTED_STRING_MARKER){
@@ -176,19 +185,23 @@ namespace CDAO {
         wstring current_label = L"";
         while ( label.getType() == LABEL ){
           //indent( wcerr, level );
-         // wcerr << "consumed a quoted label\n";
+         // wcerr << L"consumed a quoted label\n";
           current_label += label.getContents() + L"_";
           //indent( wcerr, level );
-          //wcerr << "contents: \"" << label.getContents()  << "\" current_label \"" << current_label << "\n";
+         // wcerr << L"contents: \"" << label.getContents()  << L"\" current_label \"" << current_label << L"\n";
            //current->setLabel( label.getContents() );
            label = scanner.lex();
         }
         if (current_label.size()){current_label = current_label.substr(0, current_label.size() -1 );}
         current->setLabel( current_label );
         //indent( wcerr, level );
-        //wcerr << "consumed a label: \"" <<  label.getContents()<<  "\"\n";
+       // wcerr << L"consumed a label: \"" <<  label.getContents()<<  L"\"\n";
 
         assert( label.getType() == QUOTED_STRING_MARKER );
+    }
+    else if (label.getType() == DELIMITER || label.getType() == END_TREE){
+        //null label
+      cerr << L"No Label\n";
     }
     consume_extended_meta( current );
     //cerr << L"exiting: consume_label( L" << current << L" )\n";

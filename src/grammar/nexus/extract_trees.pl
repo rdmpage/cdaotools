@@ -25,7 +25,7 @@ while (<TREEIN>){
       $taxon_ids{ $1 } = $2;
 #print "taxon id: $1 taxon name: $2\n";
   }
-  elsif (/TREE\W+([-a-zA-Z0-9_]+)\W+=\W+(\[&[R|U]\])\W+(\(.*\));END;$/){
+  elsif (/TREE\W+([-a-zA-Z0-9_]+)\W+=\W+(\[&[R|U]\])\W+(\(.*\)[-a-zA-Z0-9_]*);(?:END;)?$/){
     $tree_title = $1;
     $isRooted{ $tree_title }   = $2;
     $tree_description = $3;
@@ -37,6 +37,9 @@ while (<TREEIN>){
             }
      $trees{ $tree_title } = $tree_description;
 #print "Tree title: $tree_title description: $tree_description\n";
+  }
+  else { 
+    #print STDERR "Unrecognized line: $_\n"; 
   }
 }
 
