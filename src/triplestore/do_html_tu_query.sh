@@ -1,7 +1,7 @@
 #!/bin/bash
 #Script to list trees containing a given tu.
 
-TU=`echo $QUERY_STRING | grep -oE "(^|[?&])tu=[^&]+" | sed "s/%20/_/g"  | cut -f 2 -d "="`
+TU=`echo $QUERY_STRING | grep -oE "(^|[?&])tu=[^&]+" | sed "s/%20/ /g"  | cut -f 2 -d "="`
 
 STATIC_WEB_DIR="../../cdao-store"
 TRANSFORM="tu_to_filelist.xsl"
@@ -51,7 +51,10 @@ EOM
 }
 
 function print_results {
-   xsltproc --stringparam target "$TU" "$XSL" "$DATA"
+  RESULTS=$(for i in $TU; do
+               xsltproc --stringparam target "$i" "$XSL" "$DATA";
+             done);
+  echo $RESULTS | sort | uniq;
 }
 
 function print_footer {
