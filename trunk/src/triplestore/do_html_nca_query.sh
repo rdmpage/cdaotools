@@ -84,7 +84,7 @@ EOM
 cat << EOM
 <p>
    <a href="$CDAO_STORE_URI">Home</a><br/>
-   <a href="../tu/html?tree=$TREE_NAME">Find NCA of another Set</a>
+   <a href="../tree/html?tree=$TREE_NAME">Find NCA of another Set</a>
 </p>
 <p about=""
      resource="http://www.w3.org/TR/rdfa-syntax"

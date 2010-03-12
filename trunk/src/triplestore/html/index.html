@@ -7,6 +7,7 @@
       xmlns:dc="http://purl.org/dc/elements/1.1/"
       xmlns:foaf="http://xmlns.com/foaf/0.1/"
       xmlns:cdao="http://www.evolutionaryontology.org/cdao.owl#"
+      xmlns:study="http://www.cs.nmsu.edu/~bchisham/study.owl#"
       xml:lang="en">
  <head profile="http://www.w3.org/1999/xhtml/vocab">
  <title>Cdao Store Query System</title>
@@ -29,34 +30,35 @@
            </li>
            <li>
                  <form action="../cgi-bin/author/html" method="get">
-                   <p><span>Author:</span><input type="text" class="text" id="last" name="last"/>
-                   <input type="submit" class="button" id="search" value="search" /></p>
+                   <div about="study:Study"><p rel="study:has_Author"><span>Author:</span><span property="study:has_last_name"><input type="text" class="text" id="last" name="last"/></span>
+                   <input type="submit" class="button" id="search" value="search" /></p></div>
                 </form>
            </li>
            <li><h3>Tree Lookup Services</h3>
                <ul>
                   <li>
                        <form action="../cgi-bin/tree/nexml" method="get">
-                        <p><span>Tree:</span><input type="text" class="text" id="nex-tree" name="tree"/>
+                        <p about="cdao:Tree"><span>Tree:</span><input type="text" class="text" id="nex-tree" name="tree"/>
                         <input type="submit" class="button" id="nex-tree-sumbit" value="NeXML"/></p>
                        </form>
                   </li>
                   <li>
                        <form action="../cgi-bin/tree/prolog" method="get">
-                         <p><span>Tree:</span><input type="text" class="text" id="pro-tree" name="tree"/>
+                         <p about="cdao:Tree"><span>Tree:</span><input type="text" class="text" id="pro-tree" name="tree"/>
                          <input type="submit" class="button" id="pro-tree-submit" value="Prolog"/></p>
                        </form>
                   </li>
                   <li>
                       <form action="../cgi-bin/tree/graphml" method="get">
-                        <p><span>Tree:</span><input type="text" class="text" id="graph-tree" name="tree"/>
+                        <p about="cdao:Tree"><span>Tree:</span><input type="text" class="text" id="graph-tree" name="tree"/>
                         <input type="submit" class="button" id="graph-tree-submit" value="GraphML"/></p>
                       </form>
                   </li>
                  <li>
                      <form action="../cgi-bin/algorithm/html" method="get">
-                      <p>
+                      <p about="study:Analysis">
                         <span>Algorithm:</span>
+                           <span property="study:has_Algorithm">
                             <select name="algorithm">
 <option>2 runs, 10 m generations</option>
 <option>6-parameter parsimony</option>
@@ -122,7 +124,7 @@
 <option>parsimony, bayesian</option>
 <option>parsimony dollo</option>
 <option>parsimony jackknifing</option>
-<option selected>parsimony</option>
+<option selected="selected">parsimony</option>
 <option>parsimony, max. likelihood, and neighbor joining</option>
 <option>parsimony ratchet</option>
 <option>parsimony wagner</option>
@@ -142,15 +144,17 @@
 <option>upgma</option>
 <option>veto supertree</option>
 <option>weighted parsimony</option>
-                                                        </select>
+                                </select>
+                             </span>
                         <input type="submit" class="button" id="algorithm-tree-submit" value="Search"/>
                       </p>
                      </form>
                  </li>
                  <li>
                      <form action="../cgi-bin/software/html" method="get">
-                      <p>
+                      <p about="study:Analysis">
                         <span>Sofware:</span>
+                        <span property="study:has_Software">
                         <select name="software">
 <option>bayesphylogenies</option>
 <option>beast 1.4.5</option>
@@ -218,7 +222,7 @@
 <option>paup, hennig86, nona, and pee-wee</option>
 <option>paup, hennig86, nona, pee-wee</option>
 <option>paup, hennig86, phylip</option>
-<option selected>paup</option>
+<option selected="selected">paup</option>
 <option>paup*</option>
 <option>paup, phylip</option>
 <option>pee-wee</option>
@@ -264,6 +268,7 @@
 <option>xac</option>
 
                         </select>
+                       </span>
                         <input type="submit" class="button" id="software-tree-submit" value="Search"/>
                        </p>
                      </form>
@@ -282,7 +287,7 @@
                    </li>-->
                    <li>
                        <form action="../cgi-bin/tu/html" method="get">
-                          <p><span>TU:</span><input type="text" class="text" id="html-tu" name="tu" />
+                          <p about="cdao:TU"><span>TU:</span><input type="text" class="text" id="html-tu" name="tu" />
                           <input type="submit" class="button" id="html-tu-submit" value="Search"/></p>
                        </form>
                    </li>

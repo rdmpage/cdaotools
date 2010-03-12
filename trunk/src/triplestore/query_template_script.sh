@@ -16,7 +16,7 @@ export NODE_SET=`echo "$QUERY_STRING" | sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed
 #Support rest style request's extract the format type from the url
 export RESPONSE_TYPE=`echo "$REQUEST_URI" | perl -p -n -e 's/^.*\/(prolog|html|graphml|nexml).*$/$1/'`;
 #Extract query type from the url
-export QUERY_TYPE=`echo "$REQUEST_URI" | perl -p -n -e 's/^.*\/(tree|tu|nca)\/(prolog|html|graphml|nexml).*$/$1/'`;
+export QUERY_TYPE=`echo "$REQUEST_URI" | perl -p -n -e 's/^.*\/(tree|tu|nca|msc)\/(prolog|html|graphml|nexml).*$/$1/'`;
 
 
 
