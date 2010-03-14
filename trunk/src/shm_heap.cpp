@@ -1,5 +1,6 @@
 #include "shm_heap.hpp"
 #include <strings.h>
+#include <string.h>
 #include <cstdlib>
 #include <map>
 #include <errno.h>

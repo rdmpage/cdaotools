@@ -73,7 +73,7 @@ namespace Treebase {
        /**
         * Specifies the contents of the node.
         */
-       QuotedStringNode( std::string contents);
+       QuotedStringNode( std::wstring contents);
        /**
         * Copies the specified node.
         */
@@ -89,11 +89,11 @@ namespace Treebase {
        /**
         * Get the contents of the node.
         */
-       std::string getcontents()const;
+       std::wstring getcontents()const;
        /**
         * Output the specified node to the specified stream.
         */
-       friend std::ostream& operator<<(std::ostream& out, const QuotedStringNode rhs){ 
+       friend std::wostream& operator<<(std::wostream& out, const QuotedStringNode rhs){ 
          out << rhs.getcontents();
          return out;
        }
@@ -102,7 +102,7 @@ namespace Treebase {
       //    return out;
        //}
      private:
-        std::string contents_;
+        std::wstring contents_;
   };
   /**
    * Type for integer constants
@@ -132,7 +132,7 @@ namespace Treebase {
         /**
          * Output the value of the specified node to the specified stream
          */
-        friend std::ostream& operator<<(std::ostream& out, const ConstNode* rhs ){ if (rhs){ out << rhs->getvalue(); } return out; }
+        friend std::wostream& operator<<(std::wostream& out, const ConstNode* rhs ){ if (rhs){ out << rhs->getvalue(); } return out; }
       private:
         unsigned long int value_;
   };

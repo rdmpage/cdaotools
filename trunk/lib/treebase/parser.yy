@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 extern int yylex();
+void yyerror( const wchar_t* );
 void yyerror( const char* );
 
 using namespace std;
@@ -14,8 +15,8 @@ using namespace Treebase;
 %union {
     char chtok;
     unsigned long int reference;
-    std::string* string_literal;
-    std::string* keyword;
+    std::wstring* string_literal;
+    std::wstring* keyword;
     Treebase::Node* node;
     Treebase::QuotedStringNode* quoted_string;
     Treebase::ConstNode* constant;
@@ -104,11 +105,11 @@ study: '>' STUDY_TOK '[' CONSTANT ']' study_id citation abstract author_list his
           }
        ;
 
-study_id: STUDY_ID_TOK '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( string($3->c_str()) ); delete $3; }
+study_id: STUDY_ID_TOK '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( wstring($3->c_str()) ); delete $3; }
        ;
-citation: CITATION_TOK '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( string($3->c_str()) ); delete $3; }
+citation: CITATION_TOK '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( wstring($3->c_str()) ); delete $3; }
        ;
-abstract: ABSTRACT_TOK '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( string($3->c_str()) ); delete $3; }
+abstract: ABSTRACT_TOK '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( wstring($3->c_str()) ); delete $3; }
        ;
 
 author_list: author { $$ = new ListNode<AuthorNode>( $1 );}
@@ -165,7 +166,7 @@ matrix_name: MATRIX_NAME '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->
       ;
 data_type: DATA_TYPE '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_str() ); delete $3; }
       ;
-nchar: NCHAR '=' QUOTED_STRING_TOK { $$ = new ConstNode( atol($3->c_str()) ); delete $3; }
+nchar: NCHAR '=' QUOTED_STRING_TOK { $$ = new ConstNode( wcstol($3->c_str(), NULL, 10) ); delete $3; }
       ;
 
 analysis_list: analysis { $$ = new ListNode<AnalysisNode>( dynamic_cast<AnalysisNode*>($1) );}
@@ -218,4 +219,5 @@ tree_label: TREE_LABEL '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_
 tree_title: TREE_TITLE '=' QUOTED_STRING_TOK { $$ = new QuotedStringNode( $3->c_str() ); delete $3;}
       ;
 %%
-void yyerror(const char* err){ std::cerr << err; }
+void yyerror(const wchar_t* err){ std::wcerr << err; }
+void yyerror( const char* err ){ std::cerr << err;  }

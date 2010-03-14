@@ -1,6 +1,6 @@
 #include "parser.hpp"
 #include "codegen.hpp"
-#include <iostream>
+#include <iwostream>
 using namespace std;
 using namespace Treebase;
 
@@ -12,7 +12,7 @@ using namespace std;
 int main( int argc, char** argv ){
 
   if (0 == yyparse()){
-      generate( cout, treebase_study_list );
+      generate( wcout, treebase_study_list );
   }
 
   return 0;

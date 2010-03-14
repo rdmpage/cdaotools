@@ -72,7 +72,7 @@ cdao_mass_import_OBJECTS = $(am_cdao_mass_import_OBJECTS)
 cdao_mass_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 am_cdao_phylip_import_OBJECTS = main4.$(OBJEXT) util.$(OBJEXT) \
-	node.$(OBJEXT) shm_tree.$(OBJEXT) \
+	node.$(OBJEXT) shm_heap.$(OBJEXT) \
 	data_representation.$(OBJEXT) \
 	tree_description_scanner.$(OBJEXT) \
 	tree_description_parser.$(OBJEXT) nexus_reader.$(OBJEXT) \
@@ -80,7 +80,7 @@ am_cdao_phylip_import_OBJECTS = main4.$(OBJEXT) util.$(OBJEXT) \
 cdao_phylip_import_OBJECTS = $(am_cdao_phylip_import_OBJECTS)
 cdao_phylip_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
-am_cdao_read_tree_OBJECTS = read-tree.$(OBJEXT) shm_tree.$(OBJEXT) \
+am_cdao_read_tree_OBJECTS = read-tree.$(OBJEXT) shm_heap.$(OBJEXT) \
 	util.$(OBJEXT) node.$(OBJEXT) data_representation.$(OBJEXT) \
 	tree_description_scanner.$(OBJEXT) \
 	tree_description_parser.$(OBJEXT) codegen.$(OBJEXT)
@@ -314,7 +314,7 @@ cdao_tree_import_SOURCES = main3.cpp \
 
 cdao_tree_import_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 cdao_read_tree_SOURCES = read-tree.cpp \
-		    shm_tree.cpp shm_tree.hpp \
+		    shm_heap.cpp shm_heap.hpp \
 		    util.cpp util.hpp \
 		    node.cpp node.hpp \
 		    data_representation.cpp data_representation.hpp \
@@ -327,7 +327,7 @@ cdao_read_tree_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2
 cdao_phylip_import_SOURCES = main4.cpp \
 		    util.cpp util.hpp \
 		    node.cpp node.hpp \
-		    shm_tree.cpp shm_tree.hpp \
+		    shm_heap.cpp shm_heap.hpp \
 		    data_representation.cpp data_representation.hpp \
 		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
 		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
@@ -500,7 +500,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/phylip_reader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/read-tree.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shm_heap.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shm_tree.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tree_description_parser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tree_description_scanner.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
