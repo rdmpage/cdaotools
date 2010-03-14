@@ -7,7 +7,7 @@
 #include <algorithm>
 
 using namespace std;
-namespace CDAO {
+//namespace CDAO {
 
   static const size_t BLOCK_SIZE = 1024;
   
@@ -30,7 +30,7 @@ static std::map< void*, size_t >::iterator find_slot( size_t size_requested );
 /*
  * Initialize the memory segment.
  */
-void shm_init( void* base_addr, size_t segment_size ){
+void CDAO::shm_init( void* base_addr, size_t segment_size ){
    free_blocks_ = std::map< void*, size_t >();
    allocated_blocks_ = std::map< void*, block_utilization_t  >();
   // block_bool_       = std::vector< bool >( segment_size / BLOCK_SIZE );
@@ -40,12 +40,12 @@ void shm_init( void* base_addr, size_t segment_size ){
 /*
  * Release the segment.
  */
-void shm_destroy(){
+void CDAO::shm_destroy(){
    free_blocks_.clear();
 }
 
 
-void* shm_malloc( size_t size ){
+void* CDAO::shm_malloc( size_t size ){
       
        std::map< void*, size_t >::iterator block = find_slot( size );
        //Not enough free space to satisify the request.
@@ -75,7 +75,7 @@ void* shm_malloc( size_t size ){
 }
 
 
-void* shm_calloc( size_t num_items, size_t size ){
+void* CDAO::shm_calloc( size_t num_items, size_t size ){
         void* ret = shm_malloc( size * num_items );
         bzero( ret, size * num_items );
         return ret;
@@ -84,7 +84,7 @@ void* shm_calloc( size_t num_items, size_t size ){
   /*
    * Realloate space in the segment. Has the same semantics as the stdlib realloc.
    */
-  void* shm_realloc( void* addr, size_t new_size ){
+  void* CDAO::shm_realloc( void* addr, size_t new_size ){
      if (NULL == addr){ return shm_malloc( new_size ); }
      if (0 == new_size){ shm_free( addr ); return NULL; }
      void* ret = addr;
@@ -125,7 +125,7 @@ void* shm_calloc( size_t num_items, size_t size ){
   }
 
 
-void shm_free( void* addr ){
+void CDAO::shm_free( void* addr ){
     std::map< void*, block_utilization_t >::iterator block = allocated_blocks_.find( addr );
 
    // std::cerr << "Found the allocation for addr: " << addr << std::endl;
@@ -171,5 +171,5 @@ void shm_defragment(){
 }
 
 
-}
+//}
 

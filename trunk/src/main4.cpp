@@ -30,9 +30,12 @@ using namespace CDAO;
 int main( int argc, char** argv, char** env){
 
   processArgs( argc, argv, env );
+  map_segment();
   DataRepresentation* model = phylipparse();
   model->setMatrixLabel( CDAO::str_to_wstr( getInputFile()) );
   CodeGenerator formatter( model );
   formatter.generate( *(GlobalState::getOutfile()) );
+  delete model;
+  unmap_segment();
   return 0;
 }

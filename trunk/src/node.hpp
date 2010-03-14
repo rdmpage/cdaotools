@@ -5,10 +5,10 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
-
-#ifdef SHM_NODE 
+#include <new>
+//#ifdef SHM_NODE 
 #include "shm_heap.hpp"
-#endif
+//#endif
 
 namespace CDAO {
   class Node;
@@ -20,11 +20,13 @@ namespace CDAO {
   class Node 
   {
   public:
-#ifdef SHM_NODE
-    Node* operator new(){ return shm_malloc( sizeof(Node) ); }
-    operator delete(){ this->~Node(); shm_free(this); }
-#endif
-
+    void operator delete( void* trash ){
+        Node* tnode = static_cast< Node* >( trash );
+        if ( tnode ){
+           tnode->~Node();
+           shm_free( trash );
+        }
+    }
     /*
      * A delegate is a functor that wraps a call-back operation
      * for use with the tree traversal interface.

@@ -78,6 +78,15 @@ private:
 
    //std::istream* getInputStream();
    //std::wostream* getOutputStream();
-   
+   void map_segment();
+   void unmap_segment( );
+
+  void* get_segment();
+  
 }
+//#ifdef SHM_NODE
+    void* operator new( size_t );
+    void operator delete(void* trash);
+  //#endif
+
 #endif
