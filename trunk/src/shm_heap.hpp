@@ -21,10 +21,13 @@ namespace CDAO {
    */
   void* shm_calloc( size_t allocation_size, size_t num_items );
   /*
+   * Realloate space in the segment. Has the same semantics as the stdlib realloc.
+   */
+  void* shm_realloc( void* addr, size_t new_size );
+  /*
    * Return the specified block to the free pool.
    */
   void shm_free( void* ptr );
 
-  
 }
 #endif
