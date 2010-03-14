@@ -6,7 +6,7 @@
 #include "treebase-node.hpp"
 
 namespace Treebase {
-    void generate( std::ostream& out, ListNode<StudyNode>* tb);
+    void generate( std::wostream& out, ListNode<StudyNode>* tb);
 }
 
 #endif

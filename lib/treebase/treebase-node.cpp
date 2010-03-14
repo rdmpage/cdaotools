@@ -10,8 +10,8 @@ Node::Node( NodeType_t t):node_type_(t){}
 Node::~Node(){}
 //Return the node's type
 NodeType_t Node::getnodetype()const{ return node_type_; }
-//Initialize the string node
-QuotedStringNode::QuotedStringNode( string c ):Node(QUOTED_STRING),contents_(c){  }
+//Initialize the wstring node
+QuotedStringNode::QuotedStringNode( wstring c ):Node(QUOTED_STRING),contents_(c){  }
 //Make a deep copy of the node
 QuotedStringNode::QuotedStringNode( const QuotedStringNode& rhs ):Node(QUOTED_STRING), contents_(rhs.contents_){ 
    // cerr << "copy constructor\n";
@@ -20,8 +20,8 @@ QuotedStringNode::QuotedStringNode( const QuotedStringNode& rhs ):Node(QUOTED_ST
 QuotedStringNode::~QuotedStringNode(){ /*cerr << "~QuotedStringNode() contents_:" << contents_ << "\n";*/}
 //Make a deep copy of the node
 QuotedStringNode* QuotedStringNode::copy()const{ /*cerr << "QuotedStringNode::copy()\n";*/ return new QuotedStringNode(this->getcontents()); }
-//Return the contents of the string
-string QuotedStringNode::getcontents()const{ return contents_; }
+//Return the contents of the wstring
+wstring QuotedStringNode::getcontents()const{ return contents_; }
 //initialize the constant with the specified value
 ConstNode::ConstNode( unsigned long int v ):Node(CONST),value_(v){ /*cerr << "ConstNode(v:"<< value_ <<")\n";*/}
 //Makde a deep copy of the node

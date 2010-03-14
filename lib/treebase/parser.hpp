@@ -1,7 +1,5 @@
-#include "treebase-node.hpp"
-#include <iostream>
 #include <string>
-
+#include "treebase-node.hpp"
 /* A Bison parser, made by GNU Bison 2.4.1.  */
 
 /* Skeleton interface for Bison GLR parsers in C
@@ -82,12 +80,12 @@ typedef union YYSTYPE
 {
 
 /* Line 2638 of glr.c  */
-#line 14 "parser.yy"
+#line 15 "parser.yy"
 
     char chtok;
     unsigned long int reference;
-    std::string* string_literal;
-    std::string* keyword;
+    std::wstring* string_literal;
+    std::wstring* keyword;
     Treebase::Node* node;
     Treebase::QuotedStringNode* quoted_string;
     Treebase::ConstNode* constant;

@@ -42,7 +42,8 @@ namespace CDAO {
    * Cases:
    * TREE -> ( TREE_LIST ) LABEL
    * TREE -> ( TREE_LIST )
-   * TREE -> ( , ) 
+   * TREE -> ( , )
+   * TREE -> TREE TREE 
    */
   void  TreeDescriptionParser::consume_tree(  Node* current, unsigned level ){
     
@@ -62,7 +63,7 @@ namespace CDAO {
       /* Expect ) */
       consume_end_tree( current );
       /* Found ) */
-      if ( scanner.lookAhead().getType() == LABEL || scanner.lookAhead().getType() == QUOTED_STRING_MARKER ){
+      if ( scanner.lookAhead().getType() == START_WEIGHT || scanner.lookAhead().getType() == LABEL || scanner.lookAhead().getType() == QUOTED_STRING_MARKER ){
 	/* Expect LABEL */
 	consume_label( current, level+1 );
       }
@@ -118,12 +119,18 @@ namespace CDAO {
 	consume_delimiter( current );
         consume_tree_list( current, level+1 );
       }
+      else if (continue_list_or_end_tree.getType() == LABEL ){
+         /* found a label */
+        //consume_label( subtree, level );
+        consume_tree_list( subtree, level +1  );
+      }
       else if (continue_list_or_end_tree.getType() == END_TREE){
      	/* Found TREE_LIST */
       }
       else {
         //indent( wcerr, level );
-	print_parse_error_message( L"consume_tree_list:" + continue_list_or_end_tree.getContents()  );
+        wcerr << "Uncountered unexpected token type: " << continue_list_or_end_tree.getType() << endl;
+	print_parse_error_message( L"contents: \"" + continue_list_or_end_tree.getContents() + L"\"" );
       }
     }
     else if ( next_token.getType() == LABEL || next_token.getType() == QUOTED_STRING_MARKER ){
@@ -134,17 +141,19 @@ namespace CDAO {
       /* Found LABEL */
       /* Expect END_TREE or TREE_LIST */
       TokenPackage continue_list_or_end_tree = scanner.lookAhead();
-      if(continue_list_or_end_tree.getType() == DELIMITER){
+      if ( continue_list_or_end_tree.getType() == DELIMITER ){
 	consume_delimiter( current );
 	/* Found ....LABEL, TREE_LIST */
 	consume_tree_list( current, level+1 );
       }
-      else if (continue_list_or_end_tree.getType() == END_TREE){
+      else if ( continue_list_or_end_tree.getType() == END_TREE ){
           //indent(wcerr,level);
           //wcerr << "End of sub-tree level: " << level << "\n";
       }
+      else if ( continue_list_or_end_tree.getType() == LABEL ){  }
       else {
-        print_parse_error_message( L"expected LABEL or \'LABEL\': " + continue_list_or_end_tree.getContents() );
+        wcerr << "Encountered token type: " << continue_list_or_end_tree.getType() << endl;
+        print_parse_error_message( L"expected DELIMITER or END_TREE: " + continue_list_or_end_tree.getContents() );
        }
     }
     else if (next_token.getType() == DELIMITER ){
@@ -177,7 +186,7 @@ namespace CDAO {
     TokenPackage label = scanner.lex();
     if ( label.getType() == LABEL ){
      // indent( wcerr, level );
-      //wcerr << L"consumed a label: \"" <<  label.getContents()<<  L"\n";
+      wcerr << L"consumed a label: \"" <<  label.getContents()<<  L"\"\n";
         current->setLabel( label.getContents()  );
     }
     else if (label.getType() == QUOTED_STRING_MARKER){
@@ -188,14 +197,14 @@ namespace CDAO {
          // wcerr << L"consumed a quoted label\n";
           current_label += label.getContents() + L"_";
           //indent( wcerr, level );
-         // wcerr << L"contents: \"" << label.getContents()  << L"\" current_label \"" << current_label << L"\n";
+          //wcerr << L"contents: \"" << label.getContents()  << L"\" current_label \"" << current_label << L"\n";
            //current->setLabel( label.getContents() );
            label = scanner.lex();
         }
         if (current_label.size()){current_label = current_label.substr(0, current_label.size() -1 );}
         current->setLabel( current_label );
         //indent( wcerr, level );
-       // wcerr << L"consumed a label: \"" <<  label.getContents()<<  L"\"\n";
+      //  wcerr << L"consumed a label: \"" <<  label.getContents()<<  L"\"\n";
 
         assert( label.getType() == QUOTED_STRING_MARKER );
     }
@@ -227,8 +236,14 @@ namespace CDAO {
    */
   void  TreeDescriptionParser::consume_end_tree(   Node* current ){
     assert( current );
-    assert( scanner.lex().getType() == END_TREE );
-    
+    if ( scanner.lookAhead().getType() != END_TREE ){
+       //assert( scanner.lex().getType() == END_TREE );
+       wcerr << L"Expecting END_TREE found: " << scanner.lex().getType() << endl;
+  
+    }
+    else {
+        scanner.lex();
+    }
     //cerr << L"enter/exit consume_end_tree()\n";
     return;
   }

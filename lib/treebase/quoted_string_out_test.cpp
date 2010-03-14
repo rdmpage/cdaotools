@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iwostream>
 #include "treebase-node.hpp"
 
 using namespace std;

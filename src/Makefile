@@ -37,8 +37,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = i386-apple-darwin9.8.0
-host_triplet = i386-apple-darwin9.8.0
+build_triplet = x86_64-unknown-linux-gnu
+host_triplet = x86_64-unknown-linux-gnu
 bin_PROGRAMS = cdao-import$(EXEEXT) cdao-mass-import$(EXEEXT) \
 	cdao-tree-import$(EXEEXT) cdao-read-tree$(EXEEXT) \
 	extract_trees.pl$(EXEEXT) cdao-phylip-import$(EXEEXT)
@@ -72,7 +72,7 @@ cdao_mass_import_OBJECTS = $(am_cdao_mass_import_OBJECTS)
 cdao_mass_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 am_cdao_phylip_import_OBJECTS = main4.$(OBJEXT) util.$(OBJEXT) \
-	node.$(OBJEXT) shm_tree.$(OBJEXT) \
+	node.$(OBJEXT) shm_heap.$(OBJEXT) \
 	data_representation.$(OBJEXT) \
 	tree_description_scanner.$(OBJEXT) \
 	tree_description_parser.$(OBJEXT) nexus_reader.$(OBJEXT) \
@@ -80,7 +80,7 @@ am_cdao_phylip_import_OBJECTS = main4.$(OBJEXT) util.$(OBJEXT) \
 cdao_phylip_import_OBJECTS = $(am_cdao_phylip_import_OBJECTS)
 cdao_phylip_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
-am_cdao_read_tree_OBJECTS = read-tree.$(OBJEXT) shm_tree.$(OBJEXT) \
+am_cdao_read_tree_OBJECTS = read-tree.$(OBJEXT) shm_heap.$(OBJEXT) \
 	util.$(OBJEXT) node.$(OBJEXT) data_representation.$(OBJEXT) \
 	tree_description_scanner.$(OBJEXT) \
 	tree_description_parser.$(OBJEXT) codegen.$(OBJEXT)
@@ -150,12 +150,12 @@ DIST_SOURCES = $(cdao_import_SOURCES) $(cdao_mass_import_SOURCES) \
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /Users/bchisham/NetBeansProjects/trunk/config/missing --run aclocal-1.11
-AMTAR = ${SHELL} /Users/bchisham/NetBeansProjects/trunk/config/missing --run tar
+ACLOCAL = ${SHELL} /home/bchisham/cdaotools/trunk/config/missing --run aclocal-1.11
+AMTAR = ${SHELL} /home/bchisham/cdaotools/trunk/config/missing --run tar
 AR = ar
-AUTOCONF = ${SHELL} /Users/bchisham/NetBeansProjects/trunk/config/missing --run autoconf
-AUTOHEADER = ${SHELL} /Users/bchisham/NetBeansProjects/trunk/config/missing --run autoheader
-AUTOMAKE = ${SHELL} /Users/bchisham/NetBeansProjects/trunk/config/missing --run automake-1.11
+AUTOCONF = ${SHELL} /home/bchisham/cdaotools/trunk/config/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/bchisham/cdaotools/trunk/config/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/bchisham/cdaotools/trunk/config/missing --run automake-1.11
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
@@ -169,37 +169,37 @@ CXXFLAGS = -g -O2
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
-DSYMUTIL = dsymutil
+DSYMUTIL = 
 DUMPBIN = 
-ECHO_C = \c
-ECHO_N = 
+ECHO_C = 
+ECHO_N = -n
 ECHO_T = 
-EGREP = /usr/bin/grep -E
+EGREP = /bin/grep -E
 EXEEXT = 
-FGREP = /usr/bin/grep -F
-GREP = /usr/bin/grep
+FGREP = /bin/grep -F
+GREP = /bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LD = /usr/libexec/gcc/i686-apple-darwin9/4.0.1/ld
+LD = /usr/bin/ld -m elf_x86_64
 LDFLAGS = 
 LIBOBJS = 
 LIBS = 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIBTOOL_DEPS = config/ltmain.sh
-LIPO = lipo
+LIPO = 
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /Users/bchisham/NetBeansProjects/trunk/config/missing --run makeinfo
-MKDIR_P = ../config/install-sh -c -d
-NM = /usr/bin/nm -p
-NMEDIT = nmedit
-OBJDUMP = false
+MAKEINFO = ${SHELL} /home/bchisham/cdaotools/trunk/config/missing --run makeinfo
+MKDIR_P = /bin/mkdir -p
+NM = /usr/bin/nm -B
+NMEDIT = 
+OBJDUMP = objdump
 OBJEXT = o
-OTOOL = otool
-OTOOL64 = :
+OTOOL = 
+OTOOL64 = 
 PACKAGE = CdaoTranslator
 PACKAGE_BUGREPORT = bchisham@cs.nmsu.edu
 PACKAGE_NAME = CdaoTranslator
@@ -209,15 +209,15 @@ PACKAGE_URL =
 PACKAGE_VERSION = 0.2
 PATH_SEPARATOR = :
 RANLIB = ranlib
-SED = /opt/local/bin/gsed
+SED = /bin/sed
 SET_MAKE = 
-SHELL = /bin/sh
+SHELL = /bin/bash
 STRIP = strip
 VERSION = 0.2
-abs_builddir = /Users/bchisham/NetBeansProjects/trunk/src
-abs_srcdir = /Users/bchisham/NetBeansProjects/trunk/src
-abs_top_builddir = /Users/bchisham/NetBeansProjects/trunk
-abs_top_srcdir = /Users/bchisham/NetBeansProjects/trunk
+abs_builddir = /home/bchisham/cdaotools/trunk/src
+abs_srcdir = /home/bchisham/cdaotools/trunk/src
+abs_top_builddir = /home/bchisham/cdaotools/trunk
+abs_top_srcdir = /home/bchisham/cdaotools/trunk
 ac_ct_CC = gcc
 ac_ct_CXX = g++
 ac_ct_DUMPBIN = 
@@ -227,36 +227,36 @@ am__quote =
 am__tar = ${AMTAR} chof - "$$tardir"
 am__untar = ${AMTAR} xf -
 bindir = ${exec_prefix}/bin
-build = i386-apple-darwin9.8.0
+build = x86_64-unknown-linux-gnu
 build_alias = 
-build_cpu = i386
-build_os = darwin9.8.0
-build_vendor = apple
+build_cpu = x86_64
+build_os = linux-gnu
+build_vendor = unknown
 builddir = .
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = i386-apple-darwin9.8.0
+host = x86_64-unknown-linux-gnu
 host_alias = 
-host_cpu = i386
-host_os = darwin9.8.0
-host_vendor = apple
+host_cpu = x86_64
+host_os = linux-gnu
+host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /Users/bchisham/NetBeansProjects/trunk/config/install-sh
+install_sh = ${SHELL} /home/bchisham/cdaotools/trunk/config/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
 localstatedir = ${prefix}/var
-lt_ECHO = /bin/echo
+lt_ECHO = echo
 mandir = ${datarootdir}/man
-mkdir_p = $(top_builddir)/config/install-sh -c -d
+mkdir_p = /bin/mkdir -p
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /Users/bchisham
+prefix = /home/bchisham
 program_transform_name = s,x,x,
 psdir = ${docdir}
 sbindir = ${exec_prefix}/sbin
@@ -314,7 +314,7 @@ cdao_tree_import_SOURCES = main3.cpp \
 
 cdao_tree_import_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 cdao_read_tree_SOURCES = read-tree.cpp \
-		    shm_tree.cpp shm_tree.hpp \
+		    shm_heap.cpp shm_heap.hpp \
 		    util.cpp util.hpp \
 		    node.cpp node.hpp \
 		    data_representation.cpp data_representation.hpp \
@@ -327,7 +327,7 @@ cdao_read_tree_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2
 cdao_phylip_import_SOURCES = main4.cpp \
 		    util.cpp util.hpp \
 		    node.cpp node.hpp \
-		    shm_tree.cpp shm_tree.hpp \
+		    shm_heap.cpp shm_heap.hpp \
 		    data_representation.cpp data_representation.hpp \
 		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
 		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
@@ -500,7 +500,6 @@ include ./$(DEPDIR)/node.Po
 include ./$(DEPDIR)/phylip_reader.Po
 include ./$(DEPDIR)/read-tree.Po
 include ./$(DEPDIR)/shm_heap.Po
-include ./$(DEPDIR)/shm_tree.Po
 include ./$(DEPDIR)/tree_description_parser.Po
 include ./$(DEPDIR)/tree_description_scanner.Po
 include ./$(DEPDIR)/util.Po
