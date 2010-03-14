@@ -30,13 +30,13 @@ int main( int argc, char** argv ){
     //wcerr << L"Preparing to process argument list\n";
 
      processArgs( argc, argv, NULL );
-
+     map_segment();
      //wcerr << L"Processed argument list\nPreparing to extract tree information\n";
      //static_cast< ifstream* >( GlobalState::getNarrowInfile() )->close();
      //static_cast< ofstream* >( GlobalState::getNarrowOutfile() )->close();
      //cerr << L"Extracting tress from: L" << getInputFile() << endl;
      do_extraction( getInputFile() );  
-
+     unmap_segment();
      //wcerr << L"Extracted tree information!\n";
   }
 

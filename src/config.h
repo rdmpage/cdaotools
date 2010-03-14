@@ -49,6 +49,10 @@
 /* Define to 1 if the system has the type `_Bool'. */
 #define HAVE__BOOL 1
 
+/* Define to the sub-directory in which libtool stores uninstalled libraries.
+   */
+#define LT_OBJDIR ".libs/"
+
 /* Name of package */
 #define PACKAGE "CdaoTranslator"
 
@@ -63,6 +67,9 @@
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "cdaotranslator"
+
+/* Define to the home page for this package. */
+#define PACKAGE_URL ""
 
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "0.2"

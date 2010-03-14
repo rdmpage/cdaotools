@@ -69,7 +69,8 @@ int main(int argc, char** argv, char** env){
   myprocessArgs( argc, argv, env );
   //Logger has been configured.
 //  LogManager lmgr = LogManager::getInstance();
-  unsigned long int file_no = 1;     
+  unsigned long int file_no = 1;
+  map_segment();  
   for (std::vector< std::string >::iterator i = input_files.begin(); i != input_files.end(); ++i, ++file_no ){
       in = new std::wifstream( (*i).c_str() );
       
@@ -79,6 +80,7 @@ int main(int argc, char** argv, char** env){
       else { doNormalOutput( *i, *i + ".cdao" ); }
                          
   }
+  unmap_segment();
   return 0;
 
 }

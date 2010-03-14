@@ -62,6 +62,7 @@ int main( int argc, char** argv ){
 
    //wcerr << "Read tree processed args\n";
 
+   map_segment();
 
    read_input( taxa, trees );
    
@@ -82,6 +83,8 @@ int main( int argc, char** argv ){
    gen.generate( *(GlobalState::getOutfile()) );
 
    //wcerr << "Read tree generated output\n";
+
+   unmap_segment();
 
   return 0;
 }
