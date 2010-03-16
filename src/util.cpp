@@ -30,8 +30,9 @@ namespace CDAO {
 
 static std::string input_file = "";
 static std::string output_file = "";
-static void* segment_;
-static int fd;
+static MmappedHeapManager* segment_;
+static HeapManager* previous_default_;
+//static int fd;
    /*
     * Input and output streams.
     */
@@ -162,12 +163,19 @@ std::string wstr_to_str( const std::wstring& src ){
 }
 
 void map_segment(){
-  //void* ret = NULL;
+    //void* ret = NULL;
+    HeapManagerManager* shm  = HeapManagerManager::getInstance();
+    segment_ = new MmappedHeapManager( SHARED_HEAP_SIZE );
+    previous_default_ = shm->setDefault( segment_ );
+    
     return;
 }
 
 void unmap_segment( ){
   //ShmHeap::shm_destroy( );
+  HeapManagerManager* shm = HeapManagerManager::getInstance();
+   shm->setDefault( previous_default_ );
+   delete segment_;
    //close( fd );
 } 
 

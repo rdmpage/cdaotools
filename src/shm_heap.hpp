@@ -73,6 +73,7 @@
         */
        virtual ~PoolManager();
      protected:
+       //PoolManager();
        /*
         * Defragment free blocks in the pool
         */
@@ -108,7 +109,7 @@
          */
         static void operator delete(void*);
      protected:
-         bool self_allocated_mem_;
+        bool self_allocated_mem_;
         region_t instance_region_;
         /*
          * Keep track of the start and extent of free blocks in the pool.

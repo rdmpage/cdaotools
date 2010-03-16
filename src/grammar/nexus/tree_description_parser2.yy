@@ -44,17 +44,17 @@ parse_tree: tree { pTree = $1; }
     ; 
 tree: '(' tree_list ')' label { $$ = $2; $$->setLabel( $4->getLabel() ); delete $4; }
     | '(' tree_list ')' { $$ = $2; }
-    | '(' ',' ')' { $$ = new CDAO::Node(CDAO::labelMaker(L"node")); }
+    | '(' ',' ')' { $$ = new CDAO::Node(CDAO::labelMaker(L"tree")); }
     ;
 
-tree_list: tree { fprintf(stderr, "tree\n"); $$ = $1; }
-         | label { fprintf(stderr, "label\n"); $$ = $1; }
+tree_list: tree { /*fprintf(stderr, "tree\n");*/ $$ = $1; }
+         | label { /*fprintf(stderr, "label\n");*/ $$ = $1; }
          | tree ',' tree_list { /*fprintf(stderr, "tree, tree_list\n");*/ $$ = new CDAO::Node(CDAO::labelMaker(L"node")); $$->addDescendant($1); $$->addDescendant($3);}
-         | label ',' tree_list { fprintf(stderr, "label, treelist"); $$ = new CDAO::Node(CDAO::labelMaker(L"node")); $$->addDescendant($1); $$->addDescendant($3);}
+         | label ',' tree_list { /*fprintf(stderr, "label, treelist");*/ $$ = new CDAO::Node(CDAO::labelMaker(L"node")); $$->addDescendant($1); $$->addDescendant($3);}
          ;
 
-label: IDENTIFIER { fprintf(stderr, "Identifer\n"); $$ = new CDAO::Node( *($1) ); /*fprintf(stderr, "allocated node\n");*/ }
-     | QUOTED_STRING { fprintf(stderr, "QuotedString\n"); $$ = new CDAO::Node( *($1) ); }
+label: IDENTIFIER { /*fprintf(stderr, "Identifer\n");*/ $$ = new CDAO::Node( *($1) ); /*fprintf(stderr, "allocated node\n");*/ }
+     | QUOTED_STRING { /*fprintf(stderr, "QuotedString\n");*/ $$ = new CDAO::Node( *($1) ); }
      ;
 
 %%

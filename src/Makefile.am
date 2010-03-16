@@ -11,7 +11,7 @@ CODEGEN=codegen
 LIBDIR=$(top_builddir)/lib
 NCLV=2.1.06
 
-bin_PROGRAMS=cdao-import cdao-mass-import cdao-tree-import cdao-read-tree extract_trees.pl cdao-phylip-import
+bin_PROGRAMS=cdao-import cdao-mass-import cdao-tree-import cdao-read-tree extract_trees.pl cdao-phylip-import tree-description-parser
 
 bin_SCRIPTS=extract_trees.pl
 
@@ -77,7 +77,19 @@ cdao_phylip_import_SOURCES=main4.cpp \
 		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 cdao_phylip_import_LDADD=$(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 
+tree_description_parser_SOURCES=tree_description_main.cpp \
+                                util.cpp util.hpp \
+                                node.cpp node.hpp \
+                                shm_heap.cpp shm_heap.hpp \
+                                $(NEXDIR)/tree_description_scanner2.cpp \
+                                $(NEXDIR)/tree_description_parser2.cpp 
+tree_description_parser_LDADD=$(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 
+
+%.cpp: %.yy
+        bison -d -o $@ $<
+%.cpp: %.l
+        flex -o $@ $<
 
 extract_trees.pl: $(NEXDIR)/extract_trees.pl
 	cp $(NEXDIR)/extract_trees.pl .
