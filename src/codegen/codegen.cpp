@@ -420,7 +420,7 @@ namespace CDAO {
 
         //write the node definition.
         out << L"\t<" << NSDefs::CDAO << L":" <<  NODE_TYPE[ current->hasChildren() ]  << L" " 
-	    << Builtins::ABOUT << L"=\"" << XMLizeName( current->getLabel() )<< L"\">" << endl;
+	    << Builtins::ABOUT << L"=\"#" << XMLizeName( current->getLabel() )<< L"\">" << endl;
         if (model->getTaxonNumber( current->getLabel()) != NO_TAXON){
   	//connect the node to this corresponding TU.
   	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::REPRESENTS_TU << L" " 

@@ -11,7 +11,7 @@ CODEGEN=codegen
 LIBDIR=$(top_builddir)/lib
 NCLV=2.1.06
 
-bin_PROGRAMS=cdao-import cdao-mass-import cdao-tree-import cdao-read-tree extract_trees.pl cdao-phylip-import tree-description-parser
+bin_PROGRAMS=cdao-import cdao-mass-import cdao-tree-import cdao-read-tree extract_trees.pl cdao-phylip-import
 
 bin_SCRIPTS=extract_trees.pl
 
@@ -58,11 +58,11 @@ cdao_read_tree_SOURCES=read-tree.cpp \
 		    util.cpp util.hpp \
 		    node.cpp node.hpp \
 		    data_representation.cpp data_representation.hpp \
-		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
-		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
+		    $(NEXDIR)/tree_description_scanner2.cpp  \
+		    $(NEXDIR)/tree_description_parser2.cpp  \
 	 	    $(CODEGEN)/constants.hpp \
 		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
-cdao_read_tree_LDADD=$(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
+cdao_read_tree_LDADD=$(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la -ll
 
 cdao_phylip_import_SOURCES=main4.cpp \
 		    util.cpp util.hpp \
@@ -77,19 +77,12 @@ cdao_phylip_import_SOURCES=main4.cpp \
 		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 cdao_phylip_import_LDADD=$(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 
-tree_description_parser_SOURCES=tree_description_main.cpp \
-                                util.cpp util.hpp \
-                                node.cpp node.hpp \
-                                shm_heap.cpp shm_heap.hpp \
-                                $(NEXDIR)/tree_description_scanner2.cpp \
-                                $(NEXDIR)/tree_description_parser2.cpp 
-tree_description_parser_LDADD=$(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 
+$(NEXDIR)/tree_description_parser2.cpp: $(NEXDIR)/tree_description_parser2.yy
+	(cd $(NEXDIR) && bison -d -o $(NEXDIR)/tree_description_parser2.cpp $(NEXDIR)/tree_description_parser2.yy && echo -e "#include <string>\n#include <node.hpp>\n#include <util.hpp>" > tree_description_parser2.hpp.tmp && cat tree_description_parser2.hpp >> tree_description_parser2.hpp.tmp && mv tree_description_parser.2.hpp.tmp tree_description_parser2.hpp)
+$(NEXDIR)/tree_description_scanner2.cpp: $(NEXDIR)/tree_description_scanner2.l $(NEXDIR)/tree_description_parser2.cpp
+	flex -o $(NEXDIR)/tree_description_scanner2.cpp $(NEXDIR)/tree_description_scanner2.l
 
-%.cpp: %.yy
-        bison -d -o $@ $<
-%.cpp: %.l
-        flex -o $@ $<
 
 extract_trees.pl: $(NEXDIR)/extract_trees.pl
 	cp $(NEXDIR)/extract_trees.pl .

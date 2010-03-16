@@ -80,6 +80,10 @@
 /* Version number of package */
 #define VERSION "0.2"
 
+/* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
+   `char[]'. */
+#define YYTEXT_POINTER 1
+
 /* Define to empty if `const' does not conform to ANSI C. */
 /* #undef const */
 
