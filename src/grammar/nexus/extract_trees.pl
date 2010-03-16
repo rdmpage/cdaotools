@@ -25,7 +25,7 @@ while (<TREEIN>){
       $taxon_ids{ $1 } = $2;
 #print "taxon id: $1 taxon name: $2\n";
   }
-  elsif (/TREE\W+([-a-zA-Z0-9_]+)\W+=\W+(\[&[R|U]\])\W+(\(.*\)[-a-zA-Z0-9_]*);(?:END;)?$/){
+  elsif (/TREE\W+([-a-zA-Z0-9_]+)\W+=\W+(\[&[R|U]\]) +(\(.*\)[-a-zA-Z0-9_]*);(?:END;)?$/){
     $tree_title = $1;
     $isRooted{ $tree_title }   = $2;
     $tree_description = $3;
@@ -34,7 +34,10 @@ while (<TREEIN>){
        $tree_description =~ s/,$key,/,$taxon_ids{$key},/;
        $tree_description =~ s/\($key,/\($taxon_ids{$key},/;
        $tree_description =~ s/,$key\)/,$taxon_ids{$key}\)/;
-            }
+       $tree_description =~ s/,(\d+),/,n$1,/;
+       $tree_description =~ s/\((\d+),/\(n$1,/;
+       $tree_description =~ s/,(\d+)\)/,n$1\)/;
+     }
      $trees{ $tree_title } = $tree_description;
 #print "Tree title: $tree_title description: $tree_description\n";
   }

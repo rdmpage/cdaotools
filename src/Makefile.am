@@ -79,7 +79,7 @@ cdao_phylip_import_LDADD=$(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLogger
 
 
 $(NEXDIR)/tree_description_parser2.cpp: $(NEXDIR)/tree_description_parser2.yy
-	(cd $(NEXDIR) && bison -d -o $(NEXDIR)/tree_description_parser2.cpp $(NEXDIR)/tree_description_parser2.yy && echo -e "#include <string>\n#include <node.hpp>\n#include <util.hpp>" > tree_description_parser2.hpp.tmp && cat tree_description_parser2.hpp >> tree_description_parser2.hpp.tmp && mv tree_description_parser.2.hpp.tmp tree_description_parser2.hpp)
+	(cd $(NEXDIR); bison -d -o tree_description_parser2.cpp tree_description_parser2.yy; echo -e "#include <string>\n#include <node.hpp>\n#include <util.hpp>" > tree_description_parser2.hpp.tmp; cat tree_description_parser2.hpp >> tree_description_parser2.hpp.tmp; mv tree_description_parser.2.hpp.tmp tree_description_parser2.hpp)
 $(NEXDIR)/tree_description_scanner2.cpp: $(NEXDIR)/tree_description_scanner2.l $(NEXDIR)/tree_description_parser2.cpp
 	flex -o $(NEXDIR)/tree_description_scanner2.cpp $(NEXDIR)/tree_description_scanner2.l
 
