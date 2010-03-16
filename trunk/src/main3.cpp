@@ -45,44 +45,48 @@ int main( int argc, char** argv ){
 
 
 void do_extraction( const string& nfp ){
+  
+  //wcerr << "Do extraction " << getpid() << endl;
+
   const string extractor_script = "extract_trees.pl";
   const int READ_END = 0;
   const int WRITE_END = 1;
   int pipefd[2];
   int pipe_err = pipe( pipefd );
-  if (pipe_err > -1 ){ 
-    pid_t extractor = fork();
-    if ( 0 == extractor ){
+  if (pipe_err < 0 ){ perror("pipe failed"); exit(1); }
+  pid_t extractor;// = fork();
+  if ( 0 == (extractor = fork()) ){
      /* child code */
-     if (close( pipefd[ READ_END ] ) > -1 ){
-       if ( dup2( pipefd[ WRITE_END ], STDOUT_FILENO ) > -1 ){
-         if(  execlp( extractor_script.c_str(), extractor_script.c_str(), nfp.c_str(), (char*)NULL ) < 0 ){
+     if (close( pipefd[ READ_END ] ) < 0 ){ perror("close failed"); exit(1); }
+     if ( dup2( pipefd[ WRITE_END ], STDOUT_FILENO ) < 0 ){ perror("dup2 failed"); exit(1);  }
+     if(  execlp( extractor_script.c_str(), extractor_script.c_str(), nfp.c_str(), (char*)NULL ) < 0 ){
             perror("exec failed");
             exit( 1 );
-         }
-       }
-       else { perror( "dup failed"); exit(1); }
-     }
-     else { perror("close failed"); exit(1); }
+      }
    }
-   if ( close( pipefd[ WRITE_END ] ) > -1){
-       pid_t writer = fork();
-       if (0 == writer){
-           /* child code */
-           if (dup2( pipefd[READ_END], STDIN_FILENO ) > -1){
-               if ( execlp("cdao-read-tree", "cdao-read-tree", "-i", nfp.c_str(), "-o", getOutputFile().c_str(), (char*)NULL) < 0 ){
-                perror("Exec Failed");
-              }
-          } else { perror( "dup for read-tree process failed" ); }
-       }
-      close(pipefd[READ_END]);
-      waitpid( extractor, NULL, 0 );
-      waitpid( writer, NULL, 0 );
+
+   //wcerr << "After extractor fork parent " << getpid() << " extractor pid " << extractor << endl;
+
+   if ( close( pipefd[ WRITE_END ] ) < 0){ perror("Close failed"); exit( 1 ); }
+   pid_t writer;// = fork();
+   if ( 0 == (writer = fork() ) ){
+     //wcerr << "writer process " << getpid() << endl;
+      /* child code */
+      if (dup2( pipefd[READ_END], STDIN_FILENO ) < 0){ perror("dup for read-tree process failed"); exit(1); }
+      if ( execlp("cdao-read-tree", "cdao-read-tree", "-i", nfp.c_str(), "-o", getOutputFile().c_str(), (char*)NULL) < 0 ){
+            perror("Exec Failed");
+	    exit( 1 );
+      }
     }
-    else { perror( "close failed" ); exit( 1 ); }
-  }
+
+   //wcerr << "After writer fork " << getpid() << endl;
+
+   //wcerr << "parent waiting for " << extractor << "  and " << writer << " to exit\n";
+    if (close(pipefd[READ_END])<0){}
+    waitpid( extractor, NULL, 0 );
+    waitpid( writer, NULL, 0 );
   return;
-}
+  }
 
 //Node* parse_description( const wstring& newick ){
 //  return NULL;  

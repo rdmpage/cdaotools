@@ -123,7 +123,6 @@ namespace CDAO {
    * Write ontology to the specified stream.
    */
   void CodeGenerator::generate( wostream& out ){
-    
     if ( data_model_ ){
       /* Setup order writing will happen and which functions will do it. */
       matrix_op_t writers[] = {

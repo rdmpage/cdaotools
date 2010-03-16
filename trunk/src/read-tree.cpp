@@ -13,6 +13,7 @@
 #include <vector>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <strings.h>
 
 extern int yyparse();
 
@@ -69,23 +70,23 @@ int main( int argc, char** argv ){
 
    read_input( taxa, trees );
    
-   //wcerr << "Read tree read input\n";
+  // wcerr << "Read tree read input\n";
 
    DataRepresentation* model = populate_model( taxa, trees );
    
-   //wcerr << "Read tree populated model\n";
+  // wcerr << "Read tree populated model\n";
    
    model->setMatrixLabel( CDAO::str_to_wstr( getInputFile() ) );
 
-   //wcerr << "Read tree set matrix label\n";
+  // wcerr << "Read tree set matrix label\n";
 
    CodeGenerator gen( model );
 
-   //wcerr << "Read tee initialized output formatter\n";
+  // wcerr << "Read tree initialized output formatter\n";
 
    gen.generate( *(GlobalState::getOutfile()) );
 
-   //wcerr << "Read tree generated output\n";
+ //  wcerr << "Read tree" << getpid() << " generated output\n";
 
    unmap_segment();
 
@@ -96,6 +97,8 @@ DataRepresentation* populate_model( vector< wstring >& TUs, map< wstring, Node* 
 
   return new TreeRepresentation( TUs, trees );
 }
+
+extern FILE* yyin;
 
 void read_input( vector< wstring >& taxa, map< wstring, Node* >& trees ){
    //TypedRawInputStream pin( pipefd[ READ_END ] );
@@ -130,24 +133,20 @@ void read_input( vector< wstring >& taxa, map< wstring, Node* >& trees ){
             newick_data += (wchar_t)ch;
         }
         //wcerr << L"Newick data: " << newick_data << endl;
-        pid_t nwkparser_proc;
-        int nwk_stats;
-        int pfd[2];
-	int reader_to_parent[2];
-        if (pipe( pfd  )< 0 ){ exit(1);}
-	//if ( pipe( reader_to_parent  ) < 0 ){ exit(1); }
-        if ( 0 == ( nwkparser_proc  = fork() ) ){
-             close( pfd[1] );
-	     dup2( pfd[ 0 ], STDIN_FILENO );
-             yyparse();
-             //execlp(tree_parser_exe.c_str(), tree_parser_exe.c_str(), (char*)NULL);
-
-        }
-        close( pfd[0] );
-	//close( reader_to_parent[1] );
-        write(pfd[1], CDAO::wstr_to_str( newick_data ).c_str(), newick_data.size());
-        close( pfd[1] );
-        waitpid(nwkparser_proc, &nwk_stats, 0);
+	string nwkdatatemplate = "temp.newickXXXXXX";
+        char* nwkdataf = (char*)calloc( nwkdatatemplate.size(), sizeof(char)  );
+	strncpy(nwkdataf, nwkdatatemplate.c_str(), nwkdatatemplate.size());
+        int tmpnkwfd = mkstemp( nwkdataf  );
+	write( tmpnkwfd, CDAO::wstr_to_str(newick_data).c_str(), newick_data.size()  );
+	close( tmpnkwfd );
+        FILE* nkwf = fopen( nwkdataf , "r");
+	//fputs( CDAO::wstr_to_str(newick_data).c_str(), nkwf  );
+	yyin = nkwf;
+	yyparse(); 
+	fclose( nkwf );
+	unlink( nwkdataf );
+	free( nwkdataf );
+	//wcerr << "writing pTree:" << pTree << " to the parent\n";
         trees[ tree_name ] =  pTree; //TreeDescriptionParser( newick_data ).getParseTree();
 
         //wcerr << L"read tree: " << tree_name << L" rooted: " << rooted << L" description: " << newick_data << endl;
