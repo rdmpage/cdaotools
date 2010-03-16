@@ -1,4 +1,4 @@
-#include "grammar/nexus/tree_description_parser.hpp"
+#include "grammar/nexus/tree_description_parser2.hpp"
 #include "data_representation.hpp"
 //#include <RawStream.hpp>
 
@@ -15,7 +15,7 @@
 
 using namespace std;
 using namespace CDAO;
-
+Node* pTree = NULL;
 class TreeRepresentation : public DataRepresentation {
   public:
     TreeRepresentation( vector< wstring > taxa, map< wstring, Node* > trees);
@@ -127,8 +127,21 @@ void read_input( vector< wstring >& taxa, map< wstring, Node* >& trees ){
             newick_data += (wchar_t)ch;
         }
         //wcerr << L"Newick data: " << newick_data << endl;
+        pid_t nwkparser_proc;
+        int nwk_stats;
+        int pfd[2];
+        pipe( pfd  );
+        std::string tree_parser_exe = "tree-description-parser";
+        if ( 0 == ( nwkparser_proc  = fork() ) ){
+             close( pfd[1] );
+             execlp(tree_parser_exe.c_str(), tree_parser_exe.c_str(), (char*)NULL);
 
-        trees[ tree_name ] = TreeDescriptionParser( newick_data ).getParseTree();
+        }
+        close( pfd[0] );
+        write(pfd[1], CDAO::wstr_to_str( newick_data ).c_str(), newick_data.size());
+        close( pfd[1] );
+        waitpid(nwkparser_proc, &nwk_stats, 0);
+        trees[ tree_name ] =  pTree; //TreeDescriptionParser( newick_data ).getParseTree();
 
         //wcerr << L"read tree: " << tree_name << L" rooted: " << rooted << L" description: " << newick_data << endl;
         tree_name = rooted = newick_data = L"";

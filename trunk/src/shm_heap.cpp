@@ -75,7 +75,7 @@ using namespace std;
 //std::map< void*, size_t > PoolManager::allocated_blocks_;
 //static std::vector< bool > block_pool_;
 
-
+ // PoolManager::PoolManager(){}
 //static void* find_slot( size_t size_requested );
 /*
  * Initialize an expandable pool manager. 
@@ -420,7 +420,7 @@ void HeapManagerManager::operator delete( void* trash ){
 
 
 
-MmappedHeapManager::MmappedHeapManager( unsigned long size ){
+MmappedHeapManager::MmappedHeapManager( unsigned long size ):PoolManager(0){
   void* segment_;
   char* ttemplate = "sharedshmXXXXXX";
   size_t len = strlen( ttemplate );
@@ -433,10 +433,11 @@ MmappedHeapManager::MmappedHeapManager( unsigned long size ){
       perror("Unable to map shared area");
       exit(1);
   }
-  
-  this->free_blocks_ = map< void*, unsigned long >();
+  //initialize members.
+  this->self_allocated_mem_ = false;
+ // this->free_blocks_ = map< void*, unsigned long >();
   this->free_blocks_[ segment_ ] = size;
-  this->allocated_blocks_ = map< void*, unsigned long >();
+  //this->allocated_blocks_ = map< void*, unsigned long >();
   this->instance_region_ = region_t(segment_, size);
 
   //(*PoolManager::manager_)[ region_t( segment_, size ) ] = this;
