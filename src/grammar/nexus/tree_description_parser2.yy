@@ -2,13 +2,13 @@
 
 #include <node.hpp>
 #include <iostream>
+#include <cstdio>
 #include <string>
 #include <util.hpp>
-#ifdef yywrap
-   undef yywrap
-   int yywrap(){ return 1; }
-#endif
-extern int yylex();
+extern "C" {
+ int yylex();
+ int yywrap();
+}
 void yyerror( const char* );
 extern CDAO::Node* pTree;
 %}
@@ -22,8 +22,8 @@ extern CDAO::Node* pTree;
     char comment_marker;
     double weight;
     char quote;
-    std::string* label;
-    std::string* extra_meta;
+    std::wstring* label;
+    std::wstring* extra_meta;
     CDAO::Node* node;
 }
 %token <tree_marker> '(' ')';
@@ -42,19 +42,19 @@ extern CDAO::Node* pTree;
 
 parse_tree: tree { pTree = $1; }
     ; 
-tree: '(' tree_list ')' label { $$ =  }
-    | '(' tree_list ')' {}
-    | '(' ',' ')' {}
+tree: '(' tree_list ')' label { $$ = $2; $$->setLabel( $4->getLabel() ); delete $4; }
+    | '(' tree_list ')' { $$ = $2; }
+    | '(' ',' ')' { $$ = new CDAO::Node(CDAO::labelMaker(L"node")); }
     ;
 
-tree_list: tree {}
-         | label {}
-         | tree ',' tree_list {}
-         | label ',' tree_list {}
+tree_list: tree { fprintf(stderr, "tree\n"); $$ = $1; }
+         | label { fprintf(stderr, "label\n"); $$ = $1; }
+         | tree ',' tree_list { /*fprintf(stderr, "tree, tree_list\n");*/ $$ = new CDAO::Node(CDAO::labelMaker(L"node")); $$->addDescendant($1); $$->addDescendant($3);}
+         | label ',' tree_list { fprintf(stderr, "label, treelist"); $$ = new CDAO::Node(CDAO::labelMaker(L"node")); $$->addDescendant($1); $$->addDescendant($3);}
          ;
 
-label: IDENTIFIER { $$ = new Node( *($1) ); }
-     | QUOTED_STRING { $$ = new Node( *($1) ); }
+label: IDENTIFIER { fprintf(stderr, "Identifer\n"); $$ = new CDAO::Node( *($1) ); /*fprintf(stderr, "allocated node\n");*/ }
+     | QUOTED_STRING { fprintf(stderr, "QuotedString\n"); $$ = new CDAO::Node( *($1) ); }
      ;
 
 %%

@@ -84,9 +84,5 @@ private:
   void* get_segment();
   
 }
-//#ifdef SHM_NODE
-    void* operator new( size_t );
-    void operator delete(void* trash);
-  //#endif
 
 #endif

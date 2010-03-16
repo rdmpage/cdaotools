@@ -15,15 +15,7 @@
 #include <AbstractStream.hpp>
 #include <LogManager.hpp>
 
-#include <string.h>
-
-#include <sys/mman.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-
-#define SHARED_HEAP_SIZE (1024 * 1024 * 128)
+#define SHARED_HEAP_SIZE (1024 * 1024 * 128 )
 
 using namespace std;
 namespace CDAO {
@@ -39,7 +31,7 @@ namespace CDAO {
 static std::string input_file = "";
 static std::string output_file = "";
 static void* segment_;
-//static int fd;
+static int fd;
    /*
     * Input and output streams.
     */
@@ -171,36 +163,16 @@ std::string wstr_to_str( const std::wstring& src ){
 
 void map_segment(){
   //void* ret = NULL;
-  char* ttemplate = "/tmp/sharedshmXXXXXX";
-  size_t len = strlen( ttemplate );
-  char* rtempl = (char*)calloc( len, sizeof(char)+1 );
-  strncpy( rtempl, ttemplate, len );
-  int fd = mkstemp( rtempl );
-  if (lseek(fd, SHARED_HEAP_SIZE, SEEK_END) < 0){ perror("Unable to seek in mmapped file"); exit(1); }
-  if ( (long)(segment_ = mmap(NULL, SHARED_HEAP_SIZE,  PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0)) < 0 ){
-      perror("Unable to map shared area");
-      exit(1);
-  }
-  shm_init( segment_, SHARED_HEAP_SIZE );
-  close( fd );
-  unlink( rtempl );
-  return;
+    return;
 }
 
 void unmap_segment( ){
-   shm_destroy( );
+  //ShmHeap::shm_destroy( );
    //close( fd );
-   munmap( segment_, SHARED_HEAP_SIZE );
 } 
 
 void* get_segment(){ return segment_; }
 
 }
 
-void* operator new( size_t size ){
-   return CDAO::shm_calloc( size, 1 );
-}
-void operator delete( void* trash){
-  CDAO::shm_free( trash );
-}
 
