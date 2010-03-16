@@ -12,7 +12,7 @@ LOCAL_STATIC_WEB_DIR=html
 REMOTE_STATIC_WEB_DIR=cdao-store
 #SUB_C='s/.c$$//'
 
-deploy: prolog_exe_driver.c.deployed run_prolog_standalone_exe.sh.deployed do_html_author_query.sh.deployed do_html_algorithm_query.sh.deployed do_html_nca_query.sh.deployed do_html_msc_query.sh.deployed  do_html_tree_query.sh.deployed do_html_tu_query.sh.deployed do_html_study_query.sh.deployed do_study_list_authors.sh.deployed do_study_detail_query_construct.sh.deployed do_study_list_trees.sh.deployed query_template_script.sh.deployed do_prolog_msc_query.sh.deployed do_prolog_tu_query.sh.deployed do_author_work_list_query_construct.sh.deployed do_query.py.deployed sparql.py.deployed import.py.deployed store.py.deployed index.py.deployed html.py.deployed study_authors_to_html.xsl.deployed study_result_to_html.xsl.deployed tu_to_filelist.xsl.deployed 
+deploy: prolog_exe_driver.c.deployed do_html_author_query.sh.deployed do_html_algorithm_query.sh.deployed do_html_nca_query.sh.deployed do_html_msc_query.sh.deployed  do_html_tree_query.sh.deployed do_html_tu_query.sh.deployed do_html_study_query.sh.deployed do_study_list_authors.sh.deployed do_study_detail_query_construct.sh.deployed do_study_list_trees.sh.deployed query_template_script.sh.deployed do_prolog_msc_query.sh.deployed do_prolog_tu_query.sh.deployed do_author_work_list_query_construct.sh.deployed do_query.py.deployed sparql.py.deployed import.py.deployed store.py.deployed index.py.deployed html.py.deployed study_authors_to_html.xsl.deployed study_result_to_html.xsl.deployed tu_to_filelist.xsl.deployed 
 	(cd html && make deploy)
 
 
