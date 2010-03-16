@@ -1,6 +1,6 @@
-#include "grammar/nexus/tree_description_parser2.hpp"
+//#include "grammar/nexus/tree_description_parser2.hpp"
 #include "data_representation.hpp"
-//#include <RawStream.hpp>
+#include <RawStream.hpp>
 
 #include "util.hpp"
 #include "node.hpp"
@@ -12,6 +12,9 @@
 #include <map>
 #include <vector>
 #include <unistd.h>
+#include <sys/wait.h>
+
+extern int yyparse();
 
 using namespace std;
 using namespace CDAO;
@@ -130,14 +133,18 @@ void read_input( vector< wstring >& taxa, map< wstring, Node* >& trees ){
         pid_t nwkparser_proc;
         int nwk_stats;
         int pfd[2];
-        pipe( pfd  );
-        std::string tree_parser_exe = "tree-description-parser";
+	int reader_to_parent[2];
+        if (pipe( pfd  )< 0 ){ exit(1);}
+	//if ( pipe( reader_to_parent  ) < 0 ){ exit(1); }
         if ( 0 == ( nwkparser_proc  = fork() ) ){
              close( pfd[1] );
-             execlp(tree_parser_exe.c_str(), tree_parser_exe.c_str(), (char*)NULL);
+	     dup2( pfd[ 0 ], STDIN_FILENO );
+             yyparse();
+             //execlp(tree_parser_exe.c_str(), tree_parser_exe.c_str(), (char*)NULL);
 
         }
         close( pfd[0] );
+	//close( reader_to_parent[1] );
         write(pfd[1], CDAO::wstr_to_str( newick_data ).c_str(), newick_data.size());
         close( pfd[1] );
         waitpid(nwkparser_proc, &nwk_stats, 0);

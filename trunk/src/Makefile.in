@@ -82,8 +82,8 @@ cdao_phylip_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 am_cdao_read_tree_OBJECTS = read-tree.$(OBJEXT) shm_heap.$(OBJEXT) \
 	util.$(OBJEXT) node.$(OBJEXT) data_representation.$(OBJEXT) \
-	tree_description_scanner.$(OBJEXT) \
-	tree_description_parser.$(OBJEXT) codegen.$(OBJEXT)
+	tree_description_scanner2.$(OBJEXT) \
+	tree_description_parser2.$(OBJEXT) codegen.$(OBJEXT)
 cdao_read_tree_OBJECTS = $(am_cdao_read_tree_OBJECTS)
 cdao_read_tree_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
@@ -185,6 +185,9 @@ INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
+LEX = @LEX@
+LEXLIB = @LEXLIB@
+LEX_OUTPUT_ROOT = @LEX_OUTPUT_ROOT@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
@@ -214,6 +217,8 @@ SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
 VERSION = @VERSION@
+YACC = @YACC@
+YFLAGS = @YFLAGS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -318,12 +323,12 @@ cdao_read_tree_SOURCES = read-tree.cpp \
 		    util.cpp util.hpp \
 		    node.cpp node.hpp \
 		    data_representation.cpp data_representation.hpp \
-		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
-		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
+		    $(NEXDIR)/tree_description_scanner2.cpp  \
+		    $(NEXDIR)/tree_description_parser2.cpp  \
 	 	    $(CODEGEN)/constants.hpp \
 		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 
-cdao_read_tree_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
+cdao_read_tree_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la -ll
 cdao_phylip_import_SOURCES = main4.cpp \
 		    util.cpp util.hpp \
 		    node.cpp node.hpp \
@@ -501,7 +506,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/read-tree.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shm_heap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tree_description_parser.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tree_description_parser2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tree_description_scanner.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tree_description_scanner2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
 
 .c.o:
@@ -615,6 +622,34 @@ codegen.obj: $(CODEGEN)/codegen.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(CODEGEN)/codegen.cpp' object='codegen.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o codegen.obj `if test -f '$(CODEGEN)/codegen.cpp'; then $(CYGPATH_W) '$(CODEGEN)/codegen.cpp'; else $(CYGPATH_W) '$(srcdir)/$(CODEGEN)/codegen.cpp'; fi`
+
+tree_description_scanner2.o: $(NEXDIR)/tree_description_scanner2.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tree_description_scanner2.o -MD -MP -MF $(DEPDIR)/tree_description_scanner2.Tpo -c -o tree_description_scanner2.o `test -f '$(NEXDIR)/tree_description_scanner2.cpp' || echo '$(srcdir)/'`$(NEXDIR)/tree_description_scanner2.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/tree_description_scanner2.Tpo $(DEPDIR)/tree_description_scanner2.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(NEXDIR)/tree_description_scanner2.cpp' object='tree_description_scanner2.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tree_description_scanner2.o `test -f '$(NEXDIR)/tree_description_scanner2.cpp' || echo '$(srcdir)/'`$(NEXDIR)/tree_description_scanner2.cpp
+
+tree_description_scanner2.obj: $(NEXDIR)/tree_description_scanner2.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tree_description_scanner2.obj -MD -MP -MF $(DEPDIR)/tree_description_scanner2.Tpo -c -o tree_description_scanner2.obj `if test -f '$(NEXDIR)/tree_description_scanner2.cpp'; then $(CYGPATH_W) '$(NEXDIR)/tree_description_scanner2.cpp'; else $(CYGPATH_W) '$(srcdir)/$(NEXDIR)/tree_description_scanner2.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/tree_description_scanner2.Tpo $(DEPDIR)/tree_description_scanner2.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(NEXDIR)/tree_description_scanner2.cpp' object='tree_description_scanner2.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tree_description_scanner2.obj `if test -f '$(NEXDIR)/tree_description_scanner2.cpp'; then $(CYGPATH_W) '$(NEXDIR)/tree_description_scanner2.cpp'; else $(CYGPATH_W) '$(srcdir)/$(NEXDIR)/tree_description_scanner2.cpp'; fi`
+
+tree_description_parser2.o: $(NEXDIR)/tree_description_parser2.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tree_description_parser2.o -MD -MP -MF $(DEPDIR)/tree_description_parser2.Tpo -c -o tree_description_parser2.o `test -f '$(NEXDIR)/tree_description_parser2.cpp' || echo '$(srcdir)/'`$(NEXDIR)/tree_description_parser2.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/tree_description_parser2.Tpo $(DEPDIR)/tree_description_parser2.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(NEXDIR)/tree_description_parser2.cpp' object='tree_description_parser2.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tree_description_parser2.o `test -f '$(NEXDIR)/tree_description_parser2.cpp' || echo '$(srcdir)/'`$(NEXDIR)/tree_description_parser2.cpp
+
+tree_description_parser2.obj: $(NEXDIR)/tree_description_parser2.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tree_description_parser2.obj -MD -MP -MF $(DEPDIR)/tree_description_parser2.Tpo -c -o tree_description_parser2.obj `if test -f '$(NEXDIR)/tree_description_parser2.cpp'; then $(CYGPATH_W) '$(NEXDIR)/tree_description_parser2.cpp'; else $(CYGPATH_W) '$(srcdir)/$(NEXDIR)/tree_description_parser2.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/tree_description_parser2.Tpo $(DEPDIR)/tree_description_parser2.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(NEXDIR)/tree_description_parser2.cpp' object='tree_description_parser2.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tree_description_parser2.obj `if test -f '$(NEXDIR)/tree_description_parser2.cpp'; then $(CYGPATH_W) '$(NEXDIR)/tree_description_parser2.cpp'; else $(CYGPATH_W) '$(srcdir)/$(NEXDIR)/tree_description_parser2.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -823,6 +858,11 @@ uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS
 	tags uninstall uninstall-am uninstall-binPROGRAMS \
 	uninstall-binSCRIPTS
 
+
+$(NEXDIR)/tree_description_parser2.cpp: $(NEXDIR)/tree_description_parser2.yy
+	(cd $(NEXDIR) && bison -d -o $(NEXDIR)/tree_description_parser2.cpp $(NEXDIR)/tree_description_parser2.yy && echo -e "#include <string>\n#include <node.hpp>\n#include <util.hpp>" > tree_description_parser2.hpp.tmp && cat tree_description_parser2.hpp >> tree_description_parser2.hpp.tmp && mv tree_description_parser.2.hpp.tmp tree_description_parser2.hpp)
+$(NEXDIR)/tree_description_scanner2.cpp: $(NEXDIR)/tree_description_scanner2.l $(NEXDIR)/tree_description_parser2.cpp
+	flex -o $(NEXDIR)/tree_description_scanner2.cpp $(NEXDIR)/tree_description_scanner2.l
 
 extract_trees.pl: $(NEXDIR)/extract_trees.pl
 	cp $(NEXDIR)/extract_trees.pl .

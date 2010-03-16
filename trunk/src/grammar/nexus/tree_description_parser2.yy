@@ -6,9 +6,9 @@
 #include <string>
 #include <util.hpp>
 extern "C" {
- int yylex();
  int yywrap();
 }
+int yylex();
 void yyerror( const char* );
 extern CDAO::Node* pTree;
 %}

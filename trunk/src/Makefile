@@ -37,8 +37,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = i386-apple-darwin9.8.0
-host_triplet = i386-apple-darwin9.8.0
+build_triplet = x86_64-unknown-linux-gnu
+host_triplet = x86_64-unknown-linux-gnu
 bin_PROGRAMS = cdao-import$(EXEEXT) cdao-mass-import$(EXEEXT) \
 	cdao-tree-import$(EXEEXT) cdao-read-tree$(EXEEXT) \
 	extract_trees.pl$(EXEEXT) cdao-phylip-import$(EXEEXT)
@@ -82,8 +82,8 @@ cdao_phylip_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 am_cdao_read_tree_OBJECTS = read-tree.$(OBJEXT) shm_heap.$(OBJEXT) \
 	util.$(OBJEXT) node.$(OBJEXT) data_representation.$(OBJEXT) \
-	tree_description_scanner.$(OBJEXT) \
-	tree_description_parser.$(OBJEXT) codegen.$(OBJEXT)
+	tree_description_scanner2.$(OBJEXT) \
+	tree_description_parser2.$(OBJEXT) codegen.$(OBJEXT)
 cdao_read_tree_OBJECTS = $(am_cdao_read_tree_OBJECTS)
 cdao_read_tree_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
@@ -150,12 +150,12 @@ DIST_SOURCES = $(cdao_import_SOURCES) $(cdao_mass_import_SOURCES) \
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /Users/bchisham/cdaotools/trunk/config/missing --run aclocal-1.11
-AMTAR = ${SHELL} /Users/bchisham/cdaotools/trunk/config/missing --run tar
+ACLOCAL = ${SHELL} /home/bchisham/cdaotools/trunk/config/missing --run aclocal-1.11
+AMTAR = ${SHELL} /home/bchisham/cdaotools/trunk/config/missing --run tar
 AR = ar
-AUTOCONF = ${SHELL} /Users/bchisham/cdaotools/trunk/config/missing --run autoconf
-AUTOHEADER = ${SHELL} /Users/bchisham/cdaotools/trunk/config/missing --run autoheader
-AUTOMAKE = ${SHELL} /Users/bchisham/cdaotools/trunk/config/missing --run automake-1.11
+AUTOCONF = ${SHELL} /home/bchisham/cdaotools/trunk/config/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/bchisham/cdaotools/trunk/config/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/bchisham/cdaotools/trunk/config/missing --run automake-1.11
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
@@ -169,37 +169,40 @@ CXXFLAGS = -g -O2
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
-DSYMUTIL = dsymutil
+DSYMUTIL = 
 DUMPBIN = 
-ECHO_C = \c
-ECHO_N = 
+ECHO_C = 
+ECHO_N = -n
 ECHO_T = 
-EGREP = /usr/bin/grep -E
+EGREP = /bin/grep -E
 EXEEXT = 
-FGREP = /usr/bin/grep -F
-GREP = /usr/bin/grep
+FGREP = /bin/grep -F
+GREP = /bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LD = /usr/libexec/gcc/i686-apple-darwin9/4.0.1/ld
+LD = /usr/bin/ld -m elf_x86_64
 LDFLAGS = 
+LEX = flex
+LEXLIB = -lfl
+LEX_OUTPUT_ROOT = lex.yy
 LIBOBJS = 
 LIBS = 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIBTOOL_DEPS = config/ltmain.sh
-LIPO = lipo
+LIPO = 
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /Users/bchisham/cdaotools/trunk/config/missing --run makeinfo
-MKDIR_P = ../config/install-sh -c -d
-NM = /usr/bin/nm -p
-NMEDIT = nmedit
-OBJDUMP = false
+MAKEINFO = ${SHELL} /home/bchisham/cdaotools/trunk/config/missing --run makeinfo
+MKDIR_P = /bin/mkdir -p
+NM = /usr/bin/nm -B
+NMEDIT = 
+OBJDUMP = objdump
 OBJEXT = o
-OTOOL = otool
-OTOOL64 = :
+OTOOL = 
+OTOOL64 = 
 PACKAGE = CdaoTranslator
 PACKAGE_BUGREPORT = bchisham@cs.nmsu.edu
 PACKAGE_NAME = CdaoTranslator
@@ -209,15 +212,17 @@ PACKAGE_URL =
 PACKAGE_VERSION = 0.2
 PATH_SEPARATOR = :
 RANLIB = ranlib
-SED = /opt/local/bin/gsed
+SED = /bin/sed
 SET_MAKE = 
-SHELL = /bin/sh
+SHELL = /bin/bash
 STRIP = strip
 VERSION = 0.2
-abs_builddir = /Users/bchisham/cdaotools/trunk/src
-abs_srcdir = /Users/bchisham/cdaotools/trunk/src
-abs_top_builddir = /Users/bchisham/cdaotools/trunk
-abs_top_srcdir = /Users/bchisham/cdaotools/trunk
+YACC = bison -y
+YFLAGS = 
+abs_builddir = /home/bchisham/cdaotools/trunk/src
+abs_srcdir = /home/bchisham/cdaotools/trunk/src
+abs_top_builddir = /home/bchisham/cdaotools/trunk
+abs_top_srcdir = /home/bchisham/cdaotools/trunk
 ac_ct_CC = gcc
 ac_ct_CXX = g++
 ac_ct_DUMPBIN = 
@@ -227,36 +232,36 @@ am__quote =
 am__tar = ${AMTAR} chof - "$$tardir"
 am__untar = ${AMTAR} xf -
 bindir = ${exec_prefix}/bin
-build = i386-apple-darwin9.8.0
+build = x86_64-unknown-linux-gnu
 build_alias = 
-build_cpu = i386
-build_os = darwin9.8.0
-build_vendor = apple
+build_cpu = x86_64
+build_os = linux-gnu
+build_vendor = unknown
 builddir = .
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = i386-apple-darwin9.8.0
+host = x86_64-unknown-linux-gnu
 host_alias = 
-host_cpu = i386
-host_os = darwin9.8.0
-host_vendor = apple
+host_cpu = x86_64
+host_os = linux-gnu
+host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /Users/bchisham/cdaotools/trunk/config/install-sh
+install_sh = ${SHELL} /home/bchisham/cdaotools/trunk/config/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
 localstatedir = ${prefix}/var
-lt_ECHO = /bin/echo
+lt_ECHO = echo
 mandir = ${datarootdir}/man
-mkdir_p = $(top_builddir)/config/install-sh -c -d
+mkdir_p = /bin/mkdir -p
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /Users/bchisham
+prefix = /home/bchisham
 program_transform_name = s,x,x,
 psdir = ${docdir}
 sbindir = ${exec_prefix}/sbin
@@ -318,12 +323,12 @@ cdao_read_tree_SOURCES = read-tree.cpp \
 		    util.cpp util.hpp \
 		    node.cpp node.hpp \
 		    data_representation.cpp data_representation.hpp \
-		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
-		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
+		    $(NEXDIR)/tree_description_scanner2.cpp  \
+		    $(NEXDIR)/tree_description_parser2.cpp  \
 	 	    $(CODEGEN)/constants.hpp \
 		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 
-cdao_read_tree_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
+cdao_read_tree_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la -ll
 cdao_phylip_import_SOURCES = main4.cpp \
 		    util.cpp util.hpp \
 		    node.cpp node.hpp \
@@ -501,7 +506,9 @@ include ./$(DEPDIR)/phylip_reader.Po
 include ./$(DEPDIR)/read-tree.Po
 include ./$(DEPDIR)/shm_heap.Po
 include ./$(DEPDIR)/tree_description_parser.Po
+include ./$(DEPDIR)/tree_description_parser2.Po
 include ./$(DEPDIR)/tree_description_scanner.Po
+include ./$(DEPDIR)/tree_description_scanner2.Po
 include ./$(DEPDIR)/util.Po
 
 .c.o:
@@ -615,6 +622,34 @@ codegen.obj: $(CODEGEN)/codegen.cpp
 #	source='$(CODEGEN)/codegen.cpp' object='codegen.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o codegen.obj `if test -f '$(CODEGEN)/codegen.cpp'; then $(CYGPATH_W) '$(CODEGEN)/codegen.cpp'; else $(CYGPATH_W) '$(srcdir)/$(CODEGEN)/codegen.cpp'; fi`
+
+tree_description_scanner2.o: $(NEXDIR)/tree_description_scanner2.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tree_description_scanner2.o -MD -MP -MF $(DEPDIR)/tree_description_scanner2.Tpo -c -o tree_description_scanner2.o `test -f '$(NEXDIR)/tree_description_scanner2.cpp' || echo '$(srcdir)/'`$(NEXDIR)/tree_description_scanner2.cpp
+	$(am__mv) $(DEPDIR)/tree_description_scanner2.Tpo $(DEPDIR)/tree_description_scanner2.Po
+#	source='$(NEXDIR)/tree_description_scanner2.cpp' object='tree_description_scanner2.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tree_description_scanner2.o `test -f '$(NEXDIR)/tree_description_scanner2.cpp' || echo '$(srcdir)/'`$(NEXDIR)/tree_description_scanner2.cpp
+
+tree_description_scanner2.obj: $(NEXDIR)/tree_description_scanner2.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tree_description_scanner2.obj -MD -MP -MF $(DEPDIR)/tree_description_scanner2.Tpo -c -o tree_description_scanner2.obj `if test -f '$(NEXDIR)/tree_description_scanner2.cpp'; then $(CYGPATH_W) '$(NEXDIR)/tree_description_scanner2.cpp'; else $(CYGPATH_W) '$(srcdir)/$(NEXDIR)/tree_description_scanner2.cpp'; fi`
+	$(am__mv) $(DEPDIR)/tree_description_scanner2.Tpo $(DEPDIR)/tree_description_scanner2.Po
+#	source='$(NEXDIR)/tree_description_scanner2.cpp' object='tree_description_scanner2.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tree_description_scanner2.obj `if test -f '$(NEXDIR)/tree_description_scanner2.cpp'; then $(CYGPATH_W) '$(NEXDIR)/tree_description_scanner2.cpp'; else $(CYGPATH_W) '$(srcdir)/$(NEXDIR)/tree_description_scanner2.cpp'; fi`
+
+tree_description_parser2.o: $(NEXDIR)/tree_description_parser2.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tree_description_parser2.o -MD -MP -MF $(DEPDIR)/tree_description_parser2.Tpo -c -o tree_description_parser2.o `test -f '$(NEXDIR)/tree_description_parser2.cpp' || echo '$(srcdir)/'`$(NEXDIR)/tree_description_parser2.cpp
+	$(am__mv) $(DEPDIR)/tree_description_parser2.Tpo $(DEPDIR)/tree_description_parser2.Po
+#	source='$(NEXDIR)/tree_description_parser2.cpp' object='tree_description_parser2.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tree_description_parser2.o `test -f '$(NEXDIR)/tree_description_parser2.cpp' || echo '$(srcdir)/'`$(NEXDIR)/tree_description_parser2.cpp
+
+tree_description_parser2.obj: $(NEXDIR)/tree_description_parser2.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT tree_description_parser2.obj -MD -MP -MF $(DEPDIR)/tree_description_parser2.Tpo -c -o tree_description_parser2.obj `if test -f '$(NEXDIR)/tree_description_parser2.cpp'; then $(CYGPATH_W) '$(NEXDIR)/tree_description_parser2.cpp'; else $(CYGPATH_W) '$(srcdir)/$(NEXDIR)/tree_description_parser2.cpp'; fi`
+	$(am__mv) $(DEPDIR)/tree_description_parser2.Tpo $(DEPDIR)/tree_description_parser2.Po
+#	source='$(NEXDIR)/tree_description_parser2.cpp' object='tree_description_parser2.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o tree_description_parser2.obj `if test -f '$(NEXDIR)/tree_description_parser2.cpp'; then $(CYGPATH_W) '$(NEXDIR)/tree_description_parser2.cpp'; else $(CYGPATH_W) '$(srcdir)/$(NEXDIR)/tree_description_parser2.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -823,6 +858,11 @@ uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS
 	tags uninstall uninstall-am uninstall-binPROGRAMS \
 	uninstall-binSCRIPTS
 
+
+$(NEXDIR)/tree_description_parser2.cpp: $(NEXDIR)/tree_description_parser2.yy
+	(cd $(NEXDIR) && bison -d -o $(NEXDIR)/tree_description_parser2.cpp $(NEXDIR)/tree_description_parser2.yy && echo -e "#include <string>\n#include <node.hpp>\n#include <util.hpp>" > tree_description_parser2.hpp.tmp && cat tree_description_parser2.hpp >> tree_description_parser2.hpp.tmp && mv tree_description_parser.2.hpp.tmp tree_description_parser2.hpp)
+$(NEXDIR)/tree_description_scanner2.cpp: $(NEXDIR)/tree_description_scanner2.l $(NEXDIR)/tree_description_parser2.cpp
+	flex -o $(NEXDIR)/tree_description_scanner2.cpp $(NEXDIR)/tree_description_scanner2.l
 
 extract_trees.pl: $(NEXDIR)/extract_trees.pl
 	cp $(NEXDIR)/extract_trees.pl .
