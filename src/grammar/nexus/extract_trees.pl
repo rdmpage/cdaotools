@@ -29,15 +29,13 @@ while (<TREEIN>){
     $tree_title = $1;
     $isRooted{ $tree_title }   = $2;
     $tree_description = $3;
+    $tree_description =~ s/;//g;
      foreach my $key (keys %taxon_ids){
 #print "\"$key\"\n";
        $tree_description =~ s/,$key,/,$taxon_ids{$key},/;
        $tree_description =~ s/\($key,/\($taxon_ids{$key},/;
        $tree_description =~ s/,$key\)/,$taxon_ids{$key}\)/;
-       $tree_description =~ s/,(\d+),/,n$1,/;
-       $tree_description =~ s/\((\d+),/\(n$1,/;
-       $tree_description =~ s/,(\d+)\)/,n$1\)/;
-     }
+    }
      $trees{ $tree_title } = $tree_description;
 #print "Tree title: $tree_title description: $tree_description\n";
   }
@@ -54,6 +52,12 @@ foreach my $key ( keys %taxon_ids ){
 #Print the list of Trees.
 foreach my $tree ( keys %trees ){
     #my $quoted_strings_removed =~ s/\'(.*)\'/$1/g;
-    print "TREE $tree $isRooted{ $tree } $trees{ $tree };\n";
+       $tree_description = $trees{ $tree };
+       $tree_description =~ s/,(\d+),/,n$1,/g;
+       $tree_description =~ s/,(\d+),/,n$1,/g;
+       $tree_description =~ s/\((\d+),/\(n$1,/g;
+       $tree_description =~ s/,(\d+)\)/,n$1\)/g;
+ 
+    print "TREE $tree $isRooted{ $tree } $tree_description;\n";
 }
 #print "END;";
