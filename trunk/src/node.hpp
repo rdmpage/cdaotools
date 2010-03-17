@@ -97,7 +97,7 @@ namespace CDAO {
     /*
      * Set the ancestor of the node.
      */
-    void setAncestor(Node* ancestor){ this->ancestor_ = ancestor; }
+    void setAncestor(const Node* ancestor){ this->ancestor_ = ancestor; }
     /*
      * Get descendants of the node.
      */
@@ -110,7 +110,7 @@ namespace CDAO {
     /*
      * Add a descendant to the node.
      */
-    void addDescendant(const Node* descendant ){ descendants_.push_back(descendant); }
+    void addDescendant(const Node* descendant ){ if(descendant){ descendants_.push_back(descendant); } }
     /*
      * Print a representation of the tree.
      */

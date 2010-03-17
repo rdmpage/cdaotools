@@ -142,6 +142,7 @@ void read_input( vector< wstring >& taxa, map< wstring, Node* >& trees ){
         FILE* nkwf = fopen( nwkdataf , "r");
 	//fputs( CDAO::wstr_to_str(newick_data).c_str(), nkwf  );
 	yyin = nkwf;
+	//wcerr << "Parsing tree: " << newick_data << endl;
 	yyparse(); 
 	fclose( nkwf );
 	unlink( nwkdataf );

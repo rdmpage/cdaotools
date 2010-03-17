@@ -42,24 +42,25 @@ extern CDAO::Node* pTree;
 
 parse_tree: tree { pTree = $1; }
     ; 
-tree: '(' tree_list ')' label { $$ = $2; $$->setLabel( $4->getLabel() ); delete $4; }
-    | '(' tree_list ')' { $$ = $2; }
-    | '(' ',' ')' { $$ = new CDAO::Node(CDAO::labelMaker(L"node")); }
+tree: '(' tree_list ')' label { $$ = $4; $$->addDescendant( $2 ); $2->setAncestor( $4  ); }
+    | '(' tree_list ')' { $$ = new CDAO::Node( CDAO::labelMaker(L"node") ); $$->addDescendant( $2 ); $2->setAncestor( $$ );  }
+    | '(' ',' ')' { $$ = new CDAO::Node(CDAO::labelMaker(L"node"));  }
     ;
 
-tree_list: tree { /*fprintf(stderr, "tree\n");*/ $$ = $1; }
-         | label { /*fprintf(stderr, "label\n");*/ $$ = $1; }
-         | tree ',' tree_list { /*fprintf(stderr, "tree, tree_list\n");*/ $$ = new CDAO::Node(CDAO::labelMaker(L"node")); $$->addDescendant($1); $$->addDescendant($3);}
-         | label ',' tree_list { /*fprintf(stderr, "label, treelist");*/ $$ = new CDAO::Node(CDAO::labelMaker(L"node")); $$->addDescendant($1); $$->addDescendant($3);}
+tree_list: tree {  $$ = $1; }
+         | label { $$ = $1; }
+         | tree ',' tree_list {  $$ = $3; $$->addDescendant( $1 ); $1->setAncestor( $3 ); }
+         | label ',' tree_list { $$ = $3; $$->addDescendant( $1 ); $1->setAncestor( $3 );  }
          ;
 
 label: id { /*fprintf(stderr, "Identifer\n");*/ $$ = $1; /*fprintf(stderr, "allocated node\n");*/ }
      | id ':' CONST { $$ = $1; $$->setWeight($3);  }
      | id ':' id { $$ = $1;  }
+     | ':' CONST { $$ = new CDAO::Node(CDAO::labelMaker(L"node")); $$->setWeight( $2 ); }
 /*     | CONST { $$ = new CDAO::Node(CDAO::labelMaker(L"constnode") ); }*/
      ;
 
-id: IDENTIFIER { $$ = new CDAO::Node( *($1) );  }
+id: IDENTIFIER { $$ = new CDAO::Node( *($1) ); /*wcerr << "Identifier: " << *$1  << endl;*/ }
    | QUOTED_STRING { $$ = new CDAO::Node( *($1) ); }
    ;
 
