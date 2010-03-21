@@ -72,7 +72,7 @@ cat << EOM
     -->
    <div resource="$XMLNS$TREE_NAME">
       <div resource="">
-          In $TREE_NAME the minimume spannning clade of $NODE_SET
+          In $TREE_NAME the minimum spannning clade of $NODE_SET
           <div rel="">
              <div resource="#node_set" style="position: relative; top: 0px; left: 30px;">
 EOM
