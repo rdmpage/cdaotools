@@ -63,13 +63,14 @@ echo "<!-- EDGE_QUERY: $EDGE_QUERY -->"
 echo "<div class=\"main-content\" style=\"scroll: auto;\">"
 echo "<h1>Cdao Store Query System</h1>"
 echo "<p><a href="../../cdao-store/index.html"><img src=\"../../cdao-triplestore-logo.jpg\" alt=\"Cdao-Store Logo\" style=\"border: 0px;\" /></a></p>"
-echo "<table><form action=\"../nca/html\" metod=\"get\">"
+echo "<table><form action=\"../node/html\" metod=\"get\">"
+echo "Nearest Common Ancestor: <input type=\"radio\" name=\"qtype\" checked=\"checked\" value=\"nca\" /> Minimum Spanning Clade <input type=\"radio\" name=\"qtype\" value=\"msc\"/>"
 echo "<input type="hidden" id=\"tree\" name=\"tree\" value=\"$TREE_NAME\">"
 echo "<input type=\"hidden\" id=\"file\" name=\"file\" value=\"$TFILE\"/>"
 echo "<input type=\"hidden\" id=\"type\" name=\"type\" value=\"$TREETYPE\"/>"
 #Query to get the nodes.
 do_query.py "$GRAPH_CONFIG"  "$XMLNS" "$NODE_QUERY" "<tr><td>%s</td><td><input type=\"checkbox\" id=\"node\" name=\"node\" value=\"%s\"></td></td>" | sort | uniq;
-echo "<tr><td colspan=\"2\"><input class=\"button\"type=\"submit\" value=\"Nearest Common Ancestor\"/><input class=\"button\" type=\"reset\" value=\"Reset\"/><td></tr>"
+echo "<tr><td colspan=\"2\"><input class=\"button\"type=\"submit\" value=\"Submit\"/><input class=\"button\" type=\"reset\" value=\"Reset\"/><td></tr>"
 echo "</form></table>"
 echo "</div>"
 

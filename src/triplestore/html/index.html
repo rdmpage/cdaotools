@@ -41,22 +41,16 @@
                         <p property="dc:description">Retrive a tree from the triple-store in specified format.</p>
                         <ul>
                            <li>
-                              <form action="../cgi-bin/tree/nexml" method="get">
-                                  <p about="cdao:Tree"><span>Tree:</span><input type="text" class="text" id="nex-tree" name="tree"/>
-                                  <input type="submit" class="button" id="nex-tree-sumbit" value="NeXML"/></p>
+                              <form action="../cgi-bin/tree/query" method="get">
+                                  <p>NeXML: <input type="radio" name="format" value="nexml"/>
+                                     GraphML: <input type="radio" name="format" value="graphml"/>
+                                     Prolog: <input type="radio" name="format" value="prolog"/>
+                                     HTML: <input type="radio" name="format" value="html"/>
+                                   </p>
+                                  <p about="cdao:Tree"><span>Tree:</span><input type="text" class="text" id="tree" name="tree"/><br/>
+                                   <input type="submit" value="Submit"/>
+                                  </p>
                               </form>
-                            </li>
-                            <li>
-                               <form action="../cgi-bin/tree/prolog" method="get">
-                                  <p about="cdao:Tree"><span>Tree:</span><input type="text" class="text" id="pro-tree" name="tree"/>
-                                  <input type="submit" class="button" id="pro-tree-submit" value="Prolog"/></p>
-                               </form>
-                            </li>
-                            <li>
-                               <form action="../cgi-bin/tree/graphml" method="get">
-                                  <p about="cdao:Tree"><span>Tree:</span><input type="text" class="text" id="graph-tree" name="tree"/>
-                                  <input type="submit" class="button" id="graph-tree-submit" value="GraphML"/></p>
-                               </form>
                             </li>
                         </ul>
                     </li>
