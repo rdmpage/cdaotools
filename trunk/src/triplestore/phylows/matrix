@@ -1,0 +1,10 @@
+#!/bin/bash
+#Script to load and translate matrices on the fly from treebase into cdao.
+#Brandon Chisham
+#March 21, 2010
+
+MATRIX_QUERY=`echo $REQUEST_URI | grep -oE "/[a-zA-Z0-9:]*$"`;
+TREEBASE_URL="http://purl.org/phylo/treebase/phylows/matrix"
+echo -e "Content-type: application/xml\n\n"
+
+curl -L --compressed "$TREEBASE_URL$MATRIX_QUERY?format=rdf"
