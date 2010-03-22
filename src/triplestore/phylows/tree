@@ -1,0 +1,25 @@
+#!/bin/bash
+#Brandon Chisham
+#March 21, 2010
+
+#Script to implement phylows querying for tress in the triple store.
+
+source /home/grad6/bchisham/.bashrc
+
+TREE_NAME=$( echo $REQUEST_URI | grep -oE "[-_a-zA-Z0-9]*$")
+FILE_NAME=$(grep "$TREE_NAME" tree_to_file.dat | cut -d' ' --fields=1)
+BASE_URI="http://www.cs.nmsu.edu/~epontell"
+
+TREE_URI="$BASE_URI/$FILE_NAME#$TREE_NAME"
+
+NODE_QUERY="SELECT ?s WHERE { ?s cdao:part_of <$TREE_URI>.   }"
+EDGE_QUERY="SELECT ?src ?dest WHERE { ?src cdao:part_of <$TREE_URI>.  ?dest cdao:part_of <$TREE_URI>. ?src cdao:has_Child ?dest. }"
+
+echo -e "Content-type: text/plain\n\n"
+
+#echo "$TREE_NAME"
+echo "<rdf:RDF>"
+echo "<cdao:Tree rdf:about=\"$TREE_URI\">"
+do_query.py "$TRIPLESTORE_CONFIG_STRING" "$TREE_URI"  "$NODE_QUERY" "<cdao:Node rdf:about=\"%s\"/>" "$EDGE_QUERY" "<cdao:Edge><cdao:Parent rdf:resource=\"%s\"/> <cdao:Child rdf:resource=\"%s\"/></cdao:Edge>"
+echo "</cdao:Tree>"
+echo "</rdf:RDF>"
