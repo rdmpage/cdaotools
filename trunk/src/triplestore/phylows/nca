@@ -1,0 +1,25 @@
+#!/bin/bash
+#Brandon Chisham
+#March 22, 2010
+#Script to implement Phylows version of the NCA query.
+
+source /home/grad6/bchisham/.bashrc
+
+TREE_NAME=$(echo $REQUEST_URI | grep -oE "nca/[a-zA-Z0-9]*/" | sed 's/nca\///' | sed 's/\/$//g' )
+FILE_NAME=$(grep "$TREE_NAME" tree_to_file.dat | cut -d' ' --fields=1 )
+XMLNS="http://www.cs.nmsu.edu/~epontell/$FILE_NAME#"
+
+NODE_SET=$(echo $REQUEST_URI | grep -oE "$TREE_NAME/.*$" | sed "s/$TREE_NAME//" | sed "s/\// /g")
+
+echo -e "Content-type: text/plain; charset: utf-8\n\n"
+
+echo "TREE_NAME: $TREE_NAME"
+
+
+NODE_QUERY=$(do_node_query_construct.sh "$XMLNS$TREE_NAME" )
+EDGE_QUERY=$(do_edge_query_construct.sh "$XMLNS$TREE_NAME" )
+
+echo -e "/* NODE_QUERY: $NODE_QUERY \n EDGE_QUERY: $EDGE_QUERY */"
+echo -e "/* NODE_SET: $NODE_SET */"
+
+do_query.py "$TRIPLESTORE_CONFIG_STRING" "$XMLNS" "$NODE_QUERY" "node( '$TREE_NAME', '%s', '%s')." "$EDGE_QUERY" "edge( '$TREE_NAME', '%s', '%s', '%s')."
