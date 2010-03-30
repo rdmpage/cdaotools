@@ -13,8 +13,10 @@ export TREE_NAME="$2"
 export XMLNS="$3"
 export TYPE="$4"
 export NODE_SET=`echo "$5" |  sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g" | sed "s/%23/#/g" | sed "s/%20/ /g"`
+export NODE_PATH=$( echo $NODE_SET | sed 's/.*#//g' | perl -p -n -e 's/ /\//g' )
+export PHYLOWS_NCA="http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/nca"
 
-
+NCA_NODE=$( curl "$PHYLOWS_NCA/$TREE_NAME/$NODE_PATH" | grep "Node" | grep -oE "http://[-_.~/#a-zA-Z0-9]*" )
 
 cat << EOM
 <?xml version="1.0" encoding="UTF-8"?>
@@ -39,52 +41,25 @@ cat << EOM
  <div class="main-content" style="scroll: auto;">
  <h1>Cdao Store Query System</h1>
  <p><a href="../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a></p>
-EOM
 
-export TMP_RULES=`mktemp`".pl";
-#export TMP_GOAL=`mktemp`;
-do_prolog_nca_query.sh "$1" "$2" "$3" "$4" "$5" > $TMP_RULES
-#RULES_LEN=$(wc -l $TMP_RULES)
-#PRED_LEN=$[ $RULES_LEN - 1 ]
-CONSULT="consult( '$TMP_RULES' )."
-QUERY_GOAL=$(tail -n 1 $TMP_RULES)
-
-#echo "$CONSULT" > $TMP_GOAL
-#echo "$QUERY_GOAL" >> $TMP_GOAL
-#echo "halt( 0 )." >> $TMP_GOAL
-#echo -e "\n" >> $TMP_GOAL
-PROLOG_OUT=`mktemp`.prolog.out
-echo -e "consult('$TMP_RULES').\n$QUERY_GOAL\nhalt.\n\n" | pl -g "true" 2>"$PROLOG_OUT"
-NCA_NODE=`cat "$PROLOG_OUT" | grep  -oE "'http.*'" | sed "s/'//g"`
-rm -f "$TMP_RULES" "$PROLOG_OUT" #$TMP_GOAL
-
-cat << EOM
-   <!-- 
-         GOAL: "$QUERY_GOAL"
-         RULES: "$TMP_RULES"
-         PROLOG_OUT: "$PROLOG_OUT"
-    -->
    <div resource="$XMLNS$TREE_NAME">
       <div resource="$NCA_NODE">
-          In $TREE_NAME, $NCA_NODE is the nearest common ancestor of....
+          In <a href="http://www.cs.nmsu.edu/~bchisham/cgi-bin/tree/query?format=html&amp;tree=$TREE_NAME">$TREE_NAME</a>, $NCA_NODE is the nearest common ancestor of....
           <div rel="cdao:nca_node_of">
              <div resource="#node_set" style="position: relative; top: 0px; left: 30px;">
-EOM
-          for i in $NODE_SET; do 
-                N=`echo $i | sed 's/.*#//g'`
-                echo "<p rel=\"cdao:has_Element\" href=\"$i\"><a href=\"http://www.google.com/search?q=$N\">$N</a></p>"
-          done 
-cat << EOM
+             $(
+               for i in $NODE_SET; do 
+                  N=`echo $i | sed 's/.*#//g'` | sed 's/_/ /g'
+                  echo "<p rel=\"cdao:has_Element\" href=\"$i\"><a href=\"http://www.google.com/search?q=$(echo $N | sed 's/ /%22/g' )\">$N</a></p>"
+                done 
+              )
          </div>
        </div>
      </div>
    </div>
-EOM
-
-cat << EOM
 <p>
    <a href="$CDAO_STORE_URI">Home</a><br/>
-   <a href="../tree/html?tree=$TREE_NAME">Find NCA of another Set</a>
+   <a href="../tree/query?format=html&amp;tree=$TREE_NAME">Find NCA of another Set</a>
 </p>
 <p about=""
      resource="http://www.w3.org/TR/rdfa-syntax"

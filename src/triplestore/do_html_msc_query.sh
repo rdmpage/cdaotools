@@ -14,8 +14,8 @@ export XMLNS="$3"
 export TYPE="$4"
 export UNPARSED_NODE_SET="$5"
 export NODE_SET=`echo "$5" |  sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g" | sed "s/%23/#/g" | sed "s/%20/ /g"`
-
-
+export NODE_PATH=$( echo $NODE_SET | sed 's/.*#//g' | perl -p -n -e 's/ /\//g' )
+export PHYLOWS_MSC="http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/msc"
 
 cat << EOM
 <?xml version="1.0" encoding="UTF-8"?>
@@ -42,43 +42,19 @@ cat << EOM
  <p><a href="../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a></p>
 EOM
 
-export TMP_RULES=`mktemp`".pl";
-#export TMP_GOAL=`mktemp`;
-do_prolog_msc_query.sh "$GRAPH_CONFIG" "$TREE_NAME" "$XMLNS" "$TYPE" "$UNPARSED_NODE_SET" > $TMP_RULES
-#RULES_LEN=$(wc -l $TMP_RULES)
-#PRED_LEN=$[ $RULES_LEN - 1 ]
-CONSULT="consult( '$TMP_RULES' )."
-QUERY_GOAL=$(tail -n 1 $TMP_RULES)
-
-PROLOG_EXE=`mktemp`
-
-#echo "$CONSULT" > $TMP_GOAL
-#echo "$QUERY_GOAL" >> $TMP_GOAL
-#echo "halt( 0 )." >> $TMP_GOAL
-#echo -e "\n" >> $TMP_GOAL
-PROLOG_OUT=`mktemp`.prolog.out
-
-pl -o "$PROLOG_EXE" -c "$TMP_RULES"
-
-prolog_exe_driver "$PROLOG_EXE" "$TMP_GOAL" >"$PROLOG_OUT"
-MSC_NODE=`cat "$PROLOG_OUT" | grep  -oE "'http.*'" | sed "s/'//g"`
+MSC_NODES=$(curl "$PHYLOWS_MSC/$TREE_NAME/$NODE_PATH" | grep "has_Element" | grep  -oE "http://[-_.~#/a-zA-Z0-9]*")
 rm -f "$TMP_RULES" "$PROLOG_OUT" #$TMP_GOAL
 
 cat << EOM
-   <!-- 
-         GOAL: "$QUERY_GOAL"
-         RULES: "$TMP_RULES"
-         PROLOG_OUT: "$PROLOG_OUT"
-    -->
    <div resource="$XMLNS$TREE_NAME">
       <div resource="">
-          In $TREE_NAME the minimum spannning clade of $NODE_SET
+          In <a href="http://www.cs.nmsu.edu/~bchisham/cgi-bin/tree/query?format=html&amp;tree=$TREE_NAME">$TREE_NAME</a> the minimum spannning clade of<br/> $NODE_SET
           <div rel="">
              <div resource="#node_set" style="position: relative; top: 0px; left: 30px;">
 EOM
-          for i in $NODE_SET; do 
-                N=`echo $i | sed 's/.*#//g'`
-                echo "<p rel=\"cdao:has_Element\" href=\"$i\"><a href=\"http://www.google.com/search?q=$N\">$N</a></p>"
+          for i in $MSC_NODES; do 
+                N=`echo $i | sed 's/.*#//g' | sed 's/_/ /g'`
+                echo "<div rel=\"cdao:has_Element\" href=\"$i\"><a href=\"http://www.google.com/search?q=$(echo $N | sed 's/ /%22/g')\">$N</a></div>"
           done 
 cat << EOM
          </div>
@@ -90,7 +66,7 @@ EOM
 cat << EOM
 <p>
    <a href="$CDAO_STORE_URI">Home</a><br/>
-   <a href="../tree/html?tree=$TREE_NAME">Find MSC of another Set</a>
+   <a href="../tree/query?format=html&amp;tree=$TREE_NAME">Find MSC of another Set</a>
 </p>
 <p about=""
      resource="http://www.w3.org/TR/rdfa-syntax"
