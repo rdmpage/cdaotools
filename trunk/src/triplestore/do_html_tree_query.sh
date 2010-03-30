@@ -69,7 +69,7 @@ echo "<input type="hidden" id=\"tree\" name=\"tree\" value=\"$TREE_NAME\">"
 echo "<input type=\"hidden\" id=\"file\" name=\"file\" value=\"$TFILE\"/>"
 echo "<input type=\"hidden\" id=\"type\" name=\"type\" value=\"$TREETYPE\"/>"
 #Query to get the nodes.
-do_query.py "$GRAPH_CONFIG"  "$XMLNS" "$NODE_QUERY" "<tr><td>%s</td><td><input type=\"checkbox\" id=\"node\" name=\"node\" value=\"%s\"></td></td>" | sort | uniq;
+do_query.py "$GRAPH_CONFIG"  "$XMLNS" "$NODE_QUERY" "<tr><td>%s</td><td><input type=\"checkbox\" id=\"node\" name=\"node\" value=\"%s\"></td></td>" | sed 's/http:[-_~./a-zA-Z0-9]*#//g' | sort | uniq;
 echo "<tr><td colspan=\"2\"><input class=\"button\"type=\"submit\" value=\"Submit\"/><input class=\"button\" type=\"reset\" value=\"Reset\"/><td></tr>"
 echo "</form></table>"
 echo "</div>"

@@ -134,7 +134,7 @@ if [[ "$TREE" != "" ]]; then
   responseheader;
  # echo $NODE_SET
 #  echo "<p>running query:<br/>$SPARQL_QUERY</p>"
-  ssh vm1.cs.nmsu.edu "cd public_html/cgi-bin && do_'$RESPONSE_TYPE'_'$QUERY_TYPE'_query.sh \"$TRIPLESTORE_CONFIG_STRING\" \"$TREE\" \"$XML_BASE/$TFILE#\" \"$TREE_TYPE\" \"$NODE_SET\""
+  ssh daedalus.cs.nmsu.edu "cd public_html/cgi-bin && do_'$RESPONSE_TYPE'_'$QUERY_TYPE'_query.sh \"$TRIPLESTORE_CONFIG_STRING\" \"$TREE\" \"$XML_BASE/$TFILE#\" \"$TREE_TYPE\" \"$NODE_SET\""
   responsefooter
 else
 
