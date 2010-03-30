@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <signal.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
@@ -14,6 +15,9 @@
 #define BUFF_SIZE LINE_MAX
 #define READ_END 0
 #define WRITE_END 1
+#define SLEEP_TIME 750
+void hup_handler( int );
+
 
 /*
  * Driver program to fake interactivity with the prolog shell.
@@ -31,6 +35,7 @@ int main( int argc, char** argv ){
   //FILE* pipe_in = NULL;
   //FILE* pipe_out = NULL;
   pid_t prolog_proc;
+  pid_t writer_proc;
   //pid_t driver_proc;
   //int ch;
   int pstats;
@@ -49,17 +54,20 @@ int main( int argc, char** argv ){
   /*
    * Start the sepecified compliled prolog program.
    */
-  if ( (prolog_proc = fork()) ){
+  if ( (prolog_proc = fork()) == 0 ){
        close(driver_to_prolog[WRITE_END]);
        close(prolog_to_driver[READ_END] );
+       close( STDOUT_FILENO );
        if (dup2( driver_to_prolog[READ_END], STDIN_FILENO ) < 0){ perror("error duping stdin"); exit(1);}
       // if (dup2(prolog_to_driver[WRITE_END], STDOUT_FILENO) < 0){ perror("error duping stdout"); exit(1); }
        if (dup2(prolog_to_driver[WRITE_END], STDERR_FILENO) < 0){ perror("error duping stderr"); exit(1); }
-       if (execlp(argv[1], argv[1])<0){ perror("error starting prolog executable"); exit(1); }
+       if (execlp(argv[1], argv[1], "-tty")<0){ perror("error starting prolog executable"); exit(1); }
   }
   //close the descriptiors the parent won't be using.
   close( driver_to_prolog[READ_END] );
   close( prolog_to_driver[WRITE_END] );
+  
+  signal( SIGHUP, hup_handler );
   //initialize the output buffer
   bzero( out_buff, BUFF_SIZE );
   //copy the goal state into the output buffer appending newline.
@@ -75,7 +83,7 @@ int main( int argc, char** argv ){
     bzero( out_buff, BUFF_SIZE );
     //read the result of the last operation.
     read_size = read( prolog_to_driver[READ_END], in_buff, BUFF_SIZE );
-    if ( strncmp(in_buff, "false.", sizeof("false.")-1) == 0 ) break;
+    if (!read_size ||  strncmp(in_buff, "false.", sizeof("false.")-1) == 0 ) break;
     printf("%s\n", in_buff);
     bzero( out_buff, BUFF_SIZE );
     //fgets(out_buff, BUFF_SIZE, stdin);
@@ -95,8 +103,16 @@ int main( int argc, char** argv ){
     write(driver_to_prolog[ WRITE_END ], out_buff, len );
     close(driver_to_prolog[ WRITE_END ]);
     close(prolog_to_driver[READ_END]);
-    waitpid( prolog_proc, &pstats, 0 );
+    fflush( stdout );
+    //fprintf(stderr, "Waiting for child to exit\n");
+    waitpid( prolog_proc, &pstats, WNOHANG );
+    //wait( &pstats );
+    //usleep( SLEEP_TIME );
+     kill( prolog_proc, SIGTERM );
+    //fprintf(stderr, "Nothing left to do\n");
+    
+
   return 0;
 }
 
-
+void hup_handler(int ign){ fprintf(stderr, "HUP handler\n"); exit( 0 ); }
