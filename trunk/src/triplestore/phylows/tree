@@ -6,7 +6,7 @@
 
 source /home/grad6/bchisham/.bashrc
 
-TREE_NAME=$( echo $REQUEST_URI | grep -oE "[-_a-zA-Z0-9]*$")
+TREE_NAME=$( echo $REQUEST_URI | sed "s/\?$QUERY_STRING//"  | grep -oE "[-_a-zA-Z0-9]*$" )
 FILE_NAME=$(grep "$TREE_NAME" tree_to_file.dat | cut -d' ' --fields=1)
 BASE_URI="http://www.cs.nmsu.edu/~epontell"
 
@@ -15,10 +15,19 @@ TREE_URI="$BASE_URI/$FILE_NAME#$TREE_NAME"
 NODE_QUERY="SELECT ?node ?edge WHERE { ?node cdao:part_of <$TREE_URI>.  ?edge cdao:has_Parent_Node ?node.  }"
 EDGE_QUERY="SELECT ?edge ?src ?dest WHERE { ?src cdao:part_of <$TREE_URI>.  ?dest cdao:part_of <$TREE_URI>. ?edge cdao:has_Child_Node ?dest. ?edge cdao:has_Parent_Node ?src. }"
 
-echo -e "Content-type: text/xml\n\n"
+FORMAT=$(echo $QUERY_STRING | grep -oE "format=[a-zA-Z]*" | cut -d= --fields=2)
 
-#echo "$TREE_NAME"
-echo "<rdf:RDF xmlns=\"http://www.evolutionaryontology.org/cdao.owl#\"
+if [[ "$FORMAT" != "" ]]; then
+   echo -e -n "Content-type: text/plain\n\n"
+   echo -e "/* TREE: $TREE_NAME FORMAT: $FORMAT  */"
+   do_query.py "$TRIPLESTORE_CONFIG_STRING" "$XMLNS" "$NODE_QUERY" "node( '$TREE_NAME', '%s', '%s')." "$EDGE_QUERY" "edge( '$TREE_NAME','directional', '%s', '%s', '%s')."
+   cat ancestor_of.pl
+else
+
+   echo -e -n "Content-type: text/xml\n\n"
+
+   #echo "$TREE_NAME"
+   echo "<rdf:RDF xmlns=\"http://www.evolutionaryontology.org/cdao.owl#\"
      xml:base=\"http://www.evolutionaryontology.org/cdao.owl\"
      xmlns:owl2xml=\"http://www.w3.org/2006/12/owl2-xml#\"
      xmlns:cdao=\"http://www.evolutionaryontology.org/cdao.owl#\"
@@ -29,9 +38,10 @@ echo "<rdf:RDF xmlns=\"http://www.evolutionaryontology.org/cdao.owl#\"
      xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"
      xmlns:owl=\"http://www.w3.org/2002/07/owl#\">"
 
-echo -e "<!-- NODE: $NODE_QUERY \n EDGE: $EDGE_QUERY \n REQUEST_URI: $REQUEST_URI \n  -->"
-echo "<owl:Ontology rdf:about=\"\"></owl:Ontology>"
-echo "<cdao:Tree rdf:resource=\"$TREE_URI\"/>"
-do_query.py "$TRIPLESTORE_CONFIG_STRING" "$TREE_URI"  "$NODE_QUERY" "<cdao:Node rdf:resource=\"%s\"><cdao:part_of rdf:resource=\"$TREE_URI\"/><cdao:has_Edge rdf:resource=\"%s\" ></cdao:Node>" "$EDGE_QUERY" "<cdao:DirectedEdge rdf:resource=\"%s\"><cdao:part_of rdf:resource=\"$TREE_URI\"/>  <cdao:has_Parent_Node rdf:resource=\"%s\"/> <cdao:has_Child_Node rdf:resource=\"%s\"/></cdao:DirectedEdge>" 
-#echo "</cdao:Tree>"
-echo "</rdf:RDF>"
+   echo -e "<!-- NODE: $NODE_QUERY \n EDGE: $EDGE_QUERY \n REQUEST_URI: $REQUEST_URI \n  -->"
+   echo "<owl:Ontology rdf:about=\"\"></owl:Ontology>"
+   echo "<cdao:Tree rdf:resource=\"$TREE_URI\"/>"
+   do_query.py "$TRIPLESTORE_CONFIG_STRING" "$TREE_URI"  "$NODE_QUERY" "<cdao:Node rdf:resource=\"%s\"><cdao:part_of rdf:resource=\"$TREE_URI\"/><cdao:has_Edge rdf:resource=\"%s\" ></cdao:Node>" "$EDGE_QUERY" "<cdao:DirectedEdge rdf:resource=\"%s\"><cdao:part_of rdf:resource=\"$TREE_URI\"/>  <cdao:has_Parent_Node rdf:resource=\"%s\"/> <cdao:has_Child_Node rdf:resource=\"%s\"/></cdao:DirectedEdge>" 
+   #echo "</cdao:Tree>"
+   echo "</rdf:RDF>"
+fi

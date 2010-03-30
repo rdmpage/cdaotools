@@ -58,9 +58,9 @@ PROLOG_EXE=`mktemp`
 #echo -e "\n" >> $TMP_GOAL
 PROLOG_OUT=`mktemp`.prolog.out
 
-pl -o "$PROLOG_EXE" -c $TMP_RULES""
+pl -o "$PROLOG_EXE" -c "$TMP_RULES"
 
-prolog_exe_driver "$TMP_GOAL" "$PROLOG_EXE" >"$PROLOG_OUT"
+prolog_exe_driver "$PROLOG_EXE" "$TMP_GOAL" >"$PROLOG_OUT"
 MSC_NODE=`cat "$PROLOG_OUT" | grep  -oE "'http.*'" | sed "s/'//g"`
 rm -f "$TMP_RULES" "$PROLOG_OUT" #$TMP_GOAL
 

@@ -1,0 +1,104 @@
+#!/bin/bash
+#Brandon Chisham
+#March 29, 2010
+#Script to implement PhyloWS Minimum spanning clade query for the CDAO store.
+
+source /home/grad6/bchisham/.bashrc
+export TMP_DIR="./"
+NCA_NODE=$(curl "http://$SERVER_NAME$( echo $REQUEST_URI | sed 's/msc/nca/')" | grep "cdao:Node" | grep -oE "http://[-~/_.a-zA-Z0-9#]*")
+echo -e "Content-type: text/xml; charset utf-8\n\n"
+#echo "%$NCA_NODE"
+
+TREE_NAME=$(echo $REQUEST_URI | grep -oE "msc/[a-zA-Z0-9]*/" | sed 's/msc\///' | sed 's/\/$//g' )
+FILE_NAME=$(grep "$TREE_NAME" tree_to_file.dat | cut -d' ' --fields=1 )
+XMLNS="http://www.cs.nmsu.edu/~epontell/$FILE_NAME#"
+EXMLNS="http:\/\/www.cs.nmsu.edu\/~epontell\/$FILE_NAME#"
+
+NODE_SET=$(echo $REQUEST_URI | grep -oE "$TREE_NAME/.*$" | sed "s/$TREE_NAME//" | sed "s/\// $EXMLNS/g")
+CSV_NODE_SET=$( echo $NODE_SET | sed "s/ /','/g" | sed "s/,$//" )
+CSV_NODE_SET="$CSV_NODE_SET"
+#QSTRING_FORMAT_NODES=$(echo $NODE_SET | sed 's/ $EXMLNS/&node=$EXMLNS/g')
+
+
+NODE_COUNT=$(echo "$NODE_SET" | wc -w )
+
+TMP_RULES="$(mktemp | perl -p -n -e 's/\/tmp\///').pl"
+PROLOG_EXE=$(mktemp | perl -p -n -e 's/\/tmp\///')
+
+
+curl "http://$SERVER_NAME$(echo $REQUEST_URI | sed 's/msc.*/tree/')/$TREE_NAME?format=prolog" > "$TMP_RULES"
+
+NCA_FACT="nearest_common_ancestor_of( '$TREE_NAME', '$NCA_NODE', '$CSV_NODE_SET')."
+VAR_DEFS=""
+COMMON_ANCESTOR_OF="common_ancestor_of( Tree, Ancestor "
+COMMON_ANCESTOR_TAIL=""
+
+for i in $(seq 1 "$NODE_COUNT"); do
+   VAR_DEFS="$VAR_DEFS, N$i"
+   COMMON_ANCESTOR_TAIL="$COMMON_ANCESTOR_TAIL, ancestor_of( Tree, Ancestor, N$i )"
+
+done
+
+
+NCA_PRED_HEAD="nearest_common_ancestor_of( Tree, Ancestor "
+DIS_PRED_HEAD="distant_common_ancestor_of( Tree, Ancestor "
+CSV_NODE_VARS=""
+COMMON_ANCESTOR_TAIL=$(echo "$COMMON_ANCESTOR_TAIL" | sed "s/,//" )
+COMMON_ANCESTOR_OF="$COMMON_ANCESTOR_OF $VAR_DEFS ):- $COMMON_ANCESTOR_TAIL."
+DIS_PRED_HEAD="$DIS_PRED_HEAD $VAR_DEFS )"
+DIS_CA_OF="$DIS_PRED_HEAD:- ancestor_of(Tree, Ancestor, Intermediate), common_ancestor_of( Tree,  Intermediate $VAR_DEFS )."
+NCA_OF="$NCA_PRED_HEAD $VAR_DEFS ):- common_ancestor_of( Tree, Ancestor $VAR_DEFS ), \+  $DIS_PRED_HEAD."
+
+
+
+MSC_HEAD="minimum_spanning_clade_of( TreeName, NcaNode, Node ):- "
+
+MSC_RULE2="$MSC_HEAD nearest_common_ancestor_of( TreeName, NcaNode, '$CSV_NODE_SET' ), ancestor_of( TreeName,'$NCA_NODE', Node)."
+MSC_QUERY="minimum_spanning_clade_of( '$TREE_NAME', '$NCA_NODE', Node)"
+
+echo "$COMMON_ANCESTOR_OF" >> "$TMP_RULES"
+echo "$DIS_CA_OF" >> "$TMP_RULES"
+echo "$NCA_OF" >> "$TMP_RULES"
+
+echo "$MSC_RULE2" >> "$TMP_RULES"
+#cat "$TMP_RULES"
+#echo "findall(Templ, Goal, Bag):- findall( Templ, Goal, Bag, [])." >> "$TMP_RULES"
+
+pl -o "$PROLOG_EXE" -c "$TMP_RULES"
+
+#echo "%PROLOG EXE: $PROLOG_EXE"
+SET_GOAL="setof( Node, $MSC_QUERY, Nodes )." 
+#echo "%QUERY: $MSC_QUERY"
+
+#echo -e "$SET_GOAL\nhalt.\n\n" | "$PWD/$PROLOG_EXE"  -G8g -L8g -T8g
+#This gets clipped off when output is piped directly to grep/sed
+
+MSC_SET=$(prolog_exe_driver "$PWD/$PROLOG_EXE" "$MSC_QUERY." | grep "Node" | grep -oE "http://[-_~.#/a-zA-Z0-9]*" )
+
+cat << EOM
+<rdf:RDF xmlns="http://$SERVER_NAME$REQUEST_URI#"
+     xml:base="http://$SERVER_NAME$REQUEST_URI"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:cdao="http://www.evolutionaryontology.org/cdao.owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:owl2="http://www.w3.org/2006/12/owl2#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#">
+    
+     <owl:Ontology rdf:about=""/>
+     <cdao:SetOfNodes rdf:resource="#msc_set">
+         <cdao:has_Element rdf:resource="$NCA_NODE"/>
+        
+        $(
+             for node in $(echo $MSC_SET); do
+                 echo "<cdao:has_Element rdf:resource=\"$node\"/>"
+             done
+         )
+     </cdao:SetOfNodes>
+</rdf:RDF>
+
+EOM
+
+rm -f "$PROLOG_EXE" "$TMP_RULES" 
