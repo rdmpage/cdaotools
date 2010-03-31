@@ -31,10 +31,11 @@
        } 
 -->
 −
-<key id="d0" for="node" attr.name="IdLabel" attr.type="string"/>
+<key id="d0" for="all" attr.name="IdLabel" attr.type="string"/>
+<key id="d2" for="node" attr.name="Meta" attr.type="string"/>
 <key id="d1" for="edge" attr.name="weight" attr.type="double"/>
 <graph id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Tree3099" edgedefault="directional">
-<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_collina"> <data key="d0">Ilex_collina</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_collina"> <data key="d0">Ilex_collina</data><data key="d2">This is Meta Data</data></node>
 <node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_maximowicziana"><data key="d0">Ilex_maximowicziana</data></node>
 <node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_paraguariensis"><data key="d0">Ilex_paraguariensis</data></node>
 <node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_brevicuspis"><data key="d0">Ilex_brevicuspis</data></node>
@@ -171,7 +172,7 @@
 <node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node42"><data key="d0">node42</data></node>
 <node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node41"><data key="d0">node41</data></node>
 <node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node40"><data key="d0">node40</data></node>
-<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node5_Ilex_crenata" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node5" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_crenata"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node5_Ilex_crenata" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node5" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_crenata"><data key="d0">EDGENAMEnode5_Ilex_crenataEDGENAME</data><data key="d1">15.308</data></edge>
 <edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node5_Ilex_mutchagara" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node5" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_mutchagara"/>
 <edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node6_Ilex_dumosa_dumosa" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node6" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_dumosa_dumosa"/>
 <edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node6_Ilex_dumosa_guaranina" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node6" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_dumosa_guaranina"/>

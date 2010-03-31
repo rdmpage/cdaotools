@@ -2,6 +2,7 @@ package prefuse.demos.applets;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -16,9 +17,14 @@ import prefuse.Visualization;
 import prefuse.action.ActionList;
 import prefuse.action.RepaintAction;
 import prefuse.action.assignment.ColorAction;
+import prefuse.action.distortion.BifocalDistortion;
+import prefuse.action.distortion.Distortion;
+import prefuse.action.distortion.FisheyeDistortion;
+import prefuse.action.filter.FisheyeTreeFilter;
 import prefuse.action.filter.GraphDistanceFilter;
 import prefuse.action.layout.graph.ForceDirectedLayout;
 import prefuse.activity.Activity;
+import prefuse.controls.AnchorUpdateControl;
 import prefuse.controls.DragControl;
 import prefuse.controls.FocusControl;
 import prefuse.controls.NeighborHighlightControl;
@@ -31,6 +37,7 @@ import prefuse.data.Tuple;
 import prefuse.data.event.TupleSetListener;
 import prefuse.data.io.GraphMLReader;
 import prefuse.data.tuple.TupleSet;
+import prefuse.render.CDAOEdgeRenderer;
 import prefuse.render.DefaultRendererFactory;
 import prefuse.render.LabelRenderer;
 import prefuse.util.ColorLib;
@@ -41,6 +48,7 @@ import prefuse.util.ui.JForcePanel;
 import prefuse.util.ui.JPrefuseApplet;
 import prefuse.util.ui.JValueSlider;
 import prefuse.util.ui.UILib;
+import prefuse.visual.EdgeItem;
 import prefuse.visual.NodeItem;
 import prefuse.visual.VisualGraph;
 import prefuse.visual.VisualItem;
@@ -80,7 +88,21 @@ public class CDAOview extends JPrefuseApplet {
         // create a new, empty visualization for our data
         final Visualization vis = new Visualization();
         VisualGraph vg = vis.addGraph(graph, g);
-        vis.setValue(edges, null, VisualItem.INTERACTIVE, Boolean.FALSE);
+        //vis.setValue(edges, null, VisualItem.INTERACTIVE, Boolean.FALSE);
+        
+        System.out.println("Visualization.FOCUS_ITEMS="+ Visualization.FOCUS_ITEMS);
+        
+        /*for(int i =0; i < vg.getNodeCount(); i++)
+        {
+        	System.out.print("Node["+i+"]: ");
+        	for(int j=0; j < vg.getNode(i).getColumnCount(); j++)
+        	{
+        		System.out.print(" colName["+j+"]:"+ vg.getNode(i).getColumnName(j)+"|");
+        	}
+        	System.out.println();
+        }*/
+        
+        
         
         TupleSet focusGroup = vis.getGroup(Visualization.FOCUS_ITEMS); 
         focusGroup.addTupleSetListener(new TupleSetListener() {
@@ -90,8 +112,23 @@ public class CDAOview extends JPrefuseApplet {
                     ((VisualItem)rem[i]).setFixed(false);
                 for ( int i=0; i<add.length; ++i ) {
                     ((VisualItem)add[i]).setFixed(false);
-                    ((VisualItem)add[i]).setFixed(true);
+                    //((VisualItem)add[i]).setFixed(true);
+                    
+                    if(add[i] instanceof EdgeItem)
+                    {
+                    	System.out.println("EDGES DONE IN tupleSetChanged");
+                    }
+                    else if(add[i] instanceof NodeItem)
+                    {
+                    	System.out.println("NODES DONE IN tupleSetChanged");
+                    }
+                    else
+                    {
+                    	System.out.println("I DONT KNOW WHATS DONE IN tupleSetChanged");	
+                    }
+                    
                 }
+                
                 vis.run("draw");
             }
         });
@@ -99,7 +136,10 @@ public class CDAOview extends JPrefuseApplet {
         // set up the renderers
         LabelRenderer tr = new LabelRenderer(label);
         tr.setRoundedCorner(8, 8);
-        vis.setRendererFactory(new DefaultRendererFactory(tr));
+        CDAOEdgeRenderer er = new CDAOEdgeRenderer(label);
+        er.setRoundedCorner(8, 8);
+        vis.setRendererFactory(new DefaultRendererFactory(tr,er));
+        
         
        
         
@@ -109,26 +149,44 @@ public class CDAOview extends JPrefuseApplet {
         final GraphDistanceFilter filter = new GraphDistanceFilter(graph, hops);
 
         ActionList draw = new ActionList();
-        draw.add(filter);
+        //draw.add(filter);
         draw.add(new ColorAction(nodes, VisualItem.FILLCOLOR, ColorLib.rgb(200,200,255)));
         draw.add(new ColorAction(nodes, VisualItem.STROKECOLOR, 0));
         draw.add(new ColorAction(nodes, VisualItem.TEXTCOLOR, ColorLib.rgb(0,0,0)));
-        draw.add(new ColorAction(edges, VisualItem.FILLCOLOR, ColorLib.gray(200)));
-        draw.add(new ColorAction(edges, VisualItem.STROKECOLOR, ColorLib.gray(200)));
+        draw.add(new ColorAction(edges, VisualItem.FILLCOLOR, ColorLib.rgb(200,200,255)));
+        draw.add(new ColorAction(edges, VisualItem.STROKECOLOR, ColorLib.rgb(150, 150, 205)));
+        draw.add(new ColorAction(edges, VisualItem.TEXTCOLOR, ColorLib.rgb(0,0,0)));
         
-        ColorAction fill = new ColorAction(nodes, 
+        ColorAction nfill = new ColorAction(nodes, 
                 VisualItem.FILLCOLOR, ColorLib.rgb(200,200,255));
-        fill.add("_fixed", ColorLib.rgb(255,100,100));
-        fill.add("_highlight", ColorLib.rgb(255,200,125));
+        nfill.add("_fixed", ColorLib.rgb(255,100,100));
+        nfill.add("_highlight", ColorLib.rgb(255,200,125));
         
-        ForceDirectedLayout fdl = new ForceDirectedLayout(graph);
+        ColorAction efill = new ColorAction(edges, 
+                VisualItem.FILLCOLOR, ColorLib.rgb(255,200,200));
+        efill.add("_fixed", ColorLib.rgb(100,100,255));
+        efill.add("_highlight", ColorLib.rgb(125,200,255));
+        
+        ForceDirectedLayout fdl = new ForceDirectedLayout(graph,false,false);
         ForceSimulator fsim = fdl.getForceSimulator();
         fsim.getForces()[0].setParameter(0, -1.2f);
         
+        //draw.add(fdl);
+        //draw.add(new RepaintAction());
+        
+        //ADDING FISHEYE DISTORTION (taken from FisheyeMenu demo)
+        //ActionList distort = new ActionList();
+        
+        Distortion feye = new BifocalDistortion(0.05,5.0);
+        
+        //FisheyeTreeFilter feye = new FisheyeTreeFilter(graph, 5);
+        
         ActionList animate = new ActionList(Activity.INFINITY);
         animate.add(fdl);
-        animate.add(fill);
-        animate.add(new RepaintAction());
+        animate.add(efill);
+        animate.add(nfill);
+        //animate.add(feye);
+        animate.add(new RepaintAction()); 
         
         // finally, we register our ActionList with the Visualization.
         // we can later execute our Actions by invoking a method on our
@@ -136,6 +194,8 @@ public class CDAOview extends JPrefuseApplet {
         vis.putAction("draw", draw);
         vis.putAction("layout", animate);
         vis.runAfter("draw", "layout");
+        
+ 
         
         
         // --------------------------------------------------------------------
@@ -154,6 +214,9 @@ public class CDAOview extends JPrefuseApplet {
         display.addControlListener(new WheelZoomControl());
         display.addControlListener(new ZoomToFitControl());
         display.addControlListener(new NeighborHighlightControl());
+        display.addControlListener(new AnchorUpdateControl(feye, "layout"));
+        
+        //display.addControlListener(new );
         
         display.setForeground(Color.GRAY);
         display.setBackground(Color.WHITE);
@@ -193,11 +256,22 @@ public class CDAOview extends JPrefuseApplet {
         
         
         // position and fix the default focus node
-        NodeItem focus = (NodeItem)vg.getNode(0);
+        /*for(int i = 0; i < vg.getNodeCount(); i++)
+        {
+        	VisualItem focus = (VisualItem)vg.getNode(i);
+        	focusGroup.addTuple(focus);
+        }
+        for(int i = 0; i < vg.getEdgeCount(); i++)
+        {
+        	VisualItem focus = (VisualItem)vg.getEdge(i);
+        	focusGroup.addTuple(focus);
+        }*/
+        
+        VisualItem focus = (VisualItem)vg.getNode(0);
         PrefuseLib.setX(focus, null, 400);
         PrefuseLib.setY(focus, null, 250);
         focusGroup.setTuple(focus);
-
+	    
         // now we run our action list and return
         return display;
     }
