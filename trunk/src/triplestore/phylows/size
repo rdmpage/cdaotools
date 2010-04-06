@@ -1,0 +1,57 @@
+#!/bin/bash
+#Mar 30, 2010
+#Brandon Chisham
+#Script to implement the trees of maximum size query.
+
+source "phylows.env"
+
+set_mime_type "text/xml"
+
+#TREE_NAME=$(set_tree_name "size")
+#FILE_NAME=$(grep "$TREE_NAME" tree_to_file.dat | cut -d' ' --fields=1 )
+XMLNS="http://www.cs.nmsu.edu/~epontell/$FILE_NAME#"
+EXMLNS="http:\/\/www.cs.nmsu.edu\/~epontell\/$FILE_NAME#"
+PHYLOWSTREE="http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/tree"
+
+SIZE_CRITERIA=$(echo $REQUEST_URI | grep -oE "(node|leaf|internal|radius|diameter)")
+SIZE_SPECIFIED=$( echo $REQUEST_URI | grep -oE "[1-9][0-9]*$" )
+
+#TMP_TREE="$(mktemp | perl -p -n -e 's/\/tmp\///').pl"
+
+TREE_QUERY_BIN="tree-query-main.sh"
+
+cat << EOM
+<rdf:RDF xmlns="http://$SERVER_NAME$REQUEST_URI#"
+     xml:base="http://$SERVER_NAME$REQUEST_URI"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:cdao="http://www.evolutionaryontology.org/cdao.owl#"
+     xmlns:treestats="http://www.cs.nmsu.edu/~bchisham/cdao-store/tree-stats.owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:owl2="http://www.w3.org/2006/12/owl2#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#">
+    
+     <owl:Ontology rdf:about="">
+         <owl:imports rdf:resource="http://www.cs.nmsu.edu/~bchisham/cdao-store/tree-stats.owl"/>
+     </owl:Ontology>
+     <!-- Showing trees with fewer $SIZE_CRITERIA than $SIZE_SPECIFIED -->
+EOM
+
+   GOAL="$SIZE_CRITERIA""_count( Tree, Node, Count )."
+   FLET=$(echo $SIZE_CRITERIA | grep -oE "^[a-z]")
+   CAP_CRIT="$(echo $FLET | tr "[:lower:]" "[:upper:]" )$(echo $SIZE_CRITERIA | sed "s/$FLET//" )"
+
+   RESULTS=$(prolog_exe_driver "$PWD/$TREE_QUERY_BIN" "$GOAL" | grep "=" | perl -p -n -e 's/,\n/,/g' | sed 's/Tree = //g' | sed 's/Count = //g')
+   for i in  $(echo $RESULTS); do
+       TREE="$(echo $i | cut -d, --fields=1 | perl -p -n -e "s/\'//g")"
+       COUNT="$(echo $i | cut -d, --fields=2)"
+       if [[ "$COUNT" -lt "$SIZE_SPECIFIED" ]]; then
+            echo "<cdao:Tree rdf:about=\"$PHYLOWSTREE/$TREE\"><treestats:has_$CAP_CRIT""_Count>$COUNT</treestats:has_$CAP_CRIT""_Count>"
+       fi
+   done
+cat << EOM     
+</rdf:RDF>
+EOM
+#rm "$TMP_TREE"
