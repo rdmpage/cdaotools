@@ -83,7 +83,11 @@ int main( int argc, char** argv ){
     bzero( out_buff, BUFF_SIZE );
     //read the result of the last operation.
     read_size = read( prolog_to_driver[READ_END], in_buff, BUFF_SIZE );
-    if (!read_size ||  strncmp(in_buff, "false.", sizeof("false.")-1) == 0 ) break;
+    //printf("%s\n", in_buff);
+    if (!read_size ||  
+	strncmp(in_buff, "false.", sizeof("false.")-1) == 0 || 
+	strncmp(in_buff, "?-", sizeof("?-")-1) == 0 ||
+        strncmp(in_buff, ".", sizeof(".")-1) == 0 ) break;
     printf("%s\n", in_buff);
     bzero( out_buff, BUFF_SIZE );
     //fgets(out_buff, BUFF_SIZE, stdin);
@@ -93,7 +97,9 @@ int main( int argc, char** argv ){
     write(driver_to_prolog[ WRITE_END ], out_buff, len  );
     //fprintf(stderr, "wrote \"%s\" to the prolog shell\n", out_buff);
 
-  }while ( strncmp( in_buff, "false.", sizeof("false.")-1 ) );
+  }while ( strncmp( in_buff, "false.", sizeof("false.")-1 ) &&
+           strncmp(in_buff, "?-", sizeof("?-")-1) &&  
+	   strncmp(in_buff, ".", sizeof(".")-1) );
    
   //end the session.
 

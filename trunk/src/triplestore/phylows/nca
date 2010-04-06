@@ -3,9 +3,17 @@
 #March 22, 2010
 #Script to implement Phylows version of the NCA query.
 
-source /home/grad6/bchisham/.bashrc
+#source /home/grad6/bchisham/.bashrc
+source "phylows.env"
+set_mime_type "text/xml"
+#init_pylows_env "nca"
 
-TREE_NAME=$(echo $REQUEST_URI | grep -oE "nca/[a-zA-Z0-9]*/" | sed 's/nca\///' | sed 's/\/$//g' )
+TREE_NAME=$(set_tree_name "nca")
+#FILE_NAME=$(set_file_name "$TREE_NAME")
+#XMLNS=$(set_xmlns "$FILE_NAME")
+#EXMLNS=$( set_exmlns "$FILE_NAME" )
+#NODE_SET=$( set_node_set "$TREE_NAME" )
+#TREE_NAME=$(echo $REQUEST_URI | grep -oE "nca/[a-zA-Z0-9]*/" | sed 's/nca\///' | sed 's/\/$//g' )
 FILE_NAME=$(grep "$TREE_NAME" tree_to_file.dat | cut -d' ' --fields=1 )
 XMLNS="http://www.cs.nmsu.edu/~epontell/$FILE_NAME#"
 EXMLNS="http:\/\/www.cs.nmsu.edu\/~epontell\/$FILE_NAME#"
@@ -17,7 +25,7 @@ CSV_NODE_SET="'$CSV_NODE_SET'"
 
 NODE_COUNT=$(echo "$NODE_SET" | wc -w )
 
-echo -e "Content-type: text/xml; charset: utf-8\nServer: Cdao-Store\nExpires: Fri, Dec 31 9999 23:59 GMT\n\n"
+#echo -e "Content-type: text/xml; charset: utf-8\nServer: Cdao-Store\nExpires: Fri, Dec 31 9999 23:59 GMT\n\n"
 
 #echo "TREE_NAME: $TREE_NAME"
 
