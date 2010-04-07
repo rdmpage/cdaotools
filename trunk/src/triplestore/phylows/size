@@ -27,7 +27,7 @@ UPPER_BOUND=$(echo $RANGE | cut -d: --fields=2)
 if [[ "$LOWER_BOUND" -gt "$UPPER_BOUND" ]] ; then
    TMP="$UPPER_BOUND"
    UPPER_BOUND="$LOWER_BOUND"
-   LOWER_BOUNT="$TMP"
+   LOWER_BOUND="$TMP"
 fi
 
 #TMP_TREE="$(mktemp | perl -p -n -e 's/\/tmp\///').pl"
