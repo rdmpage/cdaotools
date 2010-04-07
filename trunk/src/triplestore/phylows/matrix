@@ -3,8 +3,21 @@
 #Brandon Chisham
 #March 21, 2010
 
-MATRIX_QUERY=`echo $REQUEST_URI | grep -oE "/[a-zA-Z0-9:]*$"`;
-TREEBASE_URL="http://purl.org/phylo/treebase/phylows/matrix"
-echo -e "Content-type: application/xml\n\n"
-
-curl -L --compressed "$TREEBASE_URL$MATRIX_QUERY?format=rdf"
+MATRIX_QUERY="TB2:"`echo $REQUEST_URI | sed "s/?$QUERY_STRING//" | grep -oE "[a-zA-Z][a-zA-Z0-9:]*$"`;
+FORMAT=`echo $QUERY_STRING | grep -oE "(rdf|csv)"`
+TREEBASE_URL="http://purl.org/phylo/treebase/phylows/matrix/"
+XSL_DIR="../../cdao-store"
+TRANSFORM="nexml_to_csv.xsl"
+if [[ "$FORMAT" == "csv" ]]; then
+    echo -e "Content-type: text/plain\n\n"
+    #echo "$QUERY_STRING"
+    RESULTS=$(curl -L --compressed "$TREEBASE_URL$MATRIX_QUERY?format=nexml" | xsltproc "$XSL_DIR/$TRANSFORM" - | perl -p -n -e 's/^\n//g'| sed 's/^ *//g')
+    for row in $(echo $RESULTS); do 
+       ROW_LABEL=$(echo $row | cut -d, --fields=1)
+       DATA=$(echo $row | cut -d, --fields=2 | perl -p -n -e 's/([-.?a-zA-Z])([-.?a-zA-Z])/$1,$2/g' | perl -p -n -e 's/([-.?a-zA-Z])([-.?a-zA-Z])/$1,$2/g')
+       echo "$ROW_LABEL,$DATA"
+    done
+else
+     echo -e "Content-type: text/xml\n\n"
+    curl -L --compressed "$TREEBASE_URL$MATRIX_QUERY?format=rdf"
+fi
