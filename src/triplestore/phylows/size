@@ -1,11 +1,14 @@
-#!/bin/bash
+#!/bin/zsh
 #Mar 30, 2010
 #Brandon Chisham
 #Script to implement the trees of maximum size query.
 
-source "phylows.env"
+#source "phylows.env"
 
-set_mime_type "text/xml"
+#set_mime_type "text/xml"
+echo -n -e "Content-type: text/xml"
+echo ""
+echo ""
 
 #TREE_NAME=$(set_tree_name "size")
 #FILE_NAME=$(grep "$TREE_NAME" tree_to_file.dat | cut -d' ' --fields=1 )
@@ -19,6 +22,18 @@ SIZE_SPECIFIED=$( echo $REQUEST_URI | grep -oE "[1-9][0-9]*$" )
 #TMP_TREE="$(mktemp | perl -p -n -e 's/\/tmp\///').pl"
 
 TREE_QUERY_BIN="tree-query-main.sh"
+
+
+typeset -A CRIT_TO_STAT
+
+#echo -n ""
+
+CRIT_TO_STAT+=('node' 'Node_Count')
+CRIT_TO_STAT+=('leaf' 'Leaf_Count')
+CRIT_TO_STAT+=('radius' 'Radius')
+CRIT_TO_STAT+=('diameter' 'Diameter')
+
+#echo -n ""
 
 cat << EOM
 <rdf:RDF xmlns="http://$SERVER_NAME$REQUEST_URI#"
@@ -42,13 +57,13 @@ EOM
    GOAL="$SIZE_CRITERIA""_count( Tree, Node, Count )."
    FLET=$(echo $SIZE_CRITERIA | grep -oE "^[a-z]")
    CAP_CRIT="$(echo $FLET | tr "[:lower:]" "[:upper:]" )$(echo $SIZE_CRITERIA | sed "s/$FLET//" )"
-
+   
    RESULTS=$(prolog_exe_driver "$PWD/$TREE_QUERY_BIN" "$GOAL" | grep "=" | perl -p -n -e 's/,\n/,/g' | sed 's/Tree = //g' | sed 's/Count = //g')
    for i in  $(echo $RESULTS); do
        TREE="$(echo $i | cut -d, --fields=1 | perl -p -n -e "s/\'//g")"
        COUNT="$(echo $i | cut -d, --fields=2)"
        if [[ "$COUNT" -lt "$SIZE_SPECIFIED" ]]; then
-            echo "<cdao:Tree rdf:about=\"$PHYLOWSTREE/$TREE\"><treestats:has_$CAP_CRIT""_Count>$COUNT</treestats:has_$CAP_CRIT""_Count>"
+            echo "<cdao:Tree rdf:about=\"$PHYLOWSTREE/$TREE\"><treestats:has_$CRIT_TO_STAT[$SIZE_CRITERIA]>$COUNT</treestats:has_$CRIT_TO_STAT[$SIZE_CRITERIA]>"
        fi
    done
 cat << EOM     
