@@ -3,12 +3,13 @@
 #Brandon Chisham
 #Script to implement the trees of maximum size query.
 
-#source "phylows.env"
+source "phylows.env"
+
 
 #set_mime_type "text/xml"
-echo -n -e "Content-type: text/xml"
-echo ""
-echo ""
+echo -n -e "Content-type: text/xml\n\n"
+#echo ""
+#echo ""
 
 #TREE_NAME=$(set_tree_name "size")
 #FILE_NAME=$(grep "$TREE_NAME" tree_to_file.dat | cut -d' ' --fields=1 )
@@ -17,7 +18,17 @@ EXMLNS="http:\/\/www.cs.nmsu.edu\/~epontell\/$FILE_NAME#"
 PHYLOWSTREE="http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/tree"
 
 SIZE_CRITERIA=$(echo $REQUEST_URI | grep -oE "(node|leaf|internal|radius|diameter)")
-SIZE_SPECIFIED=$( echo $REQUEST_URI | grep -oE "[1-9][0-9]*$" )
+QUERY_RELATION=$(echo $REQUEST_URI | grep -oE "(greater|less|equal|range)")
+SIZE_SPECIFIED=$(echo $REQUEST_URI | grep -oE "[1-9][0-9]*$" )
+RANGE=$(echo $REQUEST_URI | grep -oE "[1-9][0-9]*:[1-9][0-9]*$")
+LOWER_BOUND=$(echo $RANGE | cut -d: --fields=1)
+UPPER_BOUND=$(echo $RANGE | cut -d: --fields=2)
+
+if [[ "$LOWER_BOUND" -gt "$UPPER_BOUND" ]] ; then
+   TMP="$UPPER_BOUND"
+   UPPER_BOUND="$LOWER_BOUND"
+   LOWER_BOUNT="$TMP"
+fi
 
 #TMP_TREE="$(mktemp | perl -p -n -e 's/\/tmp\///').pl"
 
@@ -25,7 +36,7 @@ TREE_QUERY_BIN="tree-query-main.sh"
 
 
 typeset -A CRIT_TO_STAT
-
+typeset -A RELATION
 #echo -n ""
 
 CRIT_TO_STAT+=('node' 'Node_Count')
@@ -34,6 +45,19 @@ CRIT_TO_STAT+=('radius' 'Radius')
 CRIT_TO_STAT+=('diameter' 'Diameter')
 
 #echo -n ""
+
+RELATION+=('greater' '-gt')
+RELATION+=('less' '-lt')
+RELATION+=('equal' '-eq')
+
+function print_record {
+  TREE="$1"
+  COUNT="$2"
+  echo "<cdao:Tree rdf:about=\"$PHYLOWSTREE/$TREE\"><treestats:has_$CRIT_TO_STAT[$SIZE_CRITERIA]>$COUNT</treestats:has_$CRIT_TO_STAT[$SIZE_CRITERIA]>"
+
+}
+
+
 
 cat << EOM
 <rdf:RDF xmlns="http://$SERVER_NAME$REQUEST_URI#"
@@ -51,21 +75,37 @@ cat << EOM
      <owl:Ontology rdf:about="">
          <owl:imports rdf:resource="http://www.cs.nmsu.edu/~bchisham/cdao-store/tree-stats.owl"/>
      </owl:Ontology>
-     <!-- Showing trees with fewer $SIZE_CRITERIA than $SIZE_SPECIFIED -->
+     <!-- Showing trees with relation: $QUERY_RELATION Criterion: $SIZE_CRITERIA value: $SIZE_SPECIFIED -->
 EOM
 
    GOAL="$SIZE_CRITERIA""_count( Tree, Node, Count )."
    FLET=$(echo $SIZE_CRITERIA | grep -oE "^[a-z]")
    CAP_CRIT="$(echo $FLET | tr "[:lower:]" "[:upper:]" )$(echo $SIZE_CRITERIA | sed "s/$FLET//" )"
-   
-   RESULTS=$(prolog_exe_driver "$PWD/$TREE_QUERY_BIN" "$GOAL" | grep "=" | perl -p -n -e 's/,\n/,/g' | sed 's/Tree = //g' | sed 's/Count = //g')
+   RESULTS=$($HOME/bin/prolog_exe_driver "$PWD/$TREE_QUERY_BIN" "$GOAL" | grep "=" | perl -p -n -e 's/,\n/,/g' | sed 's/Tree = //g' | sed 's/Count = //g')
    for i in  $(echo $RESULTS); do
        TREE="$(echo $i | cut -d, --fields=1 | perl -p -n -e "s/\'//g")"
        COUNT="$(echo $i | cut -d, --fields=2)"
-       if [[ "$COUNT" -lt "$SIZE_SPECIFIED" ]]; then
-            echo "<cdao:Tree rdf:about=\"$PHYLOWSTREE/$TREE\"><treestats:has_$CRIT_TO_STAT[$SIZE_CRITERIA]>$COUNT</treestats:has_$CRIT_TO_STAT[$SIZE_CRITERIA]>"
+       if [[ "$QUERY_RELATION" == "greater" ]]; then
+           if [[ "$COUNT" -gt "$SIZE_SPECIFIED" ]]; then
+	     print_record "$TREE" "$COUNT"
+	   fi
        fi
-   done
+       if [[ "$QUERY_RELATION" == "less" ]]; then
+          if [[ "$COUNT" -lt "$SIZE_SPECIFIED" ]]; then
+             print_record "$TREE" "$COUNT"
+	  fi
+       fi
+       if [[ "$QUERY_RELATION" == "equal" ]]; then
+          if [[ "$COUNT" -eq "$SIZE_SPECIFIED" ]]; then
+	     print_record "$TREE" "$COUNT"
+	  fi
+       fi
+       if [[ "$QUERY_RELATION" == "range" ]]; then
+	   if [[ "$COUNT" -gt "$LOWER_BOUND" && "$COUNT" -lt "$UPPER_BOUND" ]]; then
+	      print_record "$TREE" "$COUNT"
+	   fi
+       fi
+    done
 cat << EOM     
 </rdf:RDF>
 EOM
