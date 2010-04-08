@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
+import java.net.URL;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -246,13 +247,19 @@ public class CDAOview extends JPanel {
         UILib.setPlatformLookAndFeel();
         
         // create graphview
-        String datafile = "Tree3099.graphml";
+        String BASE_URI = "http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/tree";
+        String DEFAULT_GRAPH_URL= BASE_URI + "/" + "Tree3099?format=graphml";
+
+        String datafile;
+        
         String label = "IdLabel";
         if ( args.length > 1 ) {
             datafile = args[0];
             label = args[1];
         }
-        
+        else {
+            datafile = DEFAULT_GRAPH_URL;
+        }
         JFrame frame = demo(datafile, label);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -268,7 +275,7 @@ public class CDAOview extends JPanel {
             label = "label";
         } else {
             try {
-                g = new GraphMLReader().readGraph(datafile);
+                g = new GraphMLReader().readGraph( new URL( datafile ));
             } catch ( Exception e ) {
                 e.printStackTrace();
                 System.exit(1);
