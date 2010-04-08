@@ -89,7 +89,7 @@ function print_result {
    echo "<h3>Trees</h3>"
    for result in $(sparql -q --results xml --query "$TMP_TREE_QUERY_FILE" --graph "$GRAPH_FILE" | grep -oE "<uri>.*</uri>" | cut -d">" --fields=2 | cut -d"<" --fields=1 | sed "s/$ESCAPED_DUMP_URI//g");
    do
-        echo "<a href=\"../tree/html?tree=$result\">$result</a><br/>";
+        echo "<a href=\"../tree/query?format=html&amp;tree=$result\">$result</a><br/>";
    done
    #echo "</pre>";
    rm -f "$TMP_AUTHOR_QUERY_FILE" "$TMP_QUERY_FILE" "$TMP_TREE_QUERY_FILE" "$TMP_RESULTS_FILE"
