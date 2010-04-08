@@ -3,7 +3,6 @@ package prefuse.demos;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -24,11 +23,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -61,10 +57,6 @@ import prefuse.util.GraphLib;
 import prefuse.util.GraphicsLib;
 import prefuse.util.display.DisplayLib;
 import prefuse.util.display.ItemBoundsListener;
-import prefuse.util.force.ForceSimulator;
-import prefuse.util.io.IOLib;
-import prefuse.util.ui.JForcePanel;
-import prefuse.util.ui.JValueSlider;
 import prefuse.util.ui.UILib;
 import prefuse.visual.VisualGraph;
 import prefuse.visual.VisualItem;
@@ -303,9 +295,11 @@ public class CDAOview extends JPanel {
         //view.m_vis.runAfter("draw", "layout");
         //view.m_vis.run("layout");
         frame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowActivated(WindowEvent e) {
                 view.m_vis.run("layout");
             }
+            @Override
             public void windowDeactivated(WindowEvent e) {
                 view.m_vis.cancel("layout");
             }
