@@ -9,7 +9,7 @@
      <!--<html:p>Target: <xsl:value-of select="$target"/></html:p>-->
      <xsl:for-each select="./*/tu[ @id = $target ]/tree">
          <a>
-           <xsl:attribute name="href">../tree/html?tree=<xsl:value-of select="@name"/></xsl:attribute>
+           <xsl:attribute name="href">../tree/query?format=html&amp;tree=<xsl:value-of select="@name"/></xsl:attribute>
            <xsl:value-of select="./@name"/>
          </a>
          <br/>
