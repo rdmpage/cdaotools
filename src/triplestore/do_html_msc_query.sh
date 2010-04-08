@@ -52,11 +52,14 @@ cat << EOM
           <div rel="">
              <div resource="#node_set" style="position: relative; top: 0px; left: 30px;">
 EOM
+          RESULT_SIZE=0
           for i in $MSC_NODES; do 
                 N=`echo $i | sed 's/.*#//g' | sed 's/_/ /g'`
+                RESULT_SIZE=$[ $RESULT_SIZE + 1 ]
                 echo "<div rel=\"cdao:has_Element\" href=\"$i\"><a href=\"http://www.google.com/search?q=$(echo $N | sed 's/ /%22/g')\">$N</a></div>"
           done 
 cat << EOM
+           <p>Results: $RESULT_SIZE</p>
          </div>
        </div>
      </div>

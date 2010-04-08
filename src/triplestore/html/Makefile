@@ -2,7 +2,7 @@
 #Feb. 18, 2010.
 #Deployment management makefile.
 
-REMOTE_HOST=vm1.cs.nmsu.edu
+REMOTE_HOST=daedalus.cs.nmsu.edu
 REMOTE_WEB_DIR=~/public_html/
 REMOTE_BIN_DIR=~/bin/
 

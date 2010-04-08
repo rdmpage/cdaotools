@@ -37,8 +37,8 @@
            <li><h3>Tree Lookup Services</h3>
                <ul>
                    <li>
-                        <h4>Trees By Treebase Accessation Number</h4>
-                        <p property="dc:description">Retrive a tree from the triple-store in specified format.</p>
+                        <h4>Trees By Treebase Accession Number</h4>
+                        <p property="dc:description">Retrive a tree, by Treebase accession number, from the triple-store in specified format.</p>
                         <ul>
                            <li>
                               <form action="../cgi-bin/tree/query" method="get">
@@ -47,7 +47,7 @@
                                      Prolog: <input type="radio" name="format" value="prolog"/>
                                      HTML: <input type="radio" name="format" value="html"/>
                                    </p>
-                                  <p about="cdao:Tree"><span>Tree:</span><input type="text" class="text" id="tree" name="tree"/><br/>
+                                  <p about="cdao:Tree"><span>Tree:</span><input type="text" class="text" id="tree" name="tree" value="Tree3099"/><br/>
                                    <input type="submit" value="Submit"/>
                                   </p>
                               </form>
@@ -292,7 +292,7 @@
                    </li>-->
                    <li>
                        <form action="../cgi-bin/tu/html" method="get">
-                          <p about="cdao:TU"><span>TU:</span><input type="text" class="text" id="html-tu" name="tu" />
+                          <p about="cdao:TU"><span>TU:</span><input type="text" class="text" id="html-tu" name="tu" value="Ilex_anomala" />
                           <input type="submit" class="button" id="html-tu-submit" value="Search"/></p>
                        </form>
                    </li>

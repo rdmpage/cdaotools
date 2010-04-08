@@ -54,7 +54,11 @@ function print_results {
   RESULTS=$(for i in $TU; do
                xsltproc --stringparam target "$i" "$XSL" "$DATA";
              done);
-  echo $RESULTS | sort | uniq;
+  
+  RESULTS=$(echo $RESULTS | sort | uniq)
+  RESULT_SIZE=$(echo $RESULTS | grep -oE "href" | wc -l )
+  echo $RESULTS
+  echo "<p>Results: $RESULT_SIZE</p>"
 }
 
 function print_footer {

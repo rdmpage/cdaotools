@@ -83,12 +83,15 @@ function print_result {
    echo "<h2>Listing studies for: $FIRST_NAME $LAST_NAME</h2>"
    TMP_QUERY_FILE=`mktemp`".rql";
    echo "$AUTHOR_QUERY" > $TMP_QUERY_FILE;
+   RESULT_SIZE=0;
    echo "<p>";
    for result in $(sparql -q --results text --query "$TMP_QUERY_FILE" --graph "$GRAPH_FILE"  | grep -oE "<.*>" | sed "s/<$ESCAPED_DUMP_URI\(.*\)>/\1/g" );
    do
+        RESULT_SIZE=$[ $RESULT_SIZE + 1 ]
         echo "<a href=\"../study/html?study=$result\">$result</a><br/>";
    done
    echo "</p>";
+   echo "<p>Results: $RESULT_SIZE</p>"
    rm -f $TMP_QUERY_FILE
 }
 

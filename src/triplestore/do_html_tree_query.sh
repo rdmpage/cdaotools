@@ -18,6 +18,8 @@ export TREE_NAME="$2"
 export XMLNS="$3"
 export TYPE="$4"
 
+PHYLOWS_TREE_URI="http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/tree"
+
 if [[ "$TFILE" == "" ]]; then
         export TFILE=$(grep "$TREE_NAME" "$TREE_DAT_FILE" | cut -d' ' --fields=1);
 fi
@@ -69,9 +71,21 @@ echo "<input type="hidden" id=\"tree\" name=\"tree\" value=\"$TREE_NAME\">"
 echo "<input type=\"hidden\" id=\"file\" name=\"file\" value=\"$TFILE\"/>"
 echo "<input type=\"hidden\" id=\"type\" name=\"type\" value=\"$TREETYPE\"/>"
 #Query to get the nodes.
-do_query.py "$GRAPH_CONFIG"  "$XMLNS" "$NODE_QUERY" "<tr><td>%s</td><td><input type=\"checkbox\" id=\"node\" name=\"node\" value=\"%s\"></td></td>" | sed 's/http:[-_~./a-zA-Z0-9]*#//g' | sort | uniq;
+#do_query.py "$GRAPH_CONFIG"  "$XMLNS" "$NODE_QUERY" "<tr><td>%s</td><td><input type=\"checkbox\" id=\"node\" name=\"node\" value=\"%s\"></td></td>" | sed 's/http:[-_~./a-zA-Z0-9]*#//g' | sort | uniq
+RESULTS=$( curl $PHYLOWS_TREE_URI/$TREE_NAME | grep '<cdao\:Node' | grep -oE 'rdf\:resource=\"http://.*#[-_a-zA-Z0-9]*\">' | sed 's/>//g' | sed 's/rdf:resource=//g' | sed 's/\"//g' | sort | uniq)
+#echo " <pre> $RESULTS </pre> "
+
+for i in $(echo $RESULTS ); do 
+   nodeid=$(echo $i | sed 's/http:[-_~./a-zA-Z0-9]*#//g' )
+   cat << EOM
+      <tr><td>$nodeid</td><td><input type="checkbox" id="node" name="node" value="$nodeid"/></td>
+EOM
+done
+RESULT_SIZE=$(echo $RESULTS | grep -oE "http" | wc -l)
 echo "<tr><td colspan=\"2\"><input class=\"button\"type=\"submit\" value=\"Submit\"/><input class=\"button\" type=\"reset\" value=\"Reset\"/><td></tr>"
 echo "</form></table>"
+echo "<p>Results: $RESULT_SIZE</p>"
+
 echo "</div>"
 
 cat << EOM
