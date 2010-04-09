@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.AbstractAction;
@@ -69,7 +70,8 @@ public class CDAOview extends JPanel {
     private static final String graph = "graph";
     private static final String nodes = "graph.nodes";
     private static final String edges = "graph.edges";
-
+    private static final String BASE_URI = "http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/tree";
+    private static final String DEFAULT_GRAPH_URL= BASE_URI + "/" + "Tree3099?format=graphml";
     private Visualization m_vis;
     
     public CDAOview(Graph g, String label) {
@@ -239,8 +241,7 @@ public class CDAOview extends JPanel {
         UILib.setPlatformLookAndFeel();
         
         // create graphview
-        String BASE_URI = "http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/tree";
-        String DEFAULT_GRAPH_URL= BASE_URI + "/" + "Tree3099?format=graphml";
+        
 
         String datafile;
         
@@ -341,11 +342,14 @@ public class CDAOview extends JPanel {
         public void actionPerformed(ActionEvent e) {
             Graph g = new Graph();
 			try {
-				g = new GraphMLReader().readGraph("Tree3099.graphml");
+				g = new GraphMLReader().readGraph( new URL( DEFAULT_GRAPH_URL ) );
 			} catch (DataIOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+                        catch ( MalformedURLException ex ){
+                            
+                        }
             if ( g == null ) return;
             String label1 = "IdLabel";
             String label2 = getLabel(m_view, g);
