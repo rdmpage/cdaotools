@@ -243,16 +243,14 @@ public class CDAOview extends JPanel {
         // create graphview
         
 
-        String datafile;
+        String datafile = DEFAULT_GRAPH_URL;
         
         String label = "IdLabel";
         if ( args.length > 1 ) {
             datafile = args[0];
             label = args[1];
         }
-        else {
-            datafile = DEFAULT_GRAPH_URL;
-        }
+        
         JFrame frame = demo(datafile, label);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }

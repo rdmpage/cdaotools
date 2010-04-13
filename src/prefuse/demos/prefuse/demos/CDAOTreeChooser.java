@@ -32,10 +32,16 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
     private void viewTree(){
         String[] params = new String[ 3 ];
         String treeURI = "http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/tree/" +
-                this.model.getElementAt( this.treeList.getMinSelectionIndex() );
-        params[ 0 ] = "CDAOview";
+                this.model.getElementAt( this.treeList.getMinSelectionIndex() ) + "?format=graphml" ;
+
+        System.err.println("Displaying URI: " + treeURI );
+
+        params[ 0 ] = treeURI;
         params[ 1 ] = treeURI;
-        params[ 2 ] = (String)this.model.getElementAt( this.treeList.getMinSelectionIndex() );
+        params[ 2 ] = treeURI;
+
+
+
         CDAOview.main(params);
 
     }
