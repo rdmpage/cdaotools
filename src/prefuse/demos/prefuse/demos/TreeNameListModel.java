@@ -23,12 +23,14 @@ public class TreeNameListModel implements javax.swing.ListModel {
     private List<ListDataListener> selected;
     private List listeners;
     private static final String TREE_SERVICE_URI_BASE = "http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/listing";
+    private String listType;
     private int start;
     private int limit;
     TreeNameListModel(){
         data = new ArrayList();
         listeners = new ArrayList();
         selected = new ArrayList();
+        listType = "trees";
         start = 0;
         limit = 50;
         this.updateModel();
@@ -43,6 +45,7 @@ public class TreeNameListModel implements javax.swing.ListModel {
         this.selected = new ArrayList();
         this.start = 0;
         this.limit = limit;
+        this.listType = "trees";
         this.updateModel();
     }
 
@@ -52,11 +55,29 @@ public class TreeNameListModel implements javax.swing.ListModel {
         this.updateModel();
     }
 
+    public void nextPage( String key ){
+        this.start += this.limit;
+        this.data.clear();
+        this.updateModel( key );
+    }
+
     public void prevPage(){
         this.start -= this.limit;
         if (this.start < 0){ this.start = 0; }
         this.data.clear();
         this.updateModel();
+    }
+
+    public void prevPage(String key){
+        this.start -= this.limit;
+        if (this.start < 0){ this.start = 0; }
+        this.data.clear();
+        this.updateModel( key );
+    }
+
+    public void matchKey(String key){
+        this.data.clear();
+        this.updateModel( key );
     }
 
     public void setLimit(int limit){
@@ -67,7 +88,8 @@ public class TreeNameListModel implements javax.swing.ListModel {
 
     public void updateModel(){
         try {
-            URL dataFeed = new URL(TREE_SERVICE_URI_BASE + "/" + start + "/" + limit);
+            this.data.clear();
+            URL dataFeed = new URL(TREE_SERVICE_URI_BASE + "/" + this.listType + "/" + start + "/" + limit);
             Scanner reader = new Scanner( dataFeed.openStream());
             while (reader.hasNext()){
                 this.data.add( reader.next() );
@@ -76,6 +98,23 @@ public class TreeNameListModel implements javax.swing.ListModel {
             Logger.getLogger(TreeNameListModel.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+
+    }
+
+    public void updateModel(String key){
+        try {
+            this.data.clear();
+            String updateUrl = TREE_SERVICE_URI_BASE + "/" + this.listType + "/" + start + "/" + limit + "?key=" + key;
+            URL dataFeed = new URL(updateUrl);
+            System.err.println( "Update URL: " + updateUrl );
+            Scanner reader = new Scanner( dataFeed.openStream());
+            while (reader.hasNext()){
+                this.data.add( reader.next() );
+                //System.err.println( "Added" + this.data.get(this.data.size() -1 ) );
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(TreeNameListModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
