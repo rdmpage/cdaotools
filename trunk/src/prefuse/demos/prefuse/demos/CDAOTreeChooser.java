@@ -20,13 +20,17 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
     /** Creates new form CDAOTreeChooser */
     public CDAOTreeChooser() {
         model = new TreeNameListModel();
+        model.updateModel();
         initComponents();
+        
     }
     private void nextPage(){
-        this.model.nextPage();
+        this.model.nextPage( this.treeIDTxt.getText() );
+        this.repaint();
     }
     private void prevPage(){
-        this.model.prevPage();
+        this.model.prevPage( this.treeIDTxt.getText() );
+        this.repaint();
     }
 
     private void viewTree(){
@@ -46,6 +50,12 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
 
     }
 
+    private void matchKey(){
+        this.model.matchKey( this.treeIDTxt.getText() );
+        this.treeList.setModel(model);
+        this.repaint();
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -60,6 +70,8 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
         prevButton = new javax.swing.JButton();
         viewBtn = new javax.swing.JButton();
         nextBtn = new javax.swing.JButton();
+        treeIDTxt = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -91,6 +103,14 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
             }
         });
 
+        treeIDTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                treeIDTxtActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Tree ID:");
+
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
 
@@ -103,25 +123,39 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
-            .add(layout.createSequentialGroup()
-                .add(prevButton)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(viewBtn)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(nextBtn)
-                .add(204, 204, 204))
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(prevButton)
+                        .add(120, 120, 120)
+                        .add(viewBtn)
+                        .add(101, 101, 101)
+                        .add(nextBtn))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jLabel1)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(treeIDTxt, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 416, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                .add(28, 28, 28)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel1)
+                    .add(treeIDTxt, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 372, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 35, Short.MAX_VALUE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(nextBtn)
                     .add(prevButton)
-                    .add(viewBtn)
-                    .add(nextBtn))
-                .addContainerGap())
+                    .add(viewBtn)))
         );
 
         prevButton.getAccessibleContext().setAccessibleName("Prev");
@@ -143,6 +177,10 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
         this.viewTree();
     }//GEN-LAST:event_viewBtnActionPerformed
 
+    private void treeIDTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_treeIDTxtActionPerformed
+        this.matchKey();
+    }//GEN-LAST:event_treeIDTxtActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -155,12 +193,14 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton nextBtn;
     private javax.swing.JButton prevButton;
+    private javax.swing.JTextField treeIDTxt;
     private javax.swing.JList treeList;
     private javax.swing.JButton viewBtn;
     // End of variables declaration//GEN-END:variables
