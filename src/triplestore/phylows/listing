@@ -5,29 +5,44 @@
 source "/home/grad6/bchisham/.bashrc"
 
 LISTING_TYPE=$(echo "$REQUEST_URI" | grep -oE '(trees|matrices)' )
-START_LIMIT=$(echo "$REQUEST_URI" | grep -oE '[0-9][0-9]*\/[1-9][0-9]*$')
+START_LIMIT=$(echo "$REQUEST_URI" | sed "s/?$QUERY_STRING//g" | grep -oE '[0-9][0-9]*\/[1-9][0-9]*$')
 START=$(echo "$START_LIMIT" | grep -oE '^[0-9][0-9]*')
 LIMIT=$(echo "$START_LIMIT" | grep -oE '[1-9][0-9]*$')
+
+KEY=$(echo $QUERY_STRING | grep -oE "key=[a-zA-Z][a-zA-Z0-9]*" | cut -d= --fields=2)
+
+if [[ "$KEY" == "" ]] ; then
+   KEY=".*"
+fi
 
 XMLNS="http://www.evolutionaryontology.org/cdao.owl#"
 
 TREE_QUERY="SELECT ?tree WHERE { ?tree rdf:type cdao:Tree. }"
 MAT_QUERY="SELECT ?matrix WHERE { ?matrix rdf:type cdao:CharacterStateDataMatrix. }"
 
+TARGET_FILE=""
+TARGET_FIELD=""
 TARGET_QUERY=""
 
 if [[ "$LISTING_TYPE" == "trees" ]]; then
    TARGET_QUERY="$TREE_QUERY"
+   TARGET_FILE="tree_to_file.dat"
+   TARGET_FIELD=2
 else 
    if [[ "$LISTING_TYPE" == "matrices" ]]; then
      TARGET_QUERY="$MAT_QUERY"
+     TARGET_FILE="matrix_list.dat"
+     TARGET_FIELD=1
    fi
 fi
 echo -n -e "Content-type: text/plain; charset:utf-8\n\n"
+
+#echo "type: $LISTING_TYPE file: $TARGET_FILE"
+
 #echo "start_limit: $START_LIMIT start: $START limit: $LIMIT lines: $[ $START + $LIMIT ] "
 if [[ "$START" != "" && "$LIMIT" != "" ]]; then
-    cat tree_to_file.dat | head -n "$[$START + $LIMIT ]" - | tail -n "$LIMIT" - | cut -d' ' --fields=2
+    cat "$TARGET_FILE" | grep "$KEY" | head -n "$[$START + $LIMIT ]" - | tail -n "$LIMIT" - | cut -d' ' --fields="$TARGET_FIELD"
 else
-    cat tree_to_file.dat | cut -d' ' --fields=2
+    cat "$TARGET_FILE" | grep "$KEY" | cut -d' ' --fields="$TARGET_FIELD" 
 fi
 #do_query.py "$TRIPLESTORE_CONFIG_STRING" "$XMLNS" "$TARGET_QUERY" "%s" | sort | uniq
