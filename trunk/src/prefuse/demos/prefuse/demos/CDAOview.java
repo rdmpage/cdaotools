@@ -252,7 +252,7 @@ public class CDAOview extends JPanel {
         }
         
         JFrame frame = demo(datafile, label);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
     public static JFrame demo() {

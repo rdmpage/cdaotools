@@ -41,7 +41,7 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
         System.err.println("Displaying URI: " + treeURI );
 
         params[ 0 ] = treeURI;
-        params[ 1 ] = treeURI;
+        params[ 1 ] = "IdLabel";
         params[ 2 ] = treeURI;
 
 
@@ -80,6 +80,11 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
 
         treeList.setModel(this.model);
         treeList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        treeList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                treeSelected(evt);
+            }
+        });
         jScrollPane1.setViewportView(treeList);
 
         prevButton.setLabel("< Prev");
@@ -90,6 +95,7 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
         });
 
         viewBtn.setText("View");
+        viewBtn.setEnabled(false);
         viewBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewBtnActionPerformed(evt);
@@ -124,22 +130,19 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE))
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
                         .add(prevButton)
                         .add(120, 120, 120)
                         .add(viewBtn)
                         .add(101, 101, 101)
                         .add(nextBtn))
                     .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
                         .add(jLabel1)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(treeIDTxt, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)))
+                        .add(treeIDTxt, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -180,6 +183,10 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
     private void treeIDTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_treeIDTxtActionPerformed
         this.matchKey();
     }//GEN-LAST:event_treeIDTxtActionPerformed
+
+    private void treeSelected(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeSelected
+        this.viewBtn.setEnabled( true );
+    }//GEN-LAST:event_treeSelected
 
     /**
     * @param args the command line arguments
