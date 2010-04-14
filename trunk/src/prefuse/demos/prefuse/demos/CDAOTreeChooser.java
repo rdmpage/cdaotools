@@ -17,10 +17,12 @@ package prefuse.demos;
  */
 public class CDAOTreeChooser extends javax.swing.JFrame {
     private TreeNameListModel model;
+    AboutBox aboutBox;
     /** Creates new form CDAOTreeChooser */
     public CDAOTreeChooser() {
         model = new TreeNameListModel();
         model.updateModel();
+        aboutBox = new AboutBox();
         initComponents();
         
     }
@@ -73,8 +75,11 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
         treeIDTxt = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        mainMenu = new javax.swing.JMenu();
+        Exit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        helpMenu = new javax.swing.JMenu();
+        aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,11 +122,34 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
 
         jLabel1.setText("Tree ID:");
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        mainMenu.setText("File");
+
+        Exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
+        Exit.setText("Exit");
+        Exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitApplication(evt);
+            }
+        });
+        mainMenu.add(Exit);
+
+        jMenuBar1.add(mainMenu);
 
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
+
+        helpMenu.setText("Help");
+
+        aboutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        aboutMenuItem.setText("About");
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showAbout(evt);
+            }
+        });
+        helpMenu.add(aboutMenuItem);
+
+        jMenuBar1.add(helpMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -188,6 +216,14 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
         this.viewBtn.setEnabled( true );
     }//GEN-LAST:event_treeSelected
 
+    private void exitApplication(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitApplication
+        System.exit( 0 );
+    }//GEN-LAST:event_exitApplication
+
+    private void showAbout(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAbout
+        this.aboutBox.setVisible( true );
+    }//GEN-LAST:event_showAbout
+
     /**
     * @param args the command line arguments
     */
@@ -200,11 +236,14 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Exit;
+    private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JMenu helpMenu;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenu mainMenu;
     private javax.swing.JButton nextBtn;
     private javax.swing.JButton prevButton;
     private javax.swing.JTextField treeIDTxt;
