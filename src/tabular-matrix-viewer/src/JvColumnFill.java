@@ -1,3 +1,4 @@
+package matrix.view;
 class JvColumnFill implements JvCellFill
 {
     protected int columnIndex;
@@ -35,5 +36,6 @@ class JvColumnFill implements JvCellFill
         }
     }
 }
+
 
 

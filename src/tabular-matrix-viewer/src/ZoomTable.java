@@ -1,5 +1,7 @@
 // Author: Neil W. Weber  neilweber@yahoo.com
 
+package matrix.view;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;

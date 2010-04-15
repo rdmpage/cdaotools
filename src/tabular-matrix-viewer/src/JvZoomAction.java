@@ -1,3 +1,4 @@
+package matrix.view;
 
 import javax.swing.*;
 import javax.swing.undo.*;
@@ -32,5 +33,6 @@ class JvZoomAction extends AbstractAction
         undoManager.undoableEditHappened(editEvent);
     }
 }
+
 
 

@@ -1,3 +1,4 @@
+package matrix.view;
 
 import javax.swing.*;
 import javax.swing.undo.*;
@@ -78,5 +79,6 @@ class JvFontEdit extends AbstractUndoableEdit
             ((JTable) component).getTableHeader().setFont(font);
     }
 }
+
 
 

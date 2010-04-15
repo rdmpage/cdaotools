@@ -1,3 +1,4 @@
+package matrix.view;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -28,4 +29,5 @@ class JvRedoAction extends AbstractAction
         }
     }
 }
+
 

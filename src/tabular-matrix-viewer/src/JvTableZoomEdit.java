@@ -1,3 +1,4 @@
+package matrix.view;
 
 import javax.swing.undo.*;
 import javax.swing.event.*;
@@ -48,6 +49,7 @@ class JvTableZoomEdit extends AbstractUndoableEdit
         table.setZoom(newValue);
     }
 }
+
 
 
 

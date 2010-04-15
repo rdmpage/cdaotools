@@ -1,3 +1,4 @@
+package matrix.view;
 
 import javax.swing.*;
 import javax.swing.undo.*;
@@ -54,5 +55,6 @@ class JvCellFillEdit extends AbstractUndoableEdit
         fill();
     }
 }
+
 
 

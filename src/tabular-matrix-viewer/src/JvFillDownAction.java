@@ -1,3 +1,4 @@
+package matrix.view;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -50,5 +51,6 @@ class JvFillDownAction extends AbstractAction
         model.fireUndoableEdit(fillEdit);
     }
 }
+
 
 
