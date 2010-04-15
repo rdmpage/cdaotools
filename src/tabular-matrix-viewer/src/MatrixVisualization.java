@@ -100,7 +100,7 @@ public class MatrixVisualization extends JPanel
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         table.setPreferredScrollableViewportSize(new Dimension(dimension.height, dimension.width-100));
         table.calcColumnWidths();
-        table.setFillsViewportHeight(true);
+        //table.setFillsViewportHeight(true);
         table.getTableHeader().setReorderingAllowed(false);//disable reodering column
         table.getSelectionModel().addListSelectionListener(new RowListener());
         table.getColumnModel().getSelectionModel().
@@ -113,7 +113,7 @@ public class MatrixVisualization extends JPanel
         table2.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         table2.setPreferredScrollableViewportSize(new Dimension(dimension.height, dimension.width-100));
         table2.calcColumnWidths();
-        table2.setFillsViewportHeight(true);
+        //table2.setFillsViewportHeight(true);
         table2.getTableHeader().setReorderingAllowed(false);//disable reodering column
         scrollPane2=new JScrollPane(table2);
         scrollPane2.setAlignmentX(LEFT_ALIGNMENT);
