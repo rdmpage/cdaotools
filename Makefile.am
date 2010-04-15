@@ -1,3 +1,4 @@
 SUBDIRS=lib/ncl-2.1.06 lib/CppLoggerV2 src
 AM_CXXFLAGS=-Wall -g
+AM_YFLAGS=-d
 ACLOCAL_AMFLAGS=-I m4

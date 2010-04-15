@@ -38,7 +38,7 @@ DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(top_srcdir)/configure AUTHORS COPYING \
 	ChangeLog INSTALL NEWS config/config.guess config/config.sub \
 	config/depcomp config/install-sh config/ltmain.sh \
-	config/missing
+	config/missing config/ylwrap
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -137,6 +137,9 @@ INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LD = /usr/bin/ld -m elf_x86_64
 LDFLAGS = 
+LEX = flex
+LEXLIB = -lfl
+LEX_OUTPUT_ROOT = lex.yy
 LIBOBJS = 
 LIBS = 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
@@ -166,6 +169,8 @@ SET_MAKE =
 SHELL = /bin/bash
 STRIP = strip
 VERSION = 0.2
+YACC = bison -y
+YFLAGS = 
 abs_builddir = /home/bchisham/cdaotools/trunk
 abs_srcdir = /home/bchisham/cdaotools/trunk
 abs_top_builddir = /home/bchisham/cdaotools/trunk
@@ -222,6 +227,7 @@ top_builddir = .
 top_srcdir = .
 SUBDIRS = lib/ncl-2.1.06 lib/CppLoggerV2 src
 AM_CXXFLAGS = -Wall -g
+AM_YFLAGS = -d
 ACLOCAL_AMFLAGS = -I m4
 all: all-recursive
 

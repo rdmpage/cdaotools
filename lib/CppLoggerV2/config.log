@@ -31,6 +31,8 @@ PATH: /usr/bin/java/bin
 PATH: /opt/openoffice.org2.0/program
 PATH: /usr/bin/java/bin
 PATH: /opt/openoffice.org2.0/program
+PATH: /usr/bin/java/bin
+PATH: /opt/openoffice.org2.0/program
 PATH: /usr/local/sbin
 PATH: /usr/local/bin
 PATH: /usr/sbin
@@ -38,6 +40,8 @@ PATH: /usr/bin
 PATH: /sbin
 PATH: /bin
 PATH: /usr/games
+PATH: /home/bchisham/bin
+PATH: /home/bchisham/OpenOffice.org1.1.0
 PATH: /home/bchisham/bin
 PATH: /home/bchisham/OpenOffice.org1.1.0
 PATH: /home/bchisham/bin
