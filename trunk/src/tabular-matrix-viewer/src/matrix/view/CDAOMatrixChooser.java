@@ -120,7 +120,7 @@ public class CDAOMatrixChooser extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Tree ID:");
+        jLabel1.setText("Matrix ID:");
 
         mainMenu.setText("File");
 
@@ -170,7 +170,7 @@ public class CDAOMatrixChooser extends javax.swing.JFrame {
                     .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
                         .add(jLabel1)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(treeIDTxt, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)))
+                        .add(treeIDTxt, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
