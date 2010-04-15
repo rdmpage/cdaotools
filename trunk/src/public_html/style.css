@@ -1,0 +1,38 @@
+body {
+   font-family: Times, serif;
+   font-size: 1em;
+   background-color: #660000
+}
+
+div.main-content {
+   background-color: #CCCC66;
+   width: 800px;
+   height: 600px;
+   border-width: 1px;
+   border-style: solid;
+   border-color: #000000;
+   overflow: auto;
+}
+
+h1 {
+   font-family: Arial, sans-serif;
+   text-align: center;
+   text-shadow: gray 3px 3px 3px;
+   font-style: italic;
+}
+
+input.text {
+   background-color: #E0E0E0;
+   border-style: solid;
+   border-color: #000000;
+   border-width: 1px;
+}
+
+input.text:hover {
+   background-color: #F0F0F0;
+}
+
+input.button:hover {
+   background-color: #FEFEFE;
+   font-weight: bold;
+}
