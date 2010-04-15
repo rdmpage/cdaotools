@@ -1,3 +1,4 @@
+package matrix.view;
 
 import java.util.*;
 
@@ -89,5 +90,6 @@ class JvUndoableTableModel extends DefaultTableModel implements Cloneable
     //Hide/show column
     
 }
+
 
 

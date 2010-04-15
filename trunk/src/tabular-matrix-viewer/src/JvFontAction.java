@@ -1,3 +1,4 @@
+package matrix.view;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -33,4 +34,5 @@ class JvFontAction extends AbstractAction
         undoManager.undoableEditHappened(editEvent);
     }
 }
+
 

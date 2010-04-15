@@ -1,3 +1,4 @@
+package matrix.view;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -83,5 +84,6 @@ class JvUndoManager extends UndoManager
         redoAction.putValue(Action.NAME, getRedoPresentationName());
     }
 }
+
 
 

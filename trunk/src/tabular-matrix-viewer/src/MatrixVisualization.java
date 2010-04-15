@@ -29,6 +29,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 
+package matrix.view;
+
+
 
 /*
  * TableSelectionDemo.java requires no other files.

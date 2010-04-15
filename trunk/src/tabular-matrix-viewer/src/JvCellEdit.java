@@ -1,3 +1,4 @@
+package matrix.view;
 
 import javax.swing.undo.*;
 
@@ -44,5 +45,6 @@ class JvCellEdit extends AbstractUndoableEdit
         tableModel.setValueAt(newValue, row, column, false);
     }
 }
+
 
 

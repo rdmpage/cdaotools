@@ -1,3 +1,4 @@
+package matrix.view;
 import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.event.*;
@@ -7,4 +8,5 @@ class JvExitAction extends AbstractAction{
 		System.exit(0);
 	}
 }
+
 
