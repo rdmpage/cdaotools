@@ -37,6 +37,10 @@ package matrix.view;
  * TableSelectionDemo.java requires no other files.
  */
 
+import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
@@ -58,15 +62,20 @@ import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URL;
 import java.util.*;
+import java.util.Scanner;
 
 public class MatrixVisualization extends JPanel 
                                 implements ActionListener { 
-	public static final String filelocation = "m450.csv";
+	public static String filelocation = "m450.csv";
 	private static String cutoffString;//The String removed in CSV reader
 	private static JFrame frame;
 	private static JFrame frame2;
@@ -135,20 +144,27 @@ public class MatrixVisualization extends JPanel
         add(buttonPanel);
 
     }
-    private static JvUndoableTableModel CSVReader(String filepath) throws IOException{
-    	JvUndoableTableModel tableModel=null;
+    /**
+     * Read a matrix from the specified input stream
+     * @param is
+     * @return
+     * @throws IOException
+     */
+    private static JvUndoableTableModel CSVReader( InputStream is )throws IOException {
+        JvUndoableTableModel tableModel=null;
     	Vector data = new Vector();
-    	File file = new File(filepath); 
+    	//File file = new File(filepath);
     	boolean flag=false;
-    	BufferedReader bufRdr  = new BufferedReader(new FileReader(file));
+    	Scanner bufRdr  =  new Scanner( is );
     	String line = null;
     	//read each line of text file
-    	while((line = bufRdr.readLine()) != null){
+    	while(bufRdr.hasNext()){
+                line = bufRdr.nextLine();
     		Vector<String> vline= new Vector<String>();
-    		StringTokenizer st = new StringTokenizer(line,",");	
+    		StringTokenizer st = new StringTokenizer(line,",");
     		String s;
     		int index;
-    		while (st.hasMoreTokens())	{		
+    		while (st.hasMoreTokens())	{
     				//get next token and store it in the array
     					s=st.nextToken();
     					index=s.lastIndexOf('#');
@@ -157,10 +173,10 @@ public class MatrixVisualization extends JPanel
 						flag=true;
 					}
     					s=s.substring(index+1);
-    					vline.add(s);			
+    					vline.add(s);
     				}
     		data.add(vline);
-        } 
+        }
     	//close the file
     	bufRdr.close();
     	//Create a dummy columns names
@@ -171,7 +187,32 @@ public class MatrixVisualization extends JPanel
         tableModel=new JvUndoableTableModel(data, columnNames);
     	return tableModel;
     }
-    public static void CSVWriter(JvUndoableTableModel tableModel,File file) throws IOException{
+    /**
+     * Read a matrix from a file
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    private static JvUndoableTableModel CSVReader( File file ) throws IOException {
+        return CSVReader( new FileInputStream(file) );
+    }
+    /**
+     * Read a matrix from a file or url.
+     * @param filepath
+     * @return
+     * @throws IOException
+     */
+    private static JvUndoableTableModel CSVReader(String filepath) throws IOException{
+        try {
+            URI url = new URI(filepath);
+            return CSVReader( url.toURL().openStream() );
+        } catch (URISyntaxException ex) {
+            File file = new File(filepath);
+            return CSVReader(file);
+        }
+
+    }
+    static void CSVWriter(JvUndoableTableModel tableModel,File file) throws IOException{
     	Vector data= tableModel.getDataVector();
     	BufferedWriter bufWrt = new BufferedWriter(new FileWriter(file));
     	for(Iterator i=data.iterator();i.hasNext();){

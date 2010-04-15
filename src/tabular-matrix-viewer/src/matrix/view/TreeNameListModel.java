@@ -30,7 +30,7 @@ public class TreeNameListModel implements javax.swing.ListModel {
         data = new ArrayList();
         listeners = new ArrayList();
         selected = new ArrayList();
-        listType = "trees";
+        listType = "matrices";
         start = 0;
         limit = 50;
         this.updateModel();
