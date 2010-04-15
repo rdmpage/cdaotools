@@ -84,7 +84,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="treeIDTxt" pref="409" max="32767" attributes="0"/>
+                      <Component id="treeIDTxt" pref="396" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -167,7 +167,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Tree ID:"/>
+        <Property name="text" type="java.lang.String" value="Matrix ID:"/>
       </Properties>
     </Component>
   </SubComponents>
