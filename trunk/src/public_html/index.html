@@ -11,25 +11,25 @@
       xml:lang="en">
  <head profile="http://www.w3.org/1999/xhtml/vocab">
       <title>Cdao Store Query System</title>
-      <link rel="stylesheet" type="text/css" href="../style.css"/>
+      <link rel="stylesheet" type="text/css" href="style.css"/>
       <link rel="alternate" title="Project News" href="http://sourceforge.net/export/rss2_keepsake.php?group_id=282379" type="application/rss+xml"/>
-      <link rel="SHORTCUT ICON" href="../cdao-store-favicon.ico" />
+      <link rel="SHORTCUT ICON" href="cdao-store-favicon.ico" />
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  </head>
  <body resource="index.html">
    <div class="main-content">
     <h1 property="dc:title">Cdao Store</h1>
-    <p><a href="index.html"><img src="../cdao-triplestore-logo.jpg" alt="Cdao store logo" style="border:0px;" /></a></p>
+    <p><a href="index.html"><img src="cdao-triplestore-logo.jpg" alt="Cdao store logo" style="border:0px;" /></a></p>
     <div class="menu">
         <ul>
            <li>
-               <form action="../cgi-bin/import" method="get">
+               <form action="cgi-bin/import" method="get">
                    <p><span>URL of RDF file:</span><input type="text" class="text" id="ontology" name="ontology"/>
                    <input type="submit" class="button" id="import-submit" value="Import" /></p>
                </form>
            </li>
            <li>
-                 <form action="../cgi-bin/author/html" method="get">
+                 <form action="cgi-bin/author/html" method="get">
                    <div about="study:Study"><p rel="study:has_Author"><span>Author:</span><span property="study:has_last_name"><input type="text" class="text" id="last" name="last"/></span>
                    <input type="submit" class="button" id="search" value="search" /></p></div>
                 </form>
@@ -41,7 +41,7 @@
                         <p property="dc:description">Retrive a tree, by Treebase accession number, from the triple-store in specified format.</p>
                         <ul>
                            <li>
-                              <form action="../cgi-bin/tree/query" method="get">
+                              <form action="cgi-bin/tree/query" method="get">
                                   <p>NeXML: <input type="radio" name="format" value="nexml"/>
                                      GraphML: <input type="radio" name="format" value="graphml"/>
                                      Prolog: <input type="radio" name="format" value="prolog"/>
@@ -62,7 +62,7 @@
                         <p property="dc:description">Retrieve all trees constructed using the specified algorithm or program.</p>
                         <ul>                           
                              <li>
-                                <form action="../cgi-bin/algorithm/html" method="get">
+                                <form action="cgi-bin/algorithm/html" method="get">
                                     <p about="study:Analysis">
                                     <span>Algorithm:</span>
                                     <span property="study:has_Algorithm">
@@ -158,7 +158,7 @@
                                   </form>
                              </li>
                              <li>
-                                <form action="../cgi-bin/software/html" method="get">
+                                <form action="cgi-bin/software/html" method="get">
                                     <p about="study:Analysis">
                                       <span>Sofware:</span>
                                       <span property="study:has_Software">
@@ -294,7 +294,7 @@
                        </form>
                    </li>-->
                    <li>
-                       <form action="../cgi-bin/tu/html" method="get">
+                       <form action="cgi-bin/tu/html" method="get">
                           <p about="cdao:TU"><span>TU:</span><input type="text" class="text" id="html-tu" name="tu" value="Ilex_anomala" />
                           <input type="submit" class="button" id="html-tu-submit" value="Search"/></p>
                        </form>

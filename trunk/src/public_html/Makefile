@@ -8,31 +8,32 @@ REMOTE_BIN_DIR=~/bin/
 REMOTE_DAT_DIR=~/bin/
 REMOTE_XSL_DIR=~/public_html/
 
-LOCAL_STATIC_WEB_DIR=html
-REMOTE_STATIC_WEB_DIR=cdao-store
-#SUB_C='s/.c$$//'
-
-deploy: prolog_exe_driver.c.deployed do_html_author_query.sh.deployed do_html_algorithm_query.sh.deployed do_html_nca_query.sh.deployed do_html_msc_query.sh.deployed  do_html_tree_query.sh.deployed do_node_query.sh.deployed do_tree_query.sh.deployed do_html_tu_query.sh.deployed do_html_study_query.sh.deployed do_study_list_authors.sh.deployed do_study_detail_query_construct.sh.deployed do_study_list_trees.sh.deployed query_template_script.sh.deployed do_prolog_msc_query.sh.deployed do_prolog_tu_query.sh.deployed do_author_work_list_query_construct.sh.deployed do_query.py.deployed sparql.py.deployed import.py.deployed store.py.deployed index.py.deployed html.py.deployed study_authors_to_html.xsl.deployed study_result_to_html.xsl.deployed tu_to_filelist.xsl.deployed nexml_to_csv.xsl.deployed 
-	(cd html && make deploy)
-	(cd phylows && make deploy)
 
 
-%.c.deployed: %.c
-	scp $< $(REMOTE_HOST):$(REMOTE_BIN_DIR)
-	ssh $(REMOTE_HOST) "cd $(REMOTE_BIN_DIR) && gcc -o `echo $< | sed 's/.c$$//'` $< && rm -f $<"
+
+deploy: index.html.deployed style.css.deployed cdao-triplestore-logo.jpg.deployed cdao-triplestore-logo.ico.deployed nexml_to_csv.xsl.deployed study_result_to_html.xsl.deployed tu_to_filelist.xsl.deployed study_authors_to_html.xsl.deployed trees_to_file.xsl.deployed
+	(cd bin && make deploy)
+	(cd cgi-bin && make deploy)
+
+%.html.deployed: %.html
+	scp $< $(REMOTE_HOST):$(REMOTE_WEB_DIR)
+	ssh $(REMOTE_HOST) "chmod 644 $(REMOTE_WEB_DIR)/$<"
 	touch $@
 
-%.sh.deployed: %.sh
-	scp $< $(REMOTE_HOST):$(REMOTE_BIN_DIR)
-	ssh $(REMOTE_HOST) "chmod 755 $(REMOTE_BIN_DIR)/$<"
+%.css.deployed: %.css
+	scp $< $(REMOTE_HOST):$(REMOTE_WEB_DIR)
+	ssh $(REMOTE_HOST) "chmod 644 $(REMOTE_WEB_DIR)/$<"
+	touch $@
+%.jpg.deployed: %.jpg
+	scp $< $(REMOTE_HOST):$(REMOTE_WEB_DIR)
+	ssh $(REMOTE_HOST) "chmod 644 $(REMOTE_WEB_DIR)/$<"
 	touch $@
 
-%.py.deployed: %.py
-	scp $< $(REMOTE_HOST):$(REMOTE_BIN_DIR)
-	touch $@ 
-%.dat.deployed: %.dat
-	scp $< $(REMOTE_HOST):$(REMOTE_DAT_DIR)
+%.ico.deployed: %.ico
+	scp $< $(REMOTE_HOST):$(REMOTE_WEB_DIR)
+	ssh $(REMOTE_HOST) "chmod 644 $(REMOTE_WEB_DIR)/$<"
 	touch $@
+
 %.xsl.deployed: %.xsl
 	scp $< $(REMOTE_HOST):$(REMOTE_WEB_DIR)/$(REMOTE_STATIC_WEB_DIR)
 	touch $@
