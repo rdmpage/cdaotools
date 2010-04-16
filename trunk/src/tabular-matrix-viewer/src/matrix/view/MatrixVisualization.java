@@ -120,7 +120,10 @@ public class MatrixVisualization extends JPanel
         add(buttonPanel);
 
     }
-
+    /**
+     * Open the specified matrix file initially.
+     * @param path
+     */
     public MatrixVisualization(String path){
         super();
         setLayout( new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -136,7 +139,10 @@ public class MatrixVisualization extends JPanel
         initComponents();
 
     }
-
+    /**
+     * Display the matrix at the specified url.
+     * @param url
+     */
     public MatrixVisualization(URL url){
         super();
         setLayout( new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -151,7 +157,9 @@ public class MatrixVisualization extends JPanel
 
         initComponents();
     }
-
+    /**
+     * Display the default matrix.
+     */
     public MatrixVisualization(){
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -190,7 +198,7 @@ public class MatrixVisualization extends JPanel
                 Pattern separator = Pattern.compile(",");
                 String[] cells = separator.split(line);
                 if ( colCount <= 1){ colCount = cells.length; }
-                System.err.println("Column Count: " + colCount );
+                //System.err.println("Column Count: " + colCount );
                 for (int i = 0; i < cells.length; ++i){
                     //System.err.println( "Adding cell: " + cells[ i ] );
                     vline.add( cells[ i ] );
@@ -210,7 +218,7 @@ public class MatrixVisualization extends JPanel
     		data.add(vline);
         }
 
-        System.err.println("Column Count: " + colCount);
+        //System.err.println("Column Count: " + colCount);
 
     	//close the file
     	bufRdr.close();
@@ -248,6 +256,12 @@ public class MatrixVisualization extends JPanel
         }
 
     }
+    /**
+     * Write the displayed matrix to the specified stream.
+     * @param tableModel
+     * @param file
+     * @throws IOException
+     */
     static void CSVWriter(JvUndoableTableModel tableModel,File file) throws IOException{
     	Vector data= tableModel.getDataVector();
     	BufferedWriter bufWrt = new BufferedWriter(new FileWriter(file));
@@ -284,11 +298,11 @@ public class MatrixVisualization extends JPanel
 
     public void actionPerformed(ActionEvent event) {
         String command = event.getActionCommand();
-        if("Row Selection" == command ||"Column Selection"==command){
-	        if ("Row Selection" == command) {
+        if( command.equals( "Row Selection" ) ||command.equals( "Column Selection" ) ){
+	        if ( command.equals( "Row Selection" ) ) {
 	            table.setRowSelectionAllowed(rowCheck.isSelected());
 	                table.setColumnSelectionAllowed(!rowCheck.isSelected());
-	        } else if ("Column Selection" == command) {
+	        } else if ( command.equals( "Column Selection" )  ) {
 	            table.setColumnSelectionAllowed(columnCheck.isSelected());
 	                table.setRowSelectionAllowed(!columnCheck.isSelected());
 	        }
@@ -298,7 +312,7 @@ public class MatrixVisualization extends JPanel
 	        columnCheck.setSelected(table.getColumnSelectionAllowed());
         }
         else{
-        	if("Hide"==command){
+        	if( command.equals( "Hide" ) ){
             	int [] indices;
             	if(rowCheck.isSelected()){
             		indices=table.getSelectedRows();
@@ -312,7 +326,7 @@ public class MatrixVisualization extends JPanel
             		table.calcColumnWidths();
             	}
         	}
-        	else if("Extract"==command){
+        	else if( command.equals( "Extract" ) ){
             	Vector newdata=new Vector();
             	Vector olddata= tableModel.getDataVector();
             	int [] indices;
