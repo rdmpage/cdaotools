@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.regex.Pattern;
 import javax.swing.Timer;
 import javax.swing.Icon;
@@ -142,6 +143,21 @@ public class MatrixViewerView extends FrameView {
             Logger.getLogger(MatrixViewerView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void openFile( URL url){
+        try {
+            String ftype = "csv";
+            this.matrix = MatrixFactory.getMatrix(ftype);
+            this.matrix.read(url.openStream());
+            ((MatrixView)this.matrix_canvas).setMatrix( this.matrix );
+            this.matrixStatsLabel.setText( "File: " + url.toExternalForm() +
+                                           " Rows: " + this.matrix.getrowcount() +
+                                           " Cols: " + this.matrix.getrowcount() );
+        } catch (IOException ex) {
+            Logger.getLogger(MatrixViewerView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     @Action
     public void saveFile(){
         OutputStream os = null;
