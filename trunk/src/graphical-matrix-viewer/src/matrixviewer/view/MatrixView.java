@@ -19,8 +19,10 @@ import matrixviewer.model.MolecularDatum;
 public class MatrixView extends Canvas {
     private Matrix model;
     private DrawableDatum rederer = new DrawableDatum();
-    int cellwidth;
-    int cellheight;
+    private int cellwidth;
+    private int cellheight;
+    private int key_entry_block_size;
+
     /**
      * Specify the model being drawn.
      * @param model
@@ -39,7 +41,12 @@ public class MatrixView extends Canvas {
      */
     public void setMatrix( Matrix model ){
         this.model = model;
+        this.cellheight = 5;
+        this.cellwidth = 5;
+        this.key_entry_block_size = 0;//this.cellheight * this.model.getUniqueValues().size();
         this.rederer = new DrawableDatum( this.model.getUniqueValues() );
+        this.setSize( this.model.getcolumncount() * this.cellwidth, this.model.getrowcount() * this.cellheight + this.key_entry_block_size);
+        
         this.repaint();
     }
     /**
@@ -59,44 +66,51 @@ public class MatrixView extends Canvas {
         if (this.model != null && 
                 this.model.getcolumncount() > 0 &&
                 this.model.getrowcount() > 0 ){
-            this.cellwidth = this.getWidth()/this.model.getcolumncount()/2;
-            this.cellheight = this.getHeight()/this.model.getrowcount()/2;
+                
+
+           
             
+            System.err.println("Cell height: " + this.cellheight );
+            System.err.println("Cell width: " + this.cellwidth );
+            System.err.println("Canvas height: " + this.getHeight());
+            System.err.println("Canvas width: " + this.getWidth());
+
             //put the column labels.
             //int datum_x_offset = -5;
             //int datum_y_offset = -5;
-            int key_entry_height = 25;
-            int key_entry_block_size = key_entry_height * this.model.getUniqueValues().size();
-            int row_label_offset = cellwidth ;
-            int col_label_offset = cellheight + key_entry_block_size ;
-            Iterator< String > mval = this.model.getUniqueValues().iterator();
-            //Draw the key.
-            for (int key = 0; key < this.model.getUniqueValues().size() && mval.hasNext(); ++key){
-                g.setColor(Color.black);
-                String current = mval.next();
-                g.drawString( current , 0  , key_entry_height * (key+1) + key_entry_height/3);
-                g.setColor( this.rederer.getColor( new MolecularDatum(0,0, current) ) );
-                g.fillRect( row_label_offset/2 , key_entry_height *( key +1 ), key_entry_height, key_entry_height);
-            }
+            int key_entry_height = cellheight;
+            
+            //int row_label_offset = 50 ;
+//           // int col_label_offset = cellheight + key_entry_block_size ;
+//            Iterator< String > mval = this.model.getUniqueValues().iterator();
+//            //Draw the key.
+//////
+//            for (int key = 0; key < this.model.getUniqueValues().size() && mval.hasNext(); ++key){
+//                g.setColor(Color.black);
+//                String current = mval.next();
+//                g.drawString( current , 0  , key_entry_height * (key+1) + key_entry_height);
+//                g.setColor( this.rederer.getColor( new MolecularDatum(0,0, current) ) );
+//                g.fillRect( row_label_offset , key_entry_height *( key +1 ), key_entry_height, key_entry_height);
+//            }
 
 
             g.setColor(Color.black);
             //Draw the column labels.
             for ( int col = 0; col < this.model.getcolumncount(); ++col ){
-                g.drawString( this.model.getColumnLabel(col) , row_label_offset + col * cellwidth + cellwidth/2 , key_entry_block_size + col_label_offset/5);
+                //g.drawString( this.model.getColumnLabel(col) , row_label_offset + col * cellwidth + cellwidth/2 , key_entry_block_size + col_label_offset/5);
 
             }
             //Draw the matrix
             g.setColor(Color.black);
-            for (int row = 0; row < model.getrowcount(); ++row){
+            for (int row = 0; row < model.getrowcount()-1; ++row){
                 //Draw the row label
                 g.setColor(Color.black);
-                g.drawString( this.model.getRowLabel(row) , 0, col_label_offset+(row)*cellheight + cellheight/2);
-                for (int col = 0; col < model.getcolumncount(); ++col ){
+                //g.drawString( this.model.getRowLabel(row) , 0, col_label_offset+(row)*cellheight + cellheight/2);
+                for (int col = 0; col < model.getcolumncount()-1; ++col ){
                     g.setColor( this.rederer.getColor( this.model.getDatum(row, col) ) );
                     //Draw the cell.
-                    g.fillRect(row_label_offset + (row)* cellwidth,
-                            col_label_offset + (col)*cellheight,
+                    g.fillRect(/*row_label_offset +*/ (col+1)* cellheight,
+                            /*this.key_entry_block_size +*/ (row+1)*cellwidth,
                             cellwidth,
                             cellheight);
                     //g.setColor(Color.black);

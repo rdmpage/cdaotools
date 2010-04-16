@@ -5,6 +5,9 @@
 
 package matrixviewer.model;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -16,6 +19,8 @@ import java.util.ListIterator;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -199,22 +204,27 @@ public class CSVMatrix implements Matrix {
         //process the first line with the column names.
         Matcher mat = null;
         String[] split_line = null;
-        if ( input_scanner.hasNextLine() ){
-            current_line = input_scanner.nextLine();
-            split_line = line_tokenizer.split( current_line );
-        }
-        assert( split_line != null );
-        for (int i = 0; i < split_line.length; ++i){
-            col_names.add( split_line[ i ] );
-        }
-        ArrayList[] col_data = new ArrayList[ col_names.size() ];
-           for (int i =0; i < col_names.size(); ++i){
-               col_data[i] = new ArrayList();
-        }
+//        if ( input_scanner.hasNextLine() ){
+//            current_line = input_scanner.nextLine();
+//            split_line = line_tokenizer.split( current_line );
+//        }
+//        assert( split_line != null );
+//        for (int i = 0; i < split_line.length; ++i){
+//            col_names.add( split_line[ i ] );
+//        }
+//        ArrayList[] col_data = new ArrayList[ col_names.size() ];
+//           for (int i =0; i < col_names.size(); ++i){
+//               col_data[i] = new ArrayList();
+//        }
         int current_row = 0;
         while (input_scanner.hasNextLine()){
            current_line = input_scanner.nextLine();
            split_line = line_tokenizer.split(current_line);
+           if ( col_names.size() == 0 ){
+              for ( int i = 0; i < split_line.length; ++i ){
+                  col_names.add("trait"+1);
+              }
+           }
            row_names.add(split_line[0]);
            ArrayList<MatrixDatum> row_data = new ArrayList();
            //rows.add(row_data);
@@ -228,8 +238,17 @@ public class CSVMatrix implements Matrix {
                   //System.err.println( "Cell Data: " + split_line[i] );
            }
            rows.add( row_data );
+           current_row++;
         }
-        current_row++;
+        
+    }
+
+    public void read( File file ){
+        try {
+            read(new FileInputStream(file));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CSVMatrix.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void write(OutputStream output) {
