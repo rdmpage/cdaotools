@@ -39,13 +39,13 @@
    </target>
    
    <target name="jnlp" depends="dist">
-       <signjar keystore="mat.keystore" jar="${dist}/MarixViewer.jar" alias="cdaostore" storepass="cdaostore" />
-       <signjar keystore="mat.keystore" jar="${lib}/swing-layout-1.0.4.jar" alias="cdaostore" storepass="cdaostore" />
-   </target>
-   <target name="deploy" depends="jnlp">
-       <scp host="${remote-host}" localfile="launch.jnlp" remotetodir="${remoteinstallpath}"/>
-       <scp host="${remote-host}" localfile="${dist}/MatrixViewer.jar" remotetodir="${remoteinstallpath}"/>
-       <scp host="${remote-host}" localfile="${lib}/swing-layout-1.0.4.jar" remotetodir="${remoteinstallpath}"/>
+       <signjar keystore="${keystore}" jar="${dist}/MartixViewer.jar" alias="cdaostore" storepass="cdaostore">
+           <path>
+               <fileset dir="${lib}"/>
+               <fileset dir="${dist}"/>
+           </path>
+       </signjar>
+       <!--<signjar keystore="${keystore}" jar="${lib}/swing-layout-1.0.4.jar" alias="cdaostore" storepass="cdaostore" />-->
    </target>
    <target name="clean" description="clean up">
        <delete dir="${build}"/>
