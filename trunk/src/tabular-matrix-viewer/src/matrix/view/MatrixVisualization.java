@@ -37,45 +37,32 @@ package matrix.view;
  * TableSelectionDemo.java requires no other files.
  */
 
-import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
-import javax.swing.text.DefaultEditorKit.CutAction;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Component;
-import java.awt.GridLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 import java.util.*;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MatrixVisualization extends JPanel 
                                 implements ActionListener { 
-	public static String filelocation = "m450.csv";
+	public static String filelocation = "http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/matrix/M450?format=csv";
 	private static String cutoffString;//The String removed in CSV reader
 	private static JFrame frame;
 	private static JFrame frame2;
@@ -94,19 +81,8 @@ public class MatrixVisualization extends JPanel
     private ButtonGroup buttonGroup;
     private JTextArea output;
 
-    public MatrixVisualization(){
-        super();
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        //Read in file
-
-        try {
-        	tableModel=CSVReader(filelocation);
-	} catch (IOException e) {
-			e.printStackTrace();
-            System.err.println("Error loading table. Exiting...");
-            System.exit(1);
-	}
-	table = new JvTable(tableModel);
+    private void initComponents(){
+        table = new JvTable(tableModel);
 	System.out.println(table.getColumnCount());
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -144,6 +120,52 @@ public class MatrixVisualization extends JPanel
         add(buttonPanel);
 
     }
+
+    public MatrixVisualization(String path){
+        super();
+        setLayout( new BoxLayout(this, BoxLayout.Y_AXIS));
+        try {
+        	tableModel=CSVReader(path);
+	} catch (IOException e) {
+			e.printStackTrace();
+            System.err.println("Error loading table. Exiting...");
+            System.exit(1);
+	}
+
+
+        initComponents();
+
+    }
+
+    public MatrixVisualization(URL url){
+        super();
+        setLayout( new BoxLayout(this, BoxLayout.Y_AXIS));
+        try {
+        	tableModel=CSVReader(url.openStream());
+	} catch (IOException e) {
+			e.printStackTrace();
+            System.err.println("Error loading table. Exiting...");
+            System.exit(1);
+	}
+
+
+        initComponents();
+    }
+
+    public MatrixVisualization(){
+        super();
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        //Read in file
+
+        try {
+        	tableModel=CSVReader(filelocation);
+	} catch (IOException e) {
+			e.printStackTrace();
+            System.err.println("Error loading table. Exiting...");
+            System.exit(1);
+	}
+	initComponents();
+    }
     /**
      * Read a matrix from the specified input stream
      * @param is
@@ -152,38 +174,52 @@ public class MatrixVisualization extends JPanel
      */
     private static JvUndoableTableModel CSVReader( InputStream is )throws IOException {
         JvUndoableTableModel tableModel=null;
-    	Vector data = new Vector();
+    	Vector< Vector <String> > data = new Vector();
     	//File file = new File(filepath);
     	boolean flag=false;
     	Scanner bufRdr  =  new Scanner( is );
     	String line = null;
     	//read each line of text file
-    	while(bufRdr.hasNext()){
+        int colCount = 0;
+    	while(bufRdr.hasNextLine()){
                 line = bufRdr.nextLine();
     		Vector<String> vline= new Vector<String>();
     		StringTokenizer st = new StringTokenizer(line,",");
     		String s;
     		int index;
-    		while (st.hasMoreTokens())	{
-    				//get next token and store it in the array
-    					s=st.nextToken();
-    					index=s.lastIndexOf('#');
-    					if(!flag){
-						cutoffString=s.substring(0,index+1);
-						flag=true;
-					}
-    					s=s.substring(index+1);
-    					vline.add(s);
-    				}
+                Pattern separator = Pattern.compile(",");
+                String[] cells = separator.split(line);
+                if ( colCount <= 1){ colCount = cells.length; }
+                System.err.println("Column Count: " + colCount );
+                for (int i = 0; i < cells.length; ++i){
+                    //System.err.println( "Adding cell: " + cells[ i ] );
+                    vline.add( cells[ i ] );
+                }
+                
+//    		while (st.hasMoreTokens())	{
+//    				//get next token and store it in the array
+//    					s=st.nextToken();
+//    					index=s.lastIndexOf('#');
+//    					if(!flag){
+//						cutoffString=s.substring(0,index+1);
+//						flag=true;
+//					}
+//    					s=s.substring(index+1);
+//    					vline.add(s);
+//    				}
     		data.add(vline);
         }
+
+        System.err.println("Column Count: " + colCount);
+
     	//close the file
     	bufRdr.close();
     	//Create a dummy columns names
         Vector<String> columnNames=new Vector<String>();
         columnNames.add("");
-        for (long i=1;i<((Vector)data.firstElement()).size();i++)
-        	columnNames.add(""+i);
+        for (long i=1; i < colCount;i++){
+        	columnNames.add("trait"+i);
+        }
         tableModel=new JvUndoableTableModel(data, columnNames);
     	return tableModel;
     }
@@ -375,8 +411,8 @@ public class MatrixVisualization extends JPanel
     }
 
 
-    public class Menu extends JMenuBar{
-    	public Menu(JvTable table, JvUndoableTableModel tableModel){
+    class Menu extends JMenuBar{
+    	 Menu(JvTable table, JvUndoableTableModel tableModel){
             //Add zoom option
             JvUndoManager undoManager = new JvUndoManager();
             tableModel.addUndoableEditListener(undoManager);
@@ -445,13 +481,53 @@ public class MatrixVisualization extends JPanel
         frame2.setVisible(false);
     }
 
+    private static void createAndShowGUI(String path){
+        //Disable boldface controls.
+        UIManager.put("swing.boldMetal", Boolean.FALSE);
+
+        //Create and set up the window.
+        frame = new JFrame("Matrix");
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame2 = new JFrame("Extract");
+        //Create and set up the content pane.
+        MatrixVisualization newContentPane = new MatrixVisualization( path );
+        newContentPane.setOpaque(true); //content panes must be opaque
+        //Create menu
+        Menu menuBar = newContentPane.new Menu(newContentPane.table,newContentPane.tableModel);
+        Menu menuBar2 = newContentPane.new Menu(newContentPane.table2,newContentPane.tableModel2);
+        frame.setContentPane(newContentPane);
+        frame2.add(newContentPane.scrollPane2);
+        frame.setJMenuBar(menuBar);
+        frame2.setJMenuBar(menuBar2);
+        frame.setSize(1200, 700);
+        frame2.setSize(640,480);
+        //Display the window.
+        frame.pack();
+        frame.setVisible(true);
+        frame2.setVisible(false);
+    }
+
+
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
+
+        if (args.length < 1){
+
+           javax.swing.SwingUtilities.invokeLater(new Runnable() {
+               public void run() {
+                   createAndShowGUI();
+               }
+            });
+
+        }
+        else {
+            final String path = args[1];
+            javax.swing.SwingUtilities.invokeLater(new Runnable() {
+               public void run() {
+                   createAndShowGUI( path );
+               }
+            });
+        }
     }
 }

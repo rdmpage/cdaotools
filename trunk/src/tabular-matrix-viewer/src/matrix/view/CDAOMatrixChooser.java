@@ -36,17 +36,18 @@ public class CDAOMatrixChooser extends javax.swing.JFrame {
     }
 
     private void viewTree(){
-        String[] params = new String[ 3 ];
+        String[] params = new String[ 2 ];
         String treeURI = "http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/matrix/" +
                 this.model.getElementAt( this.treeList.getMinSelectionIndex() ) + "?format=csv" ;
 
         System.err.println("Displaying URI: " + treeURI );
 
         params[ 0 ] = treeURI;
-        params[ 1 ] = "IdLabel";
-        params[ 2 ] = treeURI;
+        params[ 1 ] = treeURI;
+       // params[ 1 ] = "IdLabel";
+        //params[ 2 ] = treeURI;
 
-
+        MatrixVisualization.main(params);
 
         //CDAOview.main(params);
 
