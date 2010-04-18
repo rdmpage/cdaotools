@@ -18,6 +18,8 @@ import java.util.ListIterator;
 public class MolecularDatum implements MatrixDatum {
     private int rowno;
     private int colno;
+    private String colname;
+    private String rowname;
     private String value;
     private List< String > annotations;
 
@@ -152,5 +154,29 @@ public class MolecularDatum implements MatrixDatum {
 
         return this.getvalue();
 
+    }
+
+    public String getRowName() {
+        return this.rowname;
+    }
+
+    public String getColumnName() {
+        return this.colname;
+    }
+
+    public List<String> getAnnotations() {
+        return this.annotations;
+    }
+
+    public void setAnnotations(List<String> annotations) {
+        this.annotations = annotations;
+    }
+
+    public void setRowName(String name) {
+        this.rowname = name;
+    }
+
+    public void setColumnName(String name) {
+        this.colname = name;
     }
 }

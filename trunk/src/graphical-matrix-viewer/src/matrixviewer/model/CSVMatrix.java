@@ -257,7 +257,10 @@ public class CSVMatrix implements Matrix {
            //rows.add(row_data);
            //System.err.println( current_line );
            for (int i = 1; i < split_line.length; ++i){
-                  row_data.add( new MolecularDatum( current_row, i-1,  split_line[i] ));
+                  MolecularDatum md = new MolecularDatum( current_row, i-1,  split_line[i] );
+                  md.setRowName(split_line[0]);
+                  md.setColumnName( "trait"+ i );
+                  row_data.add( md );
                   if (!uniques.contains( split_line[ i ] )){
                       uniques.add(split_line[i]);
                   }

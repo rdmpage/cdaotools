@@ -7,6 +7,8 @@
 
 package matrixviewer;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author bchisham
@@ -42,6 +44,7 @@ public class CDAOMatrixChooser extends javax.swing.JFrame {
 
             //MatrixViewer.main(params);
             MatrixViewer mv = new MatrixViewer(  );
+            mv.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
             mv.openFile( treeURI );
             mv.setVisible( true );
        
