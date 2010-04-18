@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+//import javax.media.jai.util.Range;
 
 /**
  *
@@ -56,7 +57,10 @@ public class CSVMatrix implements Matrix {
     }
 
     public MatrixDatum getDatum(int row, int column) {
-        return rows.get(row).get(column);
+        if (row < this.rows.size() && column < this.rows.get(row).size()){
+             return rows.get(row).get(column);
+        }
+        return new MolecularDatum(row,column,"");
     }
 
     public ListIterator getRowIterator(){
@@ -192,6 +196,24 @@ public class CSVMatrix implements Matrix {
         return col_names.get(col);
     }
 
+    protected void setModel( ArrayList<String> row_names,  ArrayList< List< MatrixDatum > > model ){
+        this.rows = model;
+        this.columns = new ArrayList< List< MatrixDatum > >();
+        this.row_names = row_names;
+        this.col_names = new ArrayList<String>();
+
+        for (int i =0; i < this.rows.get(0).size(); ++i){ this.col_names.add("triat" + i); }
+
+        this.uniques = new TreeSet< String >();
+        for (int row = 0; row < this.rows.size(); ++row){
+            for (int col = 0; col < this.rows.get(row).size(); ++col){
+                if (!this.uniques.contains( this.rows.get(row).get(col).getvalue() )){
+                    this.uniques.add( this.rows.get(row).get(col).getvalue() );
+                }
+            }
+        }
+    }
+
     public void read(InputStream input) {
         Scanner input_scanner = new Scanner( input);
         String current_line;
@@ -217,6 +239,7 @@ public class CSVMatrix implements Matrix {
 //               col_data[i] = new ArrayList();
 //        }
         int current_row = 0;
+        int last_row_size = 0;
         while (input_scanner.hasNextLine()){
            current_line = input_scanner.nextLine();
            split_line = line_tokenizer.split(current_line);
@@ -225,10 +248,14 @@ public class CSVMatrix implements Matrix {
                   col_names.add("trait"+1);
               }
            }
+
+           if (current_row > 0){ assert( split_line.length == last_row_size  ); }
+
            row_names.add(split_line[0]);
+           //System.err.println("Row label: " + split_line[0]);
            ArrayList<MatrixDatum> row_data = new ArrayList();
            //rows.add(row_data);
-           System.err.println( current_line );
+           //System.err.println( current_line );
            for (int i = 1; i < split_line.length; ++i){
                   row_data.add( new MolecularDatum( current_row, i-1,  split_line[i] ));
                   if (!uniques.contains( split_line[ i ] )){
@@ -237,6 +264,7 @@ public class CSVMatrix implements Matrix {
                   //col_data[ current_row ].add( i , rows.get(current_row).get(i) );
                   //System.err.println( "Cell Data: " + split_line[i] );
            }
+           last_row_size = row_data.size();
            rows.add( row_data );
            current_row++;
         }
@@ -253,11 +281,11 @@ public class CSVMatrix implements Matrix {
 
     public void write(OutputStream output) {
         PrintWriter pw = new PrintWriter( output );
-        pw.print( col_names.get( 0 ) );
-        for (int i = 1; i < col_names.size();++i){
-            pw.printf(",%s",  col_names.get(i) );
-        }
-        pw.println();
+        //pw.print( col_names.get( 0 ) );
+        //for (int i = 1; i < col_names.size();++i){
+        //    pw.printf(",%s",  col_names.get(i) );
+        //}
+        //pw.println();
         for (int row = 0; row < row_names.size(); ++row){
             pw.print( row_names.get(row) );
             for ( int col = 0; col < rows.get(row).size(); ++col ){
@@ -274,6 +302,23 @@ public class CSVMatrix implements Matrix {
 
     public Set<String> getUniqueValues() {
         return this.uniques;
+    }
+
+    public Matrix extractRange(Range rows, Range cols) {
+        ArrayList< List< MatrixDatum > > ret_model = new ArrayList();
+        ArrayList< String > ret_row_names = new ArrayList();
+        CSVMatrix ret = new CSVMatrix();
+
+        for (int row = rows.getMinValue(); row < rows.getMaxValue()-1; ++row){
+            ret_model.add( new ArrayList() );
+            ret_row_names.add( this.getRowLabel(row) );
+            for (int col = cols.getMinValue(); col < cols.getMaxValue()-1; ++col){
+                ret_model.get(row - rows.getMinValue() ).add( this.getDatum(row, col) );
+            }
+        }
+
+        ret.setModel( ret_row_names, ret_model );
+        return ret;
     }
 
 

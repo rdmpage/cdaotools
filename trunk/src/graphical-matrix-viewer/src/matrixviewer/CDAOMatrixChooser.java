@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /*
  * CDAOMatrixChooser.java
@@ -10,11 +6,6 @@
  */
 
 package matrixviewer;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -29,6 +20,7 @@ public class CDAOMatrixChooser extends javax.swing.JFrame {
         model.updateModel();
         aboutBox = new AboutBox();
         initComponents();
+        this.setTitle( "CDAO Matrix Chooser" );
         
     }
     private void nextPage(){
@@ -48,8 +40,10 @@ public class CDAOMatrixChooser extends javax.swing.JFrame {
             params[0] = treeURI;
             params[1] = treeURI;
 
-            MatrixViewerDisplay.main(params);
-
+            //MatrixViewer.main(params);
+            MatrixViewer mv = new MatrixViewer(  );
+            mv.openFile( treeURI );
+            mv.setVisible( true );
        
 
     }
@@ -78,6 +72,8 @@ public class CDAOMatrixChooser extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mainMenu = new javax.swing.JMenu();
+        openFile = new javax.swing.JMenuItem();
+        openUrlMenuItem = new javax.swing.JMenuItem();
         Exit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         helpMenu = new javax.swing.JMenu();
@@ -125,6 +121,12 @@ public class CDAOMatrixChooser extends javax.swing.JFrame {
         jLabel1.setText("Matrix ID:");
 
         mainMenu.setText("File");
+
+        openFile.setText("Open File");
+        mainMenu.add(openFile);
+
+        openUrlMenuItem.setText("Open URL");
+        mainMenu.add(openUrlMenuItem);
 
         Exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         Exit.setText("Exit");
@@ -247,6 +249,8 @@ public class CDAOMatrixChooser extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenu mainMenu;
     private javax.swing.JButton nextBtn;
+    private javax.swing.JMenuItem openFile;
+    private javax.swing.JMenuItem openUrlMenuItem;
     private javax.swing.JButton prevButton;
     private javax.swing.JTextField treeIDTxt;
     private javax.swing.JList treeList;

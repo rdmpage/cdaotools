@@ -147,4 +147,10 @@ public class MolecularDatum implements MatrixDatum {
         return annotations.subList(fromIndex, toIndex);
     }
 
+    @Override
+    public String toString(){
+
+        return this.getvalue();
+
+    }
 }

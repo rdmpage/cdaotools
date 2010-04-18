@@ -8,6 +8,7 @@ package matrixviewer.model;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+//import javax.media.jai.util.Range;
 
 /**
  *
@@ -36,5 +37,7 @@ public interface Matrix extends Annotable {
     void write( java.io.OutputStream output );
 
     Matrix copy();
+    Matrix extractRange( Range rows, Range cols);
 
+    
 }

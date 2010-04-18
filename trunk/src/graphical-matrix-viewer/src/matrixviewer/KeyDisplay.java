@@ -30,6 +30,7 @@ public class KeyDisplay extends javax.swing.JFrame {
         this.model = model;
         initComponents();
         ((MatrixKeyCanvas)key_canvas).setModel(model);
+        
     }
 
     public void setModel(Matrix model){
