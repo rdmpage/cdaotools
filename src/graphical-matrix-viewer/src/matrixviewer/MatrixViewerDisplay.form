@@ -2,9 +2,14 @@
 
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Menu class="javax.swing.JMenuBar" name="mainMenuBar">
+    <Component class="javax.swing.JFileChooser" name="openFileChooser">
       <Properties>
-        <Property name="name" type="java.lang.String" value="mainMenuBar" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="openFileChooser" noResource="true"/>
+      </Properties>
+    </Component>
+    <Menu class="javax.swing.JMenuBar" name="mainMenu">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="mainMenu" noResource="true"/>
       </Properties>
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="fileMenu">
@@ -13,13 +18,28 @@
             <Property name="name" type="java.lang.String" value="fileMenu" noResource="true"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="openMenuItem">
+            <MenuItem class="javax.swing.JMenuItem" name="Open">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="openMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="openMenuItem" noResource="true"/>
+                <Property name="text" type="java.lang.String" resourceKey="Open.text"/>
+                <Property name="name" type="java.lang.String" value="Open" noResource="true"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openMenuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="OpenActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="openUrlMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="openUrlMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="openUrlMenuItem" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="saveMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="saveMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="saveMenuItem" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="closeMenuItem">
@@ -37,7 +57,7 @@
     <Property name="name" type="java.lang.String" value="Form" noResource="true"/>
   </Properties>
   <SyntheticProperties>
-    <SyntheticProperty name="menuBar" type="java.lang.String" value="mainMenuBar"/>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="mainMenu"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
   <AuxValues>
@@ -55,11 +75,25 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="matrixviewpane" alignment="0" pref="624" max="32767" attributes="0"/>
-                  <Component id="jLabel1" alignment="0" pref="624" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="titleLabel" alignment="0" pref="945" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="rowRangeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="extractRangeButton" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
+                          <Component id="colRangeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="highlightRangeBtn" alignment="0" pref="94" max="32767" attributes="1"/>
+                          <Component id="colRangeTxtField" alignment="0" max="32767" attributes="1"/>
+                          <Component id="rowRangeTxtField" alignment="0" max="32767" attributes="1"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="matrixScrollPane" min="-2" pref="752" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -68,40 +102,138 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="matrixviewpane" pref="406" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <Component id="titleLabel" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="rowRangeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="rowRangeTxtField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="colRangeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="colRangeTxtField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="extractRangeButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="highlightRangeBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="matrixScrollPane" min="-2" pref="447" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="jLabel1">
+    <Component class="javax.swing.JLabel" name="titleLabel">
       <Properties>
-        <Property name="font" type="java.awt.Font" resourceKey="jLabel1.font"/>
+        <Property name="font" type="java.awt.Font" resourceKey="titleLabel.font"/>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" resourceKey="jLabel1.text"/>
-        <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
+        <Property name="text" type="java.lang.String" resourceKey="titleLabel.text"/>
+        <Property name="name" type="java.lang.String" value="titleLabel" noResource="true"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="matrixviewpane">
+    <Component class="javax.swing.JLabel" name="rowRangeLabel">
       <Properties>
-        <Property name="name" type="java.lang.String" value="matrixviewpane" noResource="true"/>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="rowRangeTxtField"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="rowRangeLabel.text"/>
+        <Property name="focusable" type="boolean" value="false"/>
+        <Property name="name" type="java.lang.String" value="rowRangeLabel" noResource="true"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="colRangeLabel">
+      <Properties>
+        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="colRangeTxtField"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="colRangeLabel.text"/>
+        <Property name="focusable" type="boolean" value="false"/>
+        <Property name="name" type="java.lang.String" value="colRangeLabel" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="rowRangeTxtField">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="rowRangeTxtField.text"/>
+        <Property name="name" type="java.lang.String" value="rowRangeTxtField" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="colRangeTxtField">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="colRangeTxtField.text"/>
+        <Property name="name" type="java.lang.String" value="colRangeTxtField" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="extractRangeButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="extractRangeButton.text"/>
+        <Property name="name" type="java.lang.String" value="extractRangeButton" noResource="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="extractRangeButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="highlightRangeBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="highlightRangeBtn.text"/>
+        <Property name="name" type="java.lang.String" value="highlightRangeBtn" noResource="true"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="matrixScrollPane">
+      <Properties>
+        <Property name="autoscrolls" type="boolean" value="true"/>
+        <Property name="name" type="java.lang.String" value="matrixScrollPane" noResource="true"/>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="rowRangeTxtField"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="componentResized" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="matrixScrollPaneComponentResized"/>
+      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="java.awt.Canvas" name="matrix_canvas">
+        <Container class="javax.swing.JPanel" name="matrix_display_panel">
           <Properties>
-            <Property name="name" type="java.lang.String" value="matrix_canvas" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="matrix_display_panel" noResource="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="componentResized" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="matrix_display_panelComponentResized"/>
+          </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new MatrixView( matrix )"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new MatrixView( )"/>
           </AuxValues>
-        </Component>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="740" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="455" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+        </Container>
       </SubComponents>
+    </Container>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="jScrollPane1" noResource="true"/>
+      </Properties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
     </Container>
   </SubComponents>
 </Form>
