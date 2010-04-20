@@ -1,4 +1,4 @@
-// Author: Neil W. Weber  neilweber@yahoo.com
+
 
 package matrix.view;
 
