@@ -75,6 +75,8 @@ eccentricity( Tree, Len, Start ):- findall( E, pathlength(Tree, Start, N2, E), L
 
 %Radius = minimum eccentricity of any vertex.
 radius( Tree, R ):- findall( E, eccentricity(Tree, E, Start), Es  ), min_list(Es, R).
+radius_count( Tree, _, R ):- radius(Tree, R).
 
 %Diameter = maximum eccentricity of any vertex.
 diameter( Tree, D):- findall( E, eccentricity(Tree, E, Start), Es ), max_list(Es, D ).
+diameter_count(Tree, _, D):- diameter( Tree, D ).
