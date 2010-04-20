@@ -3,6 +3,8 @@
 %Script including methods for doing count oriented queries.
 %example tree
 
+:- use_module(library( lists ) ).
+
 %:- module( tree_count, [leaf_count/2, internal_count/2, node_count/2 ] ).
 
 %node( 'foo-tree', 'a' ).
@@ -19,27 +21,6 @@
 
 %Tree Structure.
 
-parent_of( Tree, Node, Node2 ):- edge( Tree, T, E, Node, Node2 ).
-child_of( Tree, Node, Node2 ):- edge( Tree, T, E, Node2, Node ).
-
-ancestor_of( Tree, Node, Node2 ):- parent_of( Tree, Node, Node2 ).
-
-descendent_of( Tree, Node, Node2 ):- child_of( Tree, Node, Node2 ).
-
-ancestor_of( Tree, Node, Node2 ):- parent_of( Tree, Node, Intm), 
-                             ancestor_of( Tree, Intm, Node2 ).
-descendent_of( Tree, Node, Node2):- child_of( Tree, Node, Intm),
-		        	    descendent_of( Tree, Intm, Node2 ).
-
-%Complex tree relations.
-
-common_ancestor_of( Ancestor, Node, Node2 ):- ancestor_of( Tree, Ancestor, Node), 
-                                              ancestor_of( Tree, Ancestor, Node2 ), 
-					      \+ Node = Node2.
-distant_common_ancestor_of( Anst, Node, Node2 ):- common_ancestor_of( Tree, DA, Node, Node2 ), 
-                                                      ancestor_of( Tree, Anst, DA ).
-nearest_common_ancestor_of( Tree, Anst, Node, Node2 ):- common_ancestor_of( Tree, Anst, Node, Node2 ), 
-                                                      \+ distant_common_ancestor_of( Tree, Anst, Node, Node2 ).
 leaf( Tree, Node ):- node( Tree, Node ), \+ parent_of( Tree, Node, Node2 ).
 root( Tree, Node ):- node( Tree, Node ), \+ parent_of( Tree, Node2, Node ).
 
@@ -78,3 +59,22 @@ internal_count( Tree, Node, Count ):- setof( Node, internal_node( Tree,  Node ),
 clade( Tree, Node, Member ):- ancestor_of( Tree, Node, Member ).
 clade( Tree, Node, Member ):- node( Tree, Node ), Member = Node.
 clade( Tree, Node ):- setof( Member, clade( Tree, Node, Member ), Members ), write( Members ).
+
+pathlength( Tree, Start, End, Len ):- root(Tree, Start ), depth( Tree, End, Len ).
+
+pathlength( Tree, Start, End, Len ):- nearest_common_ancestor_of( Tree, Nca, Start, End ), depth( Tree, Nca, Nlen ), depth( Tree, Start, Slen ), depth( Tree, End, Elen ), plus( Slen, Elen, Tlen ), plus( Len, Nlen, Tlen ), \+ancestor_of( Tree, Start, End  ).
+
+pathlength( Tree, Start, End, Len ):- ancestor_of( Tree, Start, End ), depth( Tree, Start, Slen ), depth( Tree, End, Elen ), plus( Len, Slen, Elen ).
+
+distance( Tree, Lhs, Rhs, Len ):- nearest_common_ancestor_of( Tree, Nca, Lhs, Rhs ), pathlength( Tree, Lhs, Nca, LNlen ), pathlength( Tree, Rhs, Nca, RNlen ), plus( LNlen, RNlen, Len ).
+
+closer( N1, N2, N3 ):- distance( N1, N3, D13 ), distance( N2, N3, D23 ), D13 < D23.
+
+%Maximum distance between Start and some other vertex.
+eccentricity( Tree, Len, Start ):- findall( E, pathlength(Tree, Start, N2, E), Lens  ), max_list( Lens, Len ).
+
+%Radius = minimum eccentricity of any vertex.
+radius( Tree, R ):- findall( E, eccentricity(Tree, E, Start), Es  ), min_list(Es, R).
+
+%Diameter = maximum eccentricity of any vertex.
+diameter( Tree, D):- findall( E, eccentricity(Tree, E, Start), Es ), max_list(Es, D ).
