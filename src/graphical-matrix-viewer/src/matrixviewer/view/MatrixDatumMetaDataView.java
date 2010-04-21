@@ -13,8 +13,8 @@ package matrixviewer.view;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.regex.Pattern;
+import matrixviewer.model.Annotation;
 import matrixviewer.model.MatrixDatum;
 import org.jdesktop.application.Action;
 
@@ -37,7 +37,7 @@ public class MatrixDatumMetaDataView extends javax.swing.JDialog {
         this.cellStateTextField.setText( md.getvalue() );
         this.rowNumberTextField.setText( ""+ md.getrow() );
         this.columnNumberTextField.setText(""+md.getcolumn());
-        Iterator<String> it = md.getAnnotations().iterator();
+        Iterator< Annotation > it = md.getAnnotations().iterator();
         StringBuffer sb = new StringBuffer();
         while (it.hasNext()){
             sb.append( it.next()).append("\n");
@@ -80,6 +80,7 @@ public class MatrixDatumMetaDataView extends javax.swing.JDialog {
         closeButton = new javax.swing.JButton();
         cellStateLabel = new javax.swing.JLabel();
         cellStateTextField = new javax.swing.JTextField();
+        syncAnnotationsButton = new javax.swing.JButton();
 
         setName("Form"); // NOI18N
 
@@ -111,9 +112,11 @@ public class MatrixDatumMetaDataView extends javax.swing.JDialog {
         columnNumberLabel.setText(resourceMap.getString("columnNumberLabel.text")); // NOI18N
         columnNumberLabel.setName("columnNumberLabel"); // NOI18N
 
+        rowNumberTextField.setEditable(false);
         rowNumberTextField.setText(resourceMap.getString("rowNumberTextField.text")); // NOI18N
         rowNumberTextField.setName("rowNumberTextField"); // NOI18N
 
+        columnNumberTextField.setEditable(false);
         columnNumberTextField.setText(resourceMap.getString("columnNumberTextField.text")); // NOI18N
         columnNumberTextField.setName("columnNumberTextField"); // NOI18N
 
@@ -148,38 +151,47 @@ public class MatrixDatumMetaDataView extends javax.swing.JDialog {
         cellStateTextField.setText(resourceMap.getString("cellStateTextField.text")); // NOI18N
         cellStateTextField.setName("cellStateTextField"); // NOI18N
 
+        syncAnnotationsButton.setText(resourceMap.getString("syncAnnotationsButton.text")); // NOI18N
+        syncAnnotationsButton.setName("syncAnnotationsButton"); // NOI18N
+        syncAnnotationsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                syncAnnotationsButtonActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, titleLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(titleLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(columnNameLabel)
-                            .add(rowNameLabel))
+                            .add(syncAnnotationsButton)
+                            .add(layout.createSequentialGroup()
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                        .add(columnNameLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .add(rowNameLabel))
+                                    .add(cellStateLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                    .add(rowNameTextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                                    .add(colmunNameTextField)
+                                    .add(cellStateTextField))))
+                        .add(14, 14, 14)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(columnNumberLabel)
+                            .add(rowNumberLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 103, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .add(18, 18, 18)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(rowNameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 153, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                                .add(org.jdesktop.layout.GroupLayout.LEADING, cellStateTextField)
-                                .add(org.jdesktop.layout.GroupLayout.LEADING, colmunNameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 149, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(layout.createSequentialGroup()
-                                .add(columnNumberLabel)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                .add(columnNumberTextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
-                            .add(layout.createSequentialGroup()
-                                .add(rowNumberLabel)
-                                .add(37, 37, 37)
-                                .add(rowNumberTextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))))
-                    .add(closeButton)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, additionalAnnationsLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
-                    .add(cellStateLabel))
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, closeButton)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, columnNumberTextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, rowNumberTextField)))
+                    .add(additionalAnnationsLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -187,29 +199,31 @@ public class MatrixDatumMetaDataView extends javax.swing.JDialog {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(titleLabel)
-                .add(18, 18, 18)
+                .add(33, 33, 33)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(rowNameLabel)
                     .add(rowNameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(rowNumberLabel)
-                    .add(rowNumberTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                    .add(rowNumberTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(rowNumberLabel))
+                .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(columnNameLabel)
                     .add(colmunNameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(columnNumberLabel)
-                    .add(columnNumberTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 15, Short.MAX_VALUE)
+                    .add(columnNumberTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(columnNumberLabel))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(cellStateLabel)
-                    .add(cellStateTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(cellStateTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(cellStateLabel))
                 .add(18, 18, 18)
                 .add(additionalAnnationsLabel)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 239, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(closeButton)
-                .addContainerGap())
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(closeButton)
+                    .add(syncAnnotationsButton))
+                .add(31, 31, 31))
         );
 
         pack();
@@ -222,6 +236,10 @@ public class MatrixDatumMetaDataView extends javax.swing.JDialog {
     private void additionalAnnotationsTextAreaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_additionalAnnotationsTextAreaFocusLost
         this.syncAnnotations();
     }//GEN-LAST:event_additionalAnnotationsTextAreaFocusLost
+
+    private void syncAnnotationsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_syncAnnotationsButtonActionPerformed
+        this.syncAnnotations();
+    }//GEN-LAST:event_syncAnnotationsButtonActionPerformed
 
     /**
     * @param args the command line arguments
@@ -249,6 +267,7 @@ public class MatrixDatumMetaDataView extends javax.swing.JDialog {
     private javax.swing.JTextField rowNameTextField;
     private javax.swing.JLabel rowNumberLabel;
     private javax.swing.JTextField rowNumberTextField;
+    private javax.swing.JButton syncAnnotationsButton;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 

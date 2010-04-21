@@ -21,7 +21,7 @@ public class MolecularDatum implements MatrixDatum {
     private String colname;
     private String rowname;
     private String value;
-    private List< String > annotations;
+    private List< Annotation > annotations;
 
     public MolecularDatum(int rowno, int colno, String value) {
         this.rowno = rowno;
@@ -30,7 +30,7 @@ public class MolecularDatum implements MatrixDatum {
         this.annotations = new ArrayList();
     }
 
-    public MolecularDatum(int rowno, int colno, String value, List<String> annotations) {
+    public MolecularDatum(int rowno, int colno, String value, List<Annotation> annotations) {
         this.rowno = rowno;
         this.colno = colno;
         this.value = value;
@@ -49,11 +49,11 @@ public class MolecularDatum implements MatrixDatum {
         return value;
     }
 
-    public void addAnnation(String annotation) {
+    public void addAnnation(Annotation annotation) {
         annotations.add(annotation);
     }
 
-    public String getAnnotation(int i) {
+    public Annotation getAnnotation(int i) {
         return annotations.get(i);
     }
 
@@ -82,11 +82,13 @@ public class MolecularDatum implements MatrixDatum {
     }
 
     public boolean add(Object o) {
-        return annotations.add( o.toString());
+        //return annotations.add( o );
+        return false;
     }
 
     public boolean remove(Object o) {
-        return annotations.remove(o);
+        //return annotations.remove(o);
+        return false;
     }
 
     public boolean containsAll(Collection c) {
@@ -118,11 +120,12 @@ public class MolecularDatum implements MatrixDatum {
     }
 
     public Object set(int index, Object element) {
-        return annotations.set(index, element.toString());
+        //return annotations.set(index, element);
+        return element;
     }
 
     public void add(int index, Object element) {
-        annotations.add(index, element.toString());
+        //annotations.add(index, element.toString());
     }
 
     public Object remove(int index) {
@@ -164,11 +167,11 @@ public class MolecularDatum implements MatrixDatum {
         return this.colname;
     }
 
-    public List<String> getAnnotations() {
+    public List<Annotation> getAnnotations() {
         return this.annotations;
     }
 
-    public void setAnnotations(List<String> annotations) {
+    public void setAnnotations(List<Annotation> annotations) {
         this.annotations = annotations;
     }
 
@@ -178,5 +181,22 @@ public class MolecularDatum implements MatrixDatum {
 
     public void setColumnName(String name) {
         this.colname = name;
+    }
+
+    public MatrixDatum clone() {
+        String ret_value = this.value;
+        List<Annotation> ret_annotations = new ArrayList< Annotation >();
+        Iterator< Annotation > ait = this.annotations.iterator();
+        while (ait.hasNext()){
+            ret_annotations.add( ait.next().clone() );
+        }
+
+        MolecularDatum ret = new MolecularDatum(this.rowno, this.colno, this.value, ret_annotations);
+
+        return ret;
+    }
+
+    public void setvalue(String value) {
+        this.value = value;
     }
 }

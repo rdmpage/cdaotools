@@ -12,6 +12,6 @@ import java.util.List;
  * @author bchisham
  */
 public interface Annotable extends List {
-    void addAnnation(String annotation);
-    String getAnnotation( int i );
+    void addAnnation(Annotation annotation);
+    Annotation getAnnotation( int i );
 }

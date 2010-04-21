@@ -38,7 +38,7 @@ public class CSVMatrix implements Matrix {
     private ArrayList < List < MatrixDatum > > columns;
     private ArrayList < List < MatrixDatum > > rows;
     private Set< String > uniques;
-    private List< String > annotations;
+    private List< Annotation > annotations;
 
     public List<MatrixDatum> getRow(int i) {
         return rows.get(i);
@@ -79,11 +79,11 @@ public class CSVMatrix implements Matrix {
         return columns.get(index).listIterator();
     }
 
-    public void addAnnation(String annotation) {
+    public void addAnnation(Annotation annotation) {
         annotations.add(annotation);
     }
 
-    public String getAnnotation(int i) {
+    public Annotation getAnnotation(int i) {
         return annotations.get(i);
     }
 
@@ -323,6 +323,5 @@ public class CSVMatrix implements Matrix {
         ret.setModel( ret_row_names, ret_model );
         return ret;
     }
-
 
 }

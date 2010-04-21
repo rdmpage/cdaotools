@@ -92,8 +92,8 @@ public class MatrixView extends JPanel implements MouseMotionListener {
     public void setMatrix( Matrix model ){
         if (model != null && model.getrowcount() > 0 && model.getcolumncount() > 0){
             this.model = model;
-            this.cellheight = 15;
-            this.cellwidth = 15;
+            this.cellheight = 10;
+            this.cellwidth = 10;
             this.row_label_offset = 0;//150;
             this.key_entry_block_size = 0;//this.cellheight * this.model.getUniqueValues().size();
             this.rederer = new DrawableDatum( this.model.getUniqueValues() );
@@ -202,11 +202,13 @@ public class MatrixView extends JPanel implements MouseMotionListener {
                                   cellheight, true);
                     }
                     else {
-                        g.fillRect(row_label_offset + (col+1)* cellheight,
-                                  /*this.key_entry_block_size +*/ (row+1)*cellwidth,
+                        g.fillRect(row_label_offset + (col)* cellheight,
+                                  /*this.key_entry_block_size +*/ (row)*cellwidth,
                                   cellwidth,
                                   cellheight);
                     }
+                    g.setColor( new Color( Color.white.getRGB() ^ g.getColor().getRGB() ) );
+                    g.drawString( this.model.getDatum(row, col).getvalue() , col * this.cellwidth, row * this.cellheight);
 
                     //g.setColor(Color.black);
                     //g.drawString( this.model.getDatum( row, col).getvalue(), row_label_offset +(row)*cellwidth + (row*cellwidth)/4, col_label_offset+ col*cellheight  + (col*cellheight)/4 );
