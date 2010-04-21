@@ -19,6 +19,7 @@ public interface Matrix extends Annotable {
     List< MatrixDatum > getRow( String name );
     List< MatrixDatum > getColumn( int i );
     List< MatrixDatum > getColumn( String name );
+
     Set< String > getUniqueValues();
     MatrixDatum getDatum(int row, int column);
     ListIterator getRowIterator();

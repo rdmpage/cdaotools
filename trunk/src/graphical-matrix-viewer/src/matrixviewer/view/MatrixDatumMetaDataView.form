@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="name" type="java.lang.String" value="Form" noResource="true"/>
   </Properties>
@@ -22,41 +22,43 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="titleLabel" alignment="1" pref="510" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="titleLabel" alignment="1" pref="660" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="columnNameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="rowNameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="syncAnnotationsButton" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="columnNameLabel" alignment="0" max="32767" attributes="1"/>
+                                      <Component id="rowNameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="cellStateLabel" alignment="0" pref="93" max="32767" attributes="1"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="rowNameTextField" alignment="0" pref="231" max="32767" attributes="1"/>
+                                  <Component id="colmunNameTextField" alignment="0" max="32767" attributes="1"/>
+                                  <Component id="cellStateTextField" alignment="0" max="32767" attributes="1"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="columnNumberLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="rowNumberLabel" min="-2" pref="103" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="rowNameTextField" min="-2" pref="153" max="-2" attributes="1"/>
-                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="cellStateTextField" alignment="0" max="32767" attributes="1"/>
-                              <Component id="colmunNameTextField" alignment="0" min="-2" pref="149" max="-2" attributes="1"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="columnNumberLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="columnNumberTextField" pref="111" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="rowNumberLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                              <Component id="rowNumberTextField" pref="111" max="32767" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="closeButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="columnNumberTextField" alignment="1" pref="187" max="32767" attributes="1"/>
+                          <Component id="rowNumberTextField" alignment="1" max="32767" attributes="1"/>
                       </Group>
                   </Group>
-                  <Component id="closeButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" alignment="0" pref="510" max="32767" attributes="0"/>
-                  <Component id="additionalAnnationsLabel" alignment="1" pref="510" max="32767" attributes="0"/>
-                  <Component id="cellStateLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="additionalAnnationsLabel" alignment="1" pref="660" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" pref="660" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -67,32 +69,35 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="titleLabel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="rowNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="rowNameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="rowNumberLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="rowNumberTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rowNumberLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="columnNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="colmunNameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="columnNumberLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="columnNumberTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="columnNumberLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="cellStateLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cellStateTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cellStateLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="additionalAnnationsLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="239" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="closeButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="closeButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="syncAnnotationsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -156,12 +161,14 @@
     </Component>
     <Component class="javax.swing.JTextField" name="rowNumberTextField">
       <Properties>
+        <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" resourceKey="rowNumberTextField.text"/>
         <Property name="name" type="java.lang.String" value="rowNumberTextField" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="columnNumberTextField">
       <Properties>
+        <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" resourceKey="columnNumberTextField.text"/>
         <Property name="name" type="java.lang.String" value="columnNumberTextField" noResource="true"/>
       </Properties>
@@ -220,6 +227,14 @@
         <Property name="text" type="java.lang.String" resourceKey="cellStateTextField.text"/>
         <Property name="name" type="java.lang.String" value="cellStateTextField" noResource="true"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="syncAnnotationsButton">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="syncAnnotationsButton" noResource="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="syncAnnotationsButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
