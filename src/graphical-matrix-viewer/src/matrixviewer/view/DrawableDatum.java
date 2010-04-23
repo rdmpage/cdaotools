@@ -37,7 +37,13 @@ class DrawableDatum implements ColorCoder {
      */
     DrawableDatum(Set< String > values){
         Iterator< String > it = values.iterator();
-         int delta_c = 0xFFFFFF/ values.size();
+        int delta_c;
+        if (values.size() > 0){
+            delta_c = 0xFFFFFF/ values.size();
+        }
+        else {
+            delta_c = 255;
+        }
          
 
         //System.err.println( "Delta c: " + delta_c );
@@ -52,6 +58,9 @@ class DrawableDatum implements ColorCoder {
      * @return
      */
     public Color getColor(MatrixDatum datum) {
+         if ( color_map.containsKey( datum.getvalue() ) ){
            return color_map.get( datum.getvalue()  );
+         }
+         return Color.white;
     }
 }
