@@ -92,8 +92,9 @@
                   <Component id="jLabel3" alignment="0" pref="946" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="statusPanel" pref="299" max="32767" attributes="0"/>
-                          <Component id="subMatrixFormPanel" max="32767" attributes="0"/>
+                          <Component id="jPanel1" max="32767" attributes="0"/>
+                          <Component id="statusPanel" alignment="1" pref="299" max="32767" attributes="0"/>
+                          <Component id="subMatrixFormPanel" alignment="1" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jScrollPane1" pref="629" max="32767" attributes="0"/>
@@ -111,11 +112,13 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="subMatrixFormPanel" min="-2" max="-2" attributes="0"/>
+                      <Component id="subMatrixFormPanel" min="-2" pref="162" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="statusPanel" max="32767" attributes="0"/>
+                      <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="28" max="32767" attributes="0"/>
+                      <Component id="statusPanel" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane1" pref="478" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="482" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -298,6 +301,11 @@
     </Container>
     <Container class="javax.swing.JPanel" name="statusPanel">
       <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
+            <BevelBorder/>
+          </Border>
+        </Property>
         <Property name="name" type="java.lang.String" value="statusPanel" noResource="true"/>
       </Properties>
 
@@ -332,7 +340,7 @@
                       <Component id="columnStatusLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="columnStatusTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="144" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -373,6 +381,94 @@
             <Property name="name" type="java.lang.String" value="columnStatusTextField" noResource="true"/>
             <Property name="requestFocusEnabled" type="boolean" value="false"/>
           </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="jPanel1">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="jPanel1" noResource="true"/>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="scaleFactorLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="scaleFactorComboBox" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="scaleButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="restoreScaleButton" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace pref="109" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="scaleFactorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="scaleFactorComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="scaleButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="restoreScaleButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="115" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="scaleFactorLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="scaleFactorLabel.text"/>
+            <Property name="name" type="java.lang.String" value="scaleFactorLabel" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="scaleFactorComboBox">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="7">
+                <StringItem index="0" value="800"/>
+                <StringItem index="1" value="400"/>
+                <StringItem index="2" value="200"/>
+                <StringItem index="3" value="50"/>
+                <StringItem index="4" value="25"/>
+                <StringItem index="5" value="13"/>
+                <StringItem index="6" value="7"/>
+              </StringArray>
+            </Property>
+            <Property name="selectedIndex" type="int" value="3"/>
+            <Property name="name" type="java.lang.String" value="scaleFactorComboBox" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="scaleButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="scaleButton.text"/>
+            <Property name="name" type="java.lang.String" value="scaleButton" noResource="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="scaleButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="restoreScaleButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="restoreScaleButton.text"/>
+            <Property name="name" type="java.lang.String" value="restoreScaleButton" noResource="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="restoreScaleButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

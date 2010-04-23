@@ -43,6 +43,9 @@ public class MatrixViewer extends javax.swing.JFrame {
     /** Creates new form MatrixViewer */
     public MatrixViewer() {
         initComponents();
+        this.scaleButton.setEnabled( false );
+        this.restoreScaleButton.setEnabled( false );
+        //this.unloadAction();
     }
 
     public MatrixViewer(String fileorurl){
@@ -53,6 +56,7 @@ public class MatrixViewer extends javax.swing.JFrame {
     public MatrixViewer(Matrix matrix){
         initComponents();
         this.matrix = matrix;
+        //this.setMatrix(matrix, "No Title");
     }
 
     public void postInit(){
@@ -62,7 +66,7 @@ public class MatrixViewer extends javax.swing.JFrame {
 
     public void setMatrix(Matrix matrix, String title){
         this.matrix = matrix;
-        System.err.println("Set matrix");
+        //System.err.println("Set matrix");
         if (matrix != null){
             matrix.write( System.err );
             this.setTitle( "Matrix Data - " + title);
@@ -87,6 +91,8 @@ public class MatrixViewer extends javax.swing.JFrame {
             ((MatrixView)this.matrix_view_panel).setMatrix(matrix);
 
         }
+        this.scaleButton.setEnabled( true );
+        this.restoreScaleButton.setEnabled( true );
             //this.repaint();
     }
 
@@ -234,7 +240,37 @@ public class MatrixViewer extends javax.swing.JFrame {
    @Action
    public void unloadAction(){
         this.setMatrix(null, "No Matrix Loaded");
+        this.scaleButton.setEnabled( false );
+        this.scaleButton.setEnabled( false );
    }
+
+   @Action
+   public void scaleMatrix(){
+       final int scaleFactors[] = { 8,4,2,2,4,8,16 };
+       final int FIRST_DOWN_INDEX = 3;
+       int selectedIndex = (Integer)this.scaleFactorComboBox.getSelectedIndex();
+       MatrixView mv = (MatrixView)this.matrix_view_panel;
+       if ( selectedIndex >= FIRST_DOWN_INDEX ){
+           //scale down
+
+           mv.scaleDown( scaleFactors[ selectedIndex ] );
+       }
+       else {
+           //scale up
+           mv.scaleUp( scaleFactors[ selectedIndex ] );
+       }
+       
+       this.jScrollPane1.invalidate();
+       this.jScrollPane1.repaint();
+
+   }
+   @Action
+   public void restoreScale(){
+       ((MatrixView)this.matrix_view_panel).resetScale();
+       //this.matrix_view_panel.invalidate();
+       //this.matrix_view_panel.repaint();
+   }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -262,6 +298,11 @@ public class MatrixViewer extends javax.swing.JFrame {
         columnStatusLabel = new javax.swing.JLabel();
         rowStatusTextField = new javax.swing.JTextField();
         columnStatusTextField = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
+        scaleFactorLabel = new javax.swing.JLabel();
+        scaleFactorComboBox = new javax.swing.JComboBox();
+        scaleButton = new javax.swing.JButton();
+        restoreScaleButton = new javax.swing.JButton();
         mainMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -410,6 +451,7 @@ public class MatrixViewer extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(matrix_view_panel);
 
+        statusPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         statusPanel.setName("statusPanel"); // NOI18N
 
         rowStatusLabel.setText(resourceMap.getString("rowStatusLabel.text")); // NOI18N
@@ -458,7 +500,63 @@ public class MatrixViewer extends javax.swing.JFrame {
                 .add(statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(columnStatusLabel)
                     .add(columnStatusTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(144, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel1.setName("jPanel1"); // NOI18N
+
+        scaleFactorLabel.setText(resourceMap.getString("scaleFactorLabel.text")); // NOI18N
+        scaleFactorLabel.setName("scaleFactorLabel"); // NOI18N
+
+        scaleFactorComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "800", "400", "200", "50", "25", "13", "7" }));
+        scaleFactorComboBox.setSelectedIndex(3);
+        scaleFactorComboBox.setName("scaleFactorComboBox"); // NOI18N
+
+        scaleButton.setText(resourceMap.getString("scaleButton.text")); // NOI18N
+        scaleButton.setName("scaleButton"); // NOI18N
+        scaleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                scaleButtonActionPerformed(evt);
+            }
+        });
+
+        restoreScaleButton.setText(resourceMap.getString("restoreScaleButton.text")); // NOI18N
+        restoreScaleButton.setName("restoreScaleButton"); // NOI18N
+        restoreScaleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                restoreScaleButtonActionPerformed(evt);
+            }
+        });
+
+        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(scaleFactorLabel)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(scaleFactorComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(scaleButton)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(restoreScaleButton)))
+                .addContainerGap(109, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel1Layout.createSequentialGroup()
+                .add(23, 23, 23)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(scaleFactorLabel)
+                    .add(scaleFactorComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(scaleButton)
+                    .add(restoreScaleButton))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
 
         mainMenuBar.setName("mainMenuBar"); // NOI18N
@@ -516,8 +614,9 @@ public class MatrixViewer extends javax.swing.JFrame {
                     .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 946, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(statusPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
-                            .add(subMatrixFormPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, statusPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, subMatrixFormPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .add(18, 18, 18)
                         .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -530,10 +629,12 @@ public class MatrixViewer extends javax.swing.JFrame {
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .add(subMatrixFormPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(subMatrixFormPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 162, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(statusPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE))
+                        .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 28, Short.MAX_VALUE)
+                        .add(statusPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -599,6 +700,14 @@ public class MatrixViewer extends javax.swing.JFrame {
         //this.expandSelection();
     }//GEN-LAST:event_matrix_view_panelMouseClicked
 
+    private void scaleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scaleButtonActionPerformed
+        this.scaleMatrix();
+    }//GEN-LAST:event_scaleButtonActionPerformed
+
+    private void restoreScaleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restoreScaleButtonActionPerformed
+
+    }//GEN-LAST:event_restoreScaleButtonActionPerformed
+
 
     /**
     * @param args the command line arguments
@@ -632,17 +741,22 @@ public class MatrixViewer extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JButton highlightButton;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuBar mainMenuBar;
     private javax.swing.JPanel matrix_view_panel;
     private javax.swing.JFileChooser openFileChooser;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem openUrlMenuItem;
+    private javax.swing.JButton restoreScaleButton;
     private javax.swing.JLabel rowRangeLabel;
     private javax.swing.JTextField rowRangeTextField;
     private javax.swing.JLabel rowStatusLabel;
     private javax.swing.JTextField rowStatusTextField;
     private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JButton scaleButton;
+    private javax.swing.JComboBox scaleFactorComboBox;
+    private javax.swing.JLabel scaleFactorLabel;
     private javax.swing.JPanel statusPanel;
     private javax.swing.JPanel subMatrixFormPanel;
     private javax.swing.JButton unloadMatixButton;
