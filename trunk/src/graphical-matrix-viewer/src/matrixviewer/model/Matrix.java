@@ -14,7 +14,7 @@ import java.util.Set;
  *
  * @author bchisham
  */
-public interface Matrix extends Annotable {
+public interface Matrix extends Annotable, javax.swing.table.TableModel {
     List< MatrixDatum > getRow( int i );
     List< MatrixDatum > getRow( String name );
     List< MatrixDatum > getColumn( int i );

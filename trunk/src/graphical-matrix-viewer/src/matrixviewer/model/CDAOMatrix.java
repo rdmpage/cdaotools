@@ -19,6 +19,7 @@ import com.hp.hpl.jena.reasoner.InfGraph;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.event.TableModelListener;
 import org.mindswap.pellet.owlapi.PelletReasonerFactory;
 import org.semanticweb.owl.apibinding.OWLManager;
 import org.semanticweb.owl.io.*;
@@ -404,6 +405,42 @@ public class CDAOMatrix implements Matrix {
     }
 
     public List subList(int fromIndex, int toIndex) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int getRowCount() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int getColumnCount() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public String getColumnName(int columnIndex) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Class<?> getColumnClass(int columnIndex) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void addTableModelListener(TableModelListener l) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void removeTableModelListener(TableModelListener l) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

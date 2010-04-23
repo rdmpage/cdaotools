@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.event.TableModelListener;
 //import javax.media.jai.util.Range;
 
 /**
@@ -40,6 +41,49 @@ public class CSVMatrix implements Matrix {
     private Set< String > uniques;
     private List< Annotation > annotations;
 
+    private ArrayList< TableModelListener > tml;
+    
+    public CSVMatrix(){
+        this.row_names = new ArrayList();
+        this.col_names = new ArrayList();
+        this.columns = new ArrayList();
+        this.rows = new ArrayList();
+        this.uniques = new TreeSet();
+        this.annotations = new ArrayList();
+        this.tml = new ArrayList();
+        
+    }
+
+    public CSVMatrix(ArrayList<String> row_names,
+                     ArrayList<String> col_names,
+                     ArrayList<List<MatrixDatum>> rows,
+                     List<Annotation> annotations) {
+        this.row_names = row_names;
+        this.col_names = col_names;
+        this.rows = rows;
+        this.annotations = annotations;
+        this.uniques = new TreeSet();
+        this.transpose();
+    }
+
+
+    private void transpose(){
+
+        this.columns = new ArrayList( this.col_names.size());
+        for (int i = 0; i < this.col_names.size(); ++i){
+            this.columns = new ArrayList( this.row_names.size() );
+        }
+        Iterator< List< MatrixDatum > > rit = this.rows.iterator();
+        while (rit.hasNext()){
+            Iterator< MatrixDatum > colit = rit.next().iterator();
+            while ( colit.hasNext() ){
+                MatrixDatum md = colit.next();
+                this.columns.get( md.getcolumn()).set( md.getrow() , md);
+            }
+        }
+    }
+
+
     public List<MatrixDatum> getRow(int i) {
         return rows.get(i);
     }
@@ -49,18 +93,25 @@ public class CSVMatrix implements Matrix {
     }
 
     public List<MatrixDatum> getColumn(int i) {
-        return columns.get(i);
+        ArrayList< MatrixDatum> ret= new ArrayList();
+        Iterator< List< MatrixDatum> > rit = rows.iterator();
+
+        while(rit.hasNext()){
+            ret.add( rit.next().get(i) );
+        }
+
+        return ret;
     }
 
     public List<MatrixDatum> getColumn(String name) {
-        return columns.get( col_names.indexOf( name ) );
+        return this.getColumn( col_names.indexOf( name ) );
     }
 
     public MatrixDatum getDatum(int row, int column) {
         if (row < this.rows.size() && column < this.rows.get(row).size()){
              return rows.get(row).get(column);
         }
-        return new MolecularDatum(row,column,"");
+        return new MolecularDatum(row,column,"Not Defined!");
     }
 
     public ListIterator getRowIterator(){
@@ -220,32 +271,22 @@ public class CSVMatrix implements Matrix {
         Pattern line_tokenizer = Pattern.compile(",");
         col_names = new ArrayList<String>();
         row_names = new ArrayList<String>();
-        this.columns = new ArrayList< List< MatrixDatum > >();
+        //this.columns = new ArrayList< List< MatrixDatum > >();
         this.rows    = new ArrayList< List< MatrixDatum > >();
         this.uniques = new TreeSet< String >();
         //process the first line with the column names.
         Matcher mat = null;
         String[] split_line = null;
-//        if ( input_scanner.hasNextLine() ){
-//            current_line = input_scanner.nextLine();
-//            split_line = line_tokenizer.split( current_line );
-//        }
-//        assert( split_line != null );
-//        for (int i = 0; i < split_line.length; ++i){
-//            col_names.add( split_line[ i ] );
-//        }
-//        ArrayList[] col_data = new ArrayList[ col_names.size() ];
-//           for (int i =0; i < col_names.size(); ++i){
-//               col_data[i] = new ArrayList();
-//        }
+
         int current_row = 0;
         int last_row_size = 0;
         while (input_scanner.hasNextLine()){
            current_line = input_scanner.nextLine();
            split_line = line_tokenizer.split(current_line);
            if ( col_names.size() == 0 ){
-              for ( int i = 0; i < split_line.length; ++i ){
-                  col_names.add("trait"+1);
+               //col_names.add("row_name");
+              for ( int i = 0; i < split_line.length-1; ++i ){
+                  col_names.add("trait"+i);
               }
            }
 
@@ -312,16 +353,52 @@ public class CSVMatrix implements Matrix {
         ArrayList< String > ret_row_names = new ArrayList();
         CSVMatrix ret = new CSVMatrix();
 
-        for (int row = rows.getMinValue(); row < rows.getMaxValue()-1; ++row){
+        for (int row = rows.getMinValue(); row < rows.getMaxValue(); ++row){
             ret_model.add( new ArrayList() );
             ret_row_names.add( this.getRowLabel(row) );
-            for (int col = cols.getMinValue(); col < cols.getMaxValue()-1; ++col){
+            for (int col = cols.getMinValue(); col < cols.getMaxValue(); ++col){
                 ret_model.get(row - rows.getMinValue() ).add( this.getDatum(row, col) );
             }
         }
 
         ret.setModel( ret_row_names, ret_model );
         return ret;
+    }
+
+    public int getRowCount() {
+        return this.getrowcount();
+    }
+
+    public int getColumnCount() {
+        return this.getcolumncount();
+    }
+
+    public String getColumnName(int columnIndex) {
+        return this.getColumnLabel(columnIndex);
+    }
+
+    public Class<?> getColumnClass(int columnIndex) {
+        return MatrixDatum.class;
+    }
+
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return false;
+    }
+
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        return this.getDatum(rowIndex, columnIndex);
+    }
+
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        this.rows.get(rowIndex).set(columnIndex, (MatrixDatum)aValue );
+    }
+
+    public void addTableModelListener(TableModelListener l) {
+        this.tml.add(l);
+    }
+
+    public void removeTableModelListener(TableModelListener l) {
+        this.tml.remove(l);
     }
 
 }

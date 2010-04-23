@@ -18,6 +18,10 @@ public class RangeSet implements Set {
     public RangeSet(){
         ranges = new ArrayList();
     }
+
+    public RangeSet(int y, int y0) {
+        ranges = new ArrayList();
+    }
     /**
      * Get the size of the set.
      * @return

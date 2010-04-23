@@ -26,6 +26,7 @@ import javax.swing.JFrame;
 import matrixviewer.model.Matrix;
 import matrixviewer.model.MatrixFactory;
 import matrixviewer.model.Range;
+import matrixviewer.view.MatrixTableView;
 import matrixviewer.view.MatrixView;
 import org.jdesktop.application.Action;
 
@@ -33,7 +34,7 @@ import org.jdesktop.application.Action;
  *
  * @author bchisham
  */
-public class MatrixViewer extends javax.swing.JFrame {
+public class TabularMatrixViewer extends javax.swing.JFrame {
     private Matrix matrix;
     private static String ftype = "csv";
     private Range rowRange;
@@ -41,41 +42,45 @@ public class MatrixViewer extends javax.swing.JFrame {
     private KeyDisplay kd;
     //private OpenURLDialog openUrlDialog;
     /** Creates new form MatrixViewer */
-    public MatrixViewer() {
+    public TabularMatrixViewer() {
         initComponents();
+        postInit();
     }
 
-    public MatrixViewer(String fileorurl){
+    public TabularMatrixViewer(String fileorurl){
         initComponents();
         this.openFile( fileorurl );
+        postInit();
     }
 
-    public MatrixViewer(Matrix matrix){
+    public TabularMatrixViewer(Matrix matrix){
         initComponents();
         this.matrix = matrix;
+        postInit();
     }
 
     public void postInit(){
         //this.extractButton.setText( "Extract" );
         //this.highlightButton.setText( "Highlight" );
+        this.kd = new KeyDisplay();
     }
 
     public void setMatrix(Matrix matrix, String title){
         this.matrix = matrix;
-        System.err.println("Set matrix");
         if (matrix != null){
-            matrix.write( System.err );
             this.setTitle( "Matrix Data - " + title);
             this.rowRangeTextField.setText("0-" + this.matrix.getrowcount());
             this.colRangeTextField.setText("0-" + this.matrix.getcolumncount() );
             this.rowStatusTextField.setText( ""+this.matrix.getrowcount() );
             this.columnStatusTextField.setText( ""+this.matrix.getcolumncount() );
-            ((MatrixView)this.matrix_view_panel).setMatrix(matrix);
-            
+            //((MatrixTableView)this.matrix_view_panel).setMatrix(matrix);
+            this.matrix_view_panel.setModel(matrix);
             this.highlightAction();
+            //((RowLabelCanvas)this.row_labels_canvas).setModel(matrix);
             this.kd = new KeyDisplay( matrix );
             kd.setTitle( "Color Key - " + title );
             kd.setVisible( true );
+            this.matrix_view_panel.repaint();
         }
         else {
             this.kd.setVisible( false );
@@ -84,7 +89,7 @@ public class MatrixViewer extends javax.swing.JFrame {
             this.colRangeTextField.setText("0-N");
             this.rowStatusTextField.setText("");
             this.columnStatusTextField.setText("");
-            ((MatrixView)this.matrix_view_panel).setMatrix(matrix);
+            //((MatrixTableView)this.matrix_view_panel).setMatrix(matrix);
 
         }
             //this.repaint();
@@ -142,7 +147,7 @@ public class MatrixViewer extends javax.swing.JFrame {
         try {
             this.openFile(urlDialog.getURL());
         } catch (MalformedURLException ex) {
-            Logger.getLogger(MatrixViewer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TabularMatrixViewer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
      }
@@ -166,9 +171,8 @@ public class MatrixViewer extends javax.swing.JFrame {
         this.setRanges();
 
         Matrix sub_model = this.matrix.extractRange(rowRange, colRange);
-        MatrixViewer mvd = new MatrixViewer(  );
+        TabularMatrixViewer mvd = new TabularMatrixViewer(  );
         mvd.setMatrix(sub_model, this.getTitle() + ":" + rowRange + "x" + colRange);
-        mvd.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
         mvd.setVisible(true);
         this.matrix_view_panel.invalidate();
         this.highlightAction();
@@ -177,36 +181,10 @@ public class MatrixViewer extends javax.swing.JFrame {
    @Action
    public void highlightAction(){
        this.setRanges();
-       ((MatrixView)this.matrix_view_panel).setHighlightedRange(rowRange, colRange);
+       //((MatrixTableView)this.matrix_view_panel).setHighlightedRange(rowRange, colRange);
        this.matrix_view_panel.invalidate();
        this.repaint();
    }
-
-   @Action
-   public void startSelection(){
-
-   }
-
-   @Action 
-   public void expandSelection(){
-       MatrixView mv = (MatrixView)this.matrix_view_panel;
-        //mv.mouseDragged(evt);
-      Range cols = mv.getSelectedCols();
-      Range rows = mv.getSelectedRows();
-      this.colRange = mv.getSelectedCols();
-      
-
-      this.rowRange = mv.getSelectedRows();
-      
-
-      this.colRangeTextField.setText( this.colRange.toString());
-      this.rowRangeTextField.setText( this.rowRange.toString() );
-
-      //mv.setHighlightedRange(rowRange, colRange);
-      //this.highlightAction();
-      
-   }
-
 
    private void setRanges(){
        Pattern matcher = Pattern.compile("-");
@@ -256,7 +234,7 @@ public class MatrixViewer extends javax.swing.JFrame {
         clearButton = new javax.swing.JButton();
         unloadMatixButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        matrix_view_panel = new MatrixView();
+        matrix_view_panel = new MatrixTableView();
         statusPanel = new javax.swing.JPanel();
         rowStatusLabel = new javax.swing.JLabel();
         columnStatusLabel = new javax.swing.JLabel();
@@ -272,7 +250,7 @@ public class MatrixViewer extends javax.swing.JFrame {
         openFileChooser.setName("openFileChooser"); // NOI18N
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(matrixviewer.MatrixViewerApp.class).getContext().getResourceMap(MatrixViewer.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(matrixviewer.MatrixViewerApp.class).getContext().getResourceMap(TabularMatrixViewer.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -382,32 +360,18 @@ public class MatrixViewer extends javax.swing.JFrame {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
+        matrix_view_panel.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
         matrix_view_panel.setName("matrix_view_panel"); // NOI18N
-        matrix_view_panel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                matrix_view_panelMouseMoved(evt);
-            }
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                matrix_view_panelMouseDragged(evt);
-            }
-        });
-        matrix_view_panel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                matrix_view_panelMouseClicked(evt);
-            }
-        });
-
-        org.jdesktop.layout.GroupLayout matrix_view_panelLayout = new org.jdesktop.layout.GroupLayout(matrix_view_panel);
-        matrix_view_panel.setLayout(matrix_view_panelLayout);
-        matrix_view_panelLayout.setHorizontalGroup(
-            matrix_view_panelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 678, Short.MAX_VALUE)
-        );
-        matrix_view_panelLayout.setVerticalGroup(
-            matrix_view_panelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 474, Short.MAX_VALUE)
-        );
-
         jScrollPane1.setViewportView(matrix_view_panel);
 
         statusPanel.setName("statusPanel"); // NOI18N
@@ -562,7 +526,6 @@ public class MatrixViewer extends javax.swing.JFrame {
     }//GEN-LAST:event_extractButtonActionPerformed
 
     private void highlightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_highlightButtonActionPerformed
-        this.setRanges();
         this.highlightAction();
     }//GEN-LAST:event_highlightButtonActionPerformed
 
@@ -578,27 +541,6 @@ public class MatrixViewer extends javax.swing.JFrame {
         this.unloadAction();
     }//GEN-LAST:event_unloadMatixButtonActionPerformed
 
-    private void matrix_view_panelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_matrix_view_panelMouseMoved
-        
-    }//GEN-LAST:event_matrix_view_panelMouseMoved
-
-    private void matrix_view_panelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_matrix_view_panelMouseDragged
-        this.expandSelection();
-    }//GEN-LAST:event_matrix_view_panelMouseDragged
-
-    private void matrix_view_panelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_matrix_view_panelMouseClicked
-        MatrixView mv = (MatrixView)this.matrix_view_panel;
-        if (mv.isSelectionActive()){
-            mv.resetSelection();
-            this.clearAction();
-        } else {
-        
-            this.expandSelection();
-        }
-        
-        //this.expandSelection();
-    }//GEN-LAST:event_matrix_view_panelMouseClicked
-
 
     /**
     * @param args the command line arguments
@@ -607,7 +549,7 @@ public class MatrixViewer extends javax.swing.JFrame {
         if (args.length <= 1){
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
-                    new MatrixViewer().setVisible(true);
+                    new TabularMatrixViewer().setVisible(true);
                 }
             });
         }
@@ -615,7 +557,7 @@ public class MatrixViewer extends javax.swing.JFrame {
             final String urlarg = args[1];
             java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MatrixViewer( urlarg ).setVisible(true);
+                new TabularMatrixViewer( urlarg ).setVisible(true);
             }
         });
         }
@@ -634,7 +576,7 @@ public class MatrixViewer extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuBar mainMenuBar;
-    private javax.swing.JPanel matrix_view_panel;
+    private javax.swing.JTable matrix_view_panel;
     private javax.swing.JFileChooser openFileChooser;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem openUrlMenuItem;
