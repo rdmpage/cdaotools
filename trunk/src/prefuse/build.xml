@@ -30,6 +30,7 @@
 
   	<!-- Define path to required libraries -->
   	<property name="lucene.lib" value="${root.dir}/lib/lucene-1.4.3.jar"/>
+	<property name="swing-layout.lib" value="${root.dir}/lib/swing-layout-1.0.4.jar"/>
   	
     <!-- Define the source build directories -->
     <property name="doc.apidocs" value="${doc.dir}/api"/>	   	
@@ -146,7 +147,12 @@
 		   classpath="${build.dir}/${name}.jar"
            debug="${debug}"
            deprecation="${deprecation}"
-           optimize="${optimize}"/>
+           optimize="${optimize}">
+	<classpath>
+		<pathelement location="${build.dir}/${name}.jar"/>
+		<pathelement location="${swing-layout.lib}"/>
+	</classpath>
+     </javac>
   </target>
 
   <!-- =================================================================== -->
