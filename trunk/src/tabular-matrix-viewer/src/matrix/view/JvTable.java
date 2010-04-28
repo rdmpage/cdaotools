@@ -16,7 +16,12 @@ public class JvTable extends JTable
     {
         super(dataModel);
     }
-
+    //disable selection of the first column
+    public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
+        if (!getColumnModel().getColumn(columnIndex).getIdentifier().equals("")) {
+            super.changeSelection(rowIndex, columnIndex, toggle, extend);
+        }//else
+    }
 
     @Override
     public void setFont(Font font)
