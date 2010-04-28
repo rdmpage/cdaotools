@@ -1,0 +1,268 @@
+<graphml xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns      http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+−
+<!--
+ NODE_QUERY: SELECT ?node
+      WHERE {
+              {
+                ?node cdao:part_of <http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Tree3099>.  
+                ?node rdf:type cdao:Node . 
+              } 
+              UNION 
+              { 
+                ?node cdao:part_of <http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Tree3099>. 
+                ?edge cdao:has_Child_Node ?node.  
+              } 
+              UNION 
+              { 
+                ?node cdao:part_of <http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Tree3099>. 
+                ?edge cdao:has_Parent_Node ?node. 
+              } 
+            } 
+-->
+−
+<!--
+ EDGE_QUERY: SELECT ?edge ?src ?dest 
+      WHERE 
+      { 
+         ?dest cdao:part_of <http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Tree3099>.
+         ?src cdao:part_of <http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Tree3099>.
+         ?edge cdao:has_Child_Node ?dest .
+         ?edge cdao:has_Parent_Node ?src .
+       } 
+-->
+−
+<key id="d0" for="all" attr.name="IdLabel" attr.type="string"/>
+<key id="d2" for="node" attr.name="Meta" attr.type="string"/>
+<key id="d1" for="edge" attr.name="weight" attr.type="double"/>
+<graph id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Tree3099" edgedefault="directional">
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_collina"> <data key="d0">Ilex_collina</data><data key="d2">This is Meta Data</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_maximowicziana"><data key="d0">Ilex_maximowicziana</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_paraguariensis"><data key="d0">Ilex_paraguariensis</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_brevicuspis"><data key="d0">Ilex_brevicuspis</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_cornuta"><data key="d0">Ilex_cornuta</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_mitis"><data key="d0">Ilex_mitis</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_integra"><data key="d0">Ilex_integra</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_percoriacea"><data key="d0">Ilex_percoriacea</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_canariensis"><data key="d0">Ilex_canariensis</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_argentina"><data key="d0">Ilex_argentina</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node29"><data key="d0">node29</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node28"><data key="d0">node28</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node25"><data key="d0">node25</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node24"><data key="d0">node24</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node27"><data key="d0">node27</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node26"><data key="d0">node26</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node21"><data key="d0">node21</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node20"><data key="d0">node20</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node23"><data key="d0">node23</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node22"><data key="d0">node22</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_mutchagara"><data key="d0">Ilex_mutchagara</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_yunnanensis"><data key="d0">Ilex_mutchagara</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_buergeri"><data key="d0">Ilex_buergeri</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_glabra"><data key="d0">Ilex_glabra</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_theezans_Gbk"><data key="d0">Ilex_theezans_Gbk</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_warburgii"><data key="d0">Ilex_warburgii</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node38"><data key="d0">node38</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node39"><data key="d0">node39</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node36"><data key="d0">node36</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node37"><data key="d0">node37</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node34"><data key="d0">node34</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node35"><data key="d0">node35</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node32"><data key="d0">node32</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node33"><data key="d0">node33</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node30"><data key="d0">node30</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node31"><data key="d0">node3`</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_pseudobuxus"><data key="d0">Ilex_pseudobuxus</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_taubertiana"><data key="d0">Ilex_taubertiana</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_opaca"><data key="d0">Ilex_opaca</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_rotunda"><data key="d0">Ilex_rotunda</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_integerrima"><data key="d0">Ilex_integerrima</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_kiusiana"><data key="d0">Ilex_kiusiana</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_beecheyi"><data key="d0">Ilex_beecheyi</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_cassine"><data key="d0">Ilex_cassine</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node14"><data key="d0">node14</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node15"><data key="d0">node15</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node16"><data key="d0">node16</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node17"><data key="d0">node17</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node10"><data key="d0">node10</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node11"><data key="d0">node11</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node12"><data key="d0">node12</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node13"><data key="d0">node13</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node18"><data key="d0">node18</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node19"><data key="d0">node19</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node8"><data key="d0">node8</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node9"><data key="d0">node9</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node6"><data key="d0">node6</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node7"><data key="d0">node7</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node4"><data key="d0">node4</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node5"><data key="d0">node5</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node2"><data key="d0">node2</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node3"><data key="d0">node3</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_microdonta_Gbk"><data key="d0">Ilex_microdonta_Gbk</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node1"><data key="d0">node1</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_liukiuensis"><data key="d0">Ilex_liukiuensis</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_mucronata"><data key="d0">Ilex_mucronata</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_brasiliensis"><data key="d0">Ilex_brasiliensis</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_pedunculosa"><data key="d0">Ilex_pedunculosa</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_dumosa_dumosa"><data key="d0">Ilex_dumosa_dumosa</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_serrata"><data key="d0">Ilex_serrata</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_rugosa"><data key="d0">Ilex_rugosa</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_argentina_Gbk"><data key="d0">Ilex_argentina_Gbk</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Helwingia_japonica"><data key="d0">Helwingia_japonica</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_vomitoria"><data key="d0">Ilex_vomitoria</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_dumosa_guaranina"><data key="d0">Ilex_dumosa_guaranina</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_dimorphophylla"><data key="d0">Ilex_dimorphophylla</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_theezans"><data key="d0">Ilex_theezans</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_macropoda"><data key="d0">Ilex_macropoda</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Helwingia_chinensis"><data key="d0">Helwingia_chinensis</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_micrococca"><data key="d0">Ilex_micrococca</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_anomala"><data key="d0">Ilex_anomala</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_decidua"><data key="d0">Ilex_decidua</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_mertensii"><data key="d0">Ilex_mertensii</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_amelanchier"><data key="d0">Ilex_amelanchier</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_microdonta"><data key="d0">Ilex_microdonta</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_latifolia"><data key="d0">Ilex_latifolia</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_crenata"><data key="d0">Ilex_crenata</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node44"><data key="d0">node44</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node43"><data key="d0">node43</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node42"><data key="d0">node42</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node41"><data key="d0">node41</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node40"><data key="d0">node40</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#tree"><data key="d0">tree</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node38"><data key="d0">node38</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node39"><data key="d0">node39</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node36"><data key="d0">node36</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node37"><data key="d0">node37</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node34"><data key="d0">node34</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node35"><data key="d0">node35</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node32"><data key="d0">node32</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node33"><data key="d0">node33</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node30"><data key="d0">node30</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node31"><data key="d0">node31</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node14"><data key="d0">node14</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node15"><data key="d0">node15</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node16"><data key="d0">node16</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node17"><data key="d0">node17</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node10"><data key="d0">node10</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node11"><data key="d0">node11</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node12"><data key="d0">node12</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node13"><data key="d0">node13</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node18"><data key="d0">node18</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node19"><data key="d0">node19</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node8"><data key="d0">node8</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node9"><data key="d0">node9</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node6"><data key="d0">node6</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node7"><data key="d0">node7</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node4"><data key="d0">node4</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node5"><data key="d0">node5</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node2"><data key="d0">node2</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node3"><data key="d0">node3</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node1"><data key="d0">node1</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node29"><data key="d0">node29</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node28"><data key="d0">node28</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node25"><data key="d0">node25</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node24"><data key="d0">node24</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node27"><data key="d0">node27</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node26"><data key="d0">node26</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node21"><data key="d0">node21</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node20"><data key="d0">node20</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node23"><data key="d0">node23</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node22"><data key="d0">node22</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node44"><data key="d0">node44</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node43"><data key="d0">node43</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node42"><data key="d0">node42</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node41"><data key="d0">node41</data></node>
+<node id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node40"><data key="d0">node40</data></node>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node5_Ilex_crenata" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node5" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_crenata"><data key="d0">EDGENAMEnode5_Ilex_crenataEDGENAME</data><data key="d1">15.308</data></edge>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node5_Ilex_mutchagara" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node5" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_mutchagara"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node6_Ilex_dumosa_dumosa" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node6" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_dumosa_dumosa"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node6_Ilex_dumosa_guaranina" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node6" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_dumosa_guaranina"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node4_node5" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node4" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node5"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node4_node6" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node4" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node6"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node9_Ilex_argentina_Gbk" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node9" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_argentina_Gbk"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node9_Ilex_cassine" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node9" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_cassine"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node8_Ilex_opaca" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node8" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_opaca"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node8_node9" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node8" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node9"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node12_Ilex_decidua" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node12" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_decidua"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node12_Ilex_vomitoria" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node12" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_vomitoria"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node11_Ilex_collina" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node11" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_collina"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node11_node12" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node11" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node12"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node14_Ilex_amelanchier" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node14" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_amelanchier"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node14_Ilex_mucronata" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node14" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_mucronata"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node21_Ilex_beecheyi" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node21" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_beecheyi"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node21_Ilex_mertensii" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node21" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_mertensii"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node21_Ilex_percoriacea" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node21" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_percoriacea"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node20_Ilex_integra" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node20" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_integra"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node20_node21" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node20" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node21"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node19_Ilex_kiusiana" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node19" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_kiusiana"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node19_node20" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node19" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node20"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node24_Ilex_cornuta" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node24" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_cornuta"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node24_Ilex_dimorphophylla" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node24" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_dimorphophylla"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node23_Ilex_maximowicziana" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node23" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_maximowicziana"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node23_node24" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node23" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node24"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node26_Ilex_liukiuensis" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node26" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_liukiuensis"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node26_Ilex_warburgii" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node26" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_warburgii"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node25_Ilex_buergeri" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node25" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_buergeri"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node25_Ilex_latifolia" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node25" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_latifolia"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node25_node26" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node25" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node26"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node22_node23" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node22" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node23"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node22_node25" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node22" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node25"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node18_node19" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node18" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node19"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node18_node22" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node18" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node22"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node17_Ilex_rugosa" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node17" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_rugosa"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node17_node18" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node17" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node18"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node16_Ilex_anomala" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node16" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_anomala"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node16_node17" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node16" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node17"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node29_Ilex_canariensis" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node29" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_canariensis"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node29_Ilex_glabra" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node29" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_glabra"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node32_Ilex_rotunda" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node32" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_rotunda"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node32_Ilex_serrata" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node32" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_serrata"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node35_Ilex_macropoda" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node35" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_macropoda"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node35_Ilex_micrococca" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node35" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_micrococca"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node34_Ilex_mitis" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node34" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_mitis"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node34_node35" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node34" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node35"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node33_Ilex_yunnanensis" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node33" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_yunnanensis"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node33_node34" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node33" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node34"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node31_node32" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node31" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node32"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node31_node33" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node31" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node33"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node39_Ilex_brasiliensis" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node39" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_brasiliensis"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node39_Ilex_theezans" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node39" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_theezans"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node40_Ilex_integerrima" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node40" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_integerrima"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node40_Ilex_theezans_Gbk" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node40" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_theezans_Gbk"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node38_node39" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node38" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node39"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node38_node40" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node38" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node40"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node42_Ilex_brevicuspis" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node42" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_brevicuspis"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node42_Ilex_taubertiana" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node42" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_taubertiana"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node44_Ilex_pseudobuxus" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node44" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_pseudobuxus"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node44_Ilex_microdonta_Gbk" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node44" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_microdonta_Gbk"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node43_Ilex_microdonta" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node43" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_microdonta"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node43_node44" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node43" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node44"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node41_node42" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node41" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node42"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node41_node43" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node41" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node43"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node37_node38" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node37" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node38"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node37_node41" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node37" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node41"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node36_Ilex_argentina" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node36" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_argentina"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node36_node37" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node36" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node37"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node30_node31" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node30" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node31"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node30_node36" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node30" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node36"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node28_node29" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node28" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node29"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node28_node30" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node28" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node30"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node27_Ilex_pedunculosa" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node27" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_pedunculosa"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node27_node28" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node27" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node28"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node15_node16" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node15" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node16"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node15_node27" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node15" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node27"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node13_node14" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node13" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node14"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node13_node15" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node13" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node15"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node10_node11" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node10" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node11"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node10_node13" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node10" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node13"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node7_node8" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node7" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node8"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node7_node10" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node7" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node10"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node3_node4" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node3" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node4"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node3_node7" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node3" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node7"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node2_Ilex_paraguariensis" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node2" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Ilex_paraguariensis"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node2_node3" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node2" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node3"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node1_Helwingia_chinensis" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node1" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Helwingia_chinensis"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node1_node2" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node1" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node2"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#tree_Helwingia_japonica" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#tree" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#Helwingia_japonica"/>
+<edge id="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#tree_node1" source="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#tree" target="http://www.cs.nmsu.edu/~epontell/S996A3196.tre#node1"/>
+</graph>
+</graphml>

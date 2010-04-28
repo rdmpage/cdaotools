@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp codebase="http://www.cs.nmsu.edu/~bchisham/cdao-store" href="matrix-viewer/launch.jnlp" spec="1.0+">
+    <information>
+        <title>MatrixViewer</title>
+        <vendor>cdaostore</vendor>
+        <homepage href=""/>
+        <description>MatrixViewer</description>
+        <description kind="short">MatrixViewer</description>
+    </information>
+<security>
+<all-permissions/>
+</security>
+    <resources>
+<j2se version="1.5+"/>
+<jar eager="true" href="matrix-viewer/MatrixViewer.jar" main="true"/>
+<!--<jar href="lib/lucene-1.4.3.jar"/>
+<jar href="lib/ant.jar"/>-->
+<jar href="matrix-viewer/lib/swing-layout-1.0.4.jar"/>
+</resources>
+    <application-desc main-class="matrix.view.CDAOMatrixChooser">
+    </application-desc>
+</jnlp>
