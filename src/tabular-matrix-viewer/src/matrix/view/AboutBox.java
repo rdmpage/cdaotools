@@ -51,7 +51,7 @@ public class AboutBox extends javax.swing.JFrame {
         iconLabel = new javax.swing.JLabel();
         closeBtn = new javax.swing.JButton();
 
-        setTitle("About Tree Viewr");
+        setTitle("About Tree Viewer");
         setBackground(new java.awt.Color(255, 255, 255));
 
         titleLabel.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N

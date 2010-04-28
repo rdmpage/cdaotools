@@ -65,13 +65,9 @@ public class MatrixVisualization extends JPanel
 	public static String filelocation = "http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/matrix/M450?format=csv";
 	private static String cutoffString;//The String removed in CSV reader
 	private static JFrame frame;
-	private static JFrame frame2;
     private JvTable table;
-    private JvTable table2;
     private JvUndoableTableModel tableModel;
-    private JvUndoableTableModel tableModel2;
     private JScrollPane scrollPane;
-    private JScrollPane scrollPane2;
     private JPanel buttonPanel;
     private JButton hide;
     private JButton extract;
@@ -83,7 +79,7 @@ public class MatrixVisualization extends JPanel
 
     private void initComponents(){
         table = new JvTable(tableModel);
-	System.out.println(table.getColumnCount());
+        //System.out.println(table.getColumnCount());
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         table.setPreferredScrollableViewportSize(new Dimension(dimension.height, dimension.width-100));
@@ -96,16 +92,6 @@ public class MatrixVisualization extends JPanel
         scrollPane=new JScrollPane(table);
         scrollPane.setAlignmentX(LEFT_ALIGNMENT);
         add(scrollPane);
-        tableModel2=new JvUndoableTableModel(tableModel);
-        table2 = new JvTable(tableModel2);
-        table2.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        table2.setPreferredScrollableViewportSize(new Dimension(dimension.height, dimension.width-100));
-        table2.calcColumnWidths();
-        //table2.setFillsViewportHeight(true);
-        table2.getTableHeader().setReorderingAllowed(false);//disable reodering column
-        scrollPane2=new JScrollPane(table2);
-        scrollPane2.setAlignmentX(LEFT_ALIGNMENT);
-
         label=new JLabel("Selection Options");
         label.setAlignmentX(LEFT_ALIGNMENT);
         add(label);
@@ -173,6 +159,16 @@ public class MatrixVisualization extends JPanel
             System.exit(1);
 	}
 	initComponents();
+    }
+    
+    /**
+     * Display the matrix with selected row or column
+     */
+    public MatrixVisualization(JvUndoableTableModel tm){
+        super();
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        tableModel=tm;
+        initComponents();
     }
     /**
      * Read a matrix from the specified input stream
@@ -339,7 +335,8 @@ public class MatrixVisualization extends JPanel
             	else if(columnCheck.isSelected()){
             		indices=table.getSelectedColumns();
             		for(int j=0;j<olddata.size();j++){
-				Vector<String> vline= new Vector<String>();
+            			Vector<String> vline= new Vector<String>();
+            			vline.add(((Vector<String>)olddata.get(j)).get(0));//
                 		for(int i=0;i<indices.length;i++){
                 			vline.add(((Vector<String>)olddata.get(j)).get(indices[i]));
                 		}
@@ -350,10 +347,8 @@ public class MatrixVisualization extends JPanel
                 columnNames.add("");
                 for (long i=1;i<((Vector)newdata.firstElement()).size();i++)
                 	columnNames.add(""+i);
-        		tableModel2.setDataVector(newdata, columnNames);
-        		tableModel2.fireTableStructureChanged();
-        		table2.calcColumnWidths();
-        		frame2.setVisible(true);
+                JvUndoableTableModel tm=new JvUndoableTableModel(newdata, columnNames);
+                createAndShowGUI(tm);
         	}
         }
     }
@@ -476,23 +471,17 @@ public class MatrixVisualization extends JPanel
         //Create and set up the window.
         frame = new JFrame("Matrix");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame2 = new JFrame("Extract");
         //Create and set up the content pane.
         MatrixVisualization newContentPane = new MatrixVisualization();
         newContentPane.setOpaque(true); //content panes must be opaque
         //Create menu 
         Menu menuBar = newContentPane.new Menu(newContentPane.table,newContentPane.tableModel);
-        Menu menuBar2 = newContentPane.new Menu(newContentPane.table2,newContentPane.tableModel2);
         frame.setContentPane(newContentPane);
-        frame2.add(newContentPane.scrollPane2);
         frame.setJMenuBar(menuBar);
-        frame2.setJMenuBar(menuBar2);
         frame.setSize(1200, 700);
-        frame2.setSize(640,480);
         //Display the window.
         frame.pack();
         frame.setVisible(true);
-        frame2.setVisible(false);
     }
 
     private static void createAndShowGUI(String path){
@@ -502,23 +491,37 @@ public class MatrixVisualization extends JPanel
         //Create and set up the window.
         frame = new JFrame("Matrix");
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        frame2 = new JFrame("Extract");
         //Create and set up the content pane.
         MatrixVisualization newContentPane = new MatrixVisualization( path );
         newContentPane.setOpaque(true); //content panes must be opaque
         //Create menu
         Menu menuBar = newContentPane.new Menu(newContentPane.table,newContentPane.tableModel);
-        Menu menuBar2 = newContentPane.new Menu(newContentPane.table2,newContentPane.tableModel2);
         frame.setContentPane(newContentPane);
-        frame2.add(newContentPane.scrollPane2);
         frame.setJMenuBar(menuBar);
-        frame2.setJMenuBar(menuBar2);
         frame.setSize(1200, 700);
-        frame2.setSize(640,480);
         //Display the window.
         frame.pack();
         frame.setVisible(true);
-        frame2.setVisible(false);
+    }
+    private static void createAndShowGUI(JvUndoableTableModel tm) {
+        //Disable boldface controls.
+        UIManager.put("swing.boldMetal", Boolean.FALSE); 
+
+        //Create and set up the window.
+        frame = new JFrame("Matrix");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //Create and set up the content pane.
+        MatrixVisualization newContentPane = new MatrixVisualization(tm);
+        newContentPane.setOpaque(true); //content panes must be opaque
+        //Create menu 
+        Menu menuBar = newContentPane.new
+        Menu(newContentPane.table,newContentPane.tableModel);
+        frame.setContentPane(newContentPane);
+        frame.setJMenuBar(menuBar);
+        frame.setSize(1200, 700);
+        //Display the window.
+        frame.pack();
+        frame.setVisible(true);
     }
 
 
