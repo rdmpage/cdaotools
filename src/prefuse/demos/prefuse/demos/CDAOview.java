@@ -3,6 +3,7 @@ package prefuse.demos;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -24,6 +25,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -206,17 +208,18 @@ public class CDAOview extends JPanel {
         //fpanel.add(Box.createVerticalGlue());
         
         // create a new JSplitPane to present the interface
-        //JSplitPane split = new JSplitPane();
-        //split.  //Component(display);
+        JSplitPane split = new JSplitPane();
+        split.setLeftComponent(display);  //Component(display);
         //split.setRightComponent(fpanel);
-        //split.setOneTouchExpandable(true);
-        //split.setContinuousLayout(false);
+        split.setOneTouchExpandable(true);
+        split.setContinuousLayout(false);
         //split.setDividerLocation(700);
-        
+        split.setVisible(true);
+      
         // now we run our action list
         m_vis.run("draw");
-        
-        add(display);
+        add(split);          
+
     }
     
     public void setGraph(Graph g, String label) {
@@ -240,7 +243,7 @@ public class CDAOview extends JPanel {
     public static void main(String[] args) {
         UILib.setPlatformLookAndFeel();
         
-        // create graphview
+        // create cdaoview
         
 
         String datafile = DEFAULT_GRAPH_URL;
@@ -286,13 +289,19 @@ public class CDAOview extends JPanel {
         
         // launch window
         JFrame frame = new JFrame("p r e f u s e  |  C D A O v i e w");
-        //frame.setJMenuBar(menubar);
-        frame.setContentPane(view);
+        frame.setJMenuBar(menubar);
+        //frame.setContentPane(view);
+        
+        Container contentpane = frame.getContentPane();
+        
+        contentpane.add(view);
+        
         frame.pack();
         frame.setVisible(true);
+        view.setVisible(true);
         view.setGraph(g, label);
-        //view.m_vis.runAfter("draw", "layout");
-        //view.m_vis.run("layout");
+        view.m_vis.runAfter("draw", "layout");
+        view.m_vis.run("layout");
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowActivated(WindowEvent e) {
