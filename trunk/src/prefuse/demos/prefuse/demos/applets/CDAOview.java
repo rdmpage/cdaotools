@@ -138,7 +138,7 @@ public class CDAOview extends JPrefuseApplet {
         tr.setRoundedCorner(8, 8);
         CDAOEdgeRenderer er = new CDAOEdgeRenderer(label);
         er.setRoundedCorner(8, 8);
-        vis.setRendererFactory(new DefaultRendererFactory(tr,er));
+        vis.setRendererFactory(new DefaultRendererFactory(tr));
         
         
        
