@@ -37,7 +37,12 @@ import prefuse.action.ActionList;
 import prefuse.action.RepaintAction;
 import prefuse.action.assignment.ColorAction;
 import prefuse.action.filter.GraphDistanceFilter;
+import prefuse.action.layout.graph.BalloonTreeLayout;
 import prefuse.action.layout.graph.ForceDirectedLayout;
+import prefuse.action.layout.graph.FruchtermanReingoldLayout;
+import prefuse.action.layout.graph.NodeLinkTreeLayout;
+import prefuse.action.layout.graph.RadialTreeLayout;
+import prefuse.action.layout.graph.SquarifiedTreeMapLayout;
 import prefuse.activity.Activity;
 import prefuse.controls.DragControl;
 import prefuse.controls.FocusControl;
@@ -146,6 +151,8 @@ public class CDAOview extends JPanel {
         m_vis.putAction("draw", draw);
         m_vis.putAction("layout", animate);
 
+        
+        
         m_vis.runAfter("draw", "layout");
         
         
@@ -165,7 +172,7 @@ public class CDAOview extends JPanel {
         display.addControlListener(new ZoomControl());
         display.addControlListener(new WheelZoomControl());
         display.addControlListener(new ZoomToFitControl());
-        display.addControlListener(new NeighborHighlightControl());
+        display.addControlListener(new NeighborHighlightControl());	
 
         // overview display
 //        Display overview = new Display(vis);
@@ -208,17 +215,17 @@ public class CDAOview extends JPanel {
         //fpanel.add(Box.createVerticalGlue());
         
         // create a new JSplitPane to present the interface
-        JSplitPane split = new JSplitPane();
-        split.setLeftComponent(display);  //Component(display);
+        //JSplitPane split = new JSplitPane();
+        //split.setLeftComponent(display);  //Component(display);
         //split.setRightComponent(fpanel);
-        split.setOneTouchExpandable(true);
-        split.setContinuousLayout(false);
+        //split.setOneTouchExpandable(true);
+        //split.setContinuousLayout(false);
         //split.setDividerLocation(700);
-        split.setVisible(true);
+        //split.setVisible(true);
       
         // now we run our action list
         m_vis.run("draw");
-        add(split);          
+        add(display);          
 
     }
     
@@ -286,19 +293,20 @@ public class CDAOview extends JPanel {
         final CDAOview view = new CDAOview(g, label);
         
         // set up menu
-        JMenu dataMenu = new JMenu("Data");
-        dataMenu.add(new OpenGraphAction(view));
+        JMenu dataMenu = new JMenu("Layout");
+        dataMenu.add(new ForceLayoutAction(view));
+        dataMenu.add(new NodeLinkTreeLayoutAction(view));
         JMenuBar menubar = new JMenuBar();
         menubar.add(dataMenu);
         
         // launch window
-        JFrame frame = new JFrame("p r e f u s e  |  C D A O v i e w");
+        JFrame frame = new JFrame("C D A O v i e w | powered by prefuse");
         frame.setJMenuBar(menubar);
-        //frame.setContentPane(view);
+        frame.setContentPane(view);
         
-        Container contentpane = frame.getContentPane();
+        //Container contentpane = frame.getContentPane();
         
-        contentpane.add(view);
+        //contentpane.add(view);
         
         frame.pack();
         frame.setVisible(true);
@@ -341,17 +349,40 @@ public class CDAOview extends JPanel {
         protected abstract Graph getGraph();
     }
     
-    public static class OpenGraphAction extends AbstractAction {
+    public static class NodeLinkTreeLayoutAction extends AbstractAction {
+    	private CDAOview m_view;
+    	public NodeLinkTreeLayoutAction(CDAOview view){
+    		m_view = view;
+    		this.putValue(AbstractAction.NAME, "Node Link Tree Layout");
+    	}
+    	public void actionPerformed(ActionEvent e)
+    	{
+    	  ActionList l = (ActionList) m_view.m_vis.getAction("layout");
+    	  l.remove(new ForceDirectedLayout(graph));
+    	  l.add(new NodeLinkTreeLayout(graph));
+    	  m_view.m_vis.putAction("layout", l);
+    	  m_view.m_vis.run("draw");
+    	}
+    }
+    
+    public static class ForceLayoutAction extends AbstractAction {
         private CDAOview m_view;
 
-        public OpenGraphAction(CDAOview view) {
+        public ForceLayoutAction(CDAOview view) {
             m_view = view;
-            this.putValue(AbstractAction.NAME, "Open File...");
+            /*this.putValue(AbstractAction.NAME, "Open File...");*/
             this.putValue(AbstractAction.ACCELERATOR_KEY,
-                          KeyStroke.getKeyStroke("ctrl O"));
+                          KeyStroke.getKeyStroke("ctrl f"));
+            this.putValue(AbstractAction.NAME, "Force Layout");
         }
         public void actionPerformed(ActionEvent e) {
-            Graph g = new Graph();
+         	  ActionList l = (ActionList) m_view.m_vis.getAction("layout");
+        	  l.remove(new NodeLinkTreeLayout(graph));
+        	  l.add(new ForceDirectedLayout(graph));
+        	  m_view.m_vis.putAction("layout", l);
+        	  m_view.m_vis.run("draw");
+        	
+        	/*Graph g = new Graph();
 			try {
 				g = new GraphMLReader().readGraph( new URL( DEFAULT_GRAPH_URL ) );
 			} catch (DataIOException e1) {
@@ -369,7 +400,7 @@ public class CDAOview extends JPanel {
             
             if ( label2 != null ) {
                 m_view.setGraph(g, label2);
-            }
+            }*/
         }
         public static String getLabel(Component c, Graph g) {
             // get the column names
