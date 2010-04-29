@@ -245,7 +245,11 @@ public class CDAOview extends JPanel {
         
         // create cdaoview
         
-
+	System.err.print("Called with: ");
+	for (int i = 0; i < args.length; ++i ){
+            System.err.print( args[i] + " " );
+	}
+        System.err.println();
         String datafile = DEFAULT_GRAPH_URL;
         
         String label = "IdLabel";
@@ -255,7 +259,7 @@ public class CDAOview extends JPanel {
         }
         
         JFrame frame = demo(datafile, label);
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
     public static JFrame demo() {

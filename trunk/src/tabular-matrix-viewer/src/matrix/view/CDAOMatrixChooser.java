@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 /*
  * CDAOMatrixChooser.java
@@ -17,7 +14,7 @@ package matrix.view;
  */
 public class CDAOMatrixChooser extends javax.swing.JFrame {
     private TreeNameListModel model;
-    AboutBox aboutBox;
+    private AboutBox aboutBox;
     /** Creates new form CDAOMatrixChooser */
     public CDAOMatrixChooser() {
         model = new TreeNameListModel();
