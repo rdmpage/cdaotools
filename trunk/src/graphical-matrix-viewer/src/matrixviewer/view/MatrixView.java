@@ -141,7 +141,7 @@ public class MatrixView extends JPanel implements MouseMotionListener {
 
         if (model != null && model.getrowcount() > 0 && model.getcolumncount() > 0) {
 
-            System.err.println("Dimensions, rows: " + model.getrowcount() + " cols: " + model.getcolumncount());
+            //System.err.println("Dimensions, rows: " + model.getrowcount() + " cols: " + model.getcolumncount());
 
             this.model = model;
             this.cellheight = 30;
