@@ -37,7 +37,6 @@ import prefuse.data.Tuple;
 import prefuse.data.event.TupleSetListener;
 import prefuse.data.io.GraphMLReader;
 import prefuse.data.tuple.TupleSet;
-import prefuse.render.CDAOEdgeRenderer;
 import prefuse.render.DefaultRendererFactory;
 import prefuse.render.LabelRenderer;
 import prefuse.util.ColorLib;
@@ -136,8 +135,8 @@ public class CDAOview extends JPrefuseApplet {
         // set up the renderers
         LabelRenderer tr = new LabelRenderer(label);
         tr.setRoundedCorner(8, 8);
-        CDAOEdgeRenderer er = new CDAOEdgeRenderer(label);
-        er.setRoundedCorner(8, 8);
+        //CDAOEdgeRenderer er = new CDAOEdgeRenderer(label);
+        //er.setRoundedCorner(8, 8);
         vis.setRendererFactory(new DefaultRendererFactory(tr));
         
         
