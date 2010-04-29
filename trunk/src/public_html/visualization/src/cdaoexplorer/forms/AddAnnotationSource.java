@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /*
  * AddAnnotationSource.java
@@ -10,6 +6,9 @@
  */
 
 package cdaoexplorer.forms;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  *
@@ -22,7 +21,21 @@ public class AddAnnotationSource extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
-
+    /**
+     * Get the symbolic name for the annotation source (e.g. dc for the dublin core).
+     * @return
+     */
+    public String getSymbolicName(){
+        return this.symbolicNameTextField.getText();
+    }
+    /**
+     * Get the specified source url.
+     * @return
+     * @throws MalformedURLException
+     */
+    public URL getSourceURL() throws MalformedURLException{
+        return new URL( this.sourceURITextField.getText());
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -35,8 +48,8 @@ public class AddAnnotationSource extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        symbolicNameTextField = new javax.swing.JTextField();
+        sourceURITextField = new javax.swing.JTextField();
         importButton = new javax.swing.JButton();
         closeButton = new javax.swing.JButton();
 
@@ -55,11 +68,11 @@ public class AddAnnotationSource extends javax.swing.JDialog {
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
 
-        jTextField1.setText(resourceMap.getString("jTextField1.text")); // NOI18N
-        jTextField1.setName("jTextField1"); // NOI18N
+        symbolicNameTextField.setText(resourceMap.getString("symbolicNameTextField.text")); // NOI18N
+        symbolicNameTextField.setName("symbolicNameTextField"); // NOI18N
 
-        jTextField2.setText(resourceMap.getString("jTextField2.text")); // NOI18N
-        jTextField2.setName("jTextField2"); // NOI18N
+        sourceURITextField.setText(resourceMap.getString("sourceURITextField.text")); // NOI18N
+        sourceURITextField.setName("sourceURITextField"); // NOI18N
 
         importButton.setText(resourceMap.getString("importButton.text")); // NOI18N
         importButton.setName("importButton"); // NOI18N
@@ -78,11 +91,11 @@ public class AddAnnotationSource extends javax.swing.JDialog {
                     .add(layout.createSequentialGroup()
                         .add(jLabel3)
                         .add(40, 40, 40)
-                        .add(jTextField2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
+                        .add(sourceURITextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
                         .add(jLabel2)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jTextField1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
+                        .add(symbolicNameTextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
                         .add(importButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -97,11 +110,11 @@ public class AddAnnotationSource extends javax.swing.JDialog {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel2)
-                    .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(symbolicNameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel3)
-                    .add(jTextField2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(sourceURITextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(importButton)
@@ -135,8 +148,8 @@ public class AddAnnotationSource extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField sourceURITextField;
+    private javax.swing.JTextField symbolicNameTextField;
     // End of variables declaration//GEN-END:variables
 
 }

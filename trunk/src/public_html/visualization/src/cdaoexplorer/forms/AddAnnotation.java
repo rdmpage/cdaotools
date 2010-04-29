@@ -11,6 +11,8 @@
 
 package cdaoexplorer.forms;
 
+import java.net.URL;
+
 /**
  *
  * @author bchisham
@@ -21,6 +23,20 @@ public class AddAnnotation extends javax.swing.JDialog {
     public AddAnnotation(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    /**
+     * Get the annotation term.
+     * @return
+     */
+    public URL getTerm(){
+        return (URL)this.annotationTermComboBox.getSelectedItem();
+    }
+    /**
+     * Get the value of the annotation.
+     * @return
+     */
+    public String getValue(){
+        return this.annotationValueTextField.getText();
     }
 
     /** This method is called from within the constructor to
