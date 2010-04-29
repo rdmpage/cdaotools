@@ -125,20 +125,25 @@ public class NexmlReader extends AbstractGraphReader  implements GraphReader {
         private Table m_table = null;
         protected HashMap m_nodeMap = new HashMap();
         protected HashMap m_idMap = new HashMap();
-        
+        protected HashMap m_node_label_map = new HashMap();
         private boolean m_directed = false;
         private boolean inSchema;
         
+        @Override
         public void startDocument() {
             m_nodeMap.clear();
             inSchema = true;
-            
+
+            m_nsch.addColumn( LABEL , String.class);
+
+
             m_esch.addColumn(SRC, int.class);
             m_esch.addColumn(TRG, int.class);
             m_esch.addColumn(SRCID, String.class);
             m_esch.addColumn(TRGID, String.class);
         }
         
+        @Override
         public void endDocument() throws SAXException {
             // time to actually set up the edges
             IntIterator rows = m_edges.rows();
@@ -172,6 +177,7 @@ public class NexmlReader extends AbstractGraphReader  implements GraphReader {
                 m_graph.putClientProperty(ID, m_graphid);
         }
         
+        @Override
         public void startElement(String namespaceURI, String localName, 
                                  String qName, Attributes atts)
         {
@@ -203,7 +209,13 @@ public class NexmlReader extends AbstractGraphReader  implements GraphReader {
                 m_row = m_nodes.addRow();
                 
                 String id = atts.getValue(ID);
+                String label = atts.getValue( LABEL );
                 m_nodeMap.put(id, new Integer(m_row));
+                ///<editor-fold>
+                this.m_node_label_map.put(id , label);
+                m_nodes.setString(m_row, ID, id);
+                m_nodes.setString( m_row , LABEL, label);
+                ///</editor-fold>
                 m_table = m_nodes;
             }
             else if ( qName.equals(EDGE) )
@@ -238,6 +250,7 @@ public class NexmlReader extends AbstractGraphReader  implements GraphReader {
             }
         }
 
+        @Override
         public void endElement(String namespaceURI, 
                 String localName, String qName)
         {
@@ -267,6 +280,7 @@ public class NexmlReader extends AbstractGraphReader  implements GraphReader {
             }
         }
         
+        @Override
         public void characters(char[] ch, int start, int length) throws SAXException {
             m_sbuf.append(ch, start, length);
         }
@@ -278,6 +292,10 @@ public class NexmlReader extends AbstractGraphReader  implements GraphReader {
                 m_nsch.lockSchema();
                 m_esch.lockSchema();
                 m_nodes = m_nsch.instantiate();
+
+                m_nodes.addColumn(ID, String.class);
+                m_nodes.addColumn(LABEL, String.class);
+
                 m_edges = m_esch.instantiate();
                 inSchema = false;
             }
