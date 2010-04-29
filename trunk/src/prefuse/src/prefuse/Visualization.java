@@ -155,6 +155,7 @@ import prefuse.visual.tuple.TableNodeItem;
  * 
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
+
 public class Visualization {
     
     /** Data group name for indicating all groups */
@@ -180,7 +181,7 @@ public class Visualization {
     private ActivityMap m_actions;
     
     // renderers
-    private ArrayList m_renderers; //RendererFactory m_renderers;
+    private RendererFactory m_renderers;
     
     // displays
     private ArrayList m_displays;
@@ -193,7 +194,7 @@ public class Visualization {
      */
     public Visualization() {
         m_actions = new ActivityMap();
-        m_renderers = new ArrayList(); //new DefaultRendererFactory();
+        m_renderers = new DefaultRendererFactory();
         m_visual = new LinkedHashMap();
         m_source = new HashMap();
         m_focus = new HashMap();
@@ -1211,25 +1212,15 @@ public class Visualization {
      */
     public void setRendererFactory(RendererFactory rf) {
         invalidateAll();
-        m_renderers.add(rf);// = rf;
-    }
-    public void addRendererFactory(RendererFactory rf){
-    	m_renderers.add(rf);
+        m_renderers = rf;
     }
     
-    
-    public int getNumRendFactory(){
-    	return m_renderers.size();
-    }
     /**
      * Get the RendererFactory used by this Visualization.
      * @return this Visualization's RendererFactory
      */
     public RendererFactory getRendererFactory() {
-        return (RendererFactory)m_renderers.get(0);
-    }
-    public RendererFactory getRendererFactory(int i){
-    	return (RendererFactory)m_renderers.get(i);
+        return m_renderers;
     }
     
     /**
@@ -1244,14 +1235,7 @@ public class Visualization {
             throw new IllegalArgumentException(
                     "Input item not a member of this visualization.");
         }
-        return ((RendererFactory)m_renderers.get(0)).getRenderer(item);
-    }
-    public Renderer getRenderer(VisualItem item, int i) {
-        if ( item.getVisualization() != this ) {
-            throw new IllegalArgumentException(
-                    "Input item not a member of this visualization.");
-        }
-        return ((RendererFactory)m_renderers.get(i)).getRenderer(item);
+        return m_renderers.getRenderer(item);
     }
     
     /**
@@ -1351,4 +1335,5 @@ public class Visualization {
         }
     }
     
+
 } // end of class Visualization
