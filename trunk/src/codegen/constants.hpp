@@ -16,7 +16,7 @@ namespace CDAO {
     namespace Imports {
       //the evolutionaryontology.org url generates a 403 error which prevents Protege from opening documents referencing it.
       
-      const std::wstring BASE_URI_PREFIX = L"http://www.cs.nmsu.edu/~epontell/";      
+      const std::wstring BASE_URI_PREFIX = L"http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows";      
       const std::wstring CDAO_DEF_URI =  L"http://www.evolutionaryontology.org/cdao.owl"; /*"http://www.cs.nmsu.edu/~epontell/CURRENT.owl";*/
       const std::wstring OWL_URI      =  L"http://www.w3.org/2002/07/owl";
       const std::wstring OWL11_URI    =  L"http://www.w3.org/2006/12/owl11";
