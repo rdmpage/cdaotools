@@ -1269,8 +1269,6 @@ public class Graph extends CompositeTupleSet {
     {
         String table = (t==getNodeTable() ? NODES : EDGES);
         
-        //System.out.println("fireGraphEvent: String table = " + table);
-        
         if ( type != EventConstants.UPDATE ) {
             // fire event to all tuple set listeners
             fireTupleEvent(t, first, last, type);
