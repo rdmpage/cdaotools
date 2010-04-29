@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /*
  * Workbench.java
@@ -57,8 +53,8 @@ public class Workbench extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        iconLabel = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
         selectTreeToggleButton = new javax.swing.JToggleButton();
         selectMatrixToggleButton = new javax.swing.JToggleButton();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -72,12 +68,12 @@ public class Workbench extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cdaoexplorer/forms/cdao-triplestore-logo.jpg"))); // NOI18N
+        iconLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cdaoexplorer/forms/cdao-triplestore-logo.jpg"))); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("CDAO Explorer");
-        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        titleLabel.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
+        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titleLabel.setText("CDAO Explorer");
+        titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         selectTreeToggleButton.setText("Select Tree");
         selectTreeToggleButton.addActionListener(new java.awt.event.ActionListener() {
@@ -125,9 +121,9 @@ public class Workbench extends javax.swing.JFrame {
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .add(jLabel1)
+                        .add(iconLabel)
                         .add(18, 18, 18)
-                        .add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE))
+                        .add(titleLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
                         .add(selectTreeToggleButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -139,8 +135,8 @@ public class Workbench extends javax.swing.JFrame {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabel2)
-                    .add(jLabel1))
+                    .add(titleLabel)
+                    .add(iconLabel))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 324, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(selectTreeToggleButton)
@@ -174,8 +170,7 @@ public class Workbench extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel iconLabel;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem openMatrixMenuItem;
     private javax.swing.JMenuItem openTreeMenuItem;
@@ -183,6 +178,7 @@ public class Workbench extends javax.swing.JFrame {
     private javax.swing.JMenuItem saveWorkspaceMenuItem;
     private javax.swing.JToggleButton selectMatrixToggleButton;
     private javax.swing.JToggleButton selectTreeToggleButton;
+    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 
 }
