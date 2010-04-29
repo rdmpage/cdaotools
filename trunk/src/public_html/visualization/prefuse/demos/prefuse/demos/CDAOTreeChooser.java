@@ -11,6 +11,8 @@
 
 package prefuse.demos;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author bchisham
@@ -36,7 +38,7 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
     }
 
     private void viewTree(){
-        String[] params = new String[ 3 ];
+        String[] params = new String[ 2 ];
         String treeURI = "http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/tree/" +
                 this.model.getElementAt( this.treeList.getMinSelectionIndex() ) + "?format=graphml" ;
 
@@ -44,11 +46,13 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
 
         params[ 0 ] = treeURI;
         params[ 1 ] = "IdLabel";
-        params[ 2 ] = treeURI;
+        //params[ 2 ] = treeURI;
 
 
-
-        CDAOview.main(params);
+        JFrame viewer = CDAOview.demo(treeURI, "IdLabel");
+        viewer.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE);
+        //CDAOview.
+        //CDAOview.main(params);
 
     }
 
