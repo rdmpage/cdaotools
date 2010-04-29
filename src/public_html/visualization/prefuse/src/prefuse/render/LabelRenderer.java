@@ -11,7 +11,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import java.awt.geom.RoundRectangle2D;
-import java.io.IOException;
 
 import prefuse.Constants;
 import prefuse.util.ColorLib;
@@ -354,7 +353,6 @@ public class LabelRenderer extends AbstractShapeRenderer {
         } else {
             m_bbox.setFrame(m_pt.getX(), m_pt.getY(), w, h);
         }
-        //System.out.println("Leaving LabelRenderer.getRawShape()");
         return m_bbox;
     }
     
@@ -388,16 +386,8 @@ public class LabelRenderer extends AbstractShapeRenderer {
      * @see prefuse.render.Renderer#render(java.awt.Graphics2D, prefuse.visual.VisualItem)
      */
     public void render(Graphics2D g, VisualItem item) {
-        RectangularShape shape = (RectangularShape)this.getRawShape(item);
+        RectangularShape shape = (RectangularShape)getShape(item);
         if ( shape == null ) return;
-        
-        System.out.println("Render Label getShape():"+item.getShape());
-        try {
-			System.in.read();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
         
         // fill the shape, if requested
         int type = getRenderType(item);

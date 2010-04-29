@@ -4,15 +4,11 @@
 xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
   <key id="d0" for="node" attr.name="color" attr.type="string">yellow</key>
   <key id="d1" for="edge" attr.name="weight" attr.type="double"/>
-  <key id="d2" for="node" attr.name="length" attr.type="double"/>
   <graph id="G" edgedefault="undirected">
     <node id="n0">
       <data key="d0">green</data>
     </node>
-    <node id="n1">
-      <data key="d0">brown</data>
-      <data key="d2">12.09</data>
-    </node>
+    <node id="n1"/>
     <node id="n2">
       <data key="d0">blue</data>
     </node>
