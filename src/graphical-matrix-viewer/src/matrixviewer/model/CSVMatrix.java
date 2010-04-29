@@ -293,6 +293,9 @@ public class CSVMatrix implements Matrix {
            if (current_row > 0){ assert( split_line.length == last_row_size  ); }
 
            row_names.add(split_line[0]);
+
+           //System.err.println( "Extracted," + split_line.length +  ", fields" );
+
            //System.err.println("Row label: " + split_line[0]);
            ArrayList<MatrixDatum> row_data = new ArrayList();
            //rows.add(row_data);

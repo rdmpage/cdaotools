@@ -68,7 +68,7 @@ public class MatrixViewer extends javax.swing.JFrame {
         this.matrix = matrix;
         //System.err.println("Set matrix");
         if (matrix != null){
-            matrix.write( System.err );
+            //matrix.write( System.err );
             this.setTitle( "Matrix Data - " + title);
             this.rowRangeTextField.setText("0-" + this.matrix.getrowcount());
             this.colRangeTextField.setText("0-" + this.matrix.getcolumncount() );
