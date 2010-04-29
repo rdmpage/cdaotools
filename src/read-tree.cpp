@@ -20,6 +20,9 @@ extern int yyparse();
 using namespace std;
 using namespace CDAO;
 Node* pTree = NULL;
+
+static const wstring TREE_PREFIX = L"/tree/";
+
 class TreeRepresentation : public DataRepresentation {
   public:
     TreeRepresentation( vector< wstring > taxa, map< wstring, Node* > trees);
@@ -188,7 +191,7 @@ const std::wstring TreeRepresentation::getTaxonLabel(unsigned int i) const{
    return taxa_.at( i );  
 }
 const std::wstring TreeRepresentation::getTreeLabel( unsigned int i ) const{ return tree_names_.at( i ); }
-const std::wstring TreeRepresentation::getMatrixLabel() const{ return matrix_label_; }
+const std::wstring TreeRepresentation::getMatrixLabel() const{ return TREE_PREFIX /*+ matrix_label_*/; }
 void TreeRepresentation::setMatrixLabel(const std::wstring& l){ matrix_label_ = l; }
 const wchar_t TreeRepresentation::getTraitState(unsigned int, unsigned int) const{ return '\0'; }
 const bool TreeRepresentation::isTrait(unsigned int) const{ return false; }
