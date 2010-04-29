@@ -10,7 +10,6 @@ import prefuse.Display;
 import prefuse.data.Table;
 import prefuse.data.event.EventConstants;
 import prefuse.data.event.TableListener;
-import prefuse.visual.EdgeItem;
 import prefuse.visual.VisualItem;
 
 
@@ -22,6 +21,7 @@ import prefuse.visual.VisualItem;
  *
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
+
 public class DragControl extends ControlAdapter implements TableListener {
 
     private VisualItem activeItem;
@@ -171,16 +171,6 @@ public class DragControl extends ControlAdapter implements TableListener {
         item.setX(x+dx);    item.setY(y+dy);
         item.setEndX(x+dx); item.setEndY(y+dy);
         
-        if(item instanceof EdgeItem)
-        {
-        	System.out.print("Dragged Edge:");
-            System.out.println("Fixed?"+item.isFixed()+"Visible?" + item.isVisible()+"Highlighted?" + item.isHighlighted() +"Hover?"+ item.isHover()+ "Render?"+item.getRenderer());
-        }
-        else
-        {
-        	System.out.print("Dragged Node:");
-            System.out.println("Fixed?"+item.isFixed()+"Visible?" + item.isVisible()+"Highlighted?" + item.isHighlighted() +"Hover?"+ item.isHover()+ "Render?"+item.getRenderer());
-        }
         if ( repaint )
             item.getVisualization().repaint();
         

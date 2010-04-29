@@ -75,6 +75,7 @@ import prefuse.util.collections.IntIterator;
  * 
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
+
 public class Graph extends CompositeTupleSet {
     
     /** Indicates incoming edges (inlinks) */
@@ -1269,8 +1270,6 @@ public class Graph extends CompositeTupleSet {
     {
         String table = (t==getNodeTable() ? NODES : EDGES);
         
-        //System.out.println("fireGraphEvent: String table = " + table);
-        
         if ( type != EventConstants.UPDATE ) {
             // fire event to all tuple set listeners
             fireTupleEvent(t, first, last, type);
@@ -1413,4 +1412,5 @@ public class Graph extends CompositeTupleSet {
         LINKS_SCHEMA.lockSchema();
     }
     
-} // end of class Graph
+
+} // end of class Graph    

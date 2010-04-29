@@ -10,7 +10,6 @@ import prefuse.data.expression.Predicate;
 import prefuse.data.tuple.TupleSet;
 import prefuse.util.StringLib;
 import prefuse.util.ui.UILib;
-import prefuse.visual.EdgeItem;
 import prefuse.visual.VisualItem;
 
 
@@ -30,6 +29,7 @@ import prefuse.visual.VisualItem;
  *
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
+
 public class FocusControl extends ControlAdapter {
 
     private String group = Visualization.FOCUS_ITEMS;
@@ -65,8 +65,6 @@ public class FocusControl extends ControlAdapter {
      */
     public FocusControl(int clicks) {
         ccount = clicks;
-        
-        System.out.println("group:"+ group + "|| filter:"+ filter);
     }
     
     /**
@@ -156,12 +154,6 @@ public class FocusControl extends ControlAdapter {
      */
     public void itemEntered(VisualItem item, MouseEvent e) {
         if ( !filterCheck(item) ) return;
-        
-       /* if(item instanceof EdgeItem)
-        {
-        	System.out.println("in FocusControl.itemEntered() EDGES DONE FINE");
-        }*/
-        
         Display d = (Display)e.getSource();
         d.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         if ( ccount == 0 ) {
