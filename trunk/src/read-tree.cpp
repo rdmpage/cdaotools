@@ -21,7 +21,7 @@ using namespace std;
 using namespace CDAO;
 Node* pTree = NULL;
 
-static const wstring TREE_PREFIX = L"/tree/";
+static const wstring TREE_PREFIX = L"/tree";
 
 class TreeRepresentation : public DataRepresentation {
   public:
