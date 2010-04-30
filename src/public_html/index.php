@@ -1,12 +1,12 @@
 <?php require_once 'header.php'  ?>
-<div id="content">
-<div id="header"><h2>
+<div id="content" class="content">
+<div class="header"><p>
 CDAO-store is a repository providing a rich set of API's for querying and visualizing phyloinformatics data.  The store is a triple-store which encodes data as RDF triples constructed according to the CDAO concept vocabulary.  CDAO-store provides three classes of services: a service for importing data in CDAO format, a PhyloWS interface supporting an advanced set of queries for other external applications, and a web-interface for interacting with data in the store.
-</h2></div><br/><br/>
+</p></div><br/><br/>
 
 
 
-<div id="rssbox">
+<div id="rssbox" class="rssbox">
 
   <!--
   // Created with a Google AJAX Search and Feed Wizard
@@ -17,7 +17,7 @@ CDAO-store is a repository providing a rich set of API's for querying and visual
   // The Following div element will end up holding the actual feed control.
   // You can place this anywhere on your page.
   -->
-  <div id="feed-control">
+  <div class="feed-control" id="feed-control" >
     <span style="color:#676767;font-size:11px;margin:10px;padding:4px;">Loading...</span>
   </div>
 
@@ -29,10 +29,6 @@ CDAO-store is a repository providing a rich set of API's for querying and visual
   <!-- Dynamic Feed Control and Stylesheet -->
   <script src="http://www.google.com/uds/solutions/dynamicfeed/gfdynamicfeedcontrol.js"
     type="text/javascript"></script>
-  <style type="text/css">
-    @import url("http://www.google.com/uds/solutions/dynamicfeed/gfdynamicfeedcontrol.css");
-  </style>
-
   <script type="text/javascript">
     function LoadDynamicFeedControl() {
       var feeds = [
