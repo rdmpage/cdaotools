@@ -15,7 +15,7 @@ a {
 }
 a:hover { color: #000; }
 
-#wrap 
+div.wrap 
 {
   margin: 20px auto;
   width: 500px;
@@ -29,11 +29,14 @@ a:hover { color: #000; }
   /*height : 90px;
   background-color : #000;*/
 }
-#header h1 { padding-left: 10px; padding-top: 12px; font-size: 25px; color: #660000; }
-#header h1 a { font-size: 25px; color: #FFF; text-decoration: none;}
-#header h2 { padding-left: 10px; padding-top: 0px; font-size: 19px; color: #FFE51E; }
 
-#menu {
+
+
+h1.header { padding-left: 10px; padding-top: 12px; font-size: 25px; color: #660000; }
+a.header { font-size: 25px; color: #FFF; text-decoration: none;}
+h2.header { padding-left: 10px; padding-top: 0px; font-size: 19px; color: #FFE51E; }
+
+div.menu {
   text-align: center;
   margin-top: 10px;
   font-size : 18px;
@@ -42,23 +45,24 @@ a:hover { color: #000; }
   background: #eee;
 }
 
-#menu a {
+a.menu {
   color : #3B85CA;
   text-decoration : none;
   padding: 10px;
 }
-#menu a:hover {
+a.menu:hover {
   color : #000;
 }
 
 
-#content { 
+div.content { 
   text-align: left;
   margin-top: 5px;
   padding: 10px;
   font-size: 14px;
 }
-#content h2 { font-size: 15px; color : #444; }
+
+h2.content { font-size: 15px; color : #444; }
 
 
 #rssbox {
