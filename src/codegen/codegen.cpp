@@ -219,7 +219,7 @@ namespace CDAO {
       const wstring dtype_tag = dataTypeTranslation[ dataTypeTranslationPosition[ model->getDataType() ] ];
       //write each wchar_tacter for each taxon.
       for (unsigned int trait = 0; trait < model->getNTraits(); ++trait){
-        out << L"\t<" << dtype_tag << L" " << Builtins::ID << L"=\"" <<  L"trait_" << trait << L"\">" << endl;
+        out << L"\t<" << dtype_tag << L" " << Builtins::RESOURCE << L"=\"" <<  L"trait_" << trait << L"\">" << endl;
         for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
 	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::HAS_DATUM << L" " << Builtins::RESOURCE << L"=\"#trait_" << trait << L"_taxon_" << taxon << L"\" />" << endl;  
         }
@@ -232,13 +232,13 @@ namespace CDAO {
   //write wchar_tacter state matrix annotation definion.
   void writeCharacterStateMatrixAnnotation(wostream& out, const DataRepresentation* model){
     if ( model && model->getNTraits() ){
-       out << L"\t<" << NSDefs::CDAO <<":" << Classes::CSDM_ANNOTATION << L" " << Builtins::ID << L"=\"" << XMLizeName( model->getMatrixLabel() ) + L"_annotation_id" << L"\" />" << endl; 
+       out << L"\t<" << NSDefs::CDAO <<":" << Classes::CSDM_ANNOTATION << L" " << Builtins::RESOURCE << L"=\"" << XMLizeName( model->getMatrixLabel() ) + L"_annotation_id" << L"\" />" << endl; 
     }
   }
   //write wchar_tacter state matrix definition.
   void writeCharacterStateMatrix(wostream& out, const DataRepresentation* model){
     if ( model && model->getNTraits() ){
-       out << L"\t<" << NSDefs::CDAO << L":" << Classes::CSDM << L" " << Builtins::ID << L"=\"" << XMLizeName( model->getMatrixLabel() ) << L"\">" << endl;
+       out << L"\t<" << NSDefs::CDAO << L":" << Classes::CSDM << L" " << Builtins::RESOURCE << L"=\"" << XMLizeName( model->getMatrixLabel() ) << L"\">" << endl;
        out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::HAS << L" " << Builtins::RESOURCE << L"=\"#" <<XMLizeName( model->getMatrixLabel()) + L"_annotation_id" << L"\" />" << endl;
       //include references for each taxon in the dataset.
       for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
@@ -268,7 +268,7 @@ namespace CDAO {
       //write state for each trait and taxon.
       for (unsigned int trait = 0; trait < model->getNTraits(); ++trait){
         for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
-	  out << L"\t<" <<dtype_tag  << L" L" << Builtins::ID << L"=\"" << L"trait_" << trait << L"_taxon_" << taxon << L"\">" << endl;
+	  out << L"\t<" <<dtype_tag  << L" L" << Builtins::RESOURCE << L"=\"" << L"trait_" << trait << L"_taxon_" << taxon << L"\">" << endl;
 	  //identify which TU this trait state belongs to.
 	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::BELONGS_TO_TU << L" " << Builtins::RESOURCE << L"=\"#" << /*XMLizeName( model->getTaxonLabel( taxon ))*/ L"taxon_" << taxon << L"\" />" << endl;
 	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::PART_OF << L" " << Builtins::RESOURCE << L"=\"#" << /*XMLizeName( model->getTaxonLabel( taxon ))*/ L"trait_" << trait << L"\" />" << endl;
@@ -285,8 +285,13 @@ namespace CDAO {
     wstring treeName; 
     if ( model ){
       for (unsigned i = 0; i < model->getNumTrees(); ++i ){
-      	  treeName = XMLizeName( model->getTreeLabel( i ) );
-          out << L"<" << NSDefs::CDAO << L":" << Classes::TREE << L" " << Builtins::ID << L"=\"" << treeName << L"\" />" << endl;
+      	  treeName =  Imports::BASE_URI_PREFIX + model->getMatrixLabel() + L"/" + model->getTreeLabel( i ) ;
+          
+          out << L"<" << Builtins::THING << L" " << Builtins::ABOUT <<  L"=\"" << treeName << L"\">\n";
+          out << L"\t<" << Builtins::TYPE << L" " << Builtins::RESOURCE << "=\"&" << NSDefs::CDAO  << ";Tree"  << "\"/>\n";
+          out << L"</" << Builtins::THING << ">" << endl;	    
+
+	  //out << L"<" << NSDefs::CDAO << L":" << Classes::TREE << L" " << Builtins::RESOURCE << L"=\"" << treeName << L"\" />" << endl;
 	  const Node* tree = model->getParseTree( i );
 	  if ( tree ){
              ProcessTUDelegate* del = new ProcessTUDelegate( out, model, writeTU, i);
@@ -305,7 +310,7 @@ namespace CDAO {
       for (unsigned int tree = 0; tree < model->getNumTrees(); ++tree){
         vector< const Node* > leaves = model->getParseTree( tree )->getLeaves( model->getParseTree( tree ) );
         for (vector< const Node* >::const_iterator i = leaves.begin(); i != leaves.end(); ++i){
-          out << L"\t<" << NSDefs::CDAO << L":" << Classes::LINEAGE << L" " << Builtins::ID << L"=\"Lineage_" << XMLizeName( model->getTreeLabel( tree ) ) << L"_" << XMLizeName( (*i)->getLabel() ) << L"\">" << endl;
+          out << L"\t<" << NSDefs::CDAO << L":" << Classes::LINEAGE << L" " << Builtins::RESOURCE << L"=\"Lineage_" << XMLizeName( model->getTreeLabel( tree ) ) << L"_" << XMLizeName( (*i)->getLabel() ) << L"\">" << endl;
           out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::SUBTREE_OF << L" " << Builtins::RESOURCE << L"=\"#" << XMLizeName( model->getTreeLabel( 0 ) ) << L"\" />" << endl;
           vector< const Node* > ancestors = (*i)->getAncestors();
           //add the current node to it's own lineage
@@ -378,7 +383,7 @@ namespace CDAO {
 
         //write TU definitions
         for (unsigned int taxon = 0; taxon < model->getNTax(); ++taxon){
-          out << L"\t<" << NSDefs::CDAO << L":" << Classes::TU << L" " << Builtins::ID << L"=\"" << L"taxon_" << taxon << L"\">" << endl;
+          out << L"\t<" << NSDefs::CDAO << L":" << Classes::TU << L" " << Builtins::RESOURCE << L"=\"" << L"taxon_" << taxon << L"\">" << endl;
           //reference the corresponding node.
           out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::REPRESENTED_BY_NODE << L" " << Builtins::RESOURCE << L"=\"#" << XMLizeName( model->getTaxonLabel( taxon )) << L"\" />" << endl;
           out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::BELONGS_TO_CSDM << L" " << Builtins::RESOURCE << L"=\"#" << XMLizeName( model->getMatrixLabel() ) << L"\" />" << endl;
@@ -403,7 +408,7 @@ namespace CDAO {
     if ( model ){
       if ( current ){
     
-        out << L"\t<" << NSDefs::CDAO << L":" << Classes::NODE_SET << L" " << Builtins::ID << L"=\"Subtree_" << XMLizeName( current->getLabel() ) << L"\">" << endl;
+        out << L"\t<" << NSDefs::CDAO << L":" << Classes::NODE_SET << L" " << Builtins::RESOURCE << L"=\"Subtree_" << XMLizeName( current->getLabel() ) << L"\">" << endl;
        vector< const Node* > elements = current->getAllDescendants();
        //elements.push_back( current );
        for (vector< const Node* >::const_iterator i = elements.begin(); i != elements.end(); ++i){
@@ -422,17 +427,15 @@ namespace CDAO {
       static const wstring NODE_TYPE[] = {Classes::NODE, /*Classes::MRCA_NODE*/ Classes::NODE}; 
       if (current->getLabel() != L""){
         //write the edge for this TU
-        const wstring& treeLabel = model->getTreeLabel( treeNum );    
-        writeEdge( out, model->getTreeLabel( treeNum ), current->getAncestor(), current );
+        const wstring treeLabel =  Imports::BASE_URI_PREFIX + model->getMatrixLabel() +L"/"  + model->getTreeLabel( treeNum );    
+        writeEdge( out, treeLabel, current->getAncestor(), current );
      //   if ( nodes_defined.find(current->getLabel()) == nodes_defined.end()  ){
              nodes_defined.insert( current->getLabel() );
-             out << L"\t\t<" << NSDefs::CDAO << L":" << NODE_TYPE[ current->hasChildren() ] << L" "
-                 << Builtins::ID << L"=\""<< XMLizeName( treeLabel ) << L"#" <<  XMLizeName( current->getLabel() ) << L"\"/>" << endl;
+
+	     out << L"\t\t<" << Builtins::THING << L" " << Builtins::ABOUT << "=\"" << treeLabel << L"#" <<  XMLizeName( current->getLabel() )  << "\">\n";
+             out << L"\t\t\t<" << Builtins::TYPE << L" " << Builtins::RESOURCE << L"=\"&"  << NSDefs::CDAO << L";" << Classes::NODE << "\" />\n";
       //  }
 
-        //write the node definition.
-        out << L"\t<" << NSDefs::CDAO << L":" <<  NODE_TYPE[ current->hasChildren() ]  << L" " 
-	    << Builtins::ABOUT << L"=\"" << XMLizeName( treeLabel  )  <<  "#" << XMLizeName( current->getLabel() )<< L"\">" << endl;
         if (model->getTaxonNumber( current->getLabel()) != NO_TAXON){
   	//connect the node to this corresponding TU.
   	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::REPRESENTS_TU << L" " 
@@ -441,9 +444,9 @@ namespace CDAO {
         //if the node has an ancestor connect the node to it.
         if (current->getAncestor()){
 	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::HAS_PARENT << L" " 
-	      << Builtins::RESOURCE << L"=\"" << XMLizeName(treeLabel) << "#" << XMLizeName( current->getAncestor()->getLabel() )  << L"\" />" << endl;
+	      << Builtins::RESOURCE << L"=\"" << treeLabel << "#" << XMLizeName( current->getAncestor()->getLabel() )  << L"\" />" << endl;
 	  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::BELONGS_TO_EDGE_CH << L" "
-	      << Builtins::RESOURCE << L"=\"" << XMLizeName( treeLabel )  <<  "#" << XMLizeName( current->getAncestor()->getLabel()  ) << L"_" << XMLizeName( current->getLabel() ) << L"\" />" << endl;
+	      << Builtins::RESOURCE << L"=\"" <<  treeLabel   <<  "#" << XMLizeName( current->getAncestor()->getLabel()  ) << L"_" << XMLizeName( current->getLabel() ) << L"\" />" << endl;
         } 
         //if the node has children connect it to them.
         if (current->hasChildren()){
@@ -456,9 +459,9 @@ namespace CDAO {
 	//  out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::PART_OF << L" " 
 	//      << Builtins::RESOURCE << L"=\"#Lineage_" << XMLizeName( current->getLabel() ) << L"\" />" << endl;
         }
-        out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::PART_OF << L" " << Builtins::RESOURCE << L"=\"#" << XMLizeName( treeLabel ) << L"\" />" << endl;
+        out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::PART_OF << L" " << Builtins::RESOURCE << L"=\"" << treeLabel  << L"\" />" << endl;
         //end node definition.
-        out << L"\t</" << NSDefs::CDAO << L":" << NODE_TYPE[ current->hasChildren() ] << L">" << endl;
+        out << L"\t</" << Builtins::THING << L">" << endl;
       }
     }
     return;
@@ -480,7 +483,7 @@ namespace CDAO {
         if ( nodes_defined.find(current->getLabel()) == nodes_defined.end()  ){
              nodes_defined.insert( current->getLabel() );
              out << L"\t\t<" << NSDefs::CDAO << L":" << NODE_TYPE[ current->hasChildren() ] << L" "
-                 << Builtins::ID << L"=\""<< XMLizeName( current->getLabel() ) << L"\"/>" << endl;
+                 << Builtins::RESOURCE << L"=\""<< XMLizeName( current->getLabel() ) << L"\"/>" << endl;
         }
 
         //write the node definition.
@@ -522,20 +525,22 @@ namespace CDAO {
     static set< wstring > edgesWritten = set< wstring >();
     
     if (parent && child ){
-      wstring edge_name = XMLizeName(treeName) + L"#" +  XMLizeName( parent->getLabel() ) + L"_" + XMLizeName( child->getLabel() );
+      wstring edge_name = treeName + L"#" +  XMLizeName( parent->getLabel() ) + L"_" + XMLizeName( child->getLabel() );
       
 
       if (find( edgesWritten.begin(), edgesWritten.end(), edge_name  ) == edgesWritten.end()){
         edgesWritten.insert( edge_name );
 	//open definition.
-	out << L"\t<" << NSDefs::CDAO << L":" << Classes::DIRECTED_EDGE << L" " 
-	    << Builtins::ID << L"=\"" << edge_name  << L"\">" << endl;
+
+	out << L"<" << Builtins::THING << L" " << Builtins::ABOUT << L"=\"" << edge_name << L"\">\n";
+	out << L"\t<" << Builtins::TYPE << L" " << Builtins::RESOURCE << L"=\"&" << NSDefs::CDAO << L";" << Classes::DIRECTED_EDGE << L"\" />\n"; 
 	//connect the parent to the child
 	out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::HAS_CHILD_NODE <<L" " << Builtins::RESOURCE << L"=\"" << treeName <<  L"#" << XMLizeName( child->getLabel()) << L"\" />" << endl;
 	//connect the child to the parent.
 	out << L"\t\t<" << NSDefs::CDAO << L":" << Properties::HAS_PAR_NODE << L" " << Builtins::RESOURCE << L"=\"" << treeName  <<  "#" << XMLizeName( parent->getLabel() ) << L"\" />" << endl;
-	//close definition
-	out << L"\t</" << NSDefs::CDAO << L":" << Classes::DIRECTED_EDGE << L">" << endl;
+
+	out << L"</" << Builtins::THING << ">\n";
+
       }
     }
     return;

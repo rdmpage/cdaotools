@@ -55,13 +55,15 @@ namespace CDAO {
      */
      namespace Builtins {
        
-       const std::wstring RDF       = NSDefs::RDF +  L":RDF";
-       const std::wstring ONT       = NSDefs::OWL +  L":Ontology";
-       const std::wstring RESOURCE  = NSDefs::RDF +  L":resource";
-       const std::wstring ABOUT     = NSDefs::RDF +  L":about";
-       const std::wstring ID        = NSDefs::RDF +  L":ID";
-       const std::wstring IMPORTS   = NSDefs::OWL +  L":imports";
-    
+       const std::wstring RDF         = NSDefs::RDF +  L":RDF";
+       const std::wstring ONT         = NSDefs::OWL +  L":Ontology";
+       const std::wstring RESOURCE    = NSDefs::RDF +  L":resource";
+       const std::wstring ABOUT       = NSDefs::RDF +  L":about";
+       const std::wstring ID          = NSDefs::RDF +  L":ID";
+       const std::wstring IMPORTS     = NSDefs::OWL +  L":imports";
+       const std::wstring DESCRIPTION = NSDefs::RDF +  L":Description";
+       const std::wstring TYPE        = NSDefs::RDF +  L":type";
+       const std::wstring THING       = NSDefs::OWL +  L":Thing";
     }
     
     /**
