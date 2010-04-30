@@ -48,6 +48,7 @@ import prefuse.controls.DragControl;
 import prefuse.controls.FocusControl;
 import prefuse.controls.NeighborHighlightControl;
 import prefuse.controls.PanControl;
+import prefuse.controls.ToolTipControl;
 import prefuse.controls.WheelZoomControl;
 import prefuse.controls.ZoomControl;
 import prefuse.controls.ZoomToFitControl;
@@ -141,7 +142,7 @@ public class CDAOview extends JPanel {
         draw.add(new ColorAction(edges, VisualItem.STROKECOLOR, ColorLib.gray(200)));
         
         ActionList animate = new ActionList(Activity.INFINITY);
-        animate.add(new ForceDirectedLayout(graph));
+        animate.add(new ForceDirectedLayout(graph,false, false));
         animate.add(fill);
         animate.add(new RepaintAction());
         
@@ -172,6 +173,7 @@ public class CDAOview extends JPanel {
         display.addControlListener(new ZoomControl());
         display.addControlListener(new WheelZoomControl());
         display.addControlListener(new ZoomToFitControl());
+        display.addControlListener(new ToolTipControl("IdLabel"));
         display.addControlListener(new NeighborHighlightControl());	
 
         // overview display
@@ -379,6 +381,7 @@ public class CDAOview extends JPanel {
          	  ActionList l = (ActionList) m_view.m_vis.getAction("layout");
         	  l.remove(new NodeLinkTreeLayout(graph));
         	  l.add(new ForceDirectedLayout(graph));
+        	  
         	  m_view.m_vis.putAction("layout", l);
         	  m_view.m_vis.run("draw");
         	
