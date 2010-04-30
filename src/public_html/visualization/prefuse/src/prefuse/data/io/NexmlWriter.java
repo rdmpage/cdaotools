@@ -73,8 +73,8 @@ public class NexmlWriter extends AbstractGraphWriter {
         // first, check the schemas to ensure GraphML compatibility
         Schema ns = graph.getNodeTable().getSchema();
         Schema es = graph.getEdgeTable().getSchema();
-        checkGraphMLSchema(ns);
-        checkGraphMLSchema(es);
+        checkNeXMLSchema(ns);
+        checkNeXMLSchema(es);
         
         XMLWriter xml = new XMLWriter(new PrintWriter(os));
         xml.begin(Tokens.NEXML_HEADER, 2);
@@ -187,18 +187,18 @@ OUTER:
     }
     
     /**
-     * Checks if all Schema types are compatible with the GraphML specification.
-     * The GraphML spec only allows the types <code>int</code>,
+     * Checks if all Schema types are compatible with the NeXML specification.
+     * The NeXML spec only allows the types <code>int</code>,
      * <code>long</code>, <code>float</code>, <code>double</code>,
      * <code>boolean</code>, and <code>string</code>.
      * @param s the Schema to check
      */
-    private void checkGraphMLSchema(Schema s) throws DataIOException {
+    private void checkNeXMLSchema(Schema s) throws DataIOException {
         for ( int i=0; i<s.getColumnCount(); ++i ) {
             Class type = s.getColumnType(i);
             if ( TYPES.get(type) == null ) {
                 throw new DataIOException("Data type unsupported by the "
-                    + "GraphML format: " + type.getName());
+                    + "NeXML format: " + type.getName());
             }
         }
     }
