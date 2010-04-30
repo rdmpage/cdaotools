@@ -45,9 +45,9 @@ public class AddAnnotationSource extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
+        symbolicNameLabel = new javax.swing.JLabel();
+        sourceURILabel = new javax.swing.JLabel();
         symbolicNameTextField = new javax.swing.JTextField();
         sourceURITextField = new javax.swing.JTextField();
         importButton = new javax.swing.JButton();
@@ -57,16 +57,16 @@ public class AddAnnotationSource extends javax.swing.JDialog {
         setName("Form"); // NOI18N
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(matrixviewer.MatrixViewerApp.class).getContext().getResourceMap(AddAnnotationSource.class);
-        jLabel1.setFont(resourceMap.getFont("jLabel1.font")); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
+        titleLabel.setFont(resourceMap.getFont("titleLabel.font")); // NOI18N
+        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titleLabel.setText(resourceMap.getString("titleLabel.text")); // NOI18N
+        titleLabel.setName("titleLabel"); // NOI18N
 
-        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
-        jLabel2.setName("jLabel2"); // NOI18N
+        symbolicNameLabel.setText(resourceMap.getString("symbolicNameLabel.text")); // NOI18N
+        symbolicNameLabel.setName("symbolicNameLabel"); // NOI18N
 
-        jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
-        jLabel3.setName("jLabel3"); // NOI18N
+        sourceURILabel.setText(resourceMap.getString("sourceURILabel.text")); // NOI18N
+        sourceURILabel.setName("sourceURILabel"); // NOI18N
 
         symbolicNameTextField.setText(resourceMap.getString("symbolicNameTextField.text")); // NOI18N
         symbolicNameTextField.setName("symbolicNameTextField"); // NOI18N
@@ -87,13 +87,13 @@ public class AddAnnotationSource extends javax.swing.JDialog {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                    .add(titleLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
-                        .add(jLabel3)
+                        .add(sourceURILabel)
                         .add(40, 40, 40)
                         .add(sourceURITextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
-                        .add(jLabel2)
+                        .add(symbolicNameLabel)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(symbolicNameTextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
@@ -106,14 +106,14 @@ public class AddAnnotationSource extends javax.swing.JDialog {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jLabel1)
+                .add(titleLabel)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel2)
+                    .add(symbolicNameLabel)
                     .add(symbolicNameTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel3)
+                    .add(sourceURILabel)
                     .add(sourceURITextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
@@ -145,11 +145,11 @@ public class AddAnnotationSource extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeButton;
     private javax.swing.JButton importButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel sourceURILabel;
     private javax.swing.JTextField sourceURITextField;
+    private javax.swing.JLabel symbolicNameLabel;
     private javax.swing.JTextField symbolicNameTextField;
+    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 
 }
