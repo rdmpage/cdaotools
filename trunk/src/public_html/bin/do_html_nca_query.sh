@@ -14,8 +14,8 @@ export XMLNS="$3"
 export TYPE="$4"
 export NODE_SET=`echo "$5" |  sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/g" | sed "s/%23/#/g" | sed "s/%20/ /g"`
 export NODE_PATH=$( echo $NODE_SET | sed 's/.*#//g' | perl -p -n -e 's/ /\//g' )
-export PHYLOWS_NCA="http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/nca"
-
+export PHYLOWS_NCA="http://www.cs.nmsu.edu/~$(whoami)/cgi-bin/phylows/nca"
+export PHYLOWS_TREE="http://www.cs.nmsu.edu/~$(whoami)/cgi-bin/phylows/tree"
 NCA_NODE=$( curl "$PHYLOWS_NCA/$TREE_NAME/$NODE_PATH" | grep "Node" | grep -oE "http://[-_.~/#a-zA-Z0-9]*" )
 
 cat << EOM
@@ -38,9 +38,13 @@ cat << EOM
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  </head>
  <body about="http://www.evolutionaryontology.org/cdao.owl#">
- <div class="main-content" style="scroll: auto;">
- <h1>Cdao Store Query System</h1>
- <p><a href="../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a></p>
+ <div class="wrap" id="wrap">
+ <div class="header">
+  <h1 class="header"><a href="../../cdao-store/index.php"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a>Cdao Store Query System
+</h1>
+
+ </div>
+ <div class="content" style="scroll: auto;">
 
    <div resource="$XMLNS$TREE_NAME">
       <div resource="$NCA_NODE">
@@ -49,8 +53,8 @@ cat << EOM
              <div resource="#node_set" style="position: relative; top: 0px; left: 30px;">
              $(
                for i in $NODE_SET; do 
-                  N=`echo $i | sed 's/.*#//g'` | sed 's/_/ /g'
-                  echo "<p rel=\"cdao:has_Element\" href=\"$i\"><a href=\"http://www.google.com/search?q=$(echo $N | sed 's/ /%22/g' )\">$N</a></p>"
+                  N=$(echo $i | sed 's/.*#//g' | sed 's/_/ /g')
+                  echo "<p rel=\"cdao:has_Element\" href=\"$PHYLOWS_TREE/$TREE_NAME#$i\"><a href=\"http://www.google.com/search?q=$(echo $N | sed 's/_/%22/g' )\">$N</a></p>"
                 done 
               )
          </div>
@@ -69,6 +73,7 @@ cat << EOM
         alt="Valid XHTML + RDFa" style="border: 0px;"  /></a>
   </p>
      
+   </div>
    </div>
   </body>
 </html>

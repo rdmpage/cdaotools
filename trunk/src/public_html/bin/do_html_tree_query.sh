@@ -62,9 +62,10 @@ echo "<!-- NODE_QUERY: $NODE_QUERY -->"
 echo "<!-- EDGE_QUERY: $EDGE_QUERY -->"
 #echo "<key id=\"name\" for=\"node\" attr.name=\"IdLabel\" attr.type=\"string\"/>"
 #echo "<key id=\"boostrap\" for=\"edge\" attr.name=\"weight\" attr.type=\"double\"/>"
-echo "<div class=\"main-content\" style=\"scroll: auto;\">"
-echo "<h1>Cdao Store Query System</h1>"
-echo "<p><a href="../../cdao-store/index.html"><img src=\"../../cdao-triplestore-logo.jpg\" alt=\"Cdao-Store Logo\" style=\"border: 0px;\" /></a></p>"
+echo "<div class=\"wrap\"><div class=\"header\">"
+echo "<h1 class=\"header\"><a class=\"header\" href="../../cdao-store/index.php"><img src=\"../../cdao-triplestore-logo.jpg\" alt=\"Cdao-Store Logo\" style=\"border: 0px;\" /></a>Cdao Store Query System</h1></div>"
+
+echo "<div id=\"content\" class=\"content\" style=\"scroll: auto;\">"
 echo "<table><form action=\"../node/html\" metod=\"get\">"
 echo "Nearest Common Ancestor: <input type=\"radio\" name=\"qtype\" checked=\"checked\" value=\"nca\" /> Minimum Spanning Clade <input type=\"radio\" name=\"qtype\" value=\"msc\"/>"
 echo "<input type="hidden" id=\"tree\" name=\"tree\" value=\"$TREE_NAME\">"
@@ -86,7 +87,7 @@ echo "<tr><td colspan=\"2\"><input class=\"button\"type=\"submit\" value=\"Submi
 echo "</form></table>"
 echo "<p>Results: $RESULT_SIZE</p>"
 
-echo "</div>"
+echo "</div></div>"
 
 cat << EOM
 </body>

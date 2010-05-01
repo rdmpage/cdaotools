@@ -37,9 +37,11 @@ cat << EOM
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  </head>
  <body about="http://www.evolutionaryontology.org/cdao.owl#">
- <div class="main-content" style="scroll: auto;">
- <h1>Cdao Store Query System</h1>
- <p><a href="../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a></p>
+ <div class="wrap" id="wrap">
+ <div class="header" id="header">
+   <h1 class="header"><a class="header" href="../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a>Cdao Store Query System</h1>
+ </div>
+ <div id="content" class="content" style="scroll: auto;">
 EOM
 
 MSC_NODES=$(curl "$PHYLOWS_MSC/$TREE_NAME/$NODE_PATH" | grep "has_Element" | grep  -oE "http://[-_.~#/a-zA-Z0-9]*")
@@ -79,6 +81,7 @@ cat << EOM
         alt="Valid XHTML + RDFa" style="border: 0px;"  /></a>
   </p>
      
+   </div>
    </div>
   </body>
 </html>
