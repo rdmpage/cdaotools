@@ -30,7 +30,17 @@ div.wrap
   background-color : #000;*/
 }
 
+ul li {
+   position: relative;
+   top: 0px;
+   left: 10px;
+}
 
+ul li ul li {
+   position: relative;
+   top: 0px;
+   left: 10px;
+}
 
 h1.header { padding-left: 10px; padding-top: 12px; font-size: 25px; color: #660000; }
 a.header { font-size: 25px; color: #FFF; text-decoration: none;}
