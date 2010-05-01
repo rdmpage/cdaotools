@@ -14,16 +14,17 @@
       <link rel="stylesheet" type="text/css" href="style.css"/>
       <link rel="alternate" title="Project News" href="http://sourceforge.net/export/rss2_keepsake.php?group_id=282379" type="application/rss+xml"/>
       <link rel="SHORTCUT ICON" href="cdao-store-favicon.ico" />
+      <link rel="stylesheet" type="text/css" href="http://www.google.com/uds/solutions/dynamicfeed/gfdynamicfeedcontrol.css"/>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  </head>
- <body resource="index.html">
-   <div id="wrap"><div id="header">
-    <p><h1 property="dc:title">
-    <a href="index.html"><img src="cdao-triplestore-logo.jpg" alt="Cdao store logo" style="border:0px;" /></a>CDAO Store</h1></p></div>
-    <div id="menu">
-      <a href="index.html">Home</a> | 
-      <a href="faq.html">FAQ</a> |
-      <a href="tree-chooser.jnlp">Browser</a> |
-      <a href="phylows.html">PhyloWS</a> |
-      <a href="http://cdaotools.sourceforge.net">Download</a>
+ <body resource="index.php">
+   <div class="wrap"><div class="header" id="header">
+    <h1 property="dc:title" class="header">
+    <a href="index.html" class="header" ><img src="cdao-triplestore-logo.jpg" alt="Cdao store logo" style="border:0px;" /></a>CDAO Store</h1></div>
+    <div class="menu" id="menu">
+      <a class="menu" href="index.php">Home</a> | 
+      <a class="menu" href="faq.php">FAQ</a> |
+      <a class="menu" href="about.php">About</a> |
+      <a class="menu" href="phylows.php">Services</a> |
+      <a class="menu" href="http://cdaotools.sourceforge.net">Download</a>
     </div>
