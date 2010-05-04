@@ -23,6 +23,14 @@ div.wrap
   background-color: #CCCC66;
 }
 
+div.result-set {
+     margin-top: 2px;
+     padding-top: 3px;
+     margin-right: 0px;
+     margin-left: 0px;
+     margin-bottom: 0px;
+     
+}
 
 #header 
 {

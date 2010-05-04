@@ -43,17 +43,18 @@ Content-type: text/html; charset: utf-8
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  </head>
  <body about="http://www.evolutionaryontology.org/cdao.owl">
-   <div class="main-content" style="scroll: auto;">
-     <h1>Cdao Store Query System</h1>
-     <p><a href="../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a></p>
-
-
+   <div class="wrap">
+     <div class="header">
+        <h1><a href="../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a>Cdao Store Query System</h1>
+     </div>
+   <div class="content" style="scroll: auto;">    
 EOM
 }
 
 #Print the html footer.
 function print_footer {
 cat << EOM
+     </div>
    </div>
 </body>
 </html>
@@ -74,6 +75,7 @@ function print_result {
    echo "<!-- AUTHOR_QUERY: $AUTHOR_QUERY -->"
    echo "<!-- TREE_QUERY: $TREE_QUERY -->"
    echo "<h2>Listing detail for study id: $STUDY</h2>"
+   echo "<div class=\"result-set\">"
    TMP_QUERY_FILE=`mktemp`".rql";
    #TMP_RESULTS_FILE=`mktemp`".xml";
    TMP_AUTHOR_QUERY_FILE=`mktemp`".rql";
@@ -91,6 +93,7 @@ function print_result {
    do
         echo "<a href=\"../tree/query?format=html&amp;tree=$result\">$result</a><br/>";
    done
+   echo "</div>"
    #echo "</pre>";
    rm -f "$TMP_AUTHOR_QUERY_FILE" "$TMP_QUERY_FILE" "$TMP_TREE_QUERY_FILE" "$TMP_RESULTS_FILE"
 }

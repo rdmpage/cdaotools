@@ -31,11 +31,12 @@ Content-type: text/html; charset: utf-8
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  </head>
  <body about="http://www.evolutionaryontology.org/cdao.owl">
-   <div class="main-content" style="scroll: auto;">
-     <h1>Cdao Store Query System</h1>
-     <p><a href="../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a></p>
-
-
+   <div class="wrap">
+      <div class="header">
+         <h1 class="header"><a href="../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a>Cdao Store Query System</h1>
+      </div>
+   <div class="content" style="scroll: auto;">
+     
 EOM
 }
 
@@ -51,6 +52,8 @@ EOM
 }
 
 function print_results {
+  echo "<h3>Trees Containing the Specified Taxonomic Unit</h3>"
+  echo "<div class=\"result-set\">"
   RESULTS=$(for i in $TU; do
                xsltproc --stringparam target "$i" "$XSL" "$DATA";
              done);
@@ -58,7 +61,8 @@ function print_results {
   RESULTS=$(echo $RESULTS | sort | uniq)
   RESULT_SIZE=$(echo $RESULTS | grep -oE "href" | wc -l )
   echo $RESULTS
-  echo "<p>Results: $RESULT_SIZE</p>"
+  echo "<p>Results: <span class=\"result-count\">$RESULT_SIZE</span></p>"
+  echo "</div>"
 }
 
 function print_footer {

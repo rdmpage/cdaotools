@@ -11,17 +11,18 @@
 #----->$4 directed/undirected 
 #Note do_query.py expects DBCONFIG_STRING QUERY_STRING FORMAT_STRING XML_BASE_URI
 #export TREE_DAT_FILE=~bchisham/tree_to_file.dat
+source ~/.bashrc
+
 export cdao="http://www.evolutionaryontology.org/cdao.owl"
 export CDAONS="$cdao#"
 export GRAPH_CONFIG="$TRIPLESTORE_CONFIG_STRING"
-export GRAPH_FILE="../../dump_utf8.txt.owl"
+export GRAPH_FILE="http://www.cs.nmsu.edu/~$(whoami)/dump_utf8.txt.owl"
 export ESCAPED_DUMP_URI="http:\/\/www.cs.nmsu.edu\/~bchisham\/dump_utf8.txt.owl#"
-export STUDY_URI="http://www.cs.nmsu.edu/~bchisham/cgi-bin/study/html?study="
+export STUDY_URI="http://www.cs.nmsu.edu/~$(whoami)/cgi-bin/study/html?study="
 #export TREE_NAME="$2"
 #export XMLNS="$3"
 #export TYPE="$4"
 
-source ~/.bashrc
 
 export FIRST_NAME=`echo $QUERY_STRING |grep -oE "(^|[?&])first=[^&]+" | sed "s/%20/ /g"  | cut -f 2 -d "="`
 
@@ -57,10 +58,14 @@ Content-type: text/html; charset: utf-8
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  </head>
  <body about="http://www.evolutionaryontology.org/cdao.owl">
-   <div class="main-content" style="scroll: auto;">
-     <h1>Cdao Store Query System</h1>
-     <p><a href="../../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a></p>
+   <div class="wrap">
+   <div class="header">
+      <h1 class="header">
+      <a href="../../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a>Cdao Store Query System </h1>
 
+   </div>
+   <div class="content" style="scroll: auto;">
+     
 
 EOM
 }
@@ -81,6 +86,7 @@ EOM
 function print_result {
    echo "<!-- AUTHOR_QUERY: $AUTHOR_QUERY -->"
    echo "<h2>Listing studies for: $FIRST_NAME $LAST_NAME</h2>"
+   echo "<div class=\"result-set\">"
    TMP_QUERY_FILE=`mktemp`".rql";
    echo "$AUTHOR_QUERY" > $TMP_QUERY_FILE;
    RESULT_SIZE=0;
@@ -91,7 +97,8 @@ function print_result {
         echo "<a href=\"../study/html?study=$result\">$result</a><br/>";
    done
    echo "</p>";
-   echo "<p>Results: $RESULT_SIZE</p>"
+   echo "</div>"
+   echo "<p>Results: <span=\"result-count\">$RESULT_SIZE</span></p>"
    rm -f $TMP_QUERY_FILE
 }
 
@@ -99,6 +106,7 @@ function print_result {
 function print_footer {
 cat << EOM
    </div>
+  </div>
 </body>
 </html>
 EOM
