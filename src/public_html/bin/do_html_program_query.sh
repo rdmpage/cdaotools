@@ -1,6 +1,6 @@
 #!/bin/bash
 # 
-# File:   do_html_study_query.sh
+# File:   do_html_program_query.sh
 # Author: bchisham
 #
 # Created on March 4, 2010, 12:50 PM
@@ -12,7 +12,7 @@ export GRAPH_FILE="../../dump_utf8.txt.owl"
 export ESCAPED_DUMP_URI="http:\/\/www.cs.nmsu.edu\/~bchisham\/dump_utf8.txt.owl#"
 #export STUDY_RESULT_TRANSFORM="../../cdao-store/study_result_to_html.xsl"
 #export STUDY_AUTHORS_TRANSFORM="../../cdao-store/study_authors_to_html.xsl"
-export TREE_URI="../tu/html?last="
+export TREE_URI="../tree/query?format=html&amp;tree="
 source ~/.bashrc
 
 #export ALGORITHM_QUERY=$( do_algorithm_list_query_construct.sh "$ALGORITHM" )
