@@ -1,0 +1,30 @@
+#Brandon Chisham
+#Deployment maagment for web binaries.
+#May 4, 2010
+
+PRODUCTION_USER=cdaostore
+#PRODUCTION_HOST=daedalus.cs.nmsu.edu
+PRODUCTION_BIN_DIR=~$(PRODUCTION_USER)/bin
+PRODUCTION_DAT_DIR=~$(PRODUCTION_USER)/bin
+
+deploy: .prolog_exe_driver.deployed .do_html_author_query.sh.deployed .do_html_algorithm_query.sh.deployed .do_html_nca_query.sh.deployed .do_html_msc_query.sh.deployed  .do_html_tree_query.sh.deployed .do_node_query.sh.deployed .do_html_program_query.sh.deployed .do_tree_query.sh.deployed .do_html_tu_query.sh.deployed .do_html_study_query.sh.deployed .do_study_list_authors.sh.deployed .do_study_detail_query_construct.sh.deployed .do_study_list_trees.sh.deployed .query_template_script.sh.deployed .do_prolog_msc_query.sh.deployed .do_prolog_tu_query.sh.deployed .do_author_work_list_query_construct.sh.deployed .do_query.py.deployed .sparql.py.deployed .import.py.deployed .store.py.deployed .index.py.deployed .html.py.deployed
+
+.prolog_exe_driver.deployed: prolog_exe_driver
+	cp prolog_exe_driver $(PRODUCTION_BIN_DIR)
+	#chmod 755 $(PRODUCTION_BIN_DIR)/prolog_exe_driver
+	touch $@
+
+.%.sh.deployed: %.sh
+	cp $< $(PRODUCTION_BIN_DIR)
+	#chmod 775 $(PRODUCTION_BIN_DIR)/$<
+	touch $@
+
+.%.py.deployed: %.py
+	cp $< $(PRODUCTION_BIN_DIR)
+	#chmod 775 $(PRODUCTION_BIN_DIR)/$<
+	touch $@ 
+.%.dat.deployed: %.dat
+	cp $< $(PRODUCTION_DAT_DIR)
+	chmod 644 $(PRODUCTION_DAT_DIR)/$<
+	touch $@
+
