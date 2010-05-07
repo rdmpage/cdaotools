@@ -78,7 +78,7 @@ public class CDAOview extends JPanel {
     private static final String graph = "graph";
     private static final String nodes = "graph.nodes";
     private static final String edges = "graph.edges";
-    private static final String BASE_URI = "http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/tree";
+    private static final String BASE_URI = "http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/tree";
     private static final String DEFAULT_GRAPH_URL= BASE_URI + "/" + "Tree3099?format=graphml";
     private Visualization m_vis;
     
@@ -302,7 +302,7 @@ public class CDAOview extends JPanel {
         menubar.add(dataMenu);
         
         // launch window
-        JFrame frame = new JFrame("C D A O v i e w | powered by prefuse");
+        JFrame frame = new JFrame("Tree Viewer | powered by prefuse");
         frame.setJMenuBar(menubar);
         frame.setContentPane(view);
         
