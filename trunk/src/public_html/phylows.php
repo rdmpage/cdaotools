@@ -261,7 +261,7 @@
                        		</form>
 			</li>
          </ul><br/><br/>
-	<h2><a href="tree-chooser.jnlp">Go to CDAO Explorer Application</a></h2>
+	<h2><a href="cdao-explorer/launch.jnlp">Go to CDAO Explorer Application</a></h2>
 	
 	</div><div id="footer">  <hr/>  
 	WARNING: This is still in alpha-testing.  There are known bugs that will crash the application.  If you are using this and a tree crashes or does not display properly, please email <a href="mailto:cdaotools@gmail.com">us</a>
