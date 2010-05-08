@@ -20,7 +20,7 @@
  <body resource="index.php">
    <div class="wrap"><div class="header" id="header">
     <h1 property="dc:title" class="header">
-    <a href="index.html" class="header" ><img src="cdao-triplestore-logo.jpg" alt="Cdao store logo" style="border:0px;" /></a>CDAO Store</h1></div>
+    <a href="index.php" class="header" ><img src="cdao-triplestore-logo.jpg" alt="Cdao store logo" style="border:0px;" /></a>CDAO Store</h1></div>
     <div class="menu" id="menu">
       <a class="menu" href="index.php">Home</a> | 
       <a class="menu" href="faq.php">FAQ</a> |
