@@ -10,7 +10,7 @@
 #----->$3 xml base.
 #----->$4 directed/undirected 
 #Note do_query.py expects DBCONFIG_STRING QUERY_STRING FORMAT_STRING XML_BASE_URI
-export TREE_DAT_FILE=~bchisham/tree_to_file.dat
+export TREE_DAT_FILE="~$(whoami)/tree_to_file.dat"
 export cdao="http://www.evolutionaryontology.org/cdao.owl"
 export CDAONS="$cdao#"
 export GRAPH_CONFIG="$1"
@@ -18,7 +18,7 @@ export TREE_NAME="$2"
 export XMLNS="$3"
 export TYPE="$4"
 
-PHYLOWS_TREE_URI="http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/tree"
+PHYLOWS_TREE_URI="http://www.cs.nmsu.edu/~$(whoami)/cgi-bin/phylows/tree"
 
 if [[ "$TFILE" == "" ]]; then
         export TFILE=$(grep "$TREE_NAME" "$TREE_DAT_FILE" | cut -d' ' --fields=1);
@@ -63,7 +63,7 @@ echo "<!-- EDGE_QUERY: $EDGE_QUERY -->"
 #echo "<key id=\"name\" for=\"node\" attr.name=\"IdLabel\" attr.type=\"string\"/>"
 #echo "<key id=\"boostrap\" for=\"edge\" attr.name=\"weight\" attr.type=\"double\"/>"
 echo "<div class=\"wrap\"><div class=\"header\">"
-echo "<h1 class=\"header\"><a class=\"header\" href="../../cdao-store/index.php"><img src=\"../../cdao-triplestore-logo.jpg\" alt=\"Cdao-Store Logo\" style=\"border: 0px;\" /></a>Cdao Store Query System</h1></div>"
+echo "<h1 class=\"header\"><a class=\"header\" href="../../index.php"><img src=\"../../cdao-triplestore-logo.jpg\" alt=\"Cdao-Store Logo\" style=\"border: 0px;\" /></a>Cdao Store Query System</h1></div>"
 
 echo "<div id=\"content\" class=\"content\" style=\"scroll: auto;\">"
 echo "<table><form action=\"../node/html\" metod=\"get\">"
@@ -73,7 +73,7 @@ echo "<input type=\"hidden\" id=\"file\" name=\"file\" value=\"$TFILE\"/>"
 echo "<input type=\"hidden\" id=\"type\" name=\"type\" value=\"$TREETYPE\"/>"
 #Query to get the nodes.
 #do_query.py "$GRAPH_CONFIG"  "$XMLNS" "$NODE_QUERY" "<tr><td>%s</td><td><input type=\"checkbox\" id=\"node\" name=\"node\" value=\"%s\"></td></td>" | sed 's/http:[-_~./a-zA-Z0-9]*#//g' | sort | uniq
-RESULTS=$( curl $PHYLOWS_TREE_URI/$TREE_NAME | grep '<cdao\:Node' | grep -oE 'rdf\:resource=\"http://.*#[-_a-zA-Z0-9]*\">' | sed 's/>//g' | sed 's/rdf:resource=//g' | sed 's/\"//g' | sort | uniq)
+RESULTS=$(curl $PHYLOWS_TREE_URI/$TREE_NAME | grep '<cdao\:Node' | grep -oE 'rdf\:resource=\"http://.*#[-_a-zA-Z0-9]*\">' | sed 's/>//g' | sed 's/rdf:resource=//g' | sed 's/\"//g' | sort | uniq)
 #echo " <pre> $RESULTS </pre> "
 
 for i in $(echo $RESULTS ); do 
