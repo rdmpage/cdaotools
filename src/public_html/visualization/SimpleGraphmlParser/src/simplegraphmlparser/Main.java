@@ -29,7 +29,7 @@ public class Main {
                 pt.parse(new URL("http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/tree/Tree3099?format=graphml"));
             }
             System.err.println("Parsing complete -- Printing...");
-            pt.printTree( System.err );
+            pt.printTree( System.out );
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
