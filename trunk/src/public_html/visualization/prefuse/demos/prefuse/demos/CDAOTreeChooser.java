@@ -1,9 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * CDAOTreeChooser.java
  *
  * Created on Apr 12, 2010, 6:09:26 PM
@@ -11,6 +6,9 @@
 
 package prefuse.demos;
 
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -20,11 +18,13 @@ import javax.swing.JFrame;
 public class CDAOTreeChooser extends javax.swing.JFrame {
     private TreeNameListModel model;
     AboutBox aboutBox;
+    FileDialog fileDialog;
     /** Creates new form CDAOTreeChooser */
     public CDAOTreeChooser() {
         model = new TreeNameListModel();
         model.updateModel();
         aboutBox = new AboutBox();
+        fileDialog = new FileDialog(this, true);
         initComponents();
         
     }
@@ -62,6 +62,15 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
         this.repaint();
     }
 
+    public void doOpenFile(){
+        
+            this.fileDialog.setVisible(true);
+            System.err.println("Displaying file: " + this.fileDialog.getSelectedFile().getAbsolutePath());
+            JFrame viewer = CDAOview.demo(this.fileDialog.getSelectedFile(), "IdLabel");
+            viewer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -80,6 +89,7 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mainMenu = new javax.swing.JMenu();
+        openFileMenuItem = new javax.swing.JMenuItem();
         Exit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         helpMenu = new javax.swing.JMenu();
@@ -127,6 +137,14 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
         jLabel1.setText("Tree ID:");
 
         mainMenu.setText("File");
+
+        openFileMenuItem.setText("Open File");
+        openFileMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openFileMenuItemActionPerformed(evt);
+            }
+        });
+        mainMenu.add(openFileMenuItem);
 
         Exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         Exit.setText("Exit");
@@ -228,6 +246,10 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
         this.aboutBox.setVisible( true );
     }//GEN-LAST:event_showAbout
 
+    private void openFileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileMenuItemActionPerformed
+        this.doOpenFile();
+    }//GEN-LAST:event_openFileMenuItemActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -249,6 +271,7 @@ public class CDAOTreeChooser extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenu mainMenu;
     private javax.swing.JButton nextBtn;
+    private javax.swing.JMenuItem openFileMenuItem;
     private javax.swing.JButton prevButton;
     private javax.swing.JTextField treeIDTxt;
     private javax.swing.JList treeList;
