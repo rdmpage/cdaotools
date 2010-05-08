@@ -31,14 +31,21 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author bchisham
  */
 public class PhyloTree extends DefaultHandler{
-    HashMap<String, ArrayList<String>> edges;
-    HashMap<String, String> redges;
-    Set< String > processedNodes;
+    private HashMap<String, ArrayList<String>> edges;
+    private HashMap<String, String > node_to_label;
+    private HashMap<String, String > label_to_node;
+    private HashMap<String, String> redges;
+    private Set< String > processedNodes;
+    private String graphID;
+    //private String currentNode;
     //int level;
     public PhyloTree(){
         this.edges = new HashMap();
         this.redges = new HashMap();
+        this.node_to_label = new HashMap();
+        //this.label_to_node = new HashMap();
         this.processedNodes = new TreeSet();
+        this.graphID = "defaultId";
         //this.level = 0;
     }
 
@@ -77,25 +84,72 @@ public class PhyloTree extends DefaultHandler{
 
     }
 
-    public void printTree( PrintStream ps ){
-        //PrintWriter ps = new PrintWriter(os);
-
-        Set<String> snodes = this.edges.keySet();
-        
-        Iterator<String> current = snodes.iterator();
-
-        //System.err.println("Printing, " + snodes.size() + ", edges");
-        String root="";
-        while ( current.hasNext() ){
-            String cnode = current.next();
-            if ( this.redges.get(cnode) == null ){
-                root = cnode;
-                break;
+    private void findNodeOrder(String current, ArrayList<String> currentSet ){
+        currentSet.add(current);
+        ArrayList< String > nextNodes  = null;
+        if ( (nextNodes  = this.edges.get(current)) != null){
+            Iterator< String > childit = nextNodes.iterator();
+            while (childit.hasNext()){
+                String child = childit.next();
+                findNodeOrder(child, currentSet);
+                //currentSet.add(child);
             }
         }
-        processSubtree( ps, root, 0 );
+        
+    }
+
+    public void printTree( PrintStream ps ){
+        
+        processSubtree( ps, findRoot(), 0 );
+        
+    }
+
+    public void printGraphML(PrintStream ps ){
+          ps.println( "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"\n" +
+                       " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
+                       " xmlns:cdao=\"http://www.evolutionaryontology.org/cdao.owl#\"\n" +
+                       " xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns\n" +
+                       " http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">" );
+           ps.println("  <key id=\"d0\" for=\"node\" attr.name=\"IdLabel\" attr.type=\"string\"/>" );
+           ps.println("  <key id=\"d1\" for=\"edge\" attr.name=\"color\" attr.type=\"string\">black</key>");
+
+           ps.println( "  <graph id=\""+ this.graphID +"\" edgedefault=\"directed\">");
+           ArrayList<String> nodesInOrder = new ArrayList();
+           findNodeOrder(findRoot(), nodesInOrder );
+           Iterator< String > cnode = nodesInOrder.iterator();
+           while (cnode.hasNext()){
+               String tn = cnode.next();
+               ps.println("  <node id=\"" + tn + "\">");
+               ps.println("   <data key=\"d0\">" + this.node_to_label.get(tn) + "</data>");
+               ps.println("  </node>");
+           }
+           cnode = nodesInOrder.iterator();
+           int edgeNo = 0;
+           while (cnode.hasNext()){
+               String src = cnode.next();
+               ArrayList<String> targets = this.edges.get(src);
+               if ( targets != null){
+                    Iterator<String> ctit = targets.iterator();
+                    while (ctit.hasNext()){
+                        String ct = ctit.next();
+                        ps.println("  <edge id=\"edge" + edgeNo++ +"\" source=\"" + src + "\" target=\"" + ct + "\"/>");
+                    }
+               }
+           }
 
 
+           ps.println("</graph></graphml>");
+    }
+
+    public String findRoot(){
+        Iterator<String> current = this.edges.keySet().iterator();
+        while (current.hasNext()){
+            String cnode = current.next();
+            if (this.redges.get( cnode ) == null){
+                return cnode;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -113,13 +167,21 @@ public class PhyloTree extends DefaultHandler{
             redges.put(dest, src);
         } else if ( qName.equals("node") ){
             //this.nodes.add( attributes.getValue( "id" ) );
+            String currentNode = attributes.getValue( "id" );
+            this.node_to_label.put( currentNode ,  currentNode.substring( currentNode.lastIndexOf('#') ) );
+
+        } else if (qName.equals("graph")){
+            this.graphID = attributes.getValue("id");
+        }
+        else if ( qName.equals( "data" ) ){
+            
         }
 
     }
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
-		//tempVal = new String(ch,start,length);
+		//tempVal = new String(ch,start,length);this.node_to_label.put( currentNode , new String(ch,start, length));
     }
 
     @Override
