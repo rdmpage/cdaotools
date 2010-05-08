@@ -26,7 +26,7 @@ public class Main {
             if (args.length > 0){
                 pt.parse( new URL(args[0]) );
             } else {
-                pt.parse(new URL("http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/tree/Tree3099?format=graphml"));
+                pt.parse( System.in );
             }
             System.err.println("Parsing complete -- Printing...");
             //pt.printTree( System.err );
