@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -291,6 +292,38 @@ public class CDAOview extends JPanel {
         return demo(g, label);
     }
     
+    public static JFrame demo( URL datafile, String label  ){
+        Graph g = null;
+        if ( datafile == null ) {
+            g = GraphLib.getGrid(15,15);
+            label = "label";
+        } else {
+            try {
+                g = new GraphMLReader().readGraph(  datafile );
+            } catch ( Exception e ) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+        return demo(g, label);
+    }
+
+    public static JFrame demo( File datafile, String label ){
+        Graph g = null;
+        if ( datafile == null ) {
+            g = GraphLib.getGrid(15,15);
+            label = "label";
+        } else {
+            try {
+                g = new GraphMLReader().readGraph(  datafile );
+            } catch ( Exception e ) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+        return demo(g, label);
+    }
+
     public static JFrame demo(Graph g, String label) {
         final CDAOview view = new CDAOview(g, label);
         
