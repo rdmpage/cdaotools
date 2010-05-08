@@ -3,9 +3,9 @@
 #Feb. 19, 2010
 #Script to show nca query results in html format.
 
-export CDAO_STORE_URI="http://www.cs.nmsu.edu/~bchisham/cdao-store/"
-export TREE_DAT_FILE=~bchisham/bin/tree_to_file.dat
-export ANCESTOR_OF_FILE=~bchisham/public_html/cgi-bin/nca/ancestor_of.pl
+export CDAO_STORE_URI="http://www.cs.nmsu.edu/~$(whoami)/"
+export TREE_DAT_FILE="~$(whoami)/bin/tree_to_file.dat"
+export ANCESTOR_OF_FILE="~$(whoami)/public_html/cgi-bin/nca/ancestor_of.pl"
 export cdao="http://www.evolutionaryontology.org/cdao.owl"
 export CDAONS="$cdao#"
 export GRAPH_CONFIG="$1"
@@ -16,7 +16,7 @@ export NODE_SET=`echo "$5" |  sed "s/%3A/:/g" | sed "s/%2F/\//g" | sed "s/%7E/~/
 export NODE_PATH=$( echo $NODE_SET | sed 's/.*#//g' | perl -p -n -e 's/ /\//g' )
 export PHYLOWS_NCA="http://www.cs.nmsu.edu/~$(whoami)/cgi-bin/phylows/nca"
 export PHYLOWS_TREE="http://www.cs.nmsu.edu/~$(whoami)/cgi-bin/phylows/tree"
-NCA_NODE=$( curl "$PHYLOWS_NCA/$TREE_NAME/$NODE_PATH" | grep "Node" | grep -oE "http://[-_.~/#a-zA-Z0-9]*" )
+NCA_NODE=$(curl "$PHYLOWS_NCA/$TREE_NAME/$NODE_PATH" | grep "Node" | grep -oE "http://[-_.~/#a-zA-Z0-9]*" )
 
 cat << EOM
 <?xml version="1.0" encoding="UTF-8"?>
@@ -40,7 +40,7 @@ cat << EOM
  <body about="http://www.evolutionaryontology.org/cdao.owl#">
  <div class="wrap" id="wrap">
  <div class="header">
-  <h1 class="header"><a href="../../cdao-store/index.php"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a>Cdao Store Query System
+  <h1 class="header"><a href="../../index.php"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a>Cdao Store Query System
 </h1>
 
  </div>

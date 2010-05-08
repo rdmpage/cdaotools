@@ -5,7 +5,7 @@
 REMOTE_HOST=daedalus.cs.nmsu.edu
 REMOTE_BIN_DIR=~/bin
 
-deploy: Makefile.remote.deployed prolog_exe_driver.c.deployed do_html_author_query.sh.deployed do_html_algorithm_query.sh.deployed do_html_nca_query.sh.deployed do_html_msc_query.sh.deployed  do_html_tree_query.sh.deployed do_node_query.sh.deployed do_html_program_query.sh.deployed do_tree_query.sh.deployed do_html_tu_query.sh.deployed do_html_study_query.sh.deployed do_study_list_authors.sh.deployed do_study_detail_query_construct.sh.deployed do_study_list_trees.sh.deployed query_template_script.sh.deployed do_prolog_msc_query.sh.deployed do_prolog_tu_query.sh.deployed do_author_work_list_query_construct.sh.deployed do_query.py.deployed sparql.py.deployed import.py.deployed store.py.deployed index.py.deployed html.py.deployed
+deploy: Makefile.remote.deployed do_phylows_tree.sh.deployed do_phylows_unordered_tree.sh.deployed order_graphml.sh.deployed prolog_exe_driver.c.deployed do_html_author_query.sh.deployed do_html_algorithm_query.sh.deployed do_html_nca_query.sh.deployed do_html_msc_query.sh.deployed  do_html_tree_query.sh.deployed do_node_query.sh.deployed do_html_program_query.sh.deployed do_tree_query.sh.deployed do_html_tu_query.sh.deployed do_html_study_query.sh.deployed do_study_list_authors.sh.deployed do_study_detail_query_construct.sh.deployed do_study_list_trees.sh.deployed query_template_script.sh.deployed do_prolog_msc_query.sh.deployed do_prolog_tu_query.sh.deployed do_author_work_list_query_construct.sh.deployed do_query.py.deployed sparql.py.deployed import.py.deployed store.py.deployed index.py.deployed html.py.deployed
 
 production-deploy: deploy
 	(make deploy)
