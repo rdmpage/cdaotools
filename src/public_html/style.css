@@ -3,9 +3,13 @@
   margin: 0;
 } 
 
-body { 
-  font: .8em "Trebuchet MS", Verdana, Arial, Sans-Serif;  
+body {
+  font-style: normal;
+  font-family: Palatino, Times, Verdana, serif;
+  font-size: 1em; 
+  /*font: .8em "Trebuchet MS", Verdana, Arial, Sans-Serif; */ 
   background-color: #660000;
+
 }
 
 
@@ -17,10 +21,33 @@ a:hover { color: #000; }
 
 div.wrap 
 {
-  margin: 20px auto;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -khtml-border-radius: 20px;
+  border-radius: 20px;
+  /*margin: 20px auto;*/
   width: 500px;
   padding: 10px;
   background-color: #CCCC66;
+  z-index: 1;
+}
+
+div.wrap-shadow {
+  position: relative;
+  top:0px;
+  left: 300px;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -khtml-border-radius: 20px;
+  border-radius: 20px;
+  margin: 20px; auto;
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-bottom: 5px;
+  padding-right: 2px;
+  width: 520px;
+  background-color: black;
+  z-index: 0;
 }
 
 div.result-set {
@@ -38,6 +65,10 @@ div.result-set {
   background-color : #000;*/
 }
 
+p { padding-top: 2px;  }
+
+li { padding-top: 2px; }
+
 ul li {
    position: relative;
    top: 0px;
@@ -50,8 +81,18 @@ ul li ul li {
    left: 10px;
 }
 
-h1.header { padding-left: 10px; padding-top: 12px; font-size: 25px; color: #660000; }
-a.header { font-size: 25px; color: #FFF; text-decoration: none;}
+h1.header { 
+        /*text-align: center;*/
+  	text-shadow: gray 3px 3px 3px;
+	padding-left: 10px; 
+	padding-top: 12px; 
+	font-size: 3em; 
+	font-family: Arial, Helvetica, sans-serif;
+	font-style: italic; 
+	font-weight: bold;
+	 
+	color: #660000; }
+a.header {  color: #FFF; text-decoration: none;}
 h2.header { padding-left: 10px; padding-top: 0px; font-size: 19px; color: #FFE51E; }
 
 div.menu {
@@ -80,10 +121,23 @@ div.content {
   font-size: 14px;
 }
 
+tr:hover {
+  font-weight: bold;
+}
+
+tr.even {
+  background-color: #eee;
+}
+
+tr.odd {
+
+}
+
 h2.content { font-size: 15px; color : #444; }
 
 
 #rssbox {
+  
   background-color: #ddd;
 }
 
