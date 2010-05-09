@@ -37,9 +37,10 @@ cat << EOM
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  </head>
  <body about="http://www.evolutionaryontology.org/cdao.owl#">
+ <div class="wrap-shadow">
  <div class="wrap" id="wrap">
  <div class="header" id="header">
-   <h1 class="header"><a class="header" href="../../index.php"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a>Cdao Store Query System</h1>
+   <h1 class="header"><a class="header" href="../../index.php"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a>Cdao Store</h1>
  </div>
  <div id="content" class="content" style="scroll: auto;">
 EOM
@@ -81,6 +82,7 @@ cat << EOM
         alt="Valid XHTML + RDFa" style="border: 0px;"  /></a>
   </p>
      
+   </div>
    </div>
    </div>
   </body>

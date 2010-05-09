@@ -18,6 +18,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  </head>
  <body resource="index.php">
+   <div class="wrap-shadow">
    <div class="wrap"><div class="header" id="header">
     <h1 property="dc:title" class="header">
     <a href="index.php" class="header" ><img src="cdao-triplestore-logo.jpg" alt="Cdao store logo" style="border:0px;" /></a>CDAO Store</h1></div>

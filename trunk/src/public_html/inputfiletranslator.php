@@ -22,7 +22,7 @@
 			unlink("upload/".$inputfile);
 			$outputfile=substr($inputfile,0,-3)."owl";
 			//echo $outputfile."<br/>";
-			echo "<a href=\"http://www.cs.nmsu.edu/~bchisham/cgi-bin/import?ontology=http://www.cs.nmsu.edu/~tle/CDAO/upload/".$outputfile."\">Import to the triple-store</a><br/>";
+			echo "<a href=\"http://www.cs.nmsu.edu/~cdaostore/cgi-bin/import?ontology=http://www.cs.nmsu.edu/~tle/CDAO/upload/".$outputfile."\">Import to the triple-store</a><br/>";
 			echo "<a href=\"http://www.cs.nmsu.edu/~tle/CDAO/upload/$outputfile\">Download Translated File</a>";
 			//echo "<br>".$_FILES['inputfile']['tmp_name'];
 			break;
@@ -32,7 +32,7 @@
 			move_uploaded_file($_FILES["inputfile"]["tmp_name"],"upload/" . $inputfile);
 			$command="cgi-bin/parser.out upload/". $inputfile;
 			$outputfile=$inputfile."_CDAO.owl";
-			echo "<a href=\"http://www.cs.nmsu.edu/~bchisham/cgi-bin/import?ontology=http://www.cs.nmsu.edu/~tle/CDAO/upload/".$outputfile."\">Import to the triple-store</a><br/>";
+			echo "<a href=\"http://www.cs.nmsu.edu/~cdaostore/cgi-bin/import?ontology=http://www.cs.nmsu.edu/~tle/CDAO/upload/".$outputfile."\">Import to the triple-store</a><br/>";
 			echo "<a href=\"http://www.cs.nmsu.edu/~tle/CDAO/upload/$outputfile\">Download Translated File</a>";
 			exec($command);
 			unlink("upload/" . $inputfile);

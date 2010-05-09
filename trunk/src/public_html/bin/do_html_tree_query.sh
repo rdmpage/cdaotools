@@ -62,8 +62,8 @@ echo "<!-- NODE_QUERY: $NODE_QUERY -->"
 echo "<!-- EDGE_QUERY: $EDGE_QUERY -->"
 #echo "<key id=\"name\" for=\"node\" attr.name=\"IdLabel\" attr.type=\"string\"/>"
 #echo "<key id=\"boostrap\" for=\"edge\" attr.name=\"weight\" attr.type=\"double\"/>"
-echo "<div class=\"wrap\"><div class=\"header\">"
-echo "<h1 class=\"header\"><a class=\"header\" href="../../index.php"><img src=\"../../cdao-triplestore-logo.jpg\" alt=\"Cdao-Store Logo\" style=\"border: 0px;\" /></a>Cdao Store Query System</h1></div>"
+echo "<div class=\"wrap-shadow\"><div class=\"wrap\"><div class=\"header\">"
+echo "<h1 class=\"header\"><a class=\"header\" href="../../index.php"><img src=\"../../cdao-triplestore-logo.jpg\" alt=\"Cdao-Store Logo\" style=\"border: 0px;\" /></a>Cdao Store</h1></div>"
 
 echo "<div id=\"content\" class=\"content\" style=\"scroll: auto;\">"
 echo "<table><form action=\"../node/html\" metod=\"get\">"
@@ -75,19 +75,25 @@ echo "<input type=\"hidden\" id=\"type\" name=\"type\" value=\"$TREETYPE\"/>"
 #do_query.py "$GRAPH_CONFIG"  "$XMLNS" "$NODE_QUERY" "<tr><td>%s</td><td><input type=\"checkbox\" id=\"node\" name=\"node\" value=\"%s\"></td></td>" | sed 's/http:[-_~./a-zA-Z0-9]*#//g' | sort | uniq
 RESULTS=$(curl $PHYLOWS_TREE_URI/$TREE_NAME | grep '<cdao\:Node' | grep -oE 'rdf\:resource=\"http://.*#[-_a-zA-Z0-9]*\">' | sed 's/>//g' | sed 's/rdf:resource=//g' | sed 's/\"//g' | sort | uniq)
 #echo " <pre> $RESULTS </pre> "
+ROW_STYLES[0]="even";
+ROW_STYLES[1]="odd";
 
+COUNT=0;
 for i in $(echo $RESULTS ); do 
    nodeid=$(echo $i | sed 's/http:[-_~./a-zA-Z0-9]*#//g' )
+   COUNT=$(( $COUNT + 1 ));
+   STYLE=${ROW_STYLES[ $(( $COUNT % 2 )) ]}
    cat << EOM
-      <tr><td>$nodeid</td><td><input type="checkbox" id="node" name="node" value="$nodeid"/></td>
+      <tr class="$STYLE"><td>$nodeid</td><td><input type="checkbox" id="node" name="node" value="$nodeid"/></td>
 EOM
 done
-RESULT_SIZE=$(echo $RESULTS | grep -oE "http" | wc -l)
+RESULT_SIZE=$COUNT
+#$(echo $RESULTS | grep -oE "http" | wc -l)
 echo "<tr><td colspan=\"2\"><input class=\"button\"type=\"submit\" value=\"Submit\"/><input class=\"button\" type=\"reset\" value=\"Reset\"/><td></tr>"
 echo "</form></table>"
 echo "<p>Results: $RESULT_SIZE</p>"
 
-echo "</div></div>"
+echo "</div></div></div>"
 
 cat << EOM
 </body>
