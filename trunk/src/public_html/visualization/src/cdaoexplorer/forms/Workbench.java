@@ -7,6 +7,7 @@
 
 package cdaoexplorer.forms;
 
+import cdaoexplorer.forms.dialogs.ErrorReportDialog;
 import cdaoexplorer.forms.dialogs.FileDialog;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -16,6 +17,7 @@ import javax.swing.JFrame;
 import matrixviewer.CDAOMatrixChooser;
 import org.jdesktop.application.Action;
 import prefuse.demos.CDAOTreeChooser;
+
 
 
 /**
@@ -28,6 +30,7 @@ public class Workbench extends javax.swing.JFrame {
     CDAOTreeChooser treeChooser;
     CDAOMatrixChooser matrixChooser;
     FileDialog fileChooser;
+    ErrorReportDialog errorDialog;
     /** Creates new form Workbench */
     public Workbench() {
         initComponents();
@@ -38,6 +41,8 @@ public class Workbench extends javax.swing.JFrame {
         matrixChooser = new CDAOMatrixChooser();
         matrixChooser.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
         fileChooser = new FileDialog( this, true );
+        this.errorDialog = new ErrorReportDialog( this, false );
+        this.errorDialog.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
     }
     @Action
     public void doOpenTree(){
@@ -47,6 +52,9 @@ public class Workbench extends javax.swing.JFrame {
             try {
                 this.treeChooser.doOpenFile(tree.toURL());
             } catch (MalformedURLException ex) {
+                errorDialog.setRequestURI( tree.toString() );
+                errorDialog.setExtraInfo(ex);
+                errorDialog.setVisible( true );
                 Logger.getLogger(Workbench.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -60,6 +68,9 @@ public class Workbench extends javax.swing.JFrame {
             try {
                 this.matrixChooser.doOpenFile(matrixFile.toURL());
             } catch (MalformedURLException ex) {
+                errorDialog.setRequestURI( matrixFile.toString() );
+                errorDialog.setExtraInfo(ex);
+                errorDialog.setVisible( true );
                 Logger.getLogger(Workbench.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -241,7 +252,7 @@ public class Workbench extends javax.swing.JFrame {
     }//GEN-LAST:event_openTreeMenuItemActionPerformed
 
     private void reportErrorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportErrorMenuItemActionPerformed
-        // TODO add your handling code here:
+        this.errorDialog.setVisible( true );
     }//GEN-LAST:event_reportErrorMenuItemActionPerformed
 
     /**
