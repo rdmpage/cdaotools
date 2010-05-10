@@ -7,6 +7,7 @@
 package prefuse.demos;
 
 import cdaoexplorer.forms.dialogs.CDAODataSetChooser;
+import cdaoexplorer.forms.dialogs.ErrorReportDialog;
 import cdaoexplorer.forms.dialogs.FileDialog;
 import cdaoexplorer.guimodels.TreeNameListModel;
 import java.io.File;
@@ -22,8 +23,9 @@ import javax.swing.JFrame;
  */
 public class CDAOTreeChooser extends CDAODataSetChooser {
     private TreeNameListModel model;
-    AboutBox aboutBox;
-    FileDialog fileDialog;
+    private AboutBox aboutBox;
+    private FileDialog fileDialog;
+    private ErrorReportDialog errorDialog;
     /** Creates new form CDAOTreeChooser */
     public CDAOTreeChooser() {
         //super();
@@ -36,6 +38,7 @@ public class CDAOTreeChooser extends CDAODataSetChooser {
 
         aboutBox = new AboutBox();
         fileDialog = new FileDialog(this, true);
+        errorDialog = new ErrorReportDialog( this, false );
         initComponents();
         this.setTitle("CDAO Tree Chooser");
         this.setKeyLabel("Tree ID:");

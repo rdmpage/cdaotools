@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /*
  * ErrorReportDialog.java
@@ -19,7 +15,6 @@ import java.util.logging.Logger;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -45,10 +40,18 @@ public class ErrorReportDialog extends javax.swing.JDialog {
     public ErrorReportDialog() {
         initComponents();
     }
-
+    /**
+     * Set the URL/file causing the crash
+     * @param url
+     */
     public void setRequestURI(URL url){
         this.requestURITextField.setText(url.toString());
     }
+    /**
+     * Get the string representation of the URL/path that caused
+     * the application to enter the error state.
+     * @return
+     */
     public String getRequestURI(){
         return this.requestURITextField.getText();
     }
@@ -56,28 +59,44 @@ public class ErrorReportDialog extends javax.swing.JDialog {
     public void setRequestURI( String url){
         this.requestURITextField.setText(url);
     }
-
+    /**
+     * Get the user supplied email address.
+     * @return
+     */
     public String getUserEmail(){
         return this.submitterEmailTextField.getText();
     }
-
-    public void setExtraInfo(Exception ex){
+    /**
+     * Set the exception info
+     * @param ex
+     */
+    public void setExceptionInfo(Exception ex){
         this.extraInfoTextArea.setText( ex.getLocalizedMessage() );
     }
-
-
-    public String getExtraInfo(){
+    /**
+     * Get the exception information.
+     * @return
+     */
+    public String getExceptionInfo(){
         return this.extraInfoTextArea.getText();
     }
-
+    /**
+     * Set the additional notes about the crash
+     * @param notes
+     */
     public void setAdditionalNotes(String notes){
         this.additionalNotesTextArea.setText(notes);
     }
-
+    /**
+     * Get the additional notes about the crash
+     * @return
+     */
     public String getAdditionalNotes(){
         return this.additionalNotesTextArea.getText();
     }
-
+    /**
+     * Handle sending the message.
+     */
     @Action
     public void handleMsgSend(){
         try {
@@ -109,7 +128,7 @@ public class ErrorReportDialog extends javax.swing.JDialog {
             msg.setText(
                 "The application encountered an error displaying the URL/File: " +
                 this.getRequestURI() + "\n" +
-                "The application reported the exception: " + this.getExtraInfo() + "\n" +
+                "The application reported the exception: " + this.getExceptionInfo() + "\n" +
                 "The user supplied the following additional information\n" + this.getAdditionalNotes()
              );
             //msg.setContent(body);
@@ -125,7 +144,7 @@ public class ErrorReportDialog extends javax.swing.JDialog {
         } catch (MessagingException ex) {
             Logger.getLogger(ErrorReportDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.setVisible(false);
+        //this.setVisible(false);
         
     }
 
@@ -149,8 +168,8 @@ public class ErrorReportDialog extends javax.swing.JDialog {
         additionalNotesLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         additionalNotesTextArea = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        sendButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
         submitterEmailLabel = new javax.swing.JLabel();
         submitterEmailTextField = new javax.swing.JTextField();
 
@@ -166,29 +185,34 @@ public class ErrorReportDialog extends javax.swing.JDialog {
 
         requestURILabel.setText("Request URI:");
 
-        extraInfoLabel.setText("Extra Info");
+        extraInfoLabel.setText("Exception Information");
 
         extraInfoTextArea.setColumns(20);
+        extraInfoTextArea.setEditable(false);
+        extraInfoTextArea.setLineWrap(true);
         extraInfoTextArea.setRows(5);
+        extraInfoTextArea.setWrapStyleWord(true);
         jScrollPane1.setViewportView(extraInfoTextArea);
 
         additionalNotesLabel.setText("Additional Notes");
 
         additionalNotesTextArea.setColumns(20);
+        additionalNotesTextArea.setLineWrap(true);
         additionalNotesTextArea.setRows(5);
+        additionalNotesTextArea.setWrapStyleWord(true);
         jScrollPane2.setViewportView(additionalNotesTextArea);
 
-        jButton1.setText("Send");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        sendButton.setText("Send");
+        sendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                sendButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Cancel");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                cancelButtonActionPerformed(evt);
             }
         });
 
@@ -217,7 +241,7 @@ public class ErrorReportDialog extends javax.swing.JDialog {
                         .add(40, 40, 40))
                     .add(layout.createSequentialGroup()
                         .add(extraInfoLabel)
-                        .addContainerGap(488, Short.MAX_VALUE))
+                        .addContainerGap(409, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                             .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
@@ -226,9 +250,9 @@ public class ErrorReportDialog extends javax.swing.JDialog {
                                 .add(submitterEmailTextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE))
                             .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
                             .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
-                                .add(jButton1)
+                                .add(sendButton)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                .add(jButton2))
+                                .add(cancelButton))
                             .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
                                 .add(requestURILabel)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -262,21 +286,22 @@ public class ErrorReportDialog extends javax.swing.JDialog {
                 .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jButton1)
-                    .add(jButton2))
+                    .add(sendButton)
+                    .add(cancelButton))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.setVisible( false );
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
        this.handleMsgSend();
-    }//GEN-LAST:event_jButton1ActionPerformed
+       this.setVisible( false );
+    }//GEN-LAST:event_sendButtonActionPerformed
 
     /**
     * @param args the command line arguments
@@ -298,10 +323,9 @@ public class ErrorReportDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel additionalNotesLabel;
     private javax.swing.JTextArea additionalNotesTextArea;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JLabel extraInfoLabel;
     private javax.swing.JTextArea extraInfoTextArea;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -309,6 +333,7 @@ public class ErrorReportDialog extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel requestURILabel;
     private javax.swing.JTextField requestURITextField;
+    private javax.swing.JButton sendButton;
     private javax.swing.JLabel submitterEmailLabel;
     private javax.swing.JTextField submitterEmailTextField;
     // End of variables declaration//GEN-END:variables

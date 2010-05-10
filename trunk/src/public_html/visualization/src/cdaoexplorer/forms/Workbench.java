@@ -11,6 +11,7 @@ import cdaoexplorer.forms.dialogs.ErrorReportDialog;
 import cdaoexplorer.forms.dialogs.FileDialog;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -43,7 +44,29 @@ public class Workbench extends javax.swing.JFrame {
         fileChooser = new FileDialog( this, true );
         this.errorDialog = new ErrorReportDialog( this, false );
         this.errorDialog.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+
     }
+
+    public Workbench(String[] args){
+        initComponents();
+        this.treeVisible = false;
+        this.matrixVisible = false;
+        treeChooser = new CDAOTreeChooser();
+        treeChooser.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE );
+        matrixChooser = new CDAOMatrixChooser();
+        matrixChooser.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+        fileChooser = new FileDialog( this, true );
+        this.errorDialog = new ErrorReportDialog( this, false );
+        this.errorDialog.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+        if (args.length > 0){
+            try {
+                this.treeChooser.doOpenFile(new URL(args[0]));
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(Workbench.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     @Action
     public void doOpenTree(){
         this.fileChooser.setVisible( true );
@@ -53,7 +76,7 @@ public class Workbench extends javax.swing.JFrame {
                 this.treeChooser.doOpenFile(tree.toURL());
             } catch (MalformedURLException ex) {
                 errorDialog.setRequestURI( tree.toString() );
-                errorDialog.setExtraInfo(ex);
+                errorDialog.setExceptionInfo(ex);
                 errorDialog.setVisible( true );
                 Logger.getLogger(Workbench.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -69,7 +92,7 @@ public class Workbench extends javax.swing.JFrame {
                 this.matrixChooser.doOpenFile(matrixFile.toURL());
             } catch (MalformedURLException ex) {
                 errorDialog.setRequestURI( matrixFile.toString() );
-                errorDialog.setExtraInfo(ex);
+                errorDialog.setExceptionInfo(ex);
                 errorDialog.setVisible( true );
                 Logger.getLogger(Workbench.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -259,11 +282,12 @@ public class Workbench extends javax.swing.JFrame {
     * @param args the command line arguments
     */
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Workbench().setVisible(true);
-            }
-        });
+            final String params[] = args;
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    new Workbench(params).setVisible(true);
+                }
+            });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -9,6 +9,7 @@ package matrixviewer;
 
 import cdaoexplorer.guimodels.TreeNameListModel;
 import cdaoexplorer.forms.dialogs.CDAODataSetChooser;
+import cdaoexplorer.forms.dialogs.ErrorReportDialog;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,6 +25,7 @@ public class CDAOMatrixChooser extends CDAODataSetChooser {
     private TreeNameListModel model;
     private cdaoexplorer.forms.dialogs.FileDialog fileChooser;
     private AboutBox aboutBox;
+    private ErrorReportDialog errorDialog;
     /** Creates new form CDAOMatrixChooser */
     public CDAOMatrixChooser() {
         super();
@@ -33,6 +35,7 @@ public class CDAOMatrixChooser extends CDAODataSetChooser {
         model.updateModel();
         //aboutBox = new AboutBox();
         this.fileChooser = new cdaoexplorer.forms.dialogs.FileDialog(this, true );
+        this.errorDialog = new ErrorReportDialog( this, false );
         initComponents();
         this.setTitle( "CDAO Matrix Chooser" );
         this.setKeyLabel("Matrix:");
