@@ -7,6 +7,11 @@
 
 package cdaoexplorer.forms;
 
+import cdaoexplorer.forms.dialogs.FileDialog;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import matrixviewer.CDAOMatrixChooser;
 import org.jdesktop.application.Action;
@@ -22,16 +27,44 @@ public class Workbench extends javax.swing.JFrame {
     private boolean matrixVisible;
     CDAOTreeChooser treeChooser;
     CDAOMatrixChooser matrixChooser;
+    FileDialog fileChooser;
     /** Creates new form Workbench */
     public Workbench() {
         initComponents();
         this.treeVisible = false;
         this.matrixVisible = false;
         treeChooser = new CDAOTreeChooser();
-        treeChooser.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        treeChooser.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE );
         matrixChooser = new CDAOMatrixChooser();
-        matrixChooser.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE);
+        matrixChooser.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+        fileChooser = new FileDialog( this, true );
     }
+    @Action
+    public void doOpenTree(){
+        this.fileChooser.setVisible( true );
+        File tree = this.fileChooser.getSelectedFile();
+        if ( tree != null){
+            try {
+                this.treeChooser.doOpenFile(tree.toURL());
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(Workbench.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @Action
+    public void doOpenMatrix(){
+        this.fileChooser.setVisible( true );
+        File matrixFile = this.fileChooser.getSelectedFile();
+        if ( matrixFile != null){
+            try {
+                this.matrixChooser.doOpenFile(matrixFile.toURL());
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(Workbench.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     @Action
     public void handleSelectTreeAction(){
         this.treeVisible = !this.treeVisible;
@@ -42,6 +75,15 @@ public class Workbench extends javax.swing.JFrame {
     public void handleSelectMatrixAction(){
         this.matrixVisible = !this.matrixVisible;
         this.matrixChooser.setVisible(matrixVisible);
+        //this.matrixChooser.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    public void treeChooserClosing(){
+        this.treeVisible = false;
+    }
+
+    public void matrixChooserClosing(){
+        this.matrixVisible = false;
     }
 
     /** This method is called from within the constructor to
@@ -65,12 +107,15 @@ public class Workbench extends javax.swing.JFrame {
         saveWorkspaceMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
+        aboutMenuItem = new javax.swing.JMenuItem();
+        reportErrorMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("CDAO Explorer");
 
         iconLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cdaoexplorer/forms/cdao-triplestore-logo.jpg"))); // NOI18N
 
-        titleLabel.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
+        titleLabel.setFont(new java.awt.Font("Lucida Grande", 1, 24));
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText("CDAO Explorer");
         titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -92,9 +137,19 @@ public class Workbench extends javax.swing.JFrame {
         fileMenu.setText("File");
 
         openMatrixMenuItem.setText("Open Matrix");
+        openMatrixMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMatrixMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(openMatrixMenuItem);
 
         openTreeMenuItem.setText("Open Tree");
+        openTreeMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openTreeMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(openTreeMenuItem);
 
         openWorkspaceMenuItem.setText("Open Workspace");
@@ -104,11 +159,28 @@ public class Workbench extends javax.swing.JFrame {
         fileMenu.add(saveWorkspaceMenuItem);
 
         exitMenuItem.setText("Exit");
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(exitMenuItem);
 
         jMenuBar1.add(fileMenu);
 
         helpMenu.setText("Help");
+
+        aboutMenuItem.setText("About");
+        helpMenu.add(aboutMenuItem);
+
+        reportErrorMenuItem.setText("Report Error");
+        reportErrorMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportErrorMenuItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(reportErrorMenuItem);
+
         jMenuBar1.add(helpMenu);
 
         setJMenuBar(jMenuBar1);
@@ -155,6 +227,23 @@ public class Workbench extends javax.swing.JFrame {
         this.handleSelectMatrixAction();
     }//GEN-LAST:event_selectMatrixToggleButtonActionPerformed
 
+    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        this.dispose();
+        //System.exit( 0 );
+    }//GEN-LAST:event_exitMenuItemActionPerformed
+
+    private void openMatrixMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMatrixMenuItemActionPerformed
+        this.doOpenMatrix();
+    }//GEN-LAST:event_openMatrixMenuItemActionPerformed
+
+    private void openTreeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openTreeMenuItemActionPerformed
+        this.doOpenTree();
+    }//GEN-LAST:event_openTreeMenuItemActionPerformed
+
+    private void reportErrorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportErrorMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_reportErrorMenuItemActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -167,6 +256,7 @@ public class Workbench extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
@@ -175,6 +265,7 @@ public class Workbench extends javax.swing.JFrame {
     private javax.swing.JMenuItem openMatrixMenuItem;
     private javax.swing.JMenuItem openTreeMenuItem;
     private javax.swing.JMenuItem openWorkspaceMenuItem;
+    private javax.swing.JMenuItem reportErrorMenuItem;
     private javax.swing.JMenuItem saveWorkspaceMenuItem;
     private javax.swing.JToggleButton selectMatrixToggleButton;
     private javax.swing.JToggleButton selectTreeToggleButton;
