@@ -1,5 +1,6 @@
 package prefuse.demos;
 
+import cdaoexplorer.forms.dialogs.ErrorReportDialog;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -82,7 +83,7 @@ public class CDAOview extends JPanel {
     private static final String BASE_URI = "http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/tree";
     private static final String DEFAULT_GRAPH_URL= BASE_URI + "/" + "Tree3099?format=graphml";
     private Visualization m_vis;
-    
+    private static ErrorReportDialog errorDialog = new ErrorReportDialog(null, false);
     public CDAOview(Graph g, String label) {
     	super(new BorderLayout());
     	
@@ -285,8 +286,11 @@ public class CDAOview extends JPanel {
             try {
                 g = new GraphMLReader().readGraph( new URL( datafile ));
             } catch ( Exception e ) {
+                errorDialog.setExceptionInfo( e );
+                errorDialog.setRequestURI( datafile );
+                errorDialog.setVisible(true);
                 e.printStackTrace();
-                System.exit(1);
+                //System.exit(1);
             }
         }
         return demo(g, label);
@@ -301,8 +305,11 @@ public class CDAOview extends JPanel {
             try {
                 g = new GraphMLReader().readGraph(  datafile );
             } catch ( Exception e ) {
+                errorDialog.setExceptionInfo( e );
+                errorDialog.setRequestURI( datafile );
+                errorDialog.setVisible(true);
                 e.printStackTrace();
-                System.exit(1);
+                //System.exit(1);
             }
         }
         return demo(g, label);
@@ -317,8 +324,11 @@ public class CDAOview extends JPanel {
             try {
                 g = new GraphMLReader().readGraph(  datafile );
             } catch ( Exception e ) {
+                errorDialog.setExceptionInfo( e );
+                errorDialog.setRequestURI( datafile.toString() );
+                errorDialog.setVisible(true);
                 e.printStackTrace();
-                System.exit(1);
+                //System.exit(1);
             }
         }
         return demo(g, label);
