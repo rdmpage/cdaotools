@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -83,6 +84,9 @@ public class CDAOview extends JPanel {
     private static final String DEFAULT_GRAPH_URL= BASE_URI + "/" + "Tree3099?format=graphml";
     private Visualization m_vis;
     
+    protected static ForceDirectedLayout fdl;
+    protected static NodeLinkTreeLayout nltl;
+    
     public CDAOview(Graph g, String label) {
     	super(new BorderLayout());
     	
@@ -143,7 +147,8 @@ public class CDAOview extends JPanel {
         draw.add(new ColorAction(edges, VisualItem.STROKECOLOR, ColorLib.gray(200)));
         
         ActionList animate = new ActionList(Activity.INFINITY);
-        animate.add(new ForceDirectedLayout(graph,false, false));
+        fdl = new ForceDirectedLayout(graph,false, false);
+        animate.add(fdl);
         animate.add(fill);
         animate.add(new RepaintAction());
         
@@ -393,8 +398,10 @@ public class CDAOview extends JPanel {
     	public void actionPerformed(ActionEvent e)
     	{
     	  ActionList l = (ActionList) m_view.m_vis.getAction("layout");
-    	  l.remove(new ForceDirectedLayout(graph));
-    	  l.add(new NodeLinkTreeLayout(graph));
+    	  fdl.cancel();
+    	  l.remove(fdl);
+    	  nltl = new NodeLinkTreeLayout(graph);
+    	  l.add(nltl);
     	  m_view.m_vis.putAction("layout", l);
     	  m_view.m_vis.run("draw");
     	}
@@ -412,8 +419,21 @@ public class CDAOview extends JPanel {
         }
         public void actionPerformed(ActionEvent e) {
          	  ActionList l = (ActionList) m_view.m_vis.getAction("layout");
-        	  l.remove(new NodeLinkTreeLayout(graph));
-        	  l.add(new ForceDirectedLayout(graph));
+        	  
+         	  nltl.cancel();
+         	  
+         	  l.remove(nltl);
+        	  l.add(fdl);
+        	  
+        	  fdl.reset();
+        	  fdl.run();
+        	  
+        	  //Point2D pt = fdl.getLayoutAnchor();
+        	  //pt = new Point2D();
+        	  //Point2D pt = null;
+        	  //fdl.setLayoutAnchor(pt);
+        	  
+        	  //m_view.validate();
         	  
         	  m_view.m_vis.putAction("layout", l);
         	  m_view.m_vis.run("draw");
