@@ -19,10 +19,12 @@ import java.util.logging.Logger;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import org.jdesktop.application.Action;
 
 /**
  *
@@ -47,19 +49,36 @@ public class ErrorReportDialog extends javax.swing.JDialog {
     public void setRequestURI(URL url){
         this.requestURITextField.setText(url.toString());
     }
+    public String getRequestURI(){
+        return this.requestURITextField.getText();
+    }
 
     public void setRequestURI( String url){
         this.requestURITextField.setText(url);
+    }
+
+    public String getUserEmail(){
+        return this.submitterEmailTextField.getText();
     }
 
     public void setExtraInfo(Exception ex){
         this.extraInfoTextArea.setText( ex.getLocalizedMessage() );
     }
 
+
+    public String getExtraInfo(){
+        return this.extraInfoTextArea.getText();
+    }
+
     public void setAdditionalNotes(String notes){
         this.additionalNotesTextArea.setText(notes);
     }
-    
+
+    public String getAdditionalNotes(){
+        return this.additionalNotesTextArea.getText();
+    }
+
+    @Action
     public void handleMsgSend(){
         try {
             Properties props = new Properties();
@@ -69,21 +88,35 @@ public class ErrorReportDialog extends javax.swing.JDialog {
             props.put("mail.smtp.starttls.enable", "true");
 
             Session session = Session.getInstance(props);
+            session.setDebug( true );
+
             Transport trans = session.getTransport("smtp");
-            Message msg = new MimeMessage(session);
+
+
+
+            Message msg = new MimeMessage( session );
             Address[] from = new Address[1];
             Address to = new InternetAddress(reportingAddr);
             from[0] = new InternetAddress( reportingAddr );
             //to[0]   = new InternetAddress( reportingAddr );
             msg.addFrom( from );
             msg.addRecipient(Message.RecipientType.TO, to);
-
+            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(this.getUserEmail()) );
             msg.setSentDate( new Date() );
             msg.setSubject( "CdaoTree View Crash Report" );
             
-
+            //Multipart body;
+            msg.setText(
+                "The application encountered an error displaying the URL/File: " +
+                this.getRequestURI() + "\n" +
+                "The application reported the exception: " + this.getExtraInfo() + "\n" +
+                "The user supplied the following additional information\n" + this.getAdditionalNotes()
+             );
+            //msg.setContent(body);
+            msg.saveChanges();
             trans.connect( HOST, PORT, reportingAddr, reportingPW);
-
+            trans.sendMessage(msg, msg.getAllRecipients());
+            trans.close();
             
 
 
@@ -91,7 +124,8 @@ public class ErrorReportDialog extends javax.swing.JDialog {
             
         } catch (MessagingException ex) {
             Logger.getLogger(ErrorReportDialog.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
+        this.setVisible(false);
         
     }
 
