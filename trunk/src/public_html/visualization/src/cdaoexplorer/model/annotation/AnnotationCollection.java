@@ -7,6 +7,7 @@ package cdaoexplorer.model.annotation;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -30,6 +31,8 @@ public interface AnnotationCollection {
      * @return
      */
     public List< Triple > getAnnotations(URL subject );
+
+    public Set< URL > getSubjects();
     /**
      * Save the current annotation collection to the store.
      * Do nothing if a default store has not been set.

@@ -40,15 +40,19 @@ public class URLList implements javax.swing.ComboBoxModel {
     }
 
     public URLList( Set< URI > model ){
+        //assert( model != null );
         this.list = new ArrayList();
         this.listeners = new ArrayList();
-        this.selectedItem =0;
-        Iterator< URI > uit = model.iterator();
-        while (uit.hasNext()){
-            try {
-                this.list.add(uit.next().toURL());
-            } catch (MalformedURLException ex) {
-                Logger.getLogger(URLList.class.getName()).log(Level.SEVERE, null, ex);
+        this.selectedItem = -1;
+        if ( model != null ){
+            this.selectedItem =0;
+            Iterator< URI > uit = model.iterator();
+            while (uit.hasNext()){
+                try {
+                    this.list.add(uit.next().toURL());
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(URLList.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }

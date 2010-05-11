@@ -22,14 +22,9 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import org.mindswap.pellet.owlapi.PelletReasonerFactory;
 import org.mindswap.pellet.owlapi.Reasoner;
 import org.semanticweb.owl.apibinding.OWLManager;
-import org.semanticweb.owl.inference.OWLReasoner;
-import org.semanticweb.owl.inference.OWLReasonerFactory;
-import org.semanticweb.owl.model.OWLDataFactory;
 import org.semanticweb.owl.model.OWLDataProperty;
 import org.semanticweb.owl.model.OWLOntology;
 import org.semanticweb.owl.model.OWLOntologyCreationException;
@@ -43,6 +38,7 @@ public class AddAnnotation extends javax.swing.JDialog {
     private OWLOntologyManager ontologyManager;
     private AnnotationSourceCollection annotationSource;
     private DefaultComboBoxModel slistModel;
+    private boolean selectionMade;
     /** Creates new form AddAnnotation */
     public AddAnnotation(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -53,12 +49,18 @@ public class AddAnnotation extends javax.swing.JDialog {
             this.slistModel = new DefaultComboBoxModel();
             this.addNewAnnotationType("cdao", new URL("http://www.evolutionaryontology.org/cdao.owl"));
             this.addNewAnnotationType( "study", new URL("http://www.cs.nmsu.edu/~bchisham/study.owl"));
+            
             this.annotationComboBox.setModel(slistModel);
+            this.annotationComboBox.setSelectedIndex(0);
+            this.setAvailableProperties();
+            this.selectionMade = false;
         } catch (MalformedURLException ex) {
             Logger.getLogger(AddAnnotation.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
+
+
 
     /**
      * Get the annotation term.
@@ -98,6 +100,7 @@ public class AddAnnotation extends javax.swing.JDialog {
 
 
             reasoner.setOntology( ontology );
+            
 
             Set< OWLDataProperty > props = reasoner.getDataProperties();
             TreeSet< URI > uri_props = new TreeSet();
@@ -107,6 +110,8 @@ public class AddAnnotation extends javax.swing.JDialog {
             }
             this.annotationSource.addSource(shortName, uri_props);
             this.slistModel.addElement( shortName );
+            
+            //this.setAvailableProperties();
         } catch (OWLOntologyCreationException ex) {
             Logger.getLogger(AddAnnotation.class.getName()).log(Level.SEVERE, null, ex);
         } catch (URISyntaxException ex) {
@@ -125,12 +130,9 @@ public class AddAnnotation extends javax.swing.JDialog {
         } catch (MalformedURLException ex) {
             Logger.getLogger(AddAnnotation.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-            
-
-
-        
+  
     }
+    
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -153,9 +155,10 @@ public class AddAnnotation extends javax.swing.JDialog {
         newAnnotationTypeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(AddAnnotation.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(AddAnnotation.class);
         jLabel1.setFont(resourceMap.getFont("jLabel1.font")); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
@@ -165,6 +168,11 @@ public class AddAnnotation extends javax.swing.JDialog {
         jLabel2.setName("jLabel2"); // NOI18N
 
         annotationComboBox.setName("annotationComboBox"); // NOI18N
+        annotationComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                annotationComboBoxActionPerformed(evt);
+            }
+        });
         annotationComboBox.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 annotationComboBoxFocusLost(evt);
@@ -184,9 +192,19 @@ public class AddAnnotation extends javax.swing.JDialog {
 
         saveButton.setText(resourceMap.getString("saveButton.text")); // NOI18N
         saveButton.setName("saveButton"); // NOI18N
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         closeButton.setText(resourceMap.getString("closeButton.text")); // NOI18N
         closeButton.setName("closeButton"); // NOI18N
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeButtonActionPerformed(evt);
+            }
+        });
 
         newAnnotationTypeButton.setText(resourceMap.getString("newAnnotationTypeButton.text")); // NOI18N
         newAnnotationTypeButton.setName("newAnnotationTypeButton"); // NOI18N
@@ -255,8 +273,22 @@ public class AddAnnotation extends javax.swing.JDialog {
     }//GEN-LAST:event_newAnnotationTypeButtonActionPerformed
 
     private void annotationComboBoxFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_annotationComboBoxFocusLost
-
+        //this.setAvailableProperties();
     }//GEN-LAST:event_annotationComboBoxFocusLost
+
+    private void annotationComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_annotationComboBoxActionPerformed
+        this.setAvailableProperties();
+    }//GEN-LAST:event_annotationComboBoxActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        this.setVisible( false );
+        this.selectionMade = true;
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
+        this.setVisible( false );
+
+    }//GEN-LAST:event_closeButtonActionPerformed
 
     /**
     * @param args the command line arguments

@@ -11,6 +11,15 @@ public class DataProperty implements Triple {
     private URL subject;
     private URL property;
     private Object object;
+
+    public DataProperty(URL subject, URL property, Object object) {
+        this.subject = subject;
+        this.property = property;
+        this.object = object;
+    }
+
+
+
     /**
      *
      * @return
