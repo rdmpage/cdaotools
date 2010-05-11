@@ -2,9 +2,15 @@
 
 package cdaoexplorer.model.annotation;
 
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.event.ListDataListener;
 
 /**
@@ -32,6 +38,21 @@ public class URLList implements javax.swing.ComboBoxModel {
         this.listeners = new ArrayList();
         this.selectedItem = 0;
     }
+
+    public URLList( Set< URI > model ){
+        this.list = new ArrayList();
+        this.listeners = new ArrayList();
+        this.selectedItem =0;
+        Iterator< URI > uit = model.iterator();
+        while (uit.hasNext()){
+            try {
+                this.list.add(uit.next().toURL());
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(URLList.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     /**
      * Add a new url to the list.
      * @param url
