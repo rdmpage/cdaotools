@@ -7,6 +7,7 @@ package cdaoexplorer.model.annotation;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -31,6 +32,10 @@ public class ServiceStore implements AnnotationCollection {
     }
 
     public void commit(StoreConfig tripleStore) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Set<URL> getSubjects() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

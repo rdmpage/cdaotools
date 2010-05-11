@@ -7,6 +7,7 @@
 
 package cdaoexplorer.forms;
 
+import cdaoexplorer.forms.dialogs.AddAnnotation;
 import cdaoexplorer.forms.dialogs.ErrorReportDialog;
 import cdaoexplorer.forms.dialogs.FileDialog;
 import java.io.File;
@@ -32,6 +33,7 @@ public class Workbench extends javax.swing.JFrame {
     CDAOMatrixChooser matrixChooser;
     FileDialog fileChooser;
     ErrorReportDialog errorDialog;
+    AddAnnotation addAnnotationDialog;
     /** Creates new form Workbench */
     public Workbench() {
         initComponents();
@@ -44,6 +46,7 @@ public class Workbench extends javax.swing.JFrame {
         fileChooser = new FileDialog( this, true );
         this.errorDialog = new ErrorReportDialog( this, false );
         this.errorDialog.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+        this.addAnnotationDialog = new AddAnnotation(this, true);
 
     }
 
@@ -58,6 +61,7 @@ public class Workbench extends javax.swing.JFrame {
         fileChooser = new FileDialog( this, true );
         this.errorDialog = new ErrorReportDialog( this, false );
         this.errorDialog.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+        this.addAnnotationDialog = new AddAnnotation(this, true);
         if (args.length > 0){
             try {
                 this.treeChooser.doOpenFile(new URL(args[0]));
@@ -133,7 +137,7 @@ public class Workbench extends javax.swing.JFrame {
         titleLabel = new javax.swing.JLabel();
         selectTreeToggleButton = new javax.swing.JToggleButton();
         selectMatrixToggleButton = new javax.swing.JToggleButton();
-        annotationListPanel1 = new cdaoexplorer.forms.panels.AnnotationListPanel();
+        annotationListPanel = new cdaoexplorer.forms.panels.AnnotationListPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMatrixMenuItem = new javax.swing.JMenuItem();
@@ -230,12 +234,12 @@ public class Workbench extends javax.swing.JFrame {
                     .add(layout.createSequentialGroup()
                         .add(iconLabel)
                         .add(18, 18, 18)
-                        .add(titleLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE))
+                        .add(titleLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
                         .add(selectTreeToggleButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(selectMatrixToggleButton))
-                    .add(annotationListPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(annotationListPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -246,8 +250,8 @@ public class Workbench extends javax.swing.JFrame {
                     .add(titleLabel)
                     .add(iconLabel))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(annotationListPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 38, Short.MAX_VALUE)
+                .add(annotationListPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 40, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(selectTreeToggleButton)
                     .add(selectMatrixToggleButton))
@@ -296,7 +300,7 @@ public class Workbench extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
-    private cdaoexplorer.forms.panels.AnnotationListPanel annotationListPanel1;
+    private cdaoexplorer.forms.panels.AnnotationListPanel annotationListPanel;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;

@@ -7,6 +7,7 @@ package cdaoexplorer.model.annotation;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -15,6 +16,14 @@ import java.util.List;
 public class FileStore implements AnnotationCollection {
     StoreConfig location;
     MemoryStore tempStore;
+
+    public FileStore(){
+        this.tempStore = new MemoryStore();
+    }
+
+    public FileStore( MemoryStore ms ){
+        this.tempStore = ms;
+    }
 
     public void setStoreConfig(StoreConfig tripleStore) {
         this.location = tripleStore;
@@ -34,6 +43,10 @@ public class FileStore implements AnnotationCollection {
 
     public void commit(StoreConfig tripleStore) {
         return;
+    }
+
+    public Set<URL> getSubjects() {
+        return this.tempStore.getSubjects();
     }
 
 }

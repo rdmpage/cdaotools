@@ -6,7 +6,6 @@
 package matrixviewer.model;
 
 //import com.clarkparsia.pellet.sparqldl.model.Query;
-import com.hp.hpl.jena.rdf.model.Model;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
