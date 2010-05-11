@@ -65,6 +65,7 @@ div.result-set {
      
 }
 
+
 #header 
 {
   /*height : 90px;
@@ -86,6 +87,8 @@ ul li ul li {
    top: 0px;
    left: 10px;
 }
+
+h2 { padding-top: 5px; padding-bottom: 5px; }
 
 h1.header { 
         /*text-align: center;*/

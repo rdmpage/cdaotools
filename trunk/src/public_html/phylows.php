@@ -23,13 +23,16 @@
 			<li>
 				Treebase Accesion Number
                               <form action="cgi-bin/tree/query" method="get">
-                                  <p>NeXML: <input type="radio" name="format" value="nexml"/>
-                                     GraphML: <input type="radio" name="format" value="graphml"/>
-                                     Prolog: <input type="radio" name="format" value="prolog"/>
-                                     HTML: <input type="radio" name="format" value="html" checked="checked"/>
-                                   </p>
-                                  <p about="cdao:Tree"><span>Tree:</span><input type="text" class="text" id="tree" name="tree" value="Tree3099"/><br/>
-                                   <input type="submit" value="Submit"/>
+                                  <p><!--NeXML: <input type="radio" name="format" value="nexml"/>-->
+                                     <!--View: <input type="radio" name="format" value="graphml"/>-->
+                                     <!--Prolog: <input type="radio" name="format" value="prolog"/>-->
+                                    <input type="hidden" name="format" value="html" />
+                                   <!--<form action="cdao-explorer/launch.php" method="get">-->
+                                      <span>Tree:</span><input about="cdao:Tree" type="text" class="text" id="tree" name="tree" value="Tree3099"/>
+                                      <input type="submit" value="View"/>  
+                                   <!--</form>
+ 			           <input type="submit" value="Query"/>-->
+					
                                   </p>
                               </form>
 			</li>
@@ -274,6 +277,7 @@
 		              alt="Valid XHTML + RDFa" style="border:0px;"   /></a>
 			        </p>
 
+  </div>
   </div>
   </div>
  </body>

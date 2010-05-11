@@ -29,6 +29,10 @@ echo "<!-- EDGE_QUERY: $EDGE_QUERY -->"
 #echo "<h1 class=\"header\"><a class=\"header\" href="../../index.php"><img src=\"../../cdao-triplestore-logo.jpg\" alt=\"Cdao-Store Logo\" style=\"border: 0px;\" /></a>Cdao Store</h1></div>"
 
 #echo "<div id=\"content\" class=\"content\" style=\"scroll: auto;\">"
+#echo "<h2 style=\"text-align: center;\"><a href=\"../../cdao-explorer/launch.php?tree=$TREE_NAME\">Graphical View</a></h2>"
+#echo "<h2 style=\"text-align: center;\">Query Tree</h2>"
+echo "<p>Open this this tree in <a href=\"../../cdao-explorer/launch.php?tree=$TREE_NAME\">CDAO Explorer</a></p>"
+
 echo "<form action=\"../node/html\" method=\"get\"><table>"
 echo "<tr><td colspan=\"2\">
            Nearest Common Ancestor: <input type=\"radio\" name=\"qtype\" checked=\"checked\" value=\"nca\" /> Minimum Spanning Clade <input type=\"radio\" name=\"qtype\" value=\"msc\"/>
@@ -50,7 +54,7 @@ for i in $(echo $RESULTS ); do
    COUNT=$(( $COUNT + 1 ));
    STYLE=${ROW_STYLES[ $(( $COUNT % 2 )) ]}
    cat << EOM
-      <tr class="$STYLE"><td>$nodeid</td><td><input type="checkbox" name="node" value="$nodeid"/></td></tr>
+      <tr class="$STYLE"><td><a href="../tu/html?tu=$nodeid">$nodeid</a></td><td><input type="checkbox" name="node" value="$nodeid"/></td></tr>
 EOM
 done
 RESULT_SIZE=$COUNT
@@ -58,6 +62,7 @@ RESULT_SIZE=$COUNT
 echo "<tr><td colspan=\"2\"><input class=\"button\" type=\"submit\" value=\"Submit\"/><input class=\"button\" type=\"reset\" value=\"Reset\"/></td></tr>"
 echo "</table></form>"
 echo "<p>Results: $RESULT_SIZE</p>"
+echo "<p>Open this this tree in <a href=\"../../cdao-explorer/launch.php?tree=$TREE_NAME\">CDAO Explorer</a></p>"
 }
 
 print_header;
