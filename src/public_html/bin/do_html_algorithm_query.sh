@@ -37,7 +37,7 @@ function print_result {
    for result in $(sparql -q --results xml --query "$TMP_QUERY_FILE" --graph "$GRAPH_FILE" | grep -oE "<uri>.*</uri>" | sort | cut -d">" --fields=2 | cut -d"<" --fields=1 | sed "s/$ESCAPED_DUMP_URI//g");
    do
         RESULT_SIZE=$[ $RESULT_SIZE + 1 ];
-        echo "<a href=\"../tree/query?format=html&amp;tree=$result\">$result</a><br/>";
+        echo "$result <a href=\"../tree/query?format=html&amp;tree=$result\">Query</a> <a href=\"../../cdao-explorer/launch.php?tree=$result\">View</a><br/>";
    done
    echo "</div>"
    echo "<p>Results: <span class=\"result-count\">$RESULT_SIZE</span></p>"

@@ -52,7 +52,7 @@ function print_result {
    ROW_COUNT=0;
    for result in $(sparql -q --results xml --query "$TMP_QUERY_FILE" --graph "$GRAPH_FILE" | grep -oE "<uri>.*</uri>" | cut -d">" --fields=2 | cut -d"<" --fields=1 | sed "s/$ESCAPED_DUMP_URI//g" | sort);
    do
-        echo "<a href=\"../tree/query?format=html&amp;tree=$result\">$result</a> <a href=\"../../cdao-explorer/launch.php?tree=$result\">View</a><br/>";
+        echo "$result <a href=\"../tree/query?format=html&amp;tree=$result\">Query</a> <a href=\"../../cdao-explorer/launch.php?tree=$result\">View</a><br/>";
         ROW_COUNT=$[ $ROW_COUNT + 1 ];
    done
    echo "<span class=\"result-count\">$ROW_COUNT</span>"
