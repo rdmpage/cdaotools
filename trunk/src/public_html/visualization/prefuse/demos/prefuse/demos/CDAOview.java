@@ -1,5 +1,6 @@
 package prefuse.demos;
 
+import cdaoexplorer.forms.dialogs.ErrorReportDialog;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -95,7 +96,7 @@ public class CDAOview extends JPanel {
     protected static BifocalDistortion feye;
     protected static Display display;
     protected static AnchorUpdateControl fishUpdate;
-    
+    protected static ErrorReportDialog errorDialog = new ErrorReportDialog( null, false );
     
     public CDAOview(Graph g, String label) {
     	super(new BorderLayout());
@@ -323,8 +324,11 @@ public class CDAOview extends JPanel {
             try {
                 g = new GraphMLReader().readGraph(  datafile );
             } catch ( Exception e ) {
+                errorDialog.setExceptionInfo( e );
+                errorDialog.setRequestURI(datafile);
+                errorDialog.setVisible( true );
                 e.printStackTrace();
-                System.exit(1);
+                //System.exit(1);
             }
         }
         return demo(g, label);
@@ -339,6 +343,9 @@ public class CDAOview extends JPanel {
             try {
                 g = new GraphMLReader().readGraph(  datafile );
             } catch ( Exception e ) {
+                errorDialog.setExceptionInfo( e );
+                errorDialog.setRequestURI(datafile.toString());
+                errorDialog.setVisible( true );
                 e.printStackTrace();
                 System.exit(1);
             }
