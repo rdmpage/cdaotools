@@ -12,6 +12,10 @@ body {
 
 }
 
+table {
+   margin-left: auto;
+   margin-right: auto;
+}
 
 a {
   text-decoration: none;
@@ -26,26 +30,28 @@ div.wrap
   -khtml-border-radius: 20px;
   border-radius: 20px;
   /*margin: 20px auto;*/
-  width: 500px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 700px;
   padding: 10px;
   background-color: #CCCC66;
   z-index: 1;
 }
 
 div.wrap-shadow {
-  position: relative;
-  top:0px;
-  left: 300px;
   -moz-border-radius: 20px;
   -webkit-border-radius: 20px;
   -khtml-border-radius: 20px;
   border-radius: 20px;
-  margin: 20px; auto;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
   padding-top: 0px;
   padding-left: 0px;
   padding-bottom: 5px;
   padding-right: 2px;
-  width: 520px;
+  width: 720px;
   background-color: black;
   z-index: 0;
 }
