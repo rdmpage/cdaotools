@@ -7,8 +7,10 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -19,6 +21,8 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,12 +36,14 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicButtonListener;
 
 import prefuse.Display;
 import prefuse.Visualization;
 import prefuse.action.ActionList;
 import prefuse.action.RepaintAction;
 import prefuse.action.assignment.ColorAction;
+import prefuse.action.distortion.BifocalDistortion;
 import prefuse.action.filter.GraphDistanceFilter;
 import prefuse.action.layout.graph.BalloonTreeLayout;
 import prefuse.action.layout.graph.ForceDirectedLayout;
@@ -46,6 +52,7 @@ import prefuse.action.layout.graph.NodeLinkTreeLayout;
 import prefuse.action.layout.graph.RadialTreeLayout;
 import prefuse.action.layout.graph.SquarifiedTreeMapLayout;
 import prefuse.activity.Activity;
+import prefuse.controls.AnchorUpdateControl;
 import prefuse.controls.DragControl;
 import prefuse.controls.FocusControl;
 import prefuse.controls.NeighborHighlightControl;
@@ -84,6 +91,13 @@ public class CDAOview extends JPanel {
     private static final String DEFAULT_GRAPH_URL= BASE_URI + "/" + "Tree3099?format=graphml";
     private Visualization m_vis;
     private static ErrorReportDialog errorDialog = new ErrorReportDialog(null, false);
+    protected static ForceDirectedLayout fdl;
+    protected static NodeLinkTreeLayout nltl;
+    protected static BifocalDistortion feye;
+    protected static Display display;
+    protected static AnchorUpdateControl fishUpdate;
+    
+    
     public CDAOview(Graph g, String label) {
     	super(new BorderLayout());
     	
@@ -135,8 +149,11 @@ public class CDAOview extends JPanel {
         fill.add(VisualItem.FIXED, ColorLib.rgb(255,100,100));
         fill.add(VisualItem.HIGHLIGHT, ColorLib.rgb(255,200,125));
         
+        feye = new BifocalDistortion(0.05, 2.0);
+        
         ActionList draw = new ActionList();
         draw.add(filter);
+        //draw.add(feye);
         draw.add(fill);
         draw.add(new ColorAction(nodes, VisualItem.STROKECOLOR, 0));
         draw.add(new ColorAction(nodes, VisualItem.TEXTCOLOR, ColorLib.rgb(0,0,0)));
@@ -144,7 +161,9 @@ public class CDAOview extends JPanel {
         draw.add(new ColorAction(edges, VisualItem.STROKECOLOR, ColorLib.gray(200)));
         
         ActionList animate = new ActionList(Activity.INFINITY);
-        animate.add(new ForceDirectedLayout(graph,false, false));
+        fdl = new ForceDirectedLayout(graph,false, false);
+        animate.add(feye);//new BifocalDistortion(.1, 5.0));
+        animate.add(fdl);
         animate.add(fill);
         animate.add(new RepaintAction());
         
@@ -162,13 +181,16 @@ public class CDAOview extends JPanel {
         // --------------------------------------------------------------------
         // set up a display to show the visualization
         
-        Display display = new Display(m_vis);
+        display = new Display(m_vis);
         display.setSize(700,700);
         display.pan(350, 350);
         display.setForeground(Color.GRAY);
         display.setBackground(Color.WHITE);
         
         // main display controls
+        //display.addControlListener(new BifocalDistortion(.1, 5.0));
+        fishUpdate = new AnchorUpdateControl(feye, "layout");
+        display.addControlListener(fishUpdate);//new AnchorUpdateControl(feye, "layout"));
         display.addControlListener(new FocusControl(1));
         display.addControlListener(new DragControl());
         display.addControlListener(new PanControl());
@@ -286,11 +308,8 @@ public class CDAOview extends JPanel {
             try {
                 g = new GraphMLReader().readGraph( new URL( datafile ));
             } catch ( Exception e ) {
-                errorDialog.setExceptionInfo( e );
-                errorDialog.setRequestURI( datafile );
-                errorDialog.setVisible(true);
                 e.printStackTrace();
-                //System.exit(1);
+                System.exit(1);
             }
         }
         return demo(g, label);
@@ -306,8 +325,8 @@ public class CDAOview extends JPanel {
                 g = new GraphMLReader().readGraph(  datafile );
             } catch ( Exception e ) {
                 errorDialog.setExceptionInfo( e );
-                errorDialog.setRequestURI( datafile );
-                errorDialog.setVisible(true);
+                errorDialog.setRequestURI(datafile);
+                errorDialog.setVisible( true );
                 e.printStackTrace();
                 //System.exit(1);
             }
@@ -324,11 +343,8 @@ public class CDAOview extends JPanel {
             try {
                 g = new GraphMLReader().readGraph(  datafile );
             } catch ( Exception e ) {
-                errorDialog.setExceptionInfo( e );
-                errorDialog.setRequestURI( datafile.toString() );
-                errorDialog.setVisible(true);
                 e.printStackTrace();
-                //System.exit(1);
+                System.exit(1);
             }
         }
         return demo(g, label);
@@ -339,10 +355,23 @@ public class CDAOview extends JPanel {
         
         // set up menu
         JMenu dataMenu = new JMenu("Layout");
+        dataMenu.setMnemonic(KeyEvent.VK_L);
         dataMenu.add(new ForceLayoutAction(view));
         dataMenu.add(new NodeLinkTreeLayoutAction(view));
+        
+        JMenu effectMenu = new JMenu("Effects");
+        effectMenu.setMnemonic(KeyEvent.VK_E);
+        FisheyeZoomAction fza = new FisheyeZoomAction(view);
+        //JComponent eff = new JComponent();
+        //eff.add(fza);
+        //eff.add(new JCheckBox());
+        effectMenu.add(fza);
+        //effectMenu.add(new FisheyeZoomAction(view));
+        //effectMenu.add(new JCheckBox());
+        
         JMenuBar menubar = new JMenuBar();
         menubar.add(dataMenu);
+        menubar.add(effectMenu);
         
         // launch window
         JFrame frame = new JFrame("Tree Viewer | powered by prefuse");
@@ -403,8 +432,10 @@ public class CDAOview extends JPanel {
     	public void actionPerformed(ActionEvent e)
     	{
     	  ActionList l = (ActionList) m_view.m_vis.getAction("layout");
-    	  l.remove(new ForceDirectedLayout(graph));
-    	  l.add(new NodeLinkTreeLayout(graph));
+    	  fdl.cancel();
+    	  l.remove(fdl);
+    	  nltl = new NodeLinkTreeLayout(graph);
+    	  l.add(nltl);
     	  m_view.m_vis.putAction("layout", l);
     	  m_view.m_vis.run("draw");
     	}
@@ -422,8 +453,21 @@ public class CDAOview extends JPanel {
         }
         public void actionPerformed(ActionEvent e) {
          	  ActionList l = (ActionList) m_view.m_vis.getAction("layout");
-        	  l.remove(new NodeLinkTreeLayout(graph));
-        	  l.add(new ForceDirectedLayout(graph));
+        	  
+         	  nltl.cancel();
+         	  
+         	  l.remove(nltl);
+        	  l.add(fdl);
+        	  
+        	  fdl.reset();
+        	  fdl.run();
+        	  
+        	  //Point2D pt = fdl.getLayoutAnchor();
+        	  //pt = new Point2D();
+        	  //Point2D pt = null;
+        	  //fdl.setLayoutAnchor(pt);
+        	  
+        	  //m_view.validate();
         	  
         	  m_view.m_vis.putAction("layout", l);
         	  m_view.m_vis.run("draw");
@@ -529,6 +573,43 @@ public class CDAOview extends JPanel {
             // return the label field selection
             return label[0];
         }
+    }
+    protected static boolean fishFlag = true;
+    public static class FisheyeZoomAction extends AbstractAction {
+    	private CDAOview m_view;
+    	public FisheyeZoomAction(CDAOview view){
+    		m_view = view;
+    		this.putValue(AbstractAction.NAME, "Toggle Fisheye Zooming");
+    		this.putValue(MNEMONIC_KEY, KeyEvent.VK_F);
+    	
+    	}
+    	public void actionPerformed(ActionEvent e)
+    	{
+    	  if(fishFlag) //flag on
+    	  {
+    		  ActionList l = (ActionList)m_view.m_vis.getAction("layout");
+    		  feye.setEnabled(false);
+    		  //l.remove(feye);
+    		  fishUpdate.setEnabled(false);
+    		  //m_view.m_vis.putAction("layout", l);
+    		  //m_view.m_vis.run("draw");
+    		  fishFlag = false;
+    	  }
+    	  else //flag off
+    	  {
+    		ActionList l = (ActionList)m_view.m_vis.getAction("layout");
+    		//feye = new BifocalDistortion(0.05, 2.0);
+    		feye.setEnabled(true);
+    		//l.add(feye);
+    		//fishUpdate = new AnchorUpdateControl(feye, "layout");
+    		//display.addControlListener(fishUpdate);
+    		fishUpdate.setEnabled(true);
+     		//m_view.m_vis.putAction("layout", l);
+     		//m_view.m_vis.putAction("draw", l);
+    		//m_view.m_vis.run("draw");
+    		fishFlag = true;
+    	  }
+    	}
     }
     
     public static class FitOverviewListener implements ItemBoundsListener {
