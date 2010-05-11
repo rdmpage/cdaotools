@@ -15,6 +15,12 @@ deploy:index.php.deployed inputfiletranslator.php.deployed footer.php.deployed h
 	(cd bin && make deploy)
 	(cd cgi-bin && make deploy)
 
+production-deploy: deploy
+	(cd bin && make production-deploy)
+	(cd cgi-bin && make production-deploy)
+	scp Makefile.remote $(REMOTE_HOST):$(REMOTE_WEB_DIR)/Makefile
+	ssh $(REMOTE_HOST) "cd $(REMOTE_WEB_DIR) && make deploy"
+
 %.php.deployed: %.php
 	scp $< $(REMOTE_HOST):$(REMOTE_WEB_DIR)
 	ssh $(REMOTE_HOST) "chmod 644 $(REMOTE_WEB_DIR)/$<"
