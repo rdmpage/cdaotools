@@ -1,0 +1,106 @@
+#!/usr/bin/perl
+
+#Created May 11, 2010
+#Based on: http://perlmeme.org/tutorials/cgi_upload.html
+
+use strict;
+use warnings;
+use CGI;
+use CGI::Carp qw(fatalsToBrowser);
+
+$CGI::POST_MAX = 1024 * 1024 * 10; #limit uploads to 10 MB
+
+my $q = new CGI;
+my $TRIPLESTORE_IMPORT_URL = "http://www.cs.nmsu.edu/~cdaostore/cgi-bin/import";
+
+print $q->header;
+
+print $q->start_html( -style => { -src => '../style.css'}, -title => 'File Import');
+
+print "<div class=\"wrap-shadow\"><div class=\"wrap\">";
+print "<div class=\"header\"><h1 class=\"header\"><a href=\"../index.php\"><img src=\"../cdao-triplestore-logo.jpg\"/></a>CDAO Store</h1></div>";
+print "<div class=\"content\">";
+print $q->h1("Processing your submission");
+#
+# Look for uploads that exceed $CGI::POST_MAX
+#
+if (!$q->param('inputfile') && $q->cgi_error()) {
+	print $q->cgi_error();
+	print <<'EOT';
+	<p>
+	 The file you are attempting to upload exceeds the maximum allowable file size.
+	</p><p>
+	   Please refer to your system administrator</p>
+EOT
+	print $q->hr, $q->end_html;
+	exit 0;
+}
+#
+# Upload the file
+#
+if ($q->param()) {
+          my $file = save_file($q);
+          
+	  if ( $q->param('format')  == "NEXUS" ){
+	    system( "/home/grad6/bchisham/bin/cdao-mass-import -i $file" );
+	    print $q->p( "<a href=\"$file.cdao\">Translated File</a>" );
+	    print $q->p( "<a href=\"$TRIPLESTORE_IMPORT_URL?ontology=$file.cdao\">Add to the Triplestore</a>" );
+	  }
+	  unlink "$file";
+}
+
+print "</div></div></div>";
+
+print $q->end_html;
+exit 0;
+#-------------------------------------------------------------
+sub save_file($) {
+     my ($q) = @_;
+     my ($bytesread, $buffer);
+     my $num_bytes = 1024;
+     my $totalbytes;
+     my $filename = $q->upload('inputfile');
+     my $untainted_filename;
+     if (!$filename) {	            
+        print $q->p('You must enter a filename before you can upload it');
+       	return;
+     }
+     if ($filename =~ /^([-\@:\/\\\w.]+)$/) {
+	            $untainted_filename = $1;
+     } else {	
+         die <<"EOT"
+           Unsupported characters in the filename "$filename". 
+	   Your filename may only contain alphabetic characters and numbers, and the characters '_', '-', '\@', '/', '\\' and '.'
+EOT
+     } 
+     if ($untainted_filename =~ m/\.\./) {
+         die <<"EOT"
+	 Your upload filename may not contain the sequence '..' 
+	 Rename your file so that it does not include the sequence '..', and try again.
+EOT
+     }
+     my $file = "../upload/$untainted_filename";
+     print "<p>Uploading $filename to $file</p>";
+     # If running this on a non-Unix/non-Linux/non-MacOS platform, be sure to 
+     # set binmode on the OUTFILE filehandle, refer to 
+     #    perldoc -f open 
+     # and
+     #    perldoc -f binmode
+     open (OUTFILE, ">", "$file") or die "Couldn't open $file for writing: $!";
+	        while ($bytesread = read($filename, $buffer, $num_bytes)) {
+	            $totalbytes += $bytesread;
+	                print OUTFILE $buffer;
+	        }
+	        die "Read failure" unless defined($bytesread);
+	        unless (defined($totalbytes)) {
+	            print "<p>Error: Could not read file ${untainted_filename}, ";
+	                print "or the file was zero length.</p>";
+	        } else {
+	            print "<p>File $filename uploaded to $file ($totalbytes bytes)</p>";
+			return $file
+	            }
+	            close OUTFILE or die "Couldn't close $file: $!";
+
+	        }
+	    #-------------------------------------------------------------
+
