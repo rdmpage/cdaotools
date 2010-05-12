@@ -14,6 +14,7 @@ production-deploy: deploy
 
 %.rc.deployed: %.rc
 	scp $< $(REMOTE_HOST):$(REMOTE_RC_DIR)
+	ssh $(REMOTE_HOST) "ln $(REMOTE_RC_DIR)/$< $(REMOTE_BIN_DIR)/$<"
 	touch $@
 
 %.remote.deployed: %.remote
