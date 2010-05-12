@@ -15,7 +15,9 @@ my $TRIPLESTORE_IMPORT_URL = "http://www.cs.nmsu.edu/~cdaostore/cgi-bin/import";
 
 print $q->header;
 
-print $q->start_html( -style => { -src => '../style.css'}, -title => 'File Import');
+print $q->start_html( #-head=>[ Link({-rel=>'icon',-type=>'image/png',-href=>'../cdao-triplestore-logo.ico'})],
+                      -style => { -src => '../style.css'}, -title => 'File Import',
+		      -dtd => '-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd');
 
 print "<div class=\"wrap-shadow\"><div class=\"wrap\">";
 print "<div class=\"header\"><h1 class=\"header\"><a href=\"../index.php\"><img src=\"../cdao-triplestore-logo.jpg\"/></a>CDAO Store</h1></div>";
@@ -45,6 +47,7 @@ if ($q->param()) {
 	    system( "/home/grad6/bchisham/bin/cdao-mass-import -i $file" );
 	    print $q->p( "<a href=\"$file.cdao\">Translated File</a>" );
 	    print $q->p( "<a href=\"$TRIPLESTORE_IMPORT_URL?ontology=$file.cdao\">Add to the Triplestore</a>" );
+	    print $q->p( "<a href=\"../index.php\">Home</a>" );
 	  }
 	  unlink "$file";
 }
@@ -79,7 +82,7 @@ EOT
 	 Rename your file so that it does not include the sequence '..', and try again.
 EOT
      }
-     my $file = "../upload/$untainted_filename";
+     my $file = "../upload/$untainted_filename" . rand();
      print "<p>Uploading $filename to $file</p>";
      # If running this on a non-Unix/non-Linux/non-MacOS platform, be sure to 
      # set binmode on the OUTFILE filehandle, refer to 
