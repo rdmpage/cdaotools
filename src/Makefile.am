@@ -58,11 +58,12 @@ cdao_read_tree_SOURCES=read-tree.cpp \
 		    util.cpp util.hpp \
 		    node.cpp node.hpp \
 		    data_representation.cpp data_representation.hpp \
+		    $(NEXDIR)/yywrap.c \
 		    $(NEXDIR)/tree_description_scanner2.cpp  \
 		    $(NEXDIR)/tree_description_parser2.cpp  \
 	 	    $(CODEGEN)/constants.hpp \
 		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
-cdao_read_tree_LDADD=$(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la -ll
+cdao_read_tree_LDADD=$(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 
 cdao_phylip_import_SOURCES=main4.cpp \
 		    util.cpp util.hpp \
