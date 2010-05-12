@@ -8,6 +8,21 @@
                    <p><span>URL of RDF file:</span><input type="text" class="text" id="ontology" name="ontology"/>
                    <input type="submit" class="button" id="import-submit" value="Import" /></p>
 		 </form>
+		<h3>Translate a file into CDAO format</h3>
+		<form action="inputfiletranslator.php" enctype="multipart/form-data" method="post">
+		<p>File format
+		<select name="format">
+			<option value="M">MEGA</option>
+			<option value="P">PHYLIP</option>
+			<option value="N">NEXUS</option>
+		</select>
+		File name
+		<input type="file" name="inputfile">
+		<input type="submit" name="choice" value="Translate" />
+                  </p>
+                </form>
+                
+
 		   <hr/><br/>
                  
 
@@ -266,19 +281,5 @@
          </ul><br/><br/>
 	<h2><a href="cdao-explorer/launch.jnlp">Go to CDAO Explorer Application</a></h2>
 	
-	</div><div id="footer">  <hr/>  
-	WARNING: This is still in alpha-testing.  There are known bugs that will crash the application.  If you are using this and a tree crashes or does not display properly, please email <a href="mailto:cdaotools@gmail.com">us</a>
-    
-     <p about=""
-     resource="http://www.w3.org/TR/rdfa-syntax"
-          rel="dct:conformsTo" xmlns:dc="http://purl.org/dc/terms/">
-	      <a href="http://validator.w3.org/check?uri=referer" ><img
-	              src="http://www.w3.org/Icons/valid-xhtml-rdfa-blue"
-		              alt="Valid XHTML + RDFa" style="border:0px;"   /></a>
-			        </p>
-
-  </div>
-  </div>
-  </div>
- </body>
-</html>
+	</div>
+<?php require_once 'footer.php'?>

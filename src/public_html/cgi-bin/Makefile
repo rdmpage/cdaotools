@@ -10,7 +10,9 @@ REMOTE_CGI_DIR=~/public_html/cgi-bin
 deploy: cdao-import.deployed
 	(cd phylows && make deploy)
 
+production-deploy:
+
 cdao-import.deployed: cdao-import.sh
 	scp cdao-import.sh $(REMOTE_HOST):$(REMOTE_CGI_DIR)/cdao-import
-	ssh $(REMOTE_HOST) "cd $(REMOTE_CGI_DIR) && chmod 711 cdao-import"
+	ssh $(REMOTE_HOST) "cd $(REMOTE_CGI_DIR) && chmod 755 cdao-import"
 	touch cdao-import.deployed
