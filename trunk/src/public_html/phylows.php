@@ -9,12 +9,12 @@
                    <input type="submit" class="button" id="import-submit" value="Import" /></p>
 		 </form>
 		<h3>Translate a file into CDAO format</h3>
-		<form action="inputfiletranslator.php" enctype="multipart/form-data" method="post">
+		<form action="cgi-bin/inputfiletranslator" enctype="multipart/form-data" method="post">
 		<p>File format
 		<select name="format">
-			<option value="M">MEGA</option>
-			<option value="P">PHYLIP</option>
-			<option value="N">NEXUS</option>
+			<option value="MEGA">MEGA</option>
+			<option value="PHYLIP">PHYLIP</option>
+			<option value="NEXUS">NEXUS</option>
 		</select>
 		File name
 		<input type="file" name="inputfile">
