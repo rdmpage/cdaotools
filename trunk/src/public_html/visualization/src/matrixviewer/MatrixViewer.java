@@ -29,12 +29,14 @@ import matrixviewer.model.MatrixFactory;
 import matrixviewer.model.Range;
 import matrixviewer.view.MatrixView;
 import org.jdesktop.application.Action;
+import org.jdesktop.application.FrameView;
+import org.jdesktop.application.SingleFrameApplication;
 
 /**
  *
  * @author bchisham
  */
-public class MatrixViewer extends javax.swing.JFrame {
+public class MatrixViewer extends JFrame {
     private Matrix matrix;
     private static String ftype = "csv";
     private Range rowRange;
@@ -43,18 +45,21 @@ public class MatrixViewer extends javax.swing.JFrame {
     //private OpenURLDialog openUrlDialog;
     /** Creates new form MatrixViewer */
     public MatrixViewer() {
+        //super(app);
         initComponents();
         this.scaleButton.setEnabled( false );
         this.restoreScaleButton.setEnabled( false );
         //this.unloadAction();
     }
 
-    public MatrixViewer(String fileorurl){
+    public MatrixViewer( String fileorurl){
+        //super(app);
         initComponents();
         this.openFile( fileorurl );
     }
 
-    public MatrixViewer(Matrix matrix){
+    public MatrixViewer( Matrix matrix){
+        //super(app);
         initComponents();
         this.matrix = matrix;
         //this.setMatrix(matrix, "No Title");
@@ -669,7 +674,9 @@ public class MatrixViewer extends javax.swing.JFrame {
     }//GEN-LAST:event_highlightButtonActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        this.kd.setVisible(false);
+        if (this.kd != null){
+          this.kd.setVisible(false);
+        }
     }//GEN-LAST:event_formWindowClosing
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed

@@ -84,7 +84,7 @@ public class MatrixDatumMetaDataView extends javax.swing.JDialog {
 
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(matrixviewer.MatrixViewerApp.class).getContext().getResourceMap(MatrixDatumMetaDataView.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(MatrixDatumMetaDataView.class);
         titleLabel.setFont(resourceMap.getFont("titleLabel.font")); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText(resourceMap.getString("titleLabel.text")); // NOI18N

@@ -50,12 +50,12 @@ public class CDAOMatrixChooser extends CDAODataSetChooser {
             System.err.println("Displaying URI: " + matrixURI);
             params[0] = matrixURI;
             params[1] = matrixURI;
-
+            MatrixViewerApp.main(params);
             //MatrixViewer.main(params);
-            MatrixViewer mv = new MatrixViewer(  );
-            mv.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-            mv.openFile( matrixURI );
-            mv.setVisible( true );
+            //MatrixViewer mv = new MatrixViewer(  );
+            //mv.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+            //mv.openFile( matrixURI );
+            //mv.setVisible( true );
        
 
     }

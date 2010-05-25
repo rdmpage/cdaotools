@@ -137,7 +137,7 @@ public class Workbench extends javax.swing.JFrame {
         titleLabel = new javax.swing.JLabel();
         selectTreeToggleButton = new javax.swing.JToggleButton();
         selectMatrixToggleButton = new javax.swing.JToggleButton();
-        annotationListPanel = new cdaoexplorer.forms.panels.AnnotationListPanel();
+        annotationListPanel1 = new cdaoexplorer.forms.panels.AnnotationListPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMatrixMenuItem = new javax.swing.JMenuItem();
@@ -234,12 +234,12 @@ public class Workbench extends javax.swing.JFrame {
                     .add(layout.createSequentialGroup()
                         .add(iconLabel)
                         .add(18, 18, 18)
-                        .add(titleLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE))
+                        .add(titleLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
                         .add(selectTreeToggleButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(selectMatrixToggleButton))
-                    .add(annotationListPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(annotationListPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -249,9 +249,9 @@ public class Workbench extends javax.swing.JFrame {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(titleLabel)
                     .add(iconLabel))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(annotationListPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(annotationListPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 33, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(selectTreeToggleButton)
                     .add(selectMatrixToggleButton))
@@ -300,7 +300,7 @@ public class Workbench extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
-    private cdaoexplorer.forms.panels.AnnotationListPanel annotationListPanel;
+    private cdaoexplorer.forms.panels.AnnotationListPanel annotationListPanel1;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
