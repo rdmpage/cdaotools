@@ -230,6 +230,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="syncAnnotationsButton">
       <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="syncAnnotationsButton.text"/>
         <Property name="name" type="java.lang.String" value="syncAnnotationsButton" noResource="true"/>
       </Properties>
       <Events>
