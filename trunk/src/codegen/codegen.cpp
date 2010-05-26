@@ -125,6 +125,9 @@ namespace CDAO {
   
   void writeNcaInfo( wostream& out,const Node* current,  const vector< const Node* >& allDescendants );
   
+  CodeGenerator::CodeGenerator(const DataRepresentation* dm):data_model_(dm){}
+  CodeGenerator::~CodeGenerator(){}
+
   /*
    * Write ontology to the specified stream.
    */
