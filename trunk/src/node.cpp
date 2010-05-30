@@ -12,8 +12,25 @@ namespace CDAO {
      }
   }
 
+  std::wostream& operator<<( std::wostream& out, const Node* node ){
+      
+      if ( node && node->descendants_.size() ){
+        out << L"(";
+	vector< const Node* >::const_iterator it = node->descendants_.begin();
+	out << *it;
+        ++it
+        for (; it != descendants_.end(); ++it ){
+	   out << L"," << *it ;
+         }
+         out << L")" << node->getLabel();
+      } else if ( node ){
+	  node->getLabel();
+      }
+  }
+
+
   void Node::printTree(unsigned int level,  std::wostream& out  )const{
-    for (unsigned int i = 0; i < level; ++i ){ out << L"  L";}
+    for (unsigned int i = 0; i < level; ++i ){ out << L"  ";}
     out <<L"Name:" <<  this->getLabel() << L" Weight:" << this->getWeight() <<L"\n";
     for (unsigned int i = 0; i < descendants_.size(); ++i){
       descendants_[i]->printTree( level + 1, out);
@@ -127,6 +144,6 @@ namespace CDAO {
     }
     return ret;
   }
-
+ 
 }
 

@@ -27,6 +27,8 @@ public:
   static std::wostream* getErrorfile(){ return err_; }
 //  static std::ostream* getNarrowErrorfile(){ return narrow_err_; }
   static bool isInterleaved(){ return interleaved_; }
+  Format_t getInFormat()const{ return in_format_; }
+  Format_t getOutFormat()const{ return out_format_; }
 private:
   static std::wistream* in_;
  // static std::istream* narrow_in_;
@@ -35,6 +37,8 @@ private:
   static std::wostream* err_;
  // static std::ostream* narrow_err_;
   static bool interleaved_;
+  static Format_t in_format_;
+  static Format_t out_format_;
   
 };
 
@@ -53,12 +57,27 @@ private:
 
   static const std::string INFILE_ARG  =  "-i";
   static const std::string OUTFILE_ARG =  "-o";
+  static const std::string INFORMAT_ARG = "-if";
+  static const std::string OUTFORMAT_ARG = "-of";
   static const std::string INTERLEAVED_ARG = "-il";
   static const std::string VERBOSE_1   =  "-v";
   static const std::string VERBOSE_2   =  "-vv";
   static const std::string VERBOSE_3   =  "-vvv";
   static const std::string VERBOSE_4   =  "-vvvv";
   static const std::string VERBOSE_5   =  "-vvvvv";
+
+  static const std::string NEXUS_FORMAT_ARG = "nexus";
+  static const std::string PHYLIP_FORMAT_ARG = "phylip";
+  static const std::string MEGA_FORMAT_ARG = "mega";
+  static const std::string NEXML_FORMAT_ARG = "nexml";
+  static const std::string CDAO_FORMAT_ARG  = "cdao";
+  typedef enum {
+	NEXUS_FORMAT,
+	PHYLIP_FORMAT,
+	MEGA_FORMAT,
+	NEXML_FORMAT,
+	CDAO_FORMAT
+  }Format_t;
 
   /*
    * Process the argument list and setup the environment.

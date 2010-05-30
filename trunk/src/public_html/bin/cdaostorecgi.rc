@@ -41,7 +41,7 @@ Content-type: text/html; charset: utf-8
   <div class="wrap-shadow">
   <div class="wrap">
    <div class="header">
-       <h1 class="header"><a href="../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a>Cdao Store</h1>
+       <h1 class="header"><a href="../../index.php"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao-Store Logo" style="border: 0px;" /></a>Cdao Store</h1>
    </div>
    <div class="content" style="scroll: auto;">
 EOM

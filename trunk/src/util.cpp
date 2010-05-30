@@ -10,7 +10,7 @@
 
 #include <fstream>
 #include <iostream>
-
+#include <map>
 #include <Logger.hpp>
 #include <AbstractStream.hpp>
 #include <LogManager.hpp>
@@ -27,6 +27,9 @@ namespace CDAO {
   wostream* GlobalState::err_ = &std::wcerr;
  // ostream* GlobalState::narrow_err_ = &std::cerr;
   bool GlobalState::interleaved_ = false;
+
+  Format_t GlobalState::in_format_ = NEXUS_FORMAT;
+  Format_t GlobalState::out_format_ = CDAO_FORMAT;
 
 static std::string input_file = "";
 static std::string output_file = "";
@@ -69,6 +72,14 @@ wstring number_to_wstring( int number ){
 
 void processArgs(int argc, char** argv, char** env){
 
+  map< string, Format_t > arg_to_format();
+
+  arg_to_format[ NEXUS_FORMAT_ARG  ] = NEXUS_FORMAT;
+  arg_to_format[ NEXML_FORMAT_ARG  ] = NEXML_FORMAT;
+  arg_to_format[ CDAO_FORMAT_ARG   ] = CDAO_FORMAT;
+  arg_to_format[ PHYLIP_FORMAT_ARG ] = PHYLIP_FORMAT;
+  arg_to_format[ MEGA_FORMAT_ARG   ] = MEGA_FORMAT;
+
   //wcerr << L"processArgs( argc: " << argc << ", argv: " << argv << ", env: " << env << ")\n";
   GlobalState::setInfile( &wcin );
   GlobalState::setOutfile( &wcout );
@@ -107,6 +118,19 @@ void processArgs(int argc, char** argv, char** env){
     else if (argv[ i ] == INTERLEAVED_ARG){
         GlobalState::setInterleaved( true );
     }
+
+    else if ( argv[ i ]  == INFORMAT_ARG ){
+       if ( arg_to_format.find( argv[ i + 1 ] ) != arg_to_format.end() ){
+        GlobalState::setInFormat( arg_to_format[ argv[ i + 1] ] );
+       }
+    }
+    
+    else if ( argv[ i ] == OUTFORMAT_ARG ){
+       if ( arg_to_format.find( argv[ i + 1 ] ) != arg_to_format.end() ){
+        GlobalState::setOutFormat( arg_to_format[ argv[ i + 1 ] ] );
+       }
+    }
+
     /*
     else if ( argv[ i ] == VERBOSE_1){
       //initLog( lmgr, argv[ i + 1], ALERT_MESSAGES_LR ); 

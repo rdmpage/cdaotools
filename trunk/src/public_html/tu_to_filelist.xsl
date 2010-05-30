@@ -8,9 +8,14 @@
    <xsl:template match="/">
      <!--<html:p>Target: <xsl:value-of select="$target"/></html:p>-->
      <xsl:for-each select="./*/tu[ @id = $target ]/tree">
+         <xsl:value-of select="@name"/>
          <a>
            <xsl:attribute name="href">../tree/query?format=html&amp;tree=<xsl:value-of select="@name"/></xsl:attribute>
-           <xsl:value-of select="./@name"/>
+           Query
+         </a>
+         <a>
+           <xsl:attribute  name="href">../../cdao-explorer/launch.php?tree=<xsl:value-of select="@name"/></xsl:attribute>
+           View
          </a>
          <br/>
      </xsl:for-each>
