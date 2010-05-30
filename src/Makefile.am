@@ -25,7 +25,10 @@ cdao_import_SOURCES=main.cpp \
 		    $(NEXDIR)/nexus_reader.cpp $(NEXDIR)/nexus_reader.hpp \
 		    $(PHYDIR)/phylip_reader.cpp $(PHYDIR)/phylip_reader.hpp \
 		    $(CODEGEN)/constants.hpp \
-		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
+		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp \
+		    $(CODEGEN)/nexus/nexus-codegen.cpp $(CODEGEN)/nexus/nexus-codegen.hpp \
+		    $(CODEGEN)/phylip/phylip-codegen.cpp $(CODEGEN)/phylip/phylip-codegen.hpp \
+		    $(CODEGEN)/mega/mega-codegen.cpp $(CODEGEN)/mega/mega-codegen.hpp 
 cdao_import_LDADD=$(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 
 
@@ -75,7 +78,11 @@ cdao_phylip_import_SOURCES=main4.cpp \
 		    $(NEXDIR)/nexus_reader.cpp $(NEXDIR)/nexus_reader.hpp \
 		    $(PHYDIR)/phylip_reader.cpp $(PHYDIR)/phylip_reader.hpp \
 	 	    $(CODEGEN)/constants.hpp \
-		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
+		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp \
+		    $(CODEGEN)/nexus/nexus-codegen.cpp $(CODEGEN)/nexus/nexus-codegen.hpp \
+		    $(CODEGEN)/phylip/phylip-codegen.cpp $(CODEGEN)/phylip/phylip-codegen.hpp \
+		    $(CODEGEN)/mega/mega-codegen.cpp $(CODEGEN)/mega/mega-codegen.hpp 
+
 cdao_phylip_import_LDADD=$(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 
 

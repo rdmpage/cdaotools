@@ -24,18 +24,23 @@ void writeHeader( wostream& out, const DataRepresentation* model ){
 }
 void writeTaxa( wostream& out, const DataRepresentation* model ){
     if ( model ){
-      out << L"BEGIN TAXA " << endl;
+      out << L"BEGIN TAXA;" << endl;
+      out << L"DIMENSIONS ntax=" << model->getNTax() << L";" << endl;
+      out << L"TAXLABELS" << endl;
       for ( unsigned taxon = 0; taxon < model->getNTax(); ++taxon ){
-          out << model->getTaxonLabel( taxon );
-	  out << " ";
+          out << "\'" << model->getTaxonLabel( taxon ) << "\'" << endl;
       }
-      out << L"END;" << endl;
+      out << L";" << endl;
+      out << "END;" << endl;
     }
 }
 
 void writeMatrix( wostream& out, const DataRepresentation* model ){
    if ( model ){ 
-     out << L"BEGIN MATRIX" << endl;
+     out << L"BEGIN CHARACTERS;" << endl;
+     out << L" dimensions nchar=" << model->getNTraits() << ";" << endl;
+     out << L" format datatype=" << model->getDataType() << L" missing=" << model->getMissingChar() << L" gap=" << model->getGapChar() << ";" << endl;
+     out << L"MATRIX" << endl;
      for (unsigned taxon = 0; taxon < model->getNTax(); ++taxon){
 	 out << model->getTaxonLabel( taxon ) << L" ";
 	 for (unsigned trait = 0; trait < model->getNTraits(); ++trait){
@@ -44,13 +49,22 @@ void writeMatrix( wostream& out, const DataRepresentation* model ){
 	 out << endl;
        }
     }
-
-     out << L"END;" << endl;
+    out << L";" << endl; 
+    out << L"END;" << endl;
    }
 }
 void writeTree( wostream& out, const DataRepresentation* model ){
-   if ( model ){
-
+   if ( model &&  model->getNumTrees() ){
+	out << "BEGIN TREES;" << endl;
+	for (unsigned tree = 0; tree < model->getNumTrees(); ++tree){
+ 	   out << L"TREE " << model->getTreeLabel( tree ) << L" ";
+	   if ( model->isRooted( tree ) ){
+	     out << L"[&R] ";
+	   }
+	   else { out << L"[&U] "; }
+	   out << model->getParseTree( tree );
+	}
+	out << "END;" << endl;
    }
 }
 

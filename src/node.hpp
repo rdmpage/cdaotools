@@ -22,6 +22,9 @@ namespace CDAO {
   class Node 
   {
   public:
+
+    friend std::wostream& operator<<( std::wostream& out, const Node* node );
+
     /*
     void* operator new( unsigned long size ){
          void* ret = shm_malloc( size );

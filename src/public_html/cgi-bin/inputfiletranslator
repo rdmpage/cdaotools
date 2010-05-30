@@ -44,8 +44,10 @@ if ($q->param()) {
           my $file = save_file($q);
           
 	  if ( $q->param('format')  == "NEXUS" ){
-	    system( "/home/grad6/bchisham/bin/cdao-mass-import -i $file" );
-	    print $q->p( "<a href=\"$file.cdao\">Translated File</a>" );
+	    system( "./cdao-import $file" );
+	    #print "<pre>" . `sed 's/phylowsupload/phylows\/upload/g' $file.cdao | sed 's/</&lt;/g' | sed 's/>/&gt;/g'` . "</pre>"  ;
+	    
+	    print $q->p( "<a href=\"../$file.cdao\">Translated File</a>" );
 	    print $q->p( "<a href=\"$TRIPLESTORE_IMPORT_URL?ontology=$file.cdao\">Add to the Triplestore</a>" );
 	    print $q->p( "<a href=\"../index.php\">Home</a>" );
 	  }
@@ -82,7 +84,7 @@ EOT
 	 Rename your file so that it does not include the sequence '..', and try again.
 EOT
      }
-     my $file = "../upload/$untainted_filename" . rand();
+     my $file = "upload/$untainted_filename";
      print "<p>Uploading $filename to $file</p>";
      # If running this on a non-Unix/non-Linux/non-MacOS platform, be sure to 
      # set binmode on the OUTFILE filehandle, refer to 

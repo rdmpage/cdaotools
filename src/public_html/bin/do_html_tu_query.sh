@@ -28,7 +28,7 @@ function print_results {
              done);
   
   RESULTS=$(echo $RESULTS | sort | uniq)
-  RESULT_SIZE=$(echo $RESULTS | grep -oE "href" | wc -l )
+  RESULT_SIZE=$[$(echo $RESULTS | grep -oE "href" | wc -l ) / 2 ]
   echo $RESULTS
   echo "<p>Results: <span class=\"result-count\">$RESULT_SIZE</span></p>"
   echo "</div>"
