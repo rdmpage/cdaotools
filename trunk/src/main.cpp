@@ -7,9 +7,12 @@
 #include <string>
 #include <data_representation.hpp>
 #include <grammar/nexus/nexus_reader.hpp>
+#include <grammar/phylip/phylip_reader.hpp>
 #include <codegen/constants.hpp>
 #include <codegen/codegen.hpp>
-
+#include <codegen/nexus/nexus-codegen.hpp>
+#include <codegen/phylip/phylip-codegen.hpp>
+#include <codegen/mega/mega-codegen.hpp>
 #include <fstream>
 #include <iostream>
 
@@ -38,15 +41,38 @@ int main(int argc, char** argv, char** env){
   //parse the input stream
 
   map_segment();  
+  DataRepresentation* data = NULL;
+  switch ( GlobalState::getInFormat() ){
+      case PHYLIP_FORMAT:
+	data = phylipparse();
+        break;
+      default:
+	data = nexusparse();
+	break;
+  }
 
-  DataRepresentation* data = nexusparse();
+  //DataRepresentation* data = nexusparse();
   data->setMatrixLabel( CDAO::str_to_wstr( getInputFile() ) );
   lmgr.log(INFO_MESSAGES_LR, "Parsed the input file\n");
   lmgr.log(INFO_MESSAGES_LR, "Preparing to generate output\n");
   //configure the output generator
-  CodeGenerator outputFormatter( data );
+  CodeGenerator* outputFormatter = NULL;
+  switch ( GlobalState::getOutFormat() ){
+    case NEXUS_FORMAT:
+      outputFormatter = new NexusCodeGenerator( data );
+      break;
+    case PHYLIP_FORMAT:
+      outputFormatter = new PhylipCodeGenerator( data );
+      break;
+    case MEGA_FORMAT:
+      //TODO write mega format output generator and initialize it here.
+      break;
+    default:
+      outputFormatter = new CodeGenerator( data );
+      break;
+  }
   //write the output
-  outputFormatter.generate( *(GlobalState::getOutfile()) );
+  outputFormatter->generate( *(GlobalState::getOutfile()) );
 
   delete data;
   unmap_segment();
