@@ -80,8 +80,12 @@ namespace CDAO {
     virtual const unsigned int getTaxonNumber( const wstring& label)const=0;
 
     virtual const bool isGap( const wchar_t ch )const=0;
-    
+
+    virtual const char getGapChar()const=0;
+
     virtual const bool isMissing( const wchar_t ch )const=0;
+
+    virtual const char getMissingChar()const=0;
   private:
   };
 }

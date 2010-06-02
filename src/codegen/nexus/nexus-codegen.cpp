@@ -13,10 +13,10 @@ static void writeTree( wostream& out, const DataRepresentation* model );
 
 
 void NexusCodeGenerator::generate( std::wostream& out){
-    const unsigned PHY_TAX_WIDTH = 10;
+    //const unsigned PHY_TAX_WIDTH = 10;
     if ( data_model_ ){
        //out << data_model_->getNTax() << " " << data_model_->getNTraits() << endl;
-      
+    } 
 }
 
 void writeHeader( wostream& out, const DataRepresentation* model ){
@@ -51,17 +51,17 @@ void writeMatrix( wostream& out, const DataRepresentation* model ){
     }
     out << L";" << endl; 
     out << L"END;" << endl;
-   }
 }
+
 void writeTree( wostream& out, const DataRepresentation* model ){
    if ( model &&  model->getNumTrees() ){
 	out << "BEGIN TREES;" << endl;
 	for (unsigned tree = 0; tree < model->getNumTrees(); ++tree){
  	   out << L"TREE " << model->getTreeLabel( tree ) << L" ";
-	   if ( model->isRooted( tree ) ){
-	     out << L"[&R] ";
-	   }
-	   else { out << L"[&U] "; }
+	   //if ( model->isRooted( tree ) ){
+	   //  out << L"[&R] ";
+	   //}
+	   ///else { out << L"[&U] "; }
 	   out << model->getParseTree( tree );
 	}
 	out << "END;" << endl;

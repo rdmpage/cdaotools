@@ -118,6 +118,10 @@ namespace CDAO {
     
     virtual const bool isMissing( const wchar_t ch )const{ return !characters_ || characters_->IsEmpty() ? false : characters_->GetMissingSymbol() == ch; }
 
+    virtual const char getGapChar()const;
+
+    virtual const char getMissingChar()const;
+
     virtual const unsigned int getNumTrees()const{ return trees_ && !trees_->IsEmpty() ? trees_->GetNumTrees() : 0; }
   private:
     const Node* findNode(const wstring& key, const Node* current )const;

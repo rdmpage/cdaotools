@@ -44,7 +44,9 @@ class TreeRepresentation : public DataRepresentation {
     virtual const unsigned int getTaxonNumber(const std::wstring&) const;
     virtual const bool isGap(wchar_t) const;
     virtual const bool isMissing(wchar_t) const;
-
+    virtual const char getGapChar()const{ return '-';}
+    virtual const char getMissingChar()const{ return '?';}
+   
   private:
     wstring matrix_label_;
     vector< wstring > taxa_;

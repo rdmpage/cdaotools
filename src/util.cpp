@@ -72,7 +72,7 @@ wstring number_to_wstring( int number ){
 
 void processArgs(int argc, char** argv, char** env){
 
-  map< string, Format_t > arg_to_format();
+  map< string, Format_t > arg_to_format = map< string, Format_t >();
 
   arg_to_format[ NEXUS_FORMAT_ARG  ] = NEXUS_FORMAT;
   arg_to_format[ NEXML_FORMAT_ARG  ] = NEXML_FORMAT;

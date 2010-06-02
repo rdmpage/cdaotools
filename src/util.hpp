@@ -10,6 +10,15 @@
 
 namespace CDAO {
 
+  enum Format_t {
+	NEXUS_FORMAT,
+	PHYLIP_FORMAT,
+	MEGA_FORMAT,
+	NEXML_FORMAT,
+	CDAO_FORMAT
+  };
+
+
 class GlobalState {
 public:
   //static init(std::istream* in=&std::cin, std::istream* out=&std::cout):in_(in), out_(out){}
@@ -27,8 +36,10 @@ public:
   static std::wostream* getErrorfile(){ return err_; }
 //  static std::ostream* getNarrowErrorfile(){ return narrow_err_; }
   static bool isInterleaved(){ return interleaved_; }
-  Format_t getInFormat()const{ return in_format_; }
-  Format_t getOutFormat()const{ return out_format_; }
+  static Format_t getInFormat(){ return in_format_; }
+  static void setInFormat( Format_t inf ){ in_format_ = inf; }
+  static Format_t getOutFormat(){ return out_format_; }
+  static void setOutFormat( Format_t otf ){ out_format_ = otf; }
 private:
   static std::wistream* in_;
  // static std::istream* narrow_in_;
@@ -71,14 +82,7 @@ private:
   static const std::string MEGA_FORMAT_ARG = "mega";
   static const std::string NEXML_FORMAT_ARG = "nexml";
   static const std::string CDAO_FORMAT_ARG  = "cdao";
-  typedef enum {
-	NEXUS_FORMAT,
-	PHYLIP_FORMAT,
-	MEGA_FORMAT,
-	NEXML_FORMAT,
-	CDAO_FORMAT
-  }Format_t;
-
+  
   /*
    * Process the argument list and setup the environment.
    */
