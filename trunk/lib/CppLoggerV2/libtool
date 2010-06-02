@@ -44,7 +44,7 @@ available_tags=" CXX"
 
 # ### BEGIN LIBTOOL CONFIG
 
-# Libtool was configured on host paula-malin.local:
+# Libtool was configured on host dhcp00.cs.nmsu.edu:
 
 # Shell to use when invoking shell scripts.
 SHELL="/bin/sh"
@@ -7328,7 +7328,7 @@ disable_libs=static
 # End:
 # ### BEGIN LIBTOOL TAG CONFIG: CXX
 
-# Libtool was configured on host paula-malin.local:
+# Libtool was configured on host dhcp00.cs.nmsu.edu:
 
 # Shell to use when invoking shell scripts.
 SHELL="/bin/sh"

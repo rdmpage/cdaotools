@@ -41,7 +41,8 @@ namespace CDAO {
        const Node* findNode( unsigned int, unsigned int )const{ return NULL; }
        const bool isMissing( wchar_t datum )const{ return datum == MISSING_CHAR; }
        const unsigned int getTaxonNumber(const std::wstring& label )const;
-
+       const char getGapChar()const{ return GAP_CHAR; }
+       const char getMissingChar()const{ return MISSING_CHAR; }
      private:
        std::wstring matrix_label_;
        unsigned int data_type_;

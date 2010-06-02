@@ -180,6 +180,8 @@ namespace CDAO {
   return ret;
   }
  
+  const char NexusDataRepresentation::getGapChar()const{ return '-'; }
+  const char NexusDataRepresentation::getMissingChar()const{ return '?'; }
 
 }
 

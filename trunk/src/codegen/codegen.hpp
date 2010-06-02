@@ -23,7 +23,7 @@ class CodeGenerator {
      /*
       * Initialize the code generator to use the specified data model.
       */
-     CodeGenerator( const DataRepresentation* data_model):data_model_( data_model ){ assert( data_model_); }
+     CodeGenerator( const DataRepresentation* data_model)/*:data_model_( data_model ){ assert( data_model_); }*/;
      virtual ~CodeGenerator();
      /*
       * Generate the output in ontology format.

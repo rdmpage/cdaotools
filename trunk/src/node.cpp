@@ -18,14 +18,15 @@ namespace CDAO {
         out << L"(";
 	vector< const Node* >::const_iterator it = node->descendants_.begin();
 	out << *it;
-        ++it
-        for (; it != descendants_.end(); ++it ){
+        ++it;
+        for (; it != node->descendants_.end(); ++it ){
 	   out << L"," << *it ;
          }
          out << L")" << node->getLabel();
       } else if ( node ){
 	  node->getLabel();
       }
+      return out;
   }
 
 

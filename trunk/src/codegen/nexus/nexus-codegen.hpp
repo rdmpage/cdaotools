@@ -13,7 +13,7 @@ namespace CDAO {
 	   /**
 	    * Create a generator for the specified model.
 	    */
-	   NexusCodeGenerator( const DataRepresentation* data_model ):CodeGenerator(data_model){}
+	   NexusCodeGenerator( const DataRepresentation* data_model );
 	   /**
 	    * Cleanup
 	    */
