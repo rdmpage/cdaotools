@@ -1,6 +1,5 @@
 package prefuse.demos;
 
-import cdaoexplorer.forms.dialogs.ErrorReportDialog;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -12,7 +11,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -84,25 +87,43 @@ import prefuse.visual.VisualItem;
  */
 public class CDAOview extends JPanel {
 
+	/** String name for visual graph*/
     private static final String graph = "graph";
+    /** String name for nodes of visual graph*/
     private static final String nodes = "graph.nodes";
+    /** String name for edges of visual graph*/
     private static final String edges = "graph.edges";
+    /** Base URL where files for visual trees will be located*/
     private static final String BASE_URI = "http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/tree";
+    /** Default tree to load*/
     private static final String DEFAULT_GRAPH_URL= BASE_URI + "/" + "Tree3099?format=graphml";
+    /** this visualization */
     private Visualization m_vis;
     
+    /** This CDAOviews graph*/
+    private Graph m_graph;
+    /** This graph's ForceDirected layout, can be switched with nltl*/
     protected static ForceDirectedLayout fdl;
+    /** This graph's NodeLink Layout, can be switched with fdl*/
     protected static NodeLinkTreeLayout nltl;
+    /** This the they 'fisheye' lens, can be turned on/off */
     protected static BifocalDistortion feye;
+    /** The display, has access to the actions/controls used*/
     protected static Display display;
+    /** This is the control that looks over feye*/
     protected static AnchorUpdateControl fishUpdate;
-    protected static ErrorReportDialog errorDialog = new ErrorReportDialog( null, false );
     
+    /**
+     * 
+     * @param g Graph to be loaded into CDAOview
+     * @param label The key name to show as a label in the visualization
+     */
     public CDAOview(Graph g, String label) {
     	super(new BorderLayout());
     	
         // create a new, empty visualization for our data
         m_vis = new Visualization();
+        m_graph = g;
         
         // --------------------------------------------------------------------
         // set up the renderers
@@ -188,9 +209,8 @@ public class CDAOview extends JPanel {
         display.setBackground(Color.WHITE);
         
         // main display controls
-        //display.addControlListener(new BifocalDistortion(.1, 5.0));
         fishUpdate = new AnchorUpdateControl(feye, "layout");
-        display.addControlListener(fishUpdate);//new AnchorUpdateControl(feye, "layout"));
+        display.addControlListener(fishUpdate);
         display.addControlListener(new FocusControl(1));
         display.addControlListener(new DragControl());
         display.addControlListener(new PanControl());
@@ -199,11 +219,6 @@ public class CDAOview extends JPanel {
         display.addControlListener(new ZoomToFitControl());
         display.addControlListener(new ToolTipControl("IdLabel"));
         display.addControlListener(new NeighborHighlightControl());	
-
-        // overview display
-//        Display overview = new Display(vis);
-//        overview.setSize(290,290);
-//        overview.addItemBoundsListener(new FitOverviewListener());
         
         display.setForeground(Color.GRAY);
         display.setBackground(Color.WHITE);
@@ -253,6 +268,15 @@ public class CDAOview extends JPanel {
         m_vis.run("draw");
         add(display);          
 
+    }
+    
+    /**
+     * This returns the graph of the current CDAOview
+     * @return m_graph
+     */
+    public Graph getGraph()
+    {
+    	return m_graph;
     }
     
     public void setGraph(Graph g, String label) {
@@ -324,11 +348,8 @@ public class CDAOview extends JPanel {
             try {
                 g = new GraphMLReader().readGraph(  datafile );
             } catch ( Exception e ) {
-                errorDialog.setExceptionInfo( e );
-                errorDialog.setRequestURI(datafile);
-                errorDialog.setVisible( true );
                 e.printStackTrace();
-                //System.exit(1);
+                System.exit(1);
             }
         }
         return demo(g, label);
@@ -343,9 +364,6 @@ public class CDAOview extends JPanel {
             try {
                 g = new GraphMLReader().readGraph(  datafile );
             } catch ( Exception e ) {
-                errorDialog.setExceptionInfo( e );
-                errorDialog.setRequestURI(datafile.toString());
-                errorDialog.setVisible( true );
                 e.printStackTrace();
                 System.exit(1);
             }
@@ -365,25 +383,21 @@ public class CDAOview extends JPanel {
         JMenu effectMenu = new JMenu("Effects");
         effectMenu.setMnemonic(KeyEvent.VK_E);
         FisheyeZoomAction fza = new FisheyeZoomAction(view);
-        //JComponent eff = new JComponent();
-        //eff.add(fza);
-        //eff.add(new JCheckBox());
         effectMenu.add(fza);
-        //effectMenu.add(new FisheyeZoomAction(view));
-        //effectMenu.add(new JCheckBox());
+        
+        JMenu saveMenu = new JMenu("Save");
+        saveMenu.setMnemonic(KeyEvent.VK_S);
+        saveMenu.add(new SaveImageAction(view));
         
         JMenuBar menubar = new JMenuBar();
         menubar.add(dataMenu);
         menubar.add(effectMenu);
+        menubar.add(saveMenu);
         
         // launch window
         JFrame frame = new JFrame("Tree Viewer | powered by prefuse");
         frame.setJMenuBar(menubar);
         frame.setContentPane(view);
-        
-        //Container contentpane = frame.getContentPane();
-        
-        //contentpane.add(view);
         
         frame.pack();
         frame.setVisible(true);
@@ -401,8 +415,6 @@ public class CDAOview extends JPanel {
                 view.m_vis.cancel("layout");
             }
         });
-        
-
         return frame;
     }
     
@@ -425,7 +437,36 @@ public class CDAOview extends JPanel {
         }
         protected abstract Graph getGraph();
     }
+    /**
+     * This menu option saves the graph as an image.
+     * @author Ben Wright
+     *
+     */
+    public static class SaveImageAction extends AbstractAction {
+    	private CDAOview m_view;
+    	public SaveImageAction(CDAOview view){
+    		m_view = view;
+    		this.putValue(AbstractAction.NAME, "Save Graph As...");
+    	}
+    	public void actionPerformed(ActionEvent e)
+    	{
+    	   File f = new File("Temp");
+    	   FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(f);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	   display.saveImage(fos, "JPG", 2.0);
+    	}
+    }
     
+    /**
+     * Swing menu action that loads a graph into a nice tree structure from left to right.
+     * This layout is switched around with the Force Layout.
+     * @author Ben Wright
+     */
     public static class NodeLinkTreeLayoutAction extends AbstractAction {
     	private CDAOview m_view;
     	public NodeLinkTreeLayoutAction(CDAOview view){
@@ -443,57 +484,29 @@ public class CDAOview extends JPanel {
     	  m_view.m_vis.run("draw");
     	}
     }
-    
+    /**
+     * Swing menu action that loads a graph into a the visualization that allows it to "wander" and be moved around as if on springs.
+     * This layout is switched around with the Node Link Tree Layout
+     * @author Ben Wright
+     *
+     */
     public static class ForceLayoutAction extends AbstractAction {
         private CDAOview m_view;
-
         public ForceLayoutAction(CDAOview view) {
             m_view = view;
-            /*this.putValue(AbstractAction.NAME, "Open File...");*/
             this.putValue(AbstractAction.ACCELERATOR_KEY,
                           KeyStroke.getKeyStroke("ctrl f"));
             this.putValue(AbstractAction.NAME, "Force Layout");
         }
         public void actionPerformed(ActionEvent e) {
          	  ActionList l = (ActionList) m_view.m_vis.getAction("layout");
-        	  
          	  nltl.cancel();
-         	  
          	  l.remove(nltl);
         	  l.add(fdl);
-        	  
         	  fdl.reset();
         	  fdl.run();
-        	  
-        	  //Point2D pt = fdl.getLayoutAnchor();
-        	  //pt = new Point2D();
-        	  //Point2D pt = null;
-        	  //fdl.setLayoutAnchor(pt);
-        	  
-        	  //m_view.validate();
-        	  
         	  m_view.m_vis.putAction("layout", l);
         	  m_view.m_vis.run("draw");
-        	
-        	/*Graph g = new Graph();
-			try {
-				g = new GraphMLReader().readGraph( new URL( DEFAULT_GRAPH_URL ) );
-			} catch (DataIOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-                        catch ( MalformedURLException ex ){
-                            
-                        }
-            if ( g == null ) return;
-            String label1 = "IdLabel";
-            String label2 = getLabel(m_view, g);
-            
-            System.out.println("label1 = (" + label1+") and label2=(" + label2+")");
-            
-            if ( label2 != null ) {
-                m_view.setGraph(g, label2);
-            }*/
         }
         public static String getLabel(Component c, Graph g) {
             // get the column names
@@ -578,6 +591,11 @@ public class CDAOview extends JPanel {
         }
     }
     protected static boolean fishFlag = true;
+    /**
+     * Swing menu action that turns on/off the effect of a 'fish eye' lens.
+     * @author Ben Wright
+     *
+     */
     public static class FisheyeZoomAction extends AbstractAction {
     	private CDAOview m_view;
     	public FisheyeZoomAction(CDAOview view){
@@ -590,26 +608,14 @@ public class CDAOview extends JPanel {
     	{
     	  if(fishFlag) //flag on
     	  {
-    		  ActionList l = (ActionList)m_view.m_vis.getAction("layout");
     		  feye.setEnabled(false);
-    		  //l.remove(feye);
     		  fishUpdate.setEnabled(false);
-    		  //m_view.m_vis.putAction("layout", l);
-    		  //m_view.m_vis.run("draw");
     		  fishFlag = false;
     	  }
     	  else //flag off
     	  {
-    		ActionList l = (ActionList)m_view.m_vis.getAction("layout");
-    		//feye = new BifocalDistortion(0.05, 2.0);
     		feye.setEnabled(true);
-    		//l.add(feye);
-    		//fishUpdate = new AnchorUpdateControl(feye, "layout");
-    		//display.addControlListener(fishUpdate);
     		fishUpdate.setEnabled(true);
-     		//m_view.m_vis.putAction("layout", l);
-     		//m_view.m_vis.putAction("draw", l);
-    		//m_view.m_vis.run("draw");
     		fishFlag = true;
     	  }
     	}
