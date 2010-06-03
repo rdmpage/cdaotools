@@ -1,0 +1,254 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY miapa "http://www.cs.nmsu.edu/~cdaostore/miapa.owl#" >
+    <!ENTITY cdao "http://www.evolutionaryontology.org/cdao.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.cs.nmsu.edu/~cdaostore/miapa.owl#"
+     xml:base="http://www.cs.nmsu.edu/~cdaostore/miapa.owl"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:cdao="http://www.evolutionaryontology.org/cdao.owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:miapa="http://www.cs.nmsu.edu/~cdaostore/miapa.owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#">
+    <owl:Ontology rdf:about="">
+        <owl:imports rdf:resource="http://purl.obolibrary.org/obo/obi.owl"/>
+        <owl:imports rdf:resource="http://www.evolutionaryontology.org/cdao.owl"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#has_Alignment_Procedure -->
+
+    <owl:ObjectProperty rdf:about="#has_Alignment_Procedure">
+        <rdfs:comment rdf:datatype="&xsd;string"
+            >Identifies the procedure used to align the sequences.</rdfs:comment>
+        <rdfs:domain rdf:resource="#Alignment"/>
+        <rdfs:range rdf:resource="#AlignmentProcedures"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#has_Larger_Objective -->
+
+    <owl:ObjectProperty rdf:about="#has_Larger_Objective">
+        <rdfs:comment rdf:datatype="&xsd;string"
+            >Identifies a larger objective, defined by reference to a publication, for the study.</rdfs:comment>
+        <rdfs:domain rdf:resource="#Alignment"/>
+        <rdfs:range rdf:resource="#Objective"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#has_Phylogenetic_Method -->
+
+    <owl:ObjectProperty rdf:about="#has_Phylogenetic_Method">
+        <rdfs:comment rdf:datatype="&xsd;string"
+            >Identifies a method used to construct the associated phylogeny.</rdfs:comment>
+        <rdfs:range rdf:resource="#PhylogeneticMethod"/>
+        <rdfs:domain rdf:resource="#Phylogeny"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#has_Phylogenetic_Parameter -->
+
+    <owl:ObjectProperty rdf:about="#has_Phylogenetic_Parameter">
+        <rdfs:comment rdf:datatype="&xsd;string"
+            >Identifies a parameter used to construct the phylogeny</rdfs:comment>
+        <rdfs:range rdf:resource="#PhylogeneticParameter"/>
+        <rdfs:domain rdf:resource="#Phylogeny"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#has_Publication -->
+
+    <owl:ObjectProperty rdf:about="#has_Publication">
+        <rdfs:comment rdf:datatype="&xsd;string"
+            >Identifies a publication specifying the associated objective.</rdfs:comment>
+        <rdfs:domain rdf:resource="#Objective"/>
+        <rdfs:range rdf:resource="#Publication"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#has_Sequence -->
+
+    <owl:ObjectProperty rdf:about="#has_Sequence">
+        <rdfs:comment rdf:datatype="&xsd;string"
+            >Associates a sequence with an alignment</rdfs:comment>
+        <rdfs:domain rdf:resource="#Alignment"/>
+        <rdfs:range rdf:resource="&cdao;Sequence"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#has_Sequence_DB -->
+
+    <owl:ObjectProperty rdf:about="#has_Sequence_DB">
+        <rdfs:comment rdf:datatype="&xsd;string"
+            >Specifies the source of a sequence.</rdfs:comment>
+        <rdfs:range rdf:resource="#SequenceDB"/>
+        <rdfs:domain rdf:resource="&cdao;Sequence"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#has_Taxonomic_DB -->
+
+    <owl:ObjectProperty rdf:about="#has_Taxonomic_DB">
+        <rdfs:comment rdf:datatype="&xsd;string"
+            >Specifies the taxonomic database associated with a particular voucher.</rdfs:comment>
+        <rdfs:range rdf:resource="#TaxonomicDB"/>
+        <rdfs:domain rdf:resource="#VoucherInformation"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#has_Voucher_Information -->
+
+    <owl:ObjectProperty rdf:about="#has_Voucher_Information">
+        <rdfs:comment rdf:datatype="&xsd;string"
+            >Specifies provanance information about a particular sequence.</rdfs:comment>
+        <rdfs:range rdf:resource="#VoucherInformation"/>
+        <rdfs:domain rdf:resource="&cdao;Sequence"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#Alignment -->
+
+    <owl:Class rdf:about="#Alignment">
+        <owl:equivalentClass rdf:resource="&cdao;CharacterStateDataMatrix"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#AlignmentProcedures -->
+
+    <owl:Class rdf:about="#AlignmentProcedures"/>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#Objective -->
+
+    <owl:Class rdf:about="#Objective"/>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#PhylogeneticMethod -->
+
+    <owl:Class rdf:about="#PhylogeneticMethod">
+        <rdfs:subClassOf rdf:resource="#PhylogeneticMethodsAndParameters"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#PhylogeneticMethodsAndParameters -->
+
+    <owl:Class rdf:about="#PhylogeneticMethodsAndParameters"/>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#PhylogeneticParameter -->
+
+    <owl:Class rdf:about="#PhylogeneticParameter">
+        <rdfs:subClassOf rdf:resource="#PhylogeneticMethodsAndParameters"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#Phylogeny -->
+
+    <owl:Class rdf:about="#Phylogeny">
+        <owl:equivalentClass rdf:resource="&cdao;Network"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#Publication -->
+
+    <owl:Class rdf:about="#Publication"/>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#SequenceDB -->
+
+    <owl:Class rdf:about="#SequenceDB"/>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#TaxonomicDB -->
+
+    <owl:Class rdf:about="#TaxonomicDB">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~cdaostore/miapa.owl#VoucherInformation -->
+
+    <owl:Class rdf:about="#VoucherInformation"/>
+    
+
+
+    <!-- http://www.evolutionaryontology.org/cdao.owl#CharacterStateDataMatrix -->
+
+    <owl:Class rdf:about="&cdao;CharacterStateDataMatrix"/>
+    
+
+
+    <!-- http://www.evolutionaryontology.org/cdao.owl#Network -->
+
+    <owl:Class rdf:about="&cdao;Network"/>
+    
+
+
+    <!-- http://www.evolutionaryontology.org/cdao.owl#Sequence -->
+
+    <owl:Class rdf:about="&cdao;Sequence"/>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 2.2.1.1138) http://owlapi.sourceforge.net -->
+
