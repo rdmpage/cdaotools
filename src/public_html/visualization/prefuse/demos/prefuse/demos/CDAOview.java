@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -450,6 +451,7 @@ public class CDAOview extends JPanel {
     	public SaveImageAction(CDAOview view){
     		m_view = view;
     		jfc = new JFileChooser();
+    		jfc.setFileFilter((javax.swing.filechooser.FileFilter) new ImgFileFilter());
     		this.putValue(AbstractAction.NAME, "Save Graph As...");
     	}
     	public void actionPerformed(ActionEvent e)
@@ -467,8 +469,37 @@ public class CDAOview extends JPanel {
     	    		// TODO Auto-generated catch block
     	    		e1.printStackTrace();
     	    	}
-    	    	display.saveImage(fos, "JPG", 2.0);
+    	    	String name = f.getName().toLowerCase();
+    	    	if(name.endsWith("jpg") || name.endsWith("jpeg"))
+    	    	  display.saveImage(fos, "JPG", 2.0);
+    	    	else if(name.endsWith("png"))
+    	    		display.saveImage(fos, "PNG", 2.0);
+    	    	else
+    	    		System.out.println(name + " was selected to be saved as, but is not jpg, jpeg, or png.");
     	    }
+    	    try {
+				fos.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	}
+    	private class ImgFileFilter extends javax.swing.filechooser.FileFilter
+    	{
+
+			@Override
+			public boolean accept(File f) {
+				
+				if(f.isDirectory()) return true;
+				String name = f.getName().toLowerCase();
+				return name.endsWith("jpg") || name.endsWith("jpeg") || name.endsWith("png");
+			}
+
+			@Override
+			public String getDescription() {
+				// TODO Auto-generated method stub
+				return "jpg, jpeg, and png";
+			}
     	}
     }
     
