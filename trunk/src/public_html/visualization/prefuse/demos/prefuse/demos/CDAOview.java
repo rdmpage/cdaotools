@@ -13,6 +13,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -27,6 +28,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -444,21 +446,29 @@ public class CDAOview extends JPanel {
      */
     public static class SaveImageAction extends AbstractAction {
     	private CDAOview m_view;
+    	private JFileChooser jfc;
     	public SaveImageAction(CDAOview view){
     		m_view = view;
+    		jfc = new JFileChooser();
     		this.putValue(AbstractAction.NAME, "Save Graph As...");
     	}
     	public void actionPerformed(ActionEvent e)
-    	{
-    	   File f = new File("Temp");
-    	   FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(f);
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-    	   display.saveImage(fos, "JPG", 2.0);
+    	{   
+    		int ret_val = jfc.showOpenDialog(m_view);
+    		File f;
+    	    FileOutputStream fos = null;
+    	    if(ret_val == JFileChooser.APPROVE_OPTION)
+    	    {
+    	    	f = jfc.getSelectedFile();
+    	    	//String format = jfc.getChoosableFileFilters();
+    	    	try {
+    	    		fos = new FileOutputStream(f);
+    	    	} catch (FileNotFoundException e1) {
+    	    		// TODO Auto-generated catch block
+    	    		e1.printStackTrace();
+    	    	}
+    	    	display.saveImage(fos, "JPG", 2.0);
+    	    }
     	}
     }
     
