@@ -82,8 +82,12 @@ import prefuse.util.GraphicsLib;
 import prefuse.util.display.DisplayLib;
 import prefuse.util.display.ItemBoundsListener;
 import prefuse.util.ui.UILib;
+import prefuse.visual.EdgeItem;
+import prefuse.visual.NodeItem;
 import prefuse.visual.VisualGraph;
 import prefuse.visual.VisualItem;
+import prefuse.visual.tuple.TableEdgeItem;
+import prefuse.visual.tuple.TableNodeItem;
 
 /**
  * @author <a href="http://jheer.org">jeffrey heer</a>
@@ -141,11 +145,62 @@ public class CDAOview extends JPanel {
         // adds graph to visualization and sets renderer label field
         setGraph(g, label);
         
+        //VisualGraph vg = m_vis.addGraph(graph, g);
+        
         // fix selected focus nodes
         TupleSet focusGroup = m_vis.getGroup(Visualization.FOCUS_ITEMS); 
         focusGroup.addTupleSetListener(new TupleSetListener() {
             public void tupleSetChanged(TupleSet ts, Tuple[] add, Tuple[] rem)
             {
+            	for(int i = 0; i < add.length; ++i)
+            	{
+            		VisualItem item = (VisualItem)add[i];
+            		
+            		if(TableNodeItem.class == item.getClass())
+            		{
+            			TableNodeItem n = (TableNodeItem) item;
+            			System.out.print("Node label:data ->");
+            			String cname;
+            			for(int k = 0; k < n.getColumnCount(); k++)
+            			{
+            				cname = n.getColumnName(k);
+            				final Class T = n.getColumnType(k);
+            				Object data = n.get(k);
+            				if(data != null)
+            					System.out.print("[" + cname + ": " + data.toString()+"], ");
+            				else
+            					System.out.print("[" + cname + ": null], ");
+            			}
+            			System.out.println("");
+            			//System.out.println("\n n.getColumnName(35):" + n.getColumnName(35));
+            			
+            			
+            		}
+            		else if(TableEdgeItem.class == item.getClass())
+            		{
+            			TableEdgeItem e = (TableEdgeItem)item;
+            			String cname;
+            			System.out.print("Edge label:data -> ");
+            			int k = e.getColumnIndex("source");
+            			for(; k < e.getColumnCount(); k++)
+            			{
+            				cname = e.getColumnName(k);
+            				final Class T = e.getColumnType(k);
+            				Object data = e.get(k);
+            				if(data != null)
+            				  System.out.print("[" + cname + ": "+ data.toString() + "], ");
+            				else
+            				  System.out.print("[" + cname + ": null], ");
+            			}
+            			
+            			System.out.println();
+            			
+            			//System.out.println("you just clicked an edge! Edge.toString():" + e.toString());
+            		}
+            		else
+            			System.out.println("I dont know what happened class was:" + item.getClass().toString());
+            	}
+            	
                 for ( int i=0; i<rem.length; ++i )
                     ((VisualItem)rem[i]).setFixed(false);
                 for ( int i=0; i<add.length; ++i ) {
@@ -168,17 +223,23 @@ public class CDAOview extends JPanel {
         int hops = 30;
         final GraphDistanceFilter filter = new GraphDistanceFilter(graph, hops);
 
-        ColorAction fill = new ColorAction(nodes, 
+        ColorAction nfill = new ColorAction(nodes, 
                 VisualItem.FILLCOLOR, ColorLib.rgb(200,200,255));
-        fill.add(VisualItem.FIXED, ColorLib.rgb(255,100,100));
-        fill.add(VisualItem.HIGHLIGHT, ColorLib.rgb(255,200,125));
+        nfill.add(VisualItem.FIXED, ColorLib.rgb(255,100,100));
+        nfill.add(VisualItem.HIGHLIGHT, ColorLib.rgb(255,200,125));
+        
+        ColorAction efill = new ColorAction(edges, 
+                VisualItem.FILLCOLOR, ColorLib.rgb(200,200,255));
+        efill.add(VisualItem.FIXED, ColorLib.rgb(255,100,100));
+        efill.add(VisualItem.HIGHLIGHT, ColorLib.rgb(255,200,125));
         
         feye = new BifocalDistortion(0.05, 2.0);
         
         ActionList draw = new ActionList();
-        draw.add(filter);
+        //draw.add(filter);
         //draw.add(feye);
-        draw.add(fill);
+        draw.add(nfill);
+        draw.add(efill);
         draw.add(new ColorAction(nodes, VisualItem.STROKECOLOR, 0));
         draw.add(new ColorAction(nodes, VisualItem.TEXTCOLOR, ColorLib.rgb(0,0,0)));
         draw.add(new ColorAction(edges, VisualItem.FILLCOLOR, ColorLib.gray(200)));
@@ -188,7 +249,8 @@ public class CDAOview extends JPanel {
         fdl = new ForceDirectedLayout(graph,false, false);
         animate.add(feye);//new BifocalDistortion(.1, 5.0));
         animate.add(fdl);
-        animate.add(fill);
+        animate.add(nfill);
+        animate.add(efill);
         animate.add(new RepaintAction());
         
         // finally, we register our ActionList with the Visualization.
@@ -291,7 +353,8 @@ public class CDAOview extends JPanel {
         // update graph
         m_vis.removeGroup(graph);
         VisualGraph vg = m_vis.addGraph(graph, g);
-        m_vis.setValue(edges, null, VisualItem.INTERACTIVE, Boolean.FALSE);
+        //m_vis.setValue(edges, null, VisualItem.I, val)
+        m_vis.setValue(edges, null, VisualItem.INTERACTIVE, Boolean.TRUE);
         VisualItem f = (VisualItem)vg.getNode(0);
         m_vis.getGroup(Visualization.FOCUS_ITEMS).setTuple(f);
         f.setFixed(false);
@@ -470,9 +533,9 @@ public class CDAOview extends JPanel {
     	    		e1.printStackTrace();
     	    	}
     	    	String name = f.getName().toLowerCase();
-    	    	if(name.endsWith("jpg") || name.endsWith("jpeg"))
+    	    	if(name.endsWith("jpg") || name.endsWith("jpeg") || name.endsWith("JPG"))
     	    	  display.saveImage(fos, "JPG", 2.0);
-    	    	else if(name.endsWith("png"))
+    	    	else if(name.endsWith("png") || name.endsWith("PNG"))
     	    		display.saveImage(fos, "PNG", 2.0);
     	    	else
     	    		System.out.println(name + " was selected to be saved as, but is not jpg, jpeg, or png.");
