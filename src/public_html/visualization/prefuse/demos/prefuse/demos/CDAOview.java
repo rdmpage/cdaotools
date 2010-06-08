@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Iterator;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -81,6 +82,7 @@ import prefuse.util.GraphLib;
 import prefuse.util.GraphicsLib;
 import prefuse.util.display.DisplayLib;
 import prefuse.util.display.ItemBoundsListener;
+import prefuse.util.ui.JPrefuseTable;
 import prefuse.util.ui.UILib;
 import prefuse.visual.EdgeItem;
 import prefuse.visual.NodeItem;
@@ -154,7 +156,7 @@ public class CDAOview extends JPanel {
             {
             	for(int i = 0; i < add.length; ++i)
             	{
-            		VisualItem item = (VisualItem)add[i];
+            		/*VisualItem item = (VisualItem)add[i];
             		
             		if(TableNodeItem.class == item.getClass())
             		{
@@ -199,7 +201,7 @@ public class CDAOview extends JPanel {
             		}
             		else
             			System.out.println("I dont know what happened class was:" + item.getClass().toString());
-            	}
+            	*/}
             	
                 for ( int i=0; i<rem.length; ++i )
                     ((VisualItem)rem[i]).setFixed(false);
@@ -232,6 +234,7 @@ public class CDAOview extends JPanel {
                 VisualItem.FILLCOLOR, ColorLib.rgb(200,200,255));
         efill.add(VisualItem.FIXED, ColorLib.rgb(255,100,100));
         efill.add(VisualItem.HIGHLIGHT, ColorLib.rgb(255,200,125));
+        //efill.add(VisualItem., ColorLib.rgb(255, 200, 125));
         
         feye = new BifocalDistortion(0.05, 2.0);
         
@@ -455,11 +458,15 @@ public class CDAOview extends JPanel {
         saveMenu.setMnemonic(KeyEvent.VK_S);
         saveMenu.add(new SaveImageAction(view));
         
+        JMenu detailMenu = new JMenu("View Details");
+        detailMenu.setMnemonic(KeyEvent.VK_D);
+        detailMenu.add(new FocusItemDetail(view));
+        
         JMenuBar menubar = new JMenuBar();
         menubar.add(dataMenu);
         menubar.add(effectMenu);
         menubar.add(saveMenu);
-        
+        menubar.add(detailMenu);
         // launch window
         JFrame frame = new JFrame("Tree Viewer | powered by prefuse");
         frame.setJMenuBar(menubar);
@@ -503,6 +510,89 @@ public class CDAOview extends JPanel {
         }
         protected abstract Graph getGraph();
     }
+    
+    
+    
+    
+    
+    
+    public static class FocusItemDetail extends AbstractAction {
+    	private CDAOview m_view;
+    	//private JPrefuseTable ejpt, njpt;
+    	private TupleSet focusGroup;
+    	//private Display d;
+    	private JFrame prop;
+    	public FocusItemDetail(CDAOview view){
+    		m_view = view;
+    		this.putValue(AbstractAction.NAME, "Focus Objects Properties");
+    		prop = new JFrame();
+    	}
+    	public void actionPerformed(ActionEvent e)
+    	{
+    		focusGroup = m_view.m_vis.getGroup(m_view.m_vis.FOCUS_ITEMS);
+    		//int s = focusGroup.getTupleCount();
+   			Iterator iter = focusGroup.tuples();
+   			if(iter.hasNext())
+   			{
+   				Object data = iter.next();
+   				if(data.getClass() == TableNodeItem.class)
+   				{
+   					TableNodeItem n = (TableNodeItem)data;
+   					//njpt.setVisible(true);
+   					Table nt = new Table();
+   					nt.addColumn("Label", String.class);
+   					nt.addColumn("Data", String.class);
+   					int count = 0;
+   					for(int i = 0; i < n.getColumnCount(); i++)
+   					{
+   						if(!(n.getColumnName(i).startsWith("_")))
+   						{
+   							nt.addRow();
+   							nt.set(count, 0, n.getColumnName(i));
+   							nt.set(count++, 1, n.get(i).toString());
+   						}
+   					}
+   					prop = JPrefuseTable.showTableWindow(nt);
+   					prop.setTitle(n.get(n.getColumnIndex("IdLabel")).toString());
+   				}
+   				else if(data.getClass() == TableEdgeItem.class)
+   				{
+   					//ejpt.setVisible(true);
+   					TableEdgeItem edge = (TableEdgeItem) data;
+   					Table et = new Table();
+   					et.addColumn("Label", String.class);
+   					et.addColumn("Data", String.class);
+   					int count = 0;
+   					for(int i = 0; i < edge.getColumnCount(); i++)
+   					{
+   						if(!(edge.getColumnName(i).startsWith("_")))
+   						{
+   							et.addRow();
+   							et.set(count, 0, edge.getColumnName(i));
+   							et.set(count++, 1, edge.get(i).toString());
+   						}
+   					}
+   					prop = JPrefuseTable.showTableWindow(et);
+   					prop.setTitle(edge.get(edge.getColumnIndex("IdLabel")).toString());
+   				}
+   				else
+   				{
+   					System.out.println("data had class of:" + data.getClass());
+   				}
+   				//d.setVisible(true);
+    		}
+    	}
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * This menu option saves the graph as an image.
      * @author Ben Wright
