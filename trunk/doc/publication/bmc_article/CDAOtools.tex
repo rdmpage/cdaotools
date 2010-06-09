@@ -183,9 +183,20 @@
 
 \begin{abstract}
         % Do not use inserted blank lines (ie \\) until main body of text.
-This should not exceet 350 words and should be structured into separate sections headed Background, Results, Conclusions.  Please do not use abbreviations or references in the abstract.
-        \paragraph*{Background:} Text for this section of the abstract. 
-      
+        %This should not exceet 350 words and should be structured into separate sections headed Background, Results, Conclusions.  Please do not use abbreviations or references in the abstract.
+	\paragraph*{Background:} The Comparative Data Analysis Ontology
+\footnote{\url{http://www.evolutionaryontology.org}} is an ontology developed,
+as part of the
+EvoInfo\footnote{\url{https://www.nescent.org/wg_evoinfo/Main_Page}} and
+EvoIO\footnote{\url{http://evoio.org/wiki/Main_Page}} groups supported by
+NESCent\footnote{\url{http://www.nescent.org/index.php}},  to provide semantics
+to the descriptions of data and transformations commonly found in the domain of
+phylogenetic inference. The core concepts of the ontology enables the
+description of phylogenetic trees and associated character data matrices.
+
+     
+
+ 
         \paragraph*{Results:} Text for this section of the abstract \ldots
 
         \paragraph*{Conclusions:} Text for this section of the abstract \ldots
@@ -231,13 +242,65 @@ This should not exceet 350 words and should be structured into separate sections
 %%
 \section*{Background}
 \subsection*{CDAO}
+
+  CDAO, Comparative Data Analysis Ontology, provides a framework for describing phylogenies and their associated
+  character state matrices. It was developed as part of the Evolutionary Informatics working group along with the
+  NeXML file format, and the PhyloWS Webservice standard, forming what the group called the EvoIO stack. CDAO forms
+  the base of this stack defining the semantics for the data represented as NeXML files, or otherwise supplied by
+  services implementing this set of standards. 
+
+  CDAO is defined in terms of an OWL-DL ontology. It provides a general framework
+  for talking about the relationships between taxa, characters, states, their matrices, and associated 
+  phylogenies. As a general framework it supplies general classes and relations between those classes, 
+  it is intended that for practical work these will be extended to for example talk about more specific
+  types of characters or states. (e.g. Beak length might be defined as a specialization of CDAO's \textit{Standard} 
+  character type). 
+
+\subsection*{NeXML}
+  NeXML\footnote{\url{http://www.nexml.org}} is a file format for exchanging data containing character state data
+  matrices and phylogenies. It is syntax is defined in terms of an XML schema, and the semantics of its elements
+  are defined in terms of CDAO classes. Being defined in this way allows direct translation to CDAO class instances.
+  This guarantee is also important to using it as a medium of exchange since it's semantics can be agreed upon by
+  both the provider and recipient of a dataset.
+
 \subsection*{PhlyoWS}
+  PhyloWS is a standard for exposing phylogenetic data as a webservice, in such a way that particular data items,
+  can be referenced by persistent HTTP URI's.
 
 %%%%%%%%%%%%%%%%
 %%Implementation %%
 %%
 \section*{Implementation}
-This should include a description of the overall architecture of the software implementation, along with details of any critical issues and how they were addressed.
+
+CDAO-store builds on the EvoIO technology stack to provide a framework for supplying semantic services
+for phylogenetic data services. The platform is open-source and is available on source-forge, at
+\url{http://sourceforge.net/projects/cdaotools/}. It's divided into three main parts. A data importer/file translator,
+a database and web interface, and a gui visualization tool. 
+
+The file importer/translator is implemented in C++ and Python. In addition to its own set of parsers, 
+the translator uses the NCL\footnote{\url{http://sourceforge.net/projects/ncl/}} library to read certain file formats.
+After reading, it maps data from these files on to an object model that mirrors CDAO classes, and then either converts
+to some specified format or to an RDF/XML serialization of the data. The import portion of this part of the system is
+written in Python and uses the RDFlib\footnote{\url{http://www.rdflib.net/}} module to store the RDF serializations 
+produced by the translator into a database making it available to query on the web or by using the visual tools.
+
+The web and database portion of the application stores, and provides access to the data for the visual tools. This
+portion of the application is primarily implemented as a set of scripts in a variety of languages. The web interface
+is divided into two principal parts an HTML user interface, and a PhyloWS data provider. The HTML interface allows 
+for online querying/exploration of datasets, while the PhyloWS interface supplies access to datasets for our visual
+tools or other third party programs. The database portion of the application is implemented as an RDFlib store running
+on a MySQL database. 
+
+The visual tools are implemented as a Java JNLP application called CDAO-Explorer. It uses a variety of frameworks
+to support its operation including Pellet\footnote{\url{http://pellet.owldl.com/}} and
+  Prefuse\footnote{\url{http://prefuse.org/}}. 
+
+CDAO-Explorer provides a tree and matrix search windows which allow one to search for and load particular datasets,
+and visualizers for those data sets. It also allows one to make annotations about a dataset, or a general project space,
+a set of data sets of interest. These annotations can be from CDAO, Dublin-Core, or from a user-supplied source of
+annotation types.
+
+
 
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
