@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -41,6 +43,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicButtonListener;
@@ -48,7 +51,9 @@ import javax.swing.plaf.basic.BasicButtonListener;
 import prefuse.Display;
 import prefuse.Visualization;
 import prefuse.action.ActionList;
+import prefuse.action.ItemAction;
 import prefuse.action.RepaintAction;
+import prefuse.action.animate.ColorAnimator;
 import prefuse.action.assignment.ColorAction;
 import prefuse.action.distortion.BifocalDistortion;
 import prefuse.action.filter.GraphDistanceFilter;
@@ -74,15 +79,22 @@ import prefuse.data.Tuple;
 import prefuse.data.event.TupleSetListener;
 import prefuse.data.io.DataIOException;
 import prefuse.data.io.GraphMLReader;
+import prefuse.data.query.SearchQueryBinding;
+import prefuse.data.search.PrefixSearchTupleSet;
 import prefuse.data.tuple.TupleSet;
+import prefuse.demos.TreeView.NodeColorAction;
 import prefuse.render.DefaultRendererFactory;
 import prefuse.render.LabelRenderer;
 import prefuse.util.ColorLib;
+import prefuse.util.FontLib;
 import prefuse.util.GraphLib;
 import prefuse.util.GraphicsLib;
+import prefuse.util.UpdateListener;
 import prefuse.util.display.DisplayLib;
 import prefuse.util.display.ItemBoundsListener;
+import prefuse.util.ui.JFastLabel;
 import prefuse.util.ui.JPrefuseTable;
+import prefuse.util.ui.JSearchPanel;
 import prefuse.util.ui.UILib;
 import prefuse.visual.EdgeItem;
 import prefuse.visual.NodeItem;
@@ -121,6 +133,9 @@ public class CDAOview extends JPanel {
     protected static Display display;
     /** This is the control that looks over feye*/
     protected static AnchorUpdateControl fishUpdate;
+    /** Binding to the search query **/
+    protected SearchQueryBinding searchQ;
+    protected TupleSet search;
     
     /**
      * 
@@ -236,6 +251,18 @@ public class CDAOview extends JPanel {
         efill.add(VisualItem.HIGHLIGHT, ColorLib.rgb(255,200,125));
         //efill.add(VisualItem., ColorLib.rgb(255, 200, 125));
         
+        
+        //ItemAction nodeColor = new NodeColorAction(nodes);
+
+        //ActionList fullPaint = new ActionList();
+        //fullPaint.add(nodeColor);
+        //m_vis.putAction("fullPaint", fullPaint);
+        //ActionList animatePaint = new ActionList(400);
+        //animatePaint.add(new ColorAnimator(nodes));
+        //animatePaint.add(new RepaintAction());
+        //m_vis.putAction("animatePaint", animatePaint);
+        
+        
         feye = new BifocalDistortion(0.05, 2.0);
         
         ActionList draw = new ActionList();
@@ -248,12 +275,21 @@ public class CDAOview extends JPanel {
         draw.add(new ColorAction(edges, VisualItem.FILLCOLOR, ColorLib.gray(200)));
         draw.add(new ColorAction(edges, VisualItem.STROKECOLOR, ColorLib.gray(200)));
         
+        
+        //ColorAction searchColor = new ColorAction(Visualization.SEARCH_ITEMS, VisualItem.FILLCOLOR, ColorLib.rgb(240, 150, 100));
+        //searchColor.add(VisualItem.STROKECOLOR, ColorLib.rgb(255, 200, 150));
+        //searchColor.add(VisualItem.HIGHLIGHT, ColorLib.rgb(250, 175, 125));
+        //searchColor.add(VisualItem.FIXED, ColorLib.rgb(245, 160, 110));
+        draw.add(new CDAOViewColorAction(graph));
+        //draw.add(searchColor);
+        
         ActionList animate = new ActionList(Activity.INFINITY);
         fdl = new ForceDirectedLayout(graph,false, false);
         animate.add(feye);//new BifocalDistortion(.1, 5.0));
         animate.add(fdl);
         animate.add(nfill);
         animate.add(efill);
+        animate.add(new CDAOViewColorAction(graph));
         animate.add(new RepaintAction());
         
         // finally, we register our ActionList with the Visualization.
@@ -332,12 +368,37 @@ public class CDAOview extends JPanel {
         //split.setDividerLocation(700);
         //split.setVisible(true);
       
+        //searchQ = new SearchQueryBinding(g.getNodes(), label);//                    vg.getNodeTable(), label);
+        //m_vis.addFocusGroup(Visualization.SEARCH_ITEMS, searchQ.getSearchSet());
+        search = new PrefixSearchTupleSet();
+        m_vis.removeGroup(Visualization.SEARCH_ITEMS);
+        m_vis.addFocusGroup(Visualization.SEARCH_ITEMS, search);
+        search.addTupleSetListener(new TupleSetListener() {
+        	public void tupleSetChanged(TupleSet t, Tuple[] add, Tuple[] rem) {
+        		//System.out.print("I'M IN THE TUPLE SET LISTENER FOR SEARCH");
+        		//System.out.println("search tupleset size = " + t.getTupleCount() + "| add.size()= "+ add.length+" | rem.length() = " + rem.length);
+        		//System.out.println();
+        		//for(int i = 0; i < add.length; i++)
+        		//{
+        		//	System.out.println("add["+i+"]: " + add[i].toString());
+        		//}
+        		//
+                m_vis.cancel("layout");
+                m_vis.run("draw");
+                m_vis.run("layout");
+            }
+        });
+        
+        
+        
         // now we run our action list
         m_vis.run("draw");
         add(display);          
 
     }
-    
+    public SearchQueryBinding getSearchQuery() {
+        return searchQ;
+    }
     /**
      * This returns the graph of the current CDAOview
      * @return m_graph
@@ -354,13 +415,18 @@ public class CDAOview extends JPanel {
         ((LabelRenderer)drf.getDefaultRenderer()).setTextField(label);
         
         // update graph
+        //m_vis.removeGroup(Visualization.SEARCH_ITEMS);
         m_vis.removeGroup(graph);
         VisualGraph vg = m_vis.addGraph(graph, g);
         //m_vis.setValue(edges, null, VisualItem.I, val)
+        //searchQ = new SearchQueryBinding(g.getNodeTable(), label);
+        //m_vis.addFocusGroup(Visualization.SEARCH_ITEMS, search);
+        m_vis.setValue(Visualization.SEARCH_ITEMS, null, VisualItem.INTERACTIVE, Boolean.TRUE);
         m_vis.setValue(edges, null, VisualItem.INTERACTIVE, Boolean.TRUE);
         VisualItem f = (VisualItem)vg.getNode(0);
         m_vis.getGroup(Visualization.FOCUS_ITEMS).setTuple(f);
         f.setFixed(false);
+        //return vg;
     }
     
     // ------------------------------------------------------------------------
@@ -467,10 +533,33 @@ public class CDAOview extends JPanel {
         menubar.add(effectMenu);
         menubar.add(saveMenu);
         menubar.add(detailMenu);
+     
+        
+        JSearchPanel searchBar = new JSearchPanel(view.m_vis,
+                graph, Visualization.SEARCH_ITEMS, label, true, true);
+         
+        searchBar.setShowResultCount(true);
+        searchBar.setBorder(BorderFactory.createEmptyBorder(5,5,4,0));
+        searchBar.setFont(FontLib.getFont("Tahoma", Font.PLAIN, 11));
+        final JFastLabel title = new JFastLabel("                 ");
+        title.setPreferredSize(new Dimension(350, 20));
+        title.setVerticalAlignment(SwingConstants.BOTTOM);
+        title.setBorder(BorderFactory.createEmptyBorder(3,0,0,0));
+        title.setFont(FontLib.getFont("Tahoma", Font.PLAIN, 16));
+        
+        Box box = UILib.getBox(new Component[]{title,searchBar}, true, 10, 3, 0);
+        
         // launch window
         JFrame frame = new JFrame("Tree Viewer | powered by prefuse");
         frame.setJMenuBar(menubar);
-        frame.setContentPane(view);
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(view, BorderLayout.CENTER);
+        panel.add(box, BorderLayout.SOUTH);
+        UILib.setColor(panel, Color.WHITE, Color.GRAY);
+        
+        
+        frame.setContentPane(panel);
+        //frame.add(search);
         
         frame.pack();
         frame.setVisible(true);
@@ -835,4 +924,53 @@ public class CDAOview extends JPanel {
         }
     }
     
+
+
+public static class CDAOViewColorAction extends ColorAction {
+    
+    public CDAOViewColorAction(String group) {
+        super(group, VisualItem.FILLCOLOR);
+    }
+    
+    public int getColor(VisualItem item) {
+        if ( m_vis.isInGroup(item, nodes) )
+        {
+        	
+        	if(m_vis.isInGroup(item, Visualization.FOCUS_ITEMS))
+        	{
+        		return ColorLib.rgb(255,200,125);
+        	}
+        	else if(m_vis.isInGroup(item, Visualization.SEARCH_ITEMS))
+        	{
+        		return ColorLib.rgb(240, 150, 100);
+        	}
+        	else
+        	{
+        		return ColorLib.rgb(200, 200, 255);
+        	}
+        }
+        else if ( m_vis.isInGroup(item, edges))
+        {
+        	
+        	if(m_vis.isInGroup(item, Visualization.FOCUS_ITEMS))
+        	{
+        		return ColorLib.rgb(255,200,125);
+        	}
+        	else if(m_vis.isInGroup(item, Visualization.SEARCH_ITEMS))
+        	{
+        		return ColorLib.rgb(240, 150, 100);
+        	}
+        	else
+        	{
+        		return ColorLib.rgb(200, 200, 255);
+        	}	
+        }
+        /*else if ( item.getDOI() > -1 )
+            return ColorLib.rgb(164,193,193);*/
+        else
+            return ColorLib.rgba(255,255,255,0);
+    }
+    
+} // end of inner class TreeMapColorAction
+
 } // end of class GraphView
