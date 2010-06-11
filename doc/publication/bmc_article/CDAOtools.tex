@@ -307,14 +307,31 @@ annotation types.
 %% Results and Discussion %%
 %%
 \section*{Results}
-  What should be described here is the functionality of the software together with data on  how its performance and functionality compare with and improve on functionally similar existing software.
+ % What should be described here is the functionality of the software together with data on  how its performance and functionality compare with and improve on functionally similar existing software.
+  \subsection*{Web-Tools}
+  The web tools provide a variety of querying and data access features for both human and programmatic access to
+  data. It allows one to retrieve data sets by author name, tree identifier, taxon, algorithm, or method. It also
+  supports computing minimum spanning clades, the nearest common ancestor of a set of taxa, or listing trees of 
+  various sizes. 
+  
+  \subsection*{CDAO-Explorer}
+  CDAO-Explorer has achieved a basic level of functionality. It provides searching and visualization of both
+  tree and matrix data. We believe this integration between tree and matrix viewing to be a novel feature. The
+  support for supplementing data with additional user-defined annotations. Additionally, it allows edges to be
+  treated as first-class data entities, which can have annotations such as length bootstrap support attached.
 
-Things to compare functionality with: Nexplorer and PhiloWidget  (about the same functionality with trees, but they dont display matrices and viewing edges as data)
+
+%Things to compare functionality with: Nexplorer and PhiloWidget  (about the same functionality with trees, but they dont display matrices and viewing edges as data)
 
 \section*{Discussion}
-  Intended use of the software and the benefits that are envisioned together, if possible, with an outline for the planned future development of new features.
+ % Intended use of the software and the benefits that are envisioned together, if possible, with an outline for the planned future development of new features.
 
-  Include conversation on MIAPA and OBI?
+  With this basic level of functionality in place, we envision extending CDAO tools to include support for describing
+  workflows in cooperation with the MIAPA\footnote{Minimim Information About a Phylogenetic Analysis} effort.
+  We also plan to add additional query features to the web-interface including the ability to process user supplied
+  SPARQL Queries.
+  
+  %Include conversation on MIAPA and OBI?
 
 %%%%%%%%%%%%%%%%%%%%%%
 \section*{Conclusions}
@@ -324,12 +341,12 @@ Things to compare functionality with: Nexplorer and PhiloWidget  (about the same
   
 %%%%%%%%%%%%%%%%%%
 \section*{Availability and Requirements}
-   Project name:
-   Project home page:
-  Operating system(s):
-  Programming language:
+   Project name: CDAO Tools
+   Project home page: http://www.cs.nmsu.edu/~cdaostore/
+  Operating system(s): Linux, Mac, Unix
+  Programming language: Bash, C++, Java, Perl, PHP, Python
   Other requirements:
-  License:
+  License: GPL
   Any restriction to use by non-academics:
 
     
