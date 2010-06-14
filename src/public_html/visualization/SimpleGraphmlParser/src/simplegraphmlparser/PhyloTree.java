@@ -110,8 +110,8 @@ public class PhyloTree extends DefaultHandler{
                        " xmlns:cdao=\"http://www.evolutionaryontology.org/cdao.owl#\"\n" +
                        " xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns\n" +
                        " http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">" );
-           ps.println("  <key id=\"d0\" for=\"node\" attr.name=\"IdLabel\" attr.type=\"string\"/>" );
-           ps.println("  <key id=\"d1\" for=\"edge\" attr.name=\"color\" attr.type=\"string\">black</key>");
+           ps.println("  <key id=\"d0\" for=\"all\" attr.name=\"IdLabel\" attr.type=\"string\"/>" );
+           ps.println("  <!--<key id=\"d1\" for=\"edge\" attr.name=\"color\" attr.type=\"string\">black</key>-->");
 
            ps.println( "  <graph id=\""+ this.graphID +"\" edgedefault=\"directed\">");
            ArrayList<String> nodesInOrder = new ArrayList();
@@ -132,7 +132,13 @@ public class PhyloTree extends DefaultHandler{
                     Iterator<String> ctit = targets.iterator();
                     while (ctit.hasNext()){
                         String ct = ctit.next();
-                        ps.println("  <edge id=\"edge" + edgeNo++ +"\" source=\"" + src + "\" target=\"" + ct + "\"/>");
+                        ps.println("  <edge id=\"edge" + edgeNo++ +"\" source=\"" + src + "\" target=\"" + ct + "\">");
+
+                        ps.println("<data key=\"d0\">" +  src.substring( src.lastIndexOf('#') ) + "_" +  ct.substring( ct.lastIndexOf('#')+1 ) + "</data>" );
+
+                        ps.println( "</edge>" );
+
+
                     }
                }
            }
