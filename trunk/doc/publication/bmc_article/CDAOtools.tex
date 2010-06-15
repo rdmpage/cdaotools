@@ -311,15 +311,35 @@ annotation types.
   \subsection*{Web-Tools}
   The web tools provide a variety of querying and data access features for both human and programmatic access to
   data. It allows one to retrieve data sets by author name, tree identifier, taxon, algorithm, or method. It also
-  supports computing minimum spanning clades, the nearest common ancestor of a set of taxa, or listing trees of 
-  various sizes. 
+  supports computing the minimum spanning clade or the nearest common ancestor of a set of taxa. It also
+  allows one to  list trees conforming to certain measures. For example, finding all tress larger or smaller than
+  a given size. 
+
+   Our PhyloWS implementation is the basis for all the data access features of CDAO-Store. The other web components,
+   and the CDAO-Explorer tool use it to access data. URI's are divided into three conceptual parts. The address
+   of the store site, and path prefix \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows}, a query type (i.e.
+   tree, matrix, msc, nca, listing, or size), and parameter list. The specific parameters depend on the query
+   type. For example the msc and nca query types expect a list of taxon id's separated by `/' The listing query
+   takes optional limit and offset parameters to paginate results. The size query takes a direction 
+   (greater, less, or equal), and a size.
+
   
   \subsection*{CDAO-Explorer}
-  CDAO-Explorer has achieved a basic level of functionality. It provides searching and visualization of both
-  tree and matrix data. We believe this integration between tree and matrix viewing to be a novel feature. The
-  support for supplementing data with additional user-defined annotations. Additionally, it allows edges to be
-  treated as first-class data entities, which can have annotations such as length bootstrap support attached.
+  CDAO-Explorer has achieved a basic level of functionality. It provides search and visualization for both
+  trees and matrices and a set of additional features not currently available in a single tool. First it
+  provides both network and tree views, for trees using the Prefuse visualization framework. We have developed
+  a custom framework for visualizing matrices. It assigns color codes to character states allowing one to graphically
+  appraise large matrices to quickly see patterns in the source data.
+  
+  Annotation is another key part of CDAO-Explorer. It allows users to attach arbitrary annotations to data items,
+  as well as collections of resources.
 
+  It also allows users to load or save custom data not in the CDAO-triplestore. It also allows users to export
+  pictures of particular visualizations. 
+
+  
+
+  
 
 %Things to compare functionality with: Nexplorer and PhiloWidget  (about the same functionality with trees, but they dont display matrices and viewing edges as data)
 
@@ -327,7 +347,7 @@ annotation types.
  % Intended use of the software and the benefits that are envisioned together, if possible, with an outline for the planned future development of new features.
 
   With this basic level of functionality in place, we envision extending CDAO tools to include support for describing
-  workflows in cooperation with the MIAPA\footnote{Minimim Information About a Phylogenetic Analysis} effort.
+  workflows in cooperation with the MIAPA\footnote{Minimum Information About a Phylogenetic Analysis} effort.
   We also plan to add additional query features to the web-interface including the ability to process user supplied
   SPARQL Queries.
   
