@@ -28,11 +28,13 @@ import matrixviewer.model.RangeSet;
  */
 public class MatrixView extends javax.swing.JPanel implements MouseMotionListener {
     private Matrix model;
-    private DrawableDatum rederer = new DrawableDatum();
+    private DrawableDatum renderer;
     private int cellwidth;
     private int cellheight;
     private int key_entry_block_size;
     private int row_label_offset;
+    private int x_offset;
+    private int y_offset;
     private MatrixDatumMetaDataView metaView;
     private RangeSet highlight_rows;
     private RangeSet highlight_cols;
@@ -43,9 +45,12 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
     /** Creates new form MatrixView */
     public MatrixView() {
         this.model = null;
+        this.renderer = new DrawableDatum();
         this.cellheight = 0;
         this.cellwidth = 0;
-        this.rederer = null;
+        this.renderer = null;
+        this.x_offset = 0;
+        this.y_offset = 0;
         this.highlight_cols = new RangeSet();
         this.highlight_rows = new RangeSet();
         this.selectionActive = false;
@@ -61,9 +66,12 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
     public MatrixView(Matrix model) {
         this.model = model;
         if (model != null) {
+            this.renderer = new DrawableDatum( this.model.getUniqueValues() );
             this.cellwidth = this.getWidth() / this.model.getcolumncount();
             this.cellheight = this.getHeight() / this.model.getrowcount();
-            this.rederer = new DrawableDatum(this.model.getUniqueValues());
+            this.renderer = new DrawableDatum(this.model.getUniqueValues());
+            this.x_offset = model.getXOffset();
+            this.y_offset = model.getYOffset();
             this.selectionActive = false;
             this.initComponents();
             this.postinit();
@@ -133,9 +141,11 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
             this.model = model;
             this.cellheight = 30;
             this.cellwidth = 30;
-            this.row_label_offset = 0;//150;
-            this.key_entry_block_size = 0;//this.cellheight * this.model.getUniqueValues().size();
-            this.rederer = new DrawableDatum(this.model.getUniqueValues());
+            //this.row_label_offset = 0;//150;
+            //this.key_entry_block_size = 0;//this.cellheight * this.model.getUniqueValues().size();
+            this.x_offset = model.getXOffset();
+            this.y_offset = model.getYOffset();
+            this.renderer = new DrawableDatum(this.model.getUniqueValues());
             //this.setSize( this.model.getcolumncount() * this.cellwidth + this.row_label_offset, this.model.getrowcount() * this.cellheight + this.key_entry_block_size);
             this.setPreferredSize(new Dimension(this.model.getcolumncount() * this.cellwidth + this.row_label_offset, this.model.getrowcount() * this.cellheight + this.key_entry_block_size));
             this.selected_cols = new Range(0, this.model.getcolumncount());
@@ -144,7 +154,7 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
             //this.repaint();
         } else {
             this.model = null;
-            this.rederer = null;
+            this.renderer = null;
             this.setPreferredSize(new Dimension(400, 400));
             //this.invalidate();
             //this.repaint();
@@ -207,23 +217,23 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
     }
 
     private int coordinate_to_row_number(int y) {
-        int ret = (y / this.cellheight);
+        int ret = ((y / this.cellheight) - this.y_offset );
         ret = ret > this.model.getrowcount() ? this.model.getrowcount() : ret;
         return ret > 0 ? ret : 0;
     }
 
     private int row_number_to_coordinate(int row) {
-        return (row) * this.cellheight;
+        return (row + this.y_offset) * this.cellheight;
     }
 
     private int coordinate_to_col_number(int x) {
-        int ret = (x / this.cellwidth);
+        int ret = (x / this.cellwidth) - this.x_offset ;
         ret = ret > this.model.getcolumncount() ? this.model.getcolumncount() : ret;
         return ret > 0 ? ret : 0;
     }
 
     private int col_number_to_coordinate(int col) {
-        return (col) * this.cellwidth;
+        return (col + this.x_offset) * this.cellwidth;
     }
 
     private MatrixDatum getDatum(int x, int y) {
@@ -280,30 +290,31 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
 
                 //g.drawString( this.model.getRowLabel(row) , 0, /*col_label_offset+*/(row+1)*cellheight + cellheight /2);
                 Iterator<MatrixDatum> crowit = this.model.getRow(row).iterator();
-                while (crowit.hasNext()) {
+                for (int col = 0; col < model.getColumnCount() && crowit.hasNext(); ++col){
+                //while (crowit.hasNext()) {
                     MatrixDatum cdat = crowit.next();
                     // for (int col = 0; col < model.getcolumncount()-1; ++col ){
-                    g.setColor(this.rederer.getColor(cdat));
-                    //System.err.println( "row: " + cdat.getrow() + " col: " + cdat.getcolumn()+ " value: " + cdat.getvalue() );
+                    g.setColor(this.renderer.getColor(cdat));
+                    //System.err.println( "row: " + cdat.getrow() + " col: " + cdat.ge tcolumn()+ " value: " + cdat.getvalue() );
                     //if ( this.selected_rows.contains( cdat.getrow() ) && this.selected_cols.contains( cdat.getcolumn()) ){
                     //    g.setColor(  g.getColor().darker() );
                     //}
                     //Draw the cell.
                     if (this.highlight_cols.contains(cdat.getcolumn()) && this.highlight_rows.contains(cdat.getrow())) {
-                        g.fill3DRect(/*row_label_offset + */(cdat.getcolumn()/*+1*/) * cellheight,
-                                /*this.key_entry_block_size +*/ (cdat.getrow()/*+1*/) * cellwidth,
+                        g.fill3DRect(/*row_label_offset + */col  /*+1*/ *  cellwidth,
+                                /*this.key_entry_block_size +*/ row   * cellheight,
                                 cellwidth,
                                 cellheight, true);
                     } else {
-                        g.fillRect(row_label_offset + (cdat.getcolumn()) * cellheight,
-                                /*this.key_entry_block_size +*/ (cdat.getrow()) * cellwidth,
+                        g.fillRect( col   * cellwidth,
+                                /*this.key_entry_block_size +*/ row   * cellheight,
                                 cellwidth,
                                 cellheight);
                     }
                     //don't try to show the text if the cells are too small.
                     if ( this.cellheight > MatrixView.MIN_TEXT_SIZE && this.cellwidth > MatrixView.MIN_TEXT_SIZE ){
                         g.setColor(new Color(Color.white.getRGB() ^ g.getColor().getRGB()));
-                        g.drawString(cdat.getvalue(), cdat.getcolumn() * this.cellwidth, (cdat.getrow() + 1) * this.cellheight);
+                        g.drawString(cdat.getvalue(), col * this.cellwidth, (row + 1) * this.cellheight );
                     }
                     //g.setColor(Color.black);
                     //g.drawString( this.model.getDatum( row, col).getvalue(), row_label_offset +(row)*cellwidth + (row*cellwidth)/4, col_label_offset+ col*cellheight  + (col*cellheight)/4 );

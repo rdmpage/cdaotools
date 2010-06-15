@@ -40,6 +40,7 @@ public class MatrixViewerView extends FrameView {
         super(app);
         this.viewer = new MatrixViewer(mat);
         this.setFrame(viewer);
+
         
     }
 }

@@ -5,6 +5,7 @@
 
 package matrixviewer.model;
 
+import java.awt.Point;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -40,7 +41,7 @@ public class CSVMatrix implements Matrix {
     private ArrayList < List < MatrixDatum > > rows;
     private Set< String > uniques;
     private List< Annotation > annotations;
-
+    private Point offset;
     private ArrayList< TableModelListener > tml;
     
     public CSVMatrix(){
@@ -51,6 +52,7 @@ public class CSVMatrix implements Matrix {
         this.uniques = new TreeSet();
         this.annotations = new ArrayList();
         this.tml = new ArrayList();
+        this.offset = new Point();
         
     }
 
@@ -64,6 +66,7 @@ public class CSVMatrix implements Matrix {
         this.annotations = annotations;
         this.uniques = new TreeSet();
         this.transpose();
+        this.offset = new Point();
     }
 
 
@@ -402,6 +405,22 @@ public class CSVMatrix implements Matrix {
 
     public void removeTableModelListener(TableModelListener l) {
         this.tml.remove(l);
+    }
+
+    public int getXOffset() {
+        return (int)this.offset.getX();
+    }
+
+    public int getYOffset() {
+        return (int)this.offset.getY();
+    }
+
+    public void setXOffset(int x){
+        this.offset.setLocation(x,  this.offset.getY() );
+    }
+
+    public void setYOffset(int y){
+        this.offset.setLocation( this.offset.getX(), y);
     }
 
 }

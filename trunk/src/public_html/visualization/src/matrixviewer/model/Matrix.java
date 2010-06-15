@@ -40,5 +40,10 @@ public interface Matrix extends Annotable, javax.swing.table.TableModel {
     Matrix copy();
     Matrix extractRange( Range rows, Range cols);
 
-    
+    public int getXOffset();
+
+    public int getYOffset();
+
+    public void setXOffset(int x);
+    public void setYOffset(int y);
 }
