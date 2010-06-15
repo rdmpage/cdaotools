@@ -49,6 +49,7 @@ public class MatrixViewer extends JFrame {
         initComponents();
         this.scaleButton.setEnabled( false );
         this.restoreScaleButton.setEnabled( false );
+        //this.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
         //this.unloadAction();
     }
 
@@ -56,12 +57,14 @@ public class MatrixViewer extends JFrame {
         //super(app);
         initComponents();
         this.openFile( fileorurl );
+        this.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
     }
 
     public MatrixViewer( Matrix matrix){
         //super(app);
         initComponents();
         this.matrix = matrix;
+        this.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
         //this.setMatrix(matrix, "No Title");
     }
 
@@ -179,6 +182,8 @@ public class MatrixViewer extends JFrame {
 
         Matrix sub_model = this.matrix.extractRange(rowRange, colRange);
         MatrixViewer mvd = new MatrixViewer(  );
+        sub_model.setXOffset( colRange.getMinValue() );
+        sub_model.setYOffset( rowRange.getMinValue() );
         mvd.setMatrix(sub_model, this.getTitle() + ":" + rowRange + "x" + colRange);
         mvd.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
         mvd.setVisible(true);
@@ -713,7 +718,7 @@ public class MatrixViewer extends JFrame {
     }//GEN-LAST:event_scaleButtonActionPerformed
 
     private void restoreScaleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restoreScaleButtonActionPerformed
-
+        this.restoreScale();
     }//GEN-LAST:event_restoreScaleButtonActionPerformed
 
 

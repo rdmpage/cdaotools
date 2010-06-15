@@ -6,6 +6,7 @@
 package matrixviewer.model;
 
 //import com.clarkparsia.pellet.sparqldl.model.Query;
+import java.awt.Point;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,13 +50,14 @@ public class CDAOMatrix implements Matrix {
     private Set< String > unique_values;
     private OWLOntology matrixOntologyData;
     private OWLOntologyManager ontologyManager;
-
+    private Point offset;
     public CDAOMatrix() {
         this.rows = new ArrayList();
         this.cols = new ArrayList();
         this.row_names = new ArrayList();
         this.col_names = new ArrayList();
         this.unique_values = new TreeSet();
+        this.offset = new Point();
         
     }
 
@@ -428,6 +430,22 @@ public class CDAOMatrix implements Matrix {
 
     public void removeTableModelListener(TableModelListener l) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int getXOffset() {
+        return (int)this.offset.getX();
+    }
+
+    public int getYOffset() {
+        return (int)this.offset.getY();
+    }
+
+    public void setXOffset(int x) {
+        this.offset.setLocation(x,  this.offset.getY());
+    }
+
+    public void setYOffset(int y) {
+        this.offset.setLocation( this.offset.getX() , y);
     }
 
     

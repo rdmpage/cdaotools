@@ -17,19 +17,20 @@ import matrixviewer.model.MatrixDatum;
  * @author bchisham
  */
 class DrawableDatum implements ColorCoder {
-    private static Map< String, Color > color_map;
+    private Map< String, Color > color_map;
     /**
      * Initialize the color map.
      */
     DrawableDatum(){
-        if (color_map == null ){
-            color_map = new HashMap< String, Color >();
+        color_map = new HashMap();
+        //if (color_map == null ){
+        //    color_map = new HashMap< String, Color >();
             color_map.put( "A", Color.blue);
             color_map.put( "T", Color.red);
             color_map.put( "U", Color.red);
             color_map.put( "C", Color.cyan);
             color_map.put( "G", Color.green);
-        }
+        //}
     }
     /**
      * Initialize the color map with the specified set of unique values.

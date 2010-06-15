@@ -18,12 +18,12 @@ import matrixviewer.model.MolecularDatum;
  */
 public class MatrixKeyCanvas extends Canvas {
     private Matrix model;
-    private DrawableDatum rederer;
+    private DrawableDatum renderer;
     private static final int ROW_LABEL_WIDTH = 50;
     private static final int key_entry_height = 10;
     public MatrixKeyCanvas(){
         model = null;
-        this.rederer = new DrawableDatum();
+        this.renderer = new DrawableDatum();
     }
 
     @Override
@@ -37,13 +37,14 @@ public class MatrixKeyCanvas extends Canvas {
                 g.setColor(Color.black);
                 String current = mval.next();
                 g.drawString( current , 0  , key_entry_height * (key+1) + key_entry_height);
-                g.setColor( this.rederer.getColor( new MolecularDatum(0,0, current) ) );
+                g.setColor( this.renderer.getColor( new MolecularDatum(0,0, current) ) );
                 g.fillRect( ROW_LABEL_WIDTH , key_entry_height *( key +1 ), key_entry_height, key_entry_height);
             }
         }
     }
 
     public void setModel( Matrix model ){
+        this.renderer = new DrawableDatum( model.getUniqueValues() );
         this.model = model;
         this.repaint();
     }
