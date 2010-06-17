@@ -309,47 +309,80 @@ annotation types.
 \section*{Results}
  % What should be described here is the functionality of the software together with data on  how its performance and functionality compare with and improve on functionally similar existing software.
   \subsection*{Web-Tools}
-  The web tools provide a variety of querying and data access features for both human and programmatic access to
-  data. It allows one to retrieve data sets by author name, tree identifier, taxon, algorithm, or method. It also
-  supports computing the minimum spanning clade or the nearest common ancestor of a set of taxa. It also
-  allows one to  list trees conforming to certain measures. For example, finding all tress larger or smaller than
-  a given size. 
+  The web tools provide a variety of querying and data access features for both
+human and programmatic access to data. It allows one to retrieve data sets by
+author name, tree identifier, taxon, algorithm, or method. It also supports
+computing the minimum spanning clade or the nearest common ancestor of a set of
+taxa. It also allows one to  list trees conforming to certain measures. For
+example, finding all tress larger or smaller than a given size. 
 
-   Our PhyloWS implementation is the basis for all the data access features of CDAO-Store. The other web components,
-   and the CDAO-Explorer tool use it to access data. URI's are divided into three conceptual parts. The address
-   of the store site, and path prefix \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows}, a query type (i.e.
-   tree, matrix, msc, nca, listing, or size), and parameter list. The specific parameters depend on the query
-   type. For example the msc and nca query types expect a list of taxon id's separated by `/' The listing query
-   takes optional limit and offset parameters to paginate results. The size query takes a direction 
-   (greater, less, or equal),  a criteria (node, internal, or leaf) and a size (some numeral).
+   Our PhyloWS implementation is the basis for all the data access features of
+CDAO-Store. The other web components, and the CDAO-Explorer tool use it to
+access data. URI's are divided into three conceptual parts. The address of the
+store site, and path prefix
+\url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows}, a query type (i.e.
+tree, matrix, msc, nca, listing, or size), and parameter list. The specific
+parameters depend on the query type. For example the msc and nca query types
+expect a list of taxon id's separated by `/' The listing query takes optional
+limit and offset parameters to paginate results. The size query takes a
+direction (greater, less, or equal),  a criteria (node, internal, or leaf) and
+a size (some numeral).
 
   
   \subsection*{CDAO-Explorer}
-  CDAO-Explorer has achieved a basic level of functionality. It provides search and visualization for both
-  trees and matrices and a set of additional features not currently available in a single tool. 
+  CDAO-Explorer has achieved a basic level of functionality. It provides search
+and visualization for both trees and matrices and a set of additional features
+not currently available in a single tool. 
   
-  Annotation is an important part of CDAO-Explorer. It allows users to attach arbitrary annotations to data items,
-  as well as collections of resources.  CDAO-Explorer also allows users to load or save custom data not in the CDAO-triplestore. It also allows users to export
-  pictures of particular visualizations. 
+  Annotation is an important part of CDAO-Explorer. It allows users to attach
+arbitrary annotations to data items, as well as collections of resources.
+CDAO-Explorer also allows users to load or save custom data not in the
+CDAO-triplestore. It also allows users to export pictures of particular
+visualizations. 
 
 \subsubsection*{Tree Viewer}
-Tree Viewer is the graphical application used to display trees.  It is built on top of the Prefuse visualization framework. Data from the CDAO-triplestore is converted into the Graphml format \footnote{http://graphml.graphdrawing.org/} and then run through the visualization application.
-\\
-Tree Viewer has a few key features.  The first is that there is two different layouts for the tree to be displayed.  By default, it uses a Force Layout which allows the nodes of the tree to 'bounce' around as if pulled by strings till it reaches an equilibrium.  The second is called a Node Layout which resembles a more standard parent/child structured tree going from left to right.
-\\
-Another ability that TreeViewer has is to search across the tree using the node and edge label names, highlighting all that currently apply.  For instance, a tree may have many nodes that have as part of its name '\#Ilex\_'.  When this search is performed, all nodes with the label containing that will be highlighted.  Labels for nodes are generally the taxa name for that TU or if it is an unknown internal node will have the convention of being named '\#nodeX' where X is some number.  Edge labels are similar in that they are the labels of the two nodes combined as 'source\_destination'.
-\\
-It is also possible to view more specific details on a specific node or edge.  Currently, the only detailed information available is the label.  \\
-Lastly, there is the option to save the tree visualization as a jpg or png file.
-\subsubsection*{Matrix Viewer}
- We have developed  a custom framework for visualizing matrices. It assigns color codes to character states allowing one to graphically appraise large matrices to quickly see patterns in the source data.
+Tree Viewer is the graphical application used to display trees.  It is built on
+top of the Prefuse visualization framework. Data from the CDAO-triplestore is
+converted into the Graphml format \footnote{http://graphml.graphdrawing.org/}
+and then run through the visualization application.  \\ Tree Viewer has a few
+key features.  The first is that there is two different layouts for the tree to
+be displayed.  By default, it uses a Force Layout which allows the nodes of the
+tree to 'bounce' around as if pulled by strings till it reaches an equilibrium.
+The second is called a Node Layout which resembles a more standard parent/child
+structured tree going from left to right.  \\ Another ability that TreeViewer
+has is to search across the tree using the node and edge label names,
+highlighting all that currently apply.  For instance, a tree may have many
+nodes that have as part of its name '\#Ilex\_'.  When this search is performed,
+all nodes with the label containing that will be highlighted.  Labels for nodes
+are generally the taxa name for that TU or if it is an unknown internal node
+will have the convention of being named '\#nodeX' where X is some number.  Edge
+labels are similar in that they are the labels of the two nodes combined as
+'source\_destination'.  \\ 
+It is also possible to view more specific details on
+a specific node or edge.  Currently, the only detailed information available is
+the label.  \\
+ Lastly, there is the option to save the tree visualization as a
+jpg or png file.  
+
+\subsubsection*{Matrix Viewer} We have developed  a custom
+framework for visualizing matrices. It assigns color codes to character states
+allowing one to graphically appraise large matrices to quickly see patterns in
+the source data. It allows users to scale matrices, select regions of a matrix
+to see in greater detail, and attach annotations to particular cells of a
+matrix. 
   
 %Things to compare functionality with: Nexplorer and PhyloWidget  (about the same functionality with trees, but they don't display matrices and viewing edges as data)
 \subsection*{Related Work}
 \subsubsection*{Nexplorer}
-Nexplorer is an application that also allows for the browsing of phylogenetic trees and character matrices.  However, it only allows for NEXUS formatted files and only displays the trees and matrices in one layout.  Nexplorer does have the ability to look at internal nodes in the trees, however it does not have the ability to look at edges.
-\subsubsection*{PhyloWidget}
-PhyloWidget is another phylogenetic tree viewer application.  This one is much more interactive and customizable than Nexplorer, however it only displays trees defined in the Newick or Nexus file format.  Like Nexplorer, PhyloWidget also does not do anything with tree edges.
+Nexplorer is an application that also allows for the browsing of phylogenetic
+trees and character matrices.  However, it only allows for NEXUS formatted
+files and only displays the trees and matrices in one layout.  Nexplorer does
+have the ability to look at internal nodes in the trees, however it does not
+have the ability to look at edges.  \subsubsection*{PhyloWidget} PhyloWidget is
+another phylogenetic tree viewer application.  This one is much more
+interactive and customizable than Nexplorer, however it only displays trees
+defined in the Newick or Nexus file format.  Like Nexplorer, PhyloWidget also
+does not do anything with tree edges.
 
 \section*{Discussion}
  % Intended use of the software and the benefits that are envisioned together, if possible, with an outline for the planned future development of new features.
