@@ -195,8 +195,6 @@ to the descriptions of data and transformations commonly found in the domain of
 phylogenetic inference. The core concepts of the ontology enables the
 description of phylogenetic trees and associated character data matrices.
 
-     
-
  
         \paragraph*{Results:} Using CDAO as a backend triple-store, we developed CDAO-Store. CDAO-Store is a web-based application that can be used to query phylogenetic data for nearest common ancestor or minimum spanning clade as well as filter multiple trees in the store by size, author, taxan,  tree identifier, algorithm or method.  In addition, CDAO-Store also has a visualization application called CDAO-Explorer which can be used to view both the character matrix or tree of anything in CDAO-Store.  In order to keep CDAO-Store up to date, PHYLIP, MEGA, and NEXUS files can be translated to CDAO format and then uploaded to CDAO-Store.
 
@@ -364,14 +362,26 @@ PhyloWidget is another phylogenetic tree viewer application.  This one is much m
 
 %%%%%%%%%%%%%%%%%%%%%%
 \section*{Conclusions}
-  Text for this section \ldots
+   \subsection*{Current State}
+     The CDAO-store tool set provides a robust foundation for a semantically aware, phylogeny resource. The query and translation
+     services are well developed and based on an easily extensible framework to easily address additional development of features.
+     The CDAO-Explorer portion of the store has achieved a good base-line functionality and provides a set of useful features
+     to advance the current state of visualization of large data sets in this field. Also it provides a good proof-of-concept for
+     integrating semantic information and other meta-data in a seamless and natural way. 
 
-	
+   \subsection*{Future Directions}
+     Several exciting features are envisioned to extend the existing tool set. For the web we plan to allow users to submit and execute
+     their own \textit{SPARQL} queries to our data-store so they can accomplish queries not supported by the interface. Also we hope to
+     add additional file-types to the translation tool. CDAO-Explorer will include tighter integration between the tree and matrix 
+     visualizations, and also phase in support for describing processes and workflows, as part of it's existing support for annotating
+     sets of tree and matrix files.
+
+
   
 %%%%%%%%%%%%%%%%%%
 \section*{Availability and Requirements}
   \textbf{Project name:} CDAO Tools\\
-  \textbf{Project home page:} http://www.cs.nmsu.edu/~cdaostore/ \\ 
+  \textbf{Project home page:} \url{http://www.cs.nmsu.edu/~cdaostore/} \\ 
   \textbf{Operating system(s):} Linux, Mac, Unix \\
   \textbf{Programming language:} Bash, C++, Java, Perl, PHP, Python \\ 
   \textbf{Other requirements:} \\ 
@@ -381,8 +391,13 @@ PhyloWidget is another phylogenetic tree viewer application.  This one is much m
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Authors contributions}
-    Text for this section \ldots
-
+    \paragraph*{Brandon} focused on development of the web and database tools, and the integration of the tree and matrix
+      and tree visualizers into the CDAO-Explorer application. 
+    \paragraph*{Trung} developed the mega format reader for the translator tool,as well as the matrix visualization tool. 
+    \paragraph*{Enrico} guided the development of the project. 
+    \paragraph*{Son} guided the development of the project.
+    \paragraph*{Ben} developed the tree viewer portion of the CDAO-Explorer tool, as well as updating the translator tool to
+       accommodate the latest changes to the CDAO standard. 
     
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -484,7 +499,7 @@ PhyloWidget is another phylogenetic tree viewer application.  This one is much m
     Additional file descriptions text.
 
   \subsection*{TreeViewerSearch.jpg}
-	This is Figure1
+	This is Figure 1
 
 
 \end{bmcformat}
