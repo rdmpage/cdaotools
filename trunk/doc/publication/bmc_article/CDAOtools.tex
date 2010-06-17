@@ -185,7 +185,7 @@
 \begin{abstract}
         % Do not use inserted blank lines (ie \\) until main body of text.
         %This should not exceet 350 words and should be structured into separate sections headed Background, Results, Conclusions.  Please do not use abbreviations or references in the abstract.
-	\paragraph*{Background:} The Comparative Data Analysis Ontology
+	\paragraph*{Background:} The Comparative Data Analysis Ontology(CDAO)
 \footnote{\url{http://www.evolutionaryontology.org}} is an ontology developed,
 as part of the
 EvoInfo\footnote{\url{https://www.nescent.org/wg_evoinfo/Main_Page}} and
@@ -198,7 +198,7 @@ description of phylogenetic trees and associated character data matrices.
      
 
  
-        \paragraph*{Results:} Text for this section of the abstract \ldots
+        \paragraph*{Results:} Using CDAO as a backend triple-store, we developed CDAO-Store. CDAO-Store is a web-based application that can be used to query phylogenetic data for nearest common ancestor or minimum spanning clade as well as filter multiple trees in the store by size, author, taxan,  tree identifier, algorithm or method.  In addition, CDAO-Store also has a visualization application called CDAO-Explorer which can be used to view both the character matrix or tree of anything in CDAO-Store.  In order to keep CDAO-Store up to date, PHYLIP, MEGA, and NEXUS files can be translated to CDAO format and then uploaded to CDAO-Store.
 
         \paragraph*{Conclusions:} Text for this section of the abstract \ldots
 \end{abstract}
@@ -345,12 +345,12 @@ Lastly, there is the option to save the tree visualization as a jpg or png file.
 \subsubsection*{Matrix Viewer}
  We have developed  a custom framework for visualizing matrices. It assigns color codes to character states allowing one to graphically appraise large matrices to quickly see patterns in the source data.
   
-%Things to compare functionality with: Nexplorer and PhiloWidget  (about the same functionality with trees, but they dont display matrices and viewing edges as data)
+%Things to compare functionality with: Nexplorer and PhyloWidget  (about the same functionality with trees, but they don't display matrices and viewing edges as data)
 \subsection*{Related Work}
 \subsubsection*{Nexplorer}
-CDAO-Explorer is functionally the same as Nexplorer and PhyloWidget when it comes to visualizing trees.
+Nexplorer is an application that also allows for the browsing of phylogenetic trees and character matrices.  However, it only allows for NEXUS formatted files and only displays the trees and matrices in one layout.  Nexplorer does have the ability to look at internal nodes in the trees, however it does not have the ability to look at edges.
 \subsubsection*{PhyloWidget}
-
+PhyloWidget is another phylogenetic tree viewer application.  This one is much more interactive and customizable than Nexplorer, however it only displays trees defined in the Newick or Nexus file format.  Like Nexplorer, PhyloWidget also does not do anything with tree edges.
 
 \section*{Discussion}
  % Intended use of the software and the benefits that are envisioned together, if possible, with an outline for the planned future development of new features.
