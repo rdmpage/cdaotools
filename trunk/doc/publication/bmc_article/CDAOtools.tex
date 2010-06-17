@@ -321,27 +321,35 @@ annotation types.
    tree, matrix, msc, nca, listing, or size), and parameter list. The specific parameters depend on the query
    type. For example the msc and nca query types expect a list of taxon id's separated by `/' The listing query
    takes optional limit and offset parameters to paginate results. The size query takes a direction 
-   (greater, less, or equal), and a size.
+   (greater, less, or equal),  a criteria (node, internal, or leaf) and a size (some numeral).
 
   
   \subsection*{CDAO-Explorer}
   CDAO-Explorer has achieved a basic level of functionality. It provides search and visualization for both
-  trees and matrices and a set of additional features not currently available in a single tool. First it
-  provides both network and tree views, for trees using the Prefuse visualization framework. We have developed
-  a custom framework for visualizing matrices. It assigns color codes to character states allowing one to graphically
-  appraise large matrices to quickly see patterns in the source data.
+  trees and matrices and a set of additional features not currently available in a single tool. 
   
-  Annotation is another key part of CDAO-Explorer. It allows users to attach arbitrary annotations to data items,
-  as well as collections of resources.
-
-  It also allows users to load or save custom data not in the CDAO-triplestore. It also allows users to export
+  Annotation is an important part of CDAO-Explorer. It allows users to attach arbitrary annotations to data items,
+  as well as collections of resources.  CDAO-Explorer also allows users to load or save custom data not in the CDAO-triplestore. It also allows users to export
   pictures of particular visualizations. 
 
+\subsubsection*{Tree Viewer}
+Tree Viewer is the graphical application used to display trees.  It is built on top of the Prefuse visualization framework. Data from the CDAO-triplestore is converted into the Graphml format \footnote{http://graphml.graphdrawing.org/} and then run through the visualization application.
+\\
+Tree Viewer has a few key features.  The first is that there is two different layouts for the tree to be displayed.  By default, it uses a Force Layout which allows the nodes of the tree to 'bounce' around as if pulled by strings till it reaches an equilibrium.  The second is called a Node Layout which resembles a more standard parent/child structured tree going from left to right.
+\\
+Another ability that TreeViewer has is to search across the tree using the node and edge label names, highlighting all that currently apply.  For instance, a tree may have many nodes that have as part of its name '\#Ilex\_'.  When this search is performed, all nodes with the label containing that will be highlighted.  Labels for nodes are generally the taxa name for that TU or if it is an unknown internal node will have the convention of being named '\#nodeX' where X is some number.  Edge labels are similar in that they are the labels of the two nodes combined as 'source\_destination'.
+\\
+It is also possible to view more specific details on a specific node or edge.  Currently, the only detailed information available is the label.  \\
+Lastly, there is the option to save the tree visualization as a jpg or png file.
+\subsubsection*{Matrix Viewer}
+ We have developed  a custom framework for visualizing matrices. It assigns color codes to character states allowing one to graphically appraise large matrices to quickly see patterns in the source data.
   
-
-  
-
 %Things to compare functionality with: Nexplorer and PhiloWidget  (about the same functionality with trees, but they dont display matrices and viewing edges as data)
+\subsection*{Related Work}
+\subsubsection*{Nexplorer}
+CDAO-Explorer is functionally the same as Nexplorer and PhyloWidget when it comes to visualizing trees.
+\subsubsection*{PhyloWidget}
+
 
 \section*{Discussion}
  % Intended use of the software and the benefits that are envisioned together, if possible, with an outline for the planned future development of new features.
@@ -361,13 +369,13 @@ annotation types.
   
 %%%%%%%%%%%%%%%%%%
 \section*{Availability and Requirements}
-   Project name: CDAO Tools
-   Project home page: http://www.cs.nmsu.edu/~cdaostore/
-  Operating system(s): Linux, Mac, Unix
-  Programming language: Bash, C++, Java, Perl, PHP, Python
-  Other requirements:
-  License: GPL
-  Any restriction to use by non-academics:
+   Project name: CDAO Tools \\
+   Project home page: http://www.cs.nmsu.edu/~cdaostore/ \\
+  Operating system(s): Linux, Mac, Unix \\
+  Programming language: Bash, C++, Java, Perl, PHP, Python \\
+  Other requirements: \\
+  License: GPL \\
+  Any restriction to use by non-academics: \\
 
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -378,8 +386,7 @@ annotation types.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Acknowledgements}
-  \ifthenelse{\boolean{publ}}{\small}{}
-  Text for this section \ldots
+  This project is currently funded by NSF CREST grant HRD-0420407 and NSF IGERT grant DGE-0504304
 
 
  
