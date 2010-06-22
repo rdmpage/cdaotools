@@ -17,6 +17,8 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import matrixviewer.model.Matrix;
 import matrixviewer.model.MatrixDatum;
 import matrixviewer.model.Range;
@@ -27,6 +29,38 @@ import matrixviewer.model.RangeSet;
  * @author bchisham
  */
 public class MatrixView extends javax.swing.JPanel implements MouseMotionListener {
+    
+    private class AsyncPainter implements Runnable {
+
+        private MatrixView parent;
+        private Graphics g;
+        private boolean paint_requested;
+        public AsyncPainter( MatrixView parent ){
+            this.parent = parent;
+            this.paint_requested = false;
+            //this.g = g;
+        }
+
+
+        
+        public void run() {
+            while ( true ){
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MatrixView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+        public void requestPaint( Graphics g ){
+            this.paint_requested = true;
+            //System.err.println( "Doing background paint!" );
+            this.parent.async_paint(g);
+            this.g = g;
+        }
+    }
+
     private Matrix model;
     private DrawableDatum renderer;
     private int cellwidth;
@@ -42,6 +76,16 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
     private Range selected_cols;
     private boolean selectionActive;
     private final static int MIN_TEXT_SIZE = 10;
+    private final static int DEFAULT_BLOCK_SIZE = 30;
+    private final static int MIN_3D_BLOCK_SIZE=5;
+    private AsyncPainter painter;
+    private Thread painter_context;
+
+    private int visible_left;
+    private final int visible_width = 680;
+    private int visible_top;
+    private final int visible_height = 475;
+
     /** Creates new form MatrixView */
     public MatrixView() {
         this.model = null;
@@ -54,6 +98,8 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
         this.highlight_cols = new RangeSet();
         this.highlight_rows = new RangeSet();
         this.selectionActive = false;
+        this.visible_left = 0;
+        this.visible_top = 0;
         initComponents();
         this.postinit();
     }
@@ -119,8 +165,8 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
     }
 
     public void resetScale(){
-        this.cellheight = 10;
-        this.cellwidth = 10;
+        this.cellheight = 30;
+        this.cellwidth = 30;
         this.setPreferredSize( new Dimension(this.cellwidth * this.model.getcolumncount(), this.cellheight * this.model.getrowcount()) );
         this.invalidate();
         this.repaint();
@@ -249,6 +295,24 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
         this.selected_rows = new Range(0, this.model.getrowcount());
     }
 
+    public int getVisible_left() {
+        return visible_left;
+    }
+
+    public void setVisible_left(int visible_left) {
+        this.visible_left = visible_left;
+    }
+
+    public int getVisible_top() {
+        return visible_top;
+    }
+
+    public void setVisible_top(int visible_top) {
+        this.visible_top = visible_top;
+    }
+
+    
+
     /**
      * Get the selected rows
      */
@@ -264,12 +328,11 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
         return this.selected_cols;
     }
 
-    /**
-     * Draw the datum.
-     * @param g
-     */
-    @Override
-    public void paint(Graphics g) {
+    
+    
+
+
+    protected void async_paint( Graphics g ){
         if (this.model != null
                 && this.model.getcolumncount() > 0
                 && this.model.getrowcount() > 0) {
@@ -277,20 +340,20 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
 
 
 
-            g.setColor(Color.black);
+            //g.setColor(Color.black);
             //Draw the column labels.
 
             //Draw the matrix
-            g.setColor(Color.black);
+            //g.setColor(Color.black);
 
-            for (int row = 0; row < model.getrowcount(); ++row) {
+            for (int row =  this.coordinate_to_row_number( this.visible_top ); row < model.getrowcount() && row < this.coordinate_to_row_number( this.visible_height ) ; ++row) {
                 //Draw the row label
                 g.setColor(Color.black);
                 // System.err.println( "Row[" + row + "]: " +this.model.getRowLabel(row) );
 
                 //g.drawString( this.model.getRowLabel(row) , 0, /*col_label_offset+*/(row+1)*cellheight + cellheight /2);
                 Iterator<MatrixDatum> crowit = this.model.getRow(row).iterator();
-                for (int col = 0; col < model.getColumnCount() && crowit.hasNext(); ++col){
+                for (int col = this.coordinate_to_col_number( this.visible_left ); col < model.getColumnCount() && crowit.hasNext() && col < this.coordinate_to_col_number( this.visible_width ); ++col){
                 //while (crowit.hasNext()) {
                     MatrixDatum cdat = crowit.next();
                     // for (int col = 0; col < model.getcolumncount()-1; ++col ){
@@ -324,6 +387,21 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
             String noneLoaded = "No Matrix Loaded";
             g.drawString(noneLoaded, this.getWidth() / 2 - noneLoaded.length() / 2, this.getHeight() / 2);
         }
+    }
+
+    /**
+     * Draw the datum.
+     * @param g
+     */
+    @Override
+    public void paint(Graphics g) {
+        if ( this.painter == null ){
+            this.painter = new AsyncPainter( this );
+            this.painter_context = new Thread( painter );
+            this.painter_context.start();
+        }
+        this.painter.requestPaint(g);
+        //this.async_paint(g);
     }
 
     public void mouseDragged(MouseEvent e) {
