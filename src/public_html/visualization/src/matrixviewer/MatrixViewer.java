@@ -1,9 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * MatrixViewer.java
  *
  * Created on Apr 17, 2010, 2:07:31 PM
@@ -52,14 +47,21 @@ public class MatrixViewer extends JFrame {
         //this.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
         //this.unloadAction();
     }
-
+    /**
+     * Initializes the view with the matrix located at the
+     * specified file or url
+     * @param fileorurl
+     */
     public MatrixViewer( String fileorurl){
         //super(app);
         initComponents();
         this.openFile( fileorurl );
         this.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
     }
-
+    /**
+     * Displayes the specified matrix.
+     * @param matrix
+     */
     public MatrixViewer( Matrix matrix){
         //super(app);
         initComponents();
@@ -72,7 +74,11 @@ public class MatrixViewer extends JFrame {
         //this.extractButton.setText( "Extract" );
         //this.highlightButton.setText( "Highlight" );
     }
-
+    /**
+     * Changes the matrix being displayed by the viewer.
+     * @param matrix
+     * @param title
+     */
     public void setMatrix(Matrix matrix, String title){
         this.matrix = matrix;
         //System.err.println("Set matrix");
@@ -104,7 +110,10 @@ public class MatrixViewer extends JFrame {
         this.restoreScaleButton.setEnabled( true );
             //this.repaint();
     }
-
+    /**
+     * Opens the specified matrix resource
+     * @param fileorurl
+     */
     public void openFile(String fileorurl){
         try {
             this.openFile( new URL(fileorurl) );
@@ -112,7 +121,10 @@ public class MatrixViewer extends JFrame {
             this.openFile( new File(fileorurl) );
         }
     }
-
+    /**
+     * Loads the matrix from the specified URL
+     * @param url
+     */
     public void openFile(URL url){
         try {
             this.matrix = MatrixFactory.getMatrix( ftype );
@@ -125,7 +137,10 @@ public class MatrixViewer extends JFrame {
             Logger.getLogger(MatrixViewerDisplay.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    /**
+     * Loads the matrix from the specified file
+     * @param file
+     */
     public void openFile(File file){
         try {
             this.matrix = MatrixFactory.getMatrix(ftype);
@@ -137,7 +152,9 @@ public class MatrixViewer extends JFrame {
             Logger.getLogger(MatrixViewerDisplay.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    /**
+     * Handle open file menu action.
+     */
      @Action
     private void openFile(){
         FileDialog openChooser = new FileDialog(this,true);
@@ -148,7 +165,9 @@ public class MatrixViewer extends JFrame {
             this.openFile( openChooser.getSelectedFile() );
         }
     }
-
+    /**
+     * Handle open url menu action.
+     */
      @Action
      private void openURL(){
          OpenURLDialog urlDialog = new OpenURLDialog();
@@ -161,7 +180,9 @@ public class MatrixViewer extends JFrame {
         }
 
      }
-
+     /**
+      * Handle save file menu action.
+      */
     @Action
     private void saveFile(){
         try {
@@ -175,6 +196,9 @@ public class MatrixViewer extends JFrame {
         }
 
     }
+    /**
+     * Handle extraction of a selected submatrix.
+     */
      @Action
     public void extractSubmatrixAction() {
         //System.err.println("Extracting Submatrix");
@@ -190,7 +214,9 @@ public class MatrixViewer extends JFrame {
         this.matrix_view_panel.invalidate();
         this.highlightAction();
     }
-
+    /**
+     * Handle highlighting.
+     */
    @Action
    public void highlightAction(){
        this.setRanges();
@@ -198,12 +224,16 @@ public class MatrixViewer extends JFrame {
        this.matrix_view_panel.invalidate();
        this.repaint();
    }
-
+   /**
+    * Handle start selection.
+    */
    @Action
    public void startSelection(){
 
    }
-
+   /**
+    * expand a started selection.
+    */
    @Action 
    public void expandSelection(){
        MatrixView mv = (MatrixView)this.matrix_view_panel;
@@ -223,8 +253,9 @@ public class MatrixViewer extends JFrame {
       //this.highlightAction();
       
    }
-
-
+   /**
+    * Set the selected ranges.
+    */
    private void setRanges(){
        Pattern matcher = Pattern.compile("-");
         String[] split_row_txt = matcher.split( this.rowRangeTextField.getText() );
@@ -238,7 +269,9 @@ public class MatrixViewer extends JFrame {
         this.colRange = new Range( Integer.parseInt( split_col_txt[0].trim() ) , Integer.parseInt( split_col_txt[1].trim() ) );
 
    }
-
+   /**
+    * Clear selection.
+    */
    @Action
    public void clearAction(){
         this.colRangeTextField.setText("0-"+this.columnStatusTextField.getText());
@@ -247,14 +280,18 @@ public class MatrixViewer extends JFrame {
         //this.matrix_view_panel.invalidate();
         //this.repaint();
    }
-
+   /**
+    * Handle unloading a matrix.
+    */
    @Action
    public void unloadAction(){
         this.setMatrix(null, "No Matrix Loaded");
         this.scaleButton.setEnabled( false );
         this.scaleButton.setEnabled( false );
    }
-
+   /**
+    * Handle scaling a matrix.
+    */
    @Action
    public void scaleMatrix(){
        final int scaleFactors[] = { 8,4,2,2,4,8,16 };
@@ -271,24 +308,33 @@ public class MatrixViewer extends JFrame {
            mv.scaleUp( scaleFactors[ selectedIndex ] );
        }
        
-       this.jScrollPane1.invalidate();
+       //this.jScrollPane1.invalidate();
        this.jScrollPane1.repaint();
 
    }
+   /**
+    * Restore the matrix to the original size.
+    */
    @Action
    public void restoreScale(){
        ((MatrixView)this.matrix_view_panel).resetScale();
        //this.matrix_view_panel.invalidate();
        //this.matrix_view_panel.repaint();
    }
-
+   /**
+    * Handle scrolling the matrix display.
+    * @param evt
+    */
    public void handleScrolling( java.awt.event.ComponentEvent evt ){
         MatrixView  mv = (MatrixView) this.matrix_view_panel;
+        mv.setVisible_height( this.jScrollPane1.getViewport().getHeight() *2 );
+        mv.setVisible_width( this.jScrollPane1.getViewport().getWidth() *2 );
         int x_displacement = this.jScrollPane1.getHorizontalScrollBar().getValue() * this.jScrollPane1.getHorizontalScrollBar().getUnitIncrement() ;
         int y_displacement = this.jScrollPane1.getVerticalScrollBar().getValue() * this.jScrollPane1.getVerticalScrollBar().getUnitIncrement();
         mv.setVisible_top( y_displacement );
         mv.setVisible_left( x_displacement );
-        this.matrix_view_panel.invalidate();
+        this.matrix_view_panel.repaint();
+        
    }
 
     /** This method is called from within the constructor to
@@ -445,6 +491,11 @@ public class MatrixViewer extends JFrame {
         jScrollPane1.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentMoved(java.awt.event.ComponentEvent evt) {
                 scrollComponentMoved(evt);
+            }
+        });
+        jScrollPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                handleScrollExit(evt);
             }
         });
 
@@ -738,6 +789,10 @@ public class MatrixViewer extends JFrame {
     private void scrollComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_scrollComponentMoved
         this.handleScrolling(evt);
     }//GEN-LAST:event_scrollComponentMoved
+
+    private void handleScrollExit(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleScrollExit
+        this.matrix_view_panel.repaint();
+    }//GEN-LAST:event_handleScrollExit
 
 
     /**
