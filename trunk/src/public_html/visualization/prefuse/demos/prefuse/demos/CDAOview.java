@@ -81,9 +81,11 @@ import prefuse.data.io.DataIOException;
 import prefuse.data.io.GraphMLReader;
 import prefuse.data.query.SearchQueryBinding;
 import prefuse.data.search.PrefixSearchTupleSet;
+import prefuse.data.tuple.TableTuple;
 import prefuse.data.tuple.TupleSet;
 import prefuse.demos.TreeView.NodeColorAction;
 import prefuse.render.DefaultRendererFactory;
+import prefuse.render.EdgeRenderer;
 import prefuse.render.LabelRenderer;
 import prefuse.util.ColorLib;
 import prefuse.util.FontLib;
@@ -100,6 +102,7 @@ import prefuse.visual.EdgeItem;
 import prefuse.visual.NodeItem;
 import prefuse.visual.VisualGraph;
 import prefuse.visual.VisualItem;
+import prefuse.visual.tuple.TableDecoratorItem;
 import prefuse.visual.tuple.TableEdgeItem;
 import prefuse.visual.tuple.TableNodeItem;
 
@@ -118,6 +121,8 @@ public class CDAOview extends JPanel {
     private static final String BASE_URI = "http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/tree";
     /** Default tree to load*/
     private static final String DEFAULT_GRAPH_URL= BASE_URI + "/" + "Tree3099?format=graphml";
+    /** Datafile used */
+    protected static String USED_GRAPH_URL;
     /** this visualization */
     private Visualization m_vis;
     
@@ -154,8 +159,15 @@ public class CDAOview extends JPanel {
         
         LabelRenderer tr = new LabelRenderer();
         tr.setRoundedCorner(8, 8);
-        m_vis.setRendererFactory(new DefaultRendererFactory(tr));
+        EdgeRenderer er = new EdgeRenderer();
+        er.setManageBounds(true);
+        m_vis.setRendererFactory(new DefaultRendererFactory(tr, er));
 
+        
+        //TableDecoratorItem edgeDec = new TableDecoratorItem();//m_graph.getEdges();
+        
+        //edgeDec.
+        
         // --------------------------------------------------------------------
         // register the data with a visualization
         
@@ -449,7 +461,7 @@ public class CDAOview extends JPanel {
             datafile = args[0];
             label = args[1];
         }
-        
+        USED_GRAPH_URL = datafile;
         JFrame frame = demo(datafile, label);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -570,7 +582,7 @@ public class CDAOview extends JPanel {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowActivated(WindowEvent e) {
-                view.m_vis.run("layout");
+                view.m_vis.run("la4yout");
             }
             @Override
             public void windowDeactivated(WindowEvent e) {
@@ -641,8 +653,12 @@ public class CDAOview extends JPanel {
    							nt.set(count++, 1, n.get(i).toString());
    						}
    					}
+   					nt.addRow();
+   					nt.set(count, 0, "Graph URL");
+   					nt.set(count, 1, USED_GRAPH_URL);
    					prop = JPrefuseTable.showTableWindow(nt);
    					prop.setTitle(n.get(n.getColumnIndex("IdLabel")).toString());
+   					
    				}
    				else if(data.getClass() == TableEdgeItem.class)
    				{
@@ -658,9 +674,35 @@ public class CDAOview extends JPanel {
    						{
    							et.addRow();
    							et.set(count, 0, edge.getColumnName(i));
-   							et.set(count++, 1, edge.get(i).toString());
+   							if(edge.getColumnName(i) == "source" || edge.getColumnName(i) == "target")
+   							{
+   								//get the IdLabel of the nodes they point to.
+   								TupleSet n = m_view.m_graph.getNodes();
+   								String l = "";
+   								Iterator nit = n.tuples();
+   								int c = Integer.parseInt(edge.get(i).toString());
+   								int loop = -1;
+   								Object dn = new Object();
+   								while(loop < c)
+   								{
+   									dn = nit.next();
+   									loop++;
+   								}
+   								TableTuple node = new TableTuple();
+   								if(dn.getClass() == TableTuple.class)
+   									node = (TableTuple) dn;
+   								else
+   									System.out.println("dn.getClass() == " + dn.getClass().toString());
+   								l = node.get(node.getColumnIndex("IdLabel")).toString();
+   								et.set(count++, 1, l);
+   							}
+   							else
+   							  et.set(count++, 1, edge.get(i).toString());
    						}
    					}
+   					et.addRow();
+   					et.set(count, 0, "Graph URL");
+   					et.set(count, 1, USED_GRAPH_URL);
    					prop = JPrefuseTable.showTableWindow(et);
    					prop.setTitle(edge.get(edge.getColumnIndex("IdLabel")).toString());
    				}
