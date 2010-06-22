@@ -3,31 +3,26 @@ package prefuse.demos;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Iterator;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -37,12 +32,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.basic.BasicButtonListener;
 
 import prefuse.Display;
 import prefuse.Visualization;
@@ -51,12 +45,8 @@ import prefuse.action.RepaintAction;
 import prefuse.action.assignment.ColorAction;
 import prefuse.action.distortion.BifocalDistortion;
 import prefuse.action.filter.GraphDistanceFilter;
-import prefuse.action.layout.graph.BalloonTreeLayout;
 import prefuse.action.layout.graph.ForceDirectedLayout;
-import prefuse.action.layout.graph.FruchtermanReingoldLayout;
 import prefuse.action.layout.graph.NodeLinkTreeLayout;
-import prefuse.action.layout.graph.RadialTreeLayout;
-import prefuse.action.layout.graph.SquarifiedTreeMapLayout;
 import prefuse.activity.Activity;
 import prefuse.controls.AnchorUpdateControl;
 import prefuse.controls.DragControl;
@@ -71,19 +61,26 @@ import prefuse.data.Graph;
 import prefuse.data.Table;
 import prefuse.data.Tuple;
 import prefuse.data.event.TupleSetListener;
-import prefuse.data.io.DataIOException;
 import prefuse.data.io.GraphMLReader;
+import prefuse.data.query.SearchQueryBinding;
+import prefuse.data.search.PrefixSearchTupleSet;
 import prefuse.data.tuple.TupleSet;
 import prefuse.render.DefaultRendererFactory;
 import prefuse.render.LabelRenderer;
 import prefuse.util.ColorLib;
+import prefuse.util.FontLib;
 import prefuse.util.GraphLib;
 import prefuse.util.GraphicsLib;
 import prefuse.util.display.DisplayLib;
 import prefuse.util.display.ItemBoundsListener;
+import prefuse.util.ui.JFastLabel;
+import prefuse.util.ui.JPrefuseTable;
+import prefuse.util.ui.JSearchPanel;
 import prefuse.util.ui.UILib;
 import prefuse.visual.VisualGraph;
 import prefuse.visual.VisualItem;
+import prefuse.visual.tuple.TableEdgeItem;
+import prefuse.visual.tuple.TableNodeItem;
 
 /**
  * @author <a href="http://jheer.org">jeffrey heer</a>
@@ -115,6 +112,9 @@ public class CDAOview extends JPanel {
     protected static Display display;
     /** This is the control that looks over feye*/
     protected static AnchorUpdateControl fishUpdate;
+    /** Binding to the search query **/
+    protected SearchQueryBinding searchQ;
+    protected TupleSet search;
     
     /**
      * 
@@ -141,11 +141,62 @@ public class CDAOview extends JPanel {
         // adds graph to visualization and sets renderer label field
         setGraph(g, label);
         
+        //VisualGraph vg = m_vis.addGraph(graph, g);
+        
         // fix selected focus nodes
         TupleSet focusGroup = m_vis.getGroup(Visualization.FOCUS_ITEMS); 
         focusGroup.addTupleSetListener(new TupleSetListener() {
             public void tupleSetChanged(TupleSet ts, Tuple[] add, Tuple[] rem)
             {
+            	for(int i = 0; i < add.length; ++i)
+            	{
+            		/*VisualItem item = (VisualItem)add[i];
+            		
+            		if(TableNodeItem.class == item.getClass())
+            		{
+            			TableNodeItem n = (TableNodeItem) item;
+            			System.out.print("Node label:data ->");
+            			String cname;
+            			for(int k = 0; k < n.getColumnCount(); k++)
+            			{
+            				cname = n.getColumnName(k);
+            				final Class T = n.getColumnType(k);
+            				Object data = n.get(k);
+            				if(data != null)
+            					System.out.print("[" + cname + ": " + data.toString()+"], ");
+            				else
+            					System.out.print("[" + cname + ": null], ");
+            			}
+            			System.out.println("");
+            			//System.out.println("\n n.getColumnName(35):" + n.getColumnName(35));
+            			
+            			
+            		}
+            		else if(TableEdgeItem.class == item.getClass())
+            		{
+            			TableEdgeItem e = (TableEdgeItem)item;
+            			String cname;
+            			System.out.print("Edge label:data -> ");
+            			int k = e.getColumnIndex("source");
+            			for(; k < e.getColumnCount(); k++)
+            			{
+            				cname = e.getColumnName(k);
+            				final Class T = e.getColumnType(k);
+            				Object data = e.get(k);
+            				if(data != null)
+            				  System.out.print("[" + cname + ": "+ data.toString() + "], ");
+            				else
+            				  System.out.print("[" + cname + ": null], ");
+            			}
+            			
+            			System.out.println();
+            			
+            			//System.out.println("you just clicked an edge! Edge.toString():" + e.toString());
+            		}
+            		else
+            			System.out.println("I dont know what happened class was:" + item.getClass().toString());
+            	*/}
+            	
                 for ( int i=0; i<rem.length; ++i )
                     ((VisualItem)rem[i]).setFixed(false);
                 for ( int i=0; i<add.length; ++i ) {
@@ -168,27 +219,56 @@ public class CDAOview extends JPanel {
         int hops = 30;
         final GraphDistanceFilter filter = new GraphDistanceFilter(graph, hops);
 
-        ColorAction fill = new ColorAction(nodes, 
+        ColorAction nfill = new ColorAction(nodes, 
                 VisualItem.FILLCOLOR, ColorLib.rgb(200,200,255));
-        fill.add(VisualItem.FIXED, ColorLib.rgb(255,100,100));
-        fill.add(VisualItem.HIGHLIGHT, ColorLib.rgb(255,200,125));
+        nfill.add(VisualItem.FIXED, ColorLib.rgb(255,100,100));
+        nfill.add(VisualItem.HIGHLIGHT, ColorLib.rgb(255,200,125));
+        
+        ColorAction efill = new ColorAction(edges, 
+                VisualItem.FILLCOLOR, ColorLib.rgb(200,200,255));
+        efill.add(VisualItem.FIXED, ColorLib.rgb(255,100,100));
+        efill.add(VisualItem.HIGHLIGHT, ColorLib.rgb(255,200,125));
+        //efill.add(VisualItem., ColorLib.rgb(255, 200, 125));
+        
+        
+        //ItemAction nodeColor = new NodeColorAction(nodes);
+
+        //ActionList fullPaint = new ActionList();
+        //fullPaint.add(nodeColor);
+        //m_vis.putAction("fullPaint", fullPaint);
+        //ActionList animatePaint = new ActionList(400);
+        //animatePaint.add(new ColorAnimator(nodes));
+        //animatePaint.add(new RepaintAction());
+        //m_vis.putAction("animatePaint", animatePaint);
+        
         
         feye = new BifocalDistortion(0.05, 2.0);
         
         ActionList draw = new ActionList();
-        draw.add(filter);
+        //draw.add(filter);
         //draw.add(feye);
-        draw.add(fill);
+        draw.add(nfill);
+        draw.add(efill);
         draw.add(new ColorAction(nodes, VisualItem.STROKECOLOR, 0));
         draw.add(new ColorAction(nodes, VisualItem.TEXTCOLOR, ColorLib.rgb(0,0,0)));
         draw.add(new ColorAction(edges, VisualItem.FILLCOLOR, ColorLib.gray(200)));
         draw.add(new ColorAction(edges, VisualItem.STROKECOLOR, ColorLib.gray(200)));
         
+        
+        //ColorAction searchColor = new ColorAction(Visualization.SEARCH_ITEMS, VisualItem.FILLCOLOR, ColorLib.rgb(240, 150, 100));
+        //searchColor.add(VisualItem.STROKECOLOR, ColorLib.rgb(255, 200, 150));
+        //searchColor.add(VisualItem.HIGHLIGHT, ColorLib.rgb(250, 175, 125));
+        //searchColor.add(VisualItem.FIXED, ColorLib.rgb(245, 160, 110));
+        draw.add(new CDAOViewColorAction(graph));
+        //draw.add(searchColor);
+        
         ActionList animate = new ActionList(Activity.INFINITY);
         fdl = new ForceDirectedLayout(graph,false, false);
         animate.add(feye);//new BifocalDistortion(.1, 5.0));
         animate.add(fdl);
-        animate.add(fill);
+        animate.add(nfill);
+        animate.add(efill);
+        animate.add(new CDAOViewColorAction(graph));
         animate.add(new RepaintAction());
         
         // finally, we register our ActionList with the Visualization.
@@ -267,12 +347,37 @@ public class CDAOview extends JPanel {
         //split.setDividerLocation(700);
         //split.setVisible(true);
       
+        //searchQ = new SearchQueryBinding(g.getNodes(), label);//                    vg.getNodeTable(), label);
+        //m_vis.addFocusGroup(Visualization.SEARCH_ITEMS, searchQ.getSearchSet());
+        search = new PrefixSearchTupleSet();
+        m_vis.removeGroup(Visualization.SEARCH_ITEMS);
+        m_vis.addFocusGroup(Visualization.SEARCH_ITEMS, search);
+        search.addTupleSetListener(new TupleSetListener() {
+        	public void tupleSetChanged(TupleSet t, Tuple[] add, Tuple[] rem) {
+        		//System.out.print("I'M IN THE TUPLE SET LISTENER FOR SEARCH");
+        		//System.out.println("search tupleset size = " + t.getTupleCount() + "| add.size()= "+ add.length+" | rem.length() = " + rem.length);
+        		//System.out.println();
+        		//for(int i = 0; i < add.length; i++)
+        		//{
+        		//	System.out.println("add["+i+"]: " + add[i].toString());
+        		//}
+        		//
+                m_vis.cancel("layout");
+                m_vis.run("draw");
+                m_vis.run("layout");
+            }
+        });
+        
+        
+        
         // now we run our action list
         m_vis.run("draw");
         add(display);          
 
     }
-    
+    public SearchQueryBinding getSearchQuery() {
+        return searchQ;
+    }
     /**
      * This returns the graph of the current CDAOview
      * @return m_graph
@@ -289,12 +394,18 @@ public class CDAOview extends JPanel {
         ((LabelRenderer)drf.getDefaultRenderer()).setTextField(label);
         
         // update graph
+        //m_vis.removeGroup(Visualization.SEARCH_ITEMS);
         m_vis.removeGroup(graph);
         VisualGraph vg = m_vis.addGraph(graph, g);
-        m_vis.setValue(edges, null, VisualItem.INTERACTIVE, Boolean.FALSE);
+        //m_vis.setValue(edges, null, VisualItem.I, val)
+        //searchQ = new SearchQueryBinding(g.getNodeTable(), label);
+        //m_vis.addFocusGroup(Visualization.SEARCH_ITEMS, search);
+        m_vis.setValue(Visualization.SEARCH_ITEMS, null, VisualItem.INTERACTIVE, Boolean.TRUE);
+        m_vis.setValue(edges, null, VisualItem.INTERACTIVE, Boolean.TRUE);
         VisualItem f = (VisualItem)vg.getNode(0);
         m_vis.getGroup(Visualization.FOCUS_ITEMS).setTuple(f);
         f.setFixed(false);
+        //return vg;
     }
     
     // ------------------------------------------------------------------------
@@ -392,15 +503,42 @@ public class CDAOview extends JPanel {
         saveMenu.setMnemonic(KeyEvent.VK_S);
         saveMenu.add(new SaveImageAction(view));
         
+        JMenu detailMenu = new JMenu("View Details");
+        detailMenu.setMnemonic(KeyEvent.VK_D);
+        detailMenu.add(new FocusItemDetail(view));
+        
         JMenuBar menubar = new JMenuBar();
         menubar.add(dataMenu);
         menubar.add(effectMenu);
         menubar.add(saveMenu);
+        menubar.add(detailMenu);
+     
+        
+        JSearchPanel searchBar = new JSearchPanel(view.m_vis,
+                graph, Visualization.SEARCH_ITEMS, label, true, true);
+         
+        searchBar.setShowResultCount(true);
+        searchBar.setBorder(BorderFactory.createEmptyBorder(5,5,4,0));
+        searchBar.setFont(FontLib.getFont("Tahoma", Font.PLAIN, 11));
+        final JFastLabel title = new JFastLabel("                 ");
+        title.setPreferredSize(new Dimension(350, 20));
+        title.setVerticalAlignment(SwingConstants.BOTTOM);
+        title.setBorder(BorderFactory.createEmptyBorder(3,0,0,0));
+        title.setFont(FontLib.getFont("Tahoma", Font.PLAIN, 16));
+        
+        Box box = UILib.getBox(new Component[]{title,searchBar}, true, 10, 3, 0);
         
         // launch window
         JFrame frame = new JFrame("Tree Viewer | powered by prefuse");
         frame.setJMenuBar(menubar);
-        frame.setContentPane(view);
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(view, BorderLayout.CENTER);
+        panel.add(box, BorderLayout.SOUTH);
+        UILib.setColor(panel, Color.WHITE, Color.GRAY);
+        
+        
+        frame.setContentPane(panel);
+        //frame.add(search);
         
         frame.pack();
         frame.setVisible(true);
@@ -440,6 +578,89 @@ public class CDAOview extends JPanel {
         }
         protected abstract Graph getGraph();
     }
+    
+    
+    
+    
+    
+    
+    public static class FocusItemDetail extends AbstractAction {
+    	private CDAOview m_view;
+    	//private JPrefuseTable ejpt, njpt;
+    	private TupleSet focusGroup;
+    	//private Display d;
+    	private JFrame prop;
+    	public FocusItemDetail(CDAOview view){
+    		m_view = view;
+    		this.putValue(AbstractAction.NAME, "Focus Objects Properties");
+    		prop = new JFrame();
+    	}
+    	public void actionPerformed(ActionEvent e)
+    	{
+    		focusGroup = m_view.m_vis.getGroup(m_view.m_vis.FOCUS_ITEMS);
+    		//int s = focusGroup.getTupleCount();
+   			Iterator iter = focusGroup.tuples();
+   			if(iter.hasNext())
+   			{
+   				Object data = iter.next();
+   				if(data.getClass() == TableNodeItem.class)
+   				{
+   					TableNodeItem n = (TableNodeItem)data;
+   					//njpt.setVisible(true);
+   					Table nt = new Table();
+   					nt.addColumn("Label", String.class);
+   					nt.addColumn("Data", String.class);
+   					int count = 0;
+   					for(int i = 0; i < n.getColumnCount(); i++)
+   					{
+   						if(!(n.getColumnName(i).startsWith("_")))
+   						{
+   							nt.addRow();
+   							nt.set(count, 0, n.getColumnName(i));
+   							nt.set(count++, 1, n.get(i).toString());
+   						}
+   					}
+   					prop = JPrefuseTable.showTableWindow(nt);
+   					prop.setTitle(n.get(n.getColumnIndex("IdLabel")).toString());
+   				}
+   				else if(data.getClass() == TableEdgeItem.class)
+   				{
+   					//ejpt.setVisible(true);
+   					TableEdgeItem edge = (TableEdgeItem) data;
+   					Table et = new Table();
+   					et.addColumn("Label", String.class);
+   					et.addColumn("Data", String.class);
+   					int count = 0;
+   					for(int i = 0; i < edge.getColumnCount(); i++)
+   					{
+   						if(!(edge.getColumnName(i).startsWith("_")))
+   						{
+   							et.addRow();
+   							et.set(count, 0, edge.getColumnName(i));
+   							et.set(count++, 1, edge.get(i).toString());
+   						}
+   					}
+   					prop = JPrefuseTable.showTableWindow(et);
+   					prop.setTitle(edge.get(edge.getColumnIndex("IdLabel")).toString());
+   				}
+   				else
+   				{
+   					System.out.println("data had class of:" + data.getClass());
+   				}
+   				//d.setVisible(true);
+    		}
+    	}
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * This menu option saves the graph as an image.
      * @author Ben Wright
@@ -451,7 +672,6 @@ public class CDAOview extends JPanel {
     	public SaveImageAction(CDAOview view){
     		m_view = view;
     		jfc = new JFileChooser();
-                //jfc.setDialogType( JFileChooser.SAVE_DIALOG );
     		jfc.setFileFilter((javax.swing.filechooser.FileFilter) new ImgFileFilter());
     		this.putValue(AbstractAction.NAME, "Save Graph As...");
     	}
@@ -471,9 +691,9 @@ public class CDAOview extends JPanel {
     	    		e1.printStackTrace();
     	    	}
     	    	String name = f.getName().toLowerCase();
-    	    	if(name.endsWith("jpg") || name.endsWith("jpeg"))
+    	    	if(name.endsWith("jpg") || name.endsWith("jpeg") || name.endsWith("JPG"))
     	    	  display.saveImage(fos, "JPG", 2.0);
-    	    	else if(name.endsWith("png"))
+    	    	else if(name.endsWith("png") || name.endsWith("PNG"))
     	    		display.saveImage(fos, "PNG", 2.0);
     	    	else
     	    		System.out.println(name + " was selected to be saved as, but is not jpg, jpeg, or png.");
@@ -683,4 +903,53 @@ public class CDAOview extends JPanel {
         }
     }
     
+
+
+public static class CDAOViewColorAction extends ColorAction {
+    
+    public CDAOViewColorAction(String group) {
+        super(group, VisualItem.FILLCOLOR);
+    }
+    
+    public int getColor(VisualItem item) {
+        if ( m_vis.isInGroup(item, nodes) )
+        {
+        	
+        	if(m_vis.isInGroup(item, Visualization.FOCUS_ITEMS))
+        	{
+        		return ColorLib.rgb(255,200,125);
+        	}
+        	else if(m_vis.isInGroup(item, Visualization.SEARCH_ITEMS))
+        	{
+        		return ColorLib.rgb(240, 150, 100);
+        	}
+        	else
+        	{
+        		return ColorLib.rgb(200, 200, 255);
+        	}
+        }
+        else if ( m_vis.isInGroup(item, edges))
+        {
+        	
+        	if(m_vis.isInGroup(item, Visualization.FOCUS_ITEMS))
+        	{
+        		return ColorLib.rgb(255,200,125);
+        	}
+        	else if(m_vis.isInGroup(item, Visualization.SEARCH_ITEMS))
+        	{
+        		return ColorLib.rgb(240, 150, 100);
+        	}
+        	else
+        	{
+        		return ColorLib.rgb(200, 200, 255);
+        	}	
+        }
+        /*else if ( item.getDOI() > -1 )
+            return ColorLib.rgb(164,193,193);*/
+        else
+            return ColorLib.rgba(255,255,255,0);
+    }
+    
+} // end of inner class TreeMapColorAction
+
 } // end of class GraphView

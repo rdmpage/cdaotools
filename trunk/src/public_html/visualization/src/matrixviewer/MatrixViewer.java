@@ -282,6 +282,15 @@ public class MatrixViewer extends JFrame {
        //this.matrix_view_panel.repaint();
    }
 
+   public void handleScrolling( java.awt.event.ComponentEvent evt ){
+        MatrixView  mv = (MatrixView) this.matrix_view_panel;
+        int x_displacement = this.jScrollPane1.getHorizontalScrollBar().getValue() * this.jScrollPane1.getHorizontalScrollBar().getUnitIncrement() ;
+        int y_displacement = this.jScrollPane1.getVerticalScrollBar().getValue() * this.jScrollPane1.getVerticalScrollBar().getUnitIncrement();
+        mv.setVisible_top( y_displacement );
+        mv.setVisible_left( x_displacement );
+        this.matrix_view_panel.invalidate();
+   }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -324,7 +333,7 @@ public class MatrixViewer extends JFrame {
         openFileChooser.setName("openFileChooser"); // NOI18N
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(matrixviewer.MatrixViewerApp.class).getContext().getResourceMap(MatrixViewer.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(MatrixViewer.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -433,6 +442,11 @@ public class MatrixViewer extends JFrame {
         );
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
+        jScrollPane1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentMoved(java.awt.event.ComponentEvent evt) {
+                scrollComponentMoved(evt);
+            }
+        });
 
         matrix_view_panel.setName("matrix_view_panel"); // NOI18N
         matrix_view_panel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -720,6 +734,10 @@ public class MatrixViewer extends JFrame {
     private void restoreScaleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restoreScaleButtonActionPerformed
         this.restoreScale();
     }//GEN-LAST:event_restoreScaleButtonActionPerformed
+
+    private void scrollComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_scrollComponentMoved
+        this.handleScrolling(evt);
+    }//GEN-LAST:event_scrollComponentMoved
 
 
     /**
