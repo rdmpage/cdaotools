@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /*
  * MatrixView.java
@@ -29,35 +25,47 @@ import matrixviewer.model.RangeSet;
  * @author bchisham
  */
 public class MatrixView extends javax.swing.JPanel implements MouseMotionListener {
-    
+    /**
+     * Handles deferred paint requests for the matrix panel.
+     */
     private class AsyncPainter implements Runnable {
 
         private MatrixView parent;
-        private Graphics g;
+        //private Graphics g;
         private boolean paint_requested;
+        /**
+         * Specify the matrix associated with this painter
+         * @param parent
+         */
         public AsyncPainter( MatrixView parent ){
             this.parent = parent;
             this.paint_requested = false;
             //this.g = g;
         }
-
-
-        
+        /**
+         * Idle loop
+         */
         public void run() {
             while ( true ){
-                try {
-                    Thread.sleep(250);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MatrixView.class.getName()).log(Level.SEVERE, null, ex);
-                }
+//                try {
+//                    if (!this.paint_requested){
+//                        Thread.sleep(250);
+//                    }
+//                } catch (InterruptedException ex) {
+//                    Logger.getLogger(MatrixView.class.getName()).log(Level.SEVERE, null, ex);
+//                }
             }
         }
-
+        /**
+         * Handle painting.
+         * @param g
+         */
         public void requestPaint( Graphics g ){
             this.paint_requested = true;
             //System.err.println( "Doing background paint!" );
             this.parent.async_paint(g);
-            this.g = g;
+            this.paint_requested = false;
+            //this.g = g;
         }
     }
 
@@ -76,15 +84,15 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
     private Range selected_cols;
     private boolean selectionActive;
     private final static int MIN_TEXT_SIZE = 10;
-    private final static int DEFAULT_BLOCK_SIZE = 30;
-    private final static int MIN_3D_BLOCK_SIZE=5;
+    private final static int DEFAULT_BLOCK_SIZE = 15;
+    private final static int MIN_3D_BLOCK_SIZE = 5;
     private AsyncPainter painter;
     private Thread painter_context;
 
     private int visible_left;
-    private final int visible_width = 680;
+    private int visible_width;
     private int visible_top;
-    private final int visible_height = 475;
+    private int visible_height;
 
     /** Creates new form MatrixView */
     public MatrixView() {
@@ -163,10 +171,12 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
         this.invalidate();
         this.repaint();
     }
-
+    /**
+     * Resets the scale of the matrix to the default size.
+     */
     public void resetScale(){
-        this.cellheight = 30;
-        this.cellwidth = 30;
+        this.cellheight = MatrixView.DEFAULT_BLOCK_SIZE;
+        this.cellwidth = MatrixView.DEFAULT_BLOCK_SIZE;
         this.setPreferredSize( new Dimension(this.cellwidth * this.model.getcolumncount(), this.cellheight * this.model.getrowcount()) );
         this.invalidate();
         this.repaint();
@@ -185,8 +195,8 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
             //System.err.println("Dimensions, rows: " + model.getrowcount() + " cols: " + model.getcolumncount());
 
             this.model = model;
-            this.cellheight = 30;
-            this.cellwidth = 30;
+            this.cellheight = MatrixView.DEFAULT_BLOCK_SIZE;
+            this.cellwidth = MatrixView.DEFAULT_BLOCK_SIZE;
             //this.row_label_offset = 0;//150;
             //this.key_entry_block_size = 0;//this.cellheight * this.model.getUniqueValues().size();
             this.x_offset = model.getXOffset();
@@ -215,17 +225,26 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
     public Matrix getMatrix() {
         return this.model;
     }
-
+    /**
+     * Set the range to highlight.
+     * @param row_range
+     * @param col_range
+     */
     public void setHighlightedRange(Range row_range, Range col_range) {
         this.highlight_cols.add(col_range);
         this.highlight_rows.add(row_range);
     }
-
+    /**
+     * Clear all highlighted ranges.
+     */
     public void clearHighlights() {
         this.highlight_cols.clear();
         this.highlight_rows.clear();
     }
-
+    /**
+     * Handle mouse click.
+     * @param evt
+     */
     public void handleMouseClicked(MouseEvent evt) {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             if (this.model != null && this.model.getcolumncount() > 0 && this.model.getrowcount() > 0 && evt.getClickCount() > 1) {
@@ -243,7 +262,16 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
         //this.selected_cols = new Range( this.getX(), this.getX() );
 
     }
-
+    /**
+     * Initialize a matrix with the specified cell sized and highlighted cells.
+     * @param model
+     * @param cellwidth
+     * @param cellheight
+     * @param key_entry_block_size
+     * @param row_label_offset
+     * @param highlight_rows
+     * @param highlight_cols
+     */
     public MatrixView(Matrix model, int cellwidth, int cellheight, int key_entry_block_size, int row_label_offset, RangeSet highlight_rows, RangeSet highlight_cols) {
         this.model = model;
         this.cellwidth = cellwidth;
@@ -253,7 +281,11 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
         this.highlight_rows = highlight_rows;
         this.highlight_cols = highlight_cols;
     }
-
+    /**
+     * Start selecting a region.
+     * @param X
+     * @param Y
+     */
     private void startSelection(int X, int Y) {
         //this.selectionActive = true;
         int crow = this.coordinate_to_row_number(Y);
@@ -261,52 +293,108 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
         this.selected_rows = new Range(crow, crow + 1);
         this.selected_cols = new Range(ccol, ccol + 1);
     }
-
+    /**
+     * Convert a 'y' coordinate into a row number for the matrix.
+     * @param y
+     * @return
+     */
     private int coordinate_to_row_number(int y) {
         int ret = ((y / this.cellheight) - this.y_offset );
         ret = ret > this.model.getrowcount() ? this.model.getrowcount() : ret;
         return ret > 0 ? ret : 0;
     }
-
+    /**
+     * convert a row number to a coordinate.
+     * @param row
+     * @return
+     */
     private int row_number_to_coordinate(int row) {
         return (row + this.y_offset) * this.cellheight;
     }
-
+    /**
+     * convert an 'x' coordinage to a column number
+     * @param x
+     * @return
+     */
     private int coordinate_to_col_number(int x) {
         int ret = (x / this.cellwidth) - this.x_offset ;
         ret = ret > this.model.getcolumncount() ? this.model.getcolumncount() : ret;
         return ret > 0 ? ret : 0;
     }
-
+    /**
+     * Convert a column number to a coordinate.
+     * @param col
+     * @return
+     */
     private int col_number_to_coordinate(int col) {
         return (col + this.x_offset) * this.cellwidth;
     }
-
+    /**
+     * Get the datum at the specified graphics coordinates.
+     * @param x
+     * @param y
+     * @return
+     */
     private MatrixDatum getDatum(int x, int y) {
         return this.model.getDatum(coordinate_to_col_number(y), coordinate_to_row_number(x));
     }
-
+    /**
+     * True if a selection is underway.
+     * @return
+     */
     public boolean isSelectionActive() {
         return this.selectionActive;
     }
-
+    /**
+     * Reset the selection to the whole matrix.
+     */
     public void resetSelection() {
         this.selected_cols = new Range(0, this.model.getcolumncount());
         this.selected_rows = new Range(0, this.model.getrowcount());
     }
-
+    /**
+     * get the visible left coordinate.
+     * @return
+     */
     public int getVisible_left() {
         return visible_left;
     }
-
+    /**
+     * set the visible left coordinate
+     * @param visible_left
+     */
     public void setVisible_left(int visible_left) {
         this.visible_left = visible_left;
     }
-
+    /**
+     * Get the visible top coordinate.
+     * @return
+     */
     public int getVisible_top() {
         return visible_top;
     }
 
+    public int getVisible_height() {
+        return visible_height;
+    }
+
+    public void setVisible_height(int visible_height) {
+        this.visible_height = visible_height;
+    }
+
+    public int getVisible_width() {
+        return visible_width;
+    }
+
+    public void setVisible_width(int visible_width) {
+        this.visible_width = visible_width;
+    }
+
+
+    /**
+     * Set the visible top coordinate.
+     * @param visible_top
+     */
     public void setVisible_top(int visible_top) {
         this.visible_top = visible_top;
     }
@@ -327,31 +415,22 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
     public Range getSelectedCols() {
         return this.selected_cols;
     }
-
-    
-    
-
-
+    /**
+     * Handle deferred painting of the matrix.
+     * @param g
+     */
     protected void async_paint( Graphics g ){
         if (this.model != null
                 && this.model.getcolumncount() > 0
                 && this.model.getrowcount() > 0) {
-
-
-
-
-            //g.setColor(Color.black);
-            //Draw the column labels.
-
-            //Draw the matrix
-            //g.setColor(Color.black);
-
-            for (int row =  this.coordinate_to_row_number( this.visible_top ); row < model.getrowcount() && row < this.coordinate_to_row_number( this.visible_height ) ; ++row) {
+            //iterate over visible rows.
+            for (int row = 0 /*this.coordinate_to_row_number( this.visible_top )*/; row < model.getrowcount() /*&& row < this.coordinate_to_row_number( this.visible_height )*/ ; ++row) {
                 //Draw the row label
                 g.setColor(Color.black);
                 // System.err.println( "Row[" + row + "]: " +this.model.getRowLabel(row) );
 
                 //g.drawString( this.model.getRowLabel(row) , 0, /*col_label_offset+*/(row+1)*cellheight + cellheight /2);
+                //Iterate over visible columns
                 Iterator<MatrixDatum> crowit = this.model.getRow(row).iterator();
                 for (int col = this.coordinate_to_col_number( this.visible_left ); col < model.getColumnCount() && crowit.hasNext() && col < this.coordinate_to_col_number( this.visible_width ); ++col){
                 //while (crowit.hasNext()) {
@@ -363,7 +442,7 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
                     //    g.setColor(  g.getColor().darker() );
                     //}
                     //Draw the cell.
-                    if (this.highlight_cols.contains(cdat.getcolumn()) && this.highlight_rows.contains(cdat.getrow())) {
+                    if (this.highlight_cols.contains(cdat.getcolumn()) && this.highlight_rows.contains(cdat.getrow()) && this.cellheight > MatrixView.MIN_3D_BLOCK_SIZE && this.cellwidth > MatrixView.MIN_3D_BLOCK_SIZE ) {
                         g.fill3DRect(/*row_label_offset + */col  /*+1*/ *  cellwidth,
                                 /*this.key_entry_block_size +*/ row   * cellheight,
                                 cellwidth,
@@ -400,10 +479,19 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
             this.painter_context = new Thread( painter );
             this.painter_context.start();
         }
+        //g.setColor(Color.WHITE);
+        //g.fillRect(0, 0, this.getWidth(), this.getHeight());
+        //g.setColor(Color.BLACK);
         this.painter.requestPaint(g);
         //this.async_paint(g);
     }
 
+
+
+    /**
+     * Handles mouse based selection.
+     * @param e
+     */
     public void mouseDragged(MouseEvent e) {
         //System.err.println( "MatrixView::mouseDragged" );
         if (this.model != null) {
@@ -430,7 +518,10 @@ public class MatrixView extends javax.swing.JPanel implements MouseMotionListene
 
         }
     }
-
+    /**
+     * Handle tool tip display.
+     * @param evt
+     */
     public void mouseMoved(MouseEvent evt) {
         //if (!evt.isConsumed() ){
         if (this.model != null) {
