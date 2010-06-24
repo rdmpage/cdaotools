@@ -35,11 +35,11 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = i386-apple-darwin9.8.0
-host_triplet = i386-apple-darwin9.8.0
+build_triplet = x86_64-unknown-linux-gnu
+host_triplet = x86_64-unknown-linux-gnu
 bin_PROGRAMS = cdao-import$(EXEEXT) cdao-mass-import$(EXEEXT) \
 	cdao-tree-import$(EXEEXT) cdao-read-tree$(EXEEXT) \
-	extract_trees.pl$(EXEEXT) cdao-phylip-import$(EXEEXT)
+	extract_trees.pl$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/config.h.in
@@ -57,9 +57,9 @@ am_cdao_import_OBJECTS = main.$(OBJEXT) shm_heap.$(OBJEXT) \
 	util.$(OBJEXT) node.$(OBJEXT) data_representation.$(OBJEXT) \
 	tree_description_scanner.$(OBJEXT) \
 	tree_description_parser.$(OBJEXT) nexus_reader.$(OBJEXT) \
-	phylip_reader.$(OBJEXT) codegen.$(OBJEXT) \
-	nexus-codegen.$(OBJEXT) phylip-codegen.$(OBJEXT) \
-	mega-codegen.$(OBJEXT)
+	phylip_reader.$(OBJEXT) fasta_reader.$(OBJEXT) \
+	codegen.$(OBJEXT) nexus-codegen.$(OBJEXT) \
+	phylip-codegen.$(OBJEXT) mega-codegen.$(OBJEXT)
 cdao_import_OBJECTS = $(am_cdao_import_OBJECTS)
 cdao_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
@@ -70,17 +70,6 @@ am_cdao_mass_import_OBJECTS = main2.$(OBJEXT) shm_heap.$(OBJEXT) \
 	phylip_reader.$(OBJEXT) codegen.$(OBJEXT)
 cdao_mass_import_OBJECTS = $(am_cdao_mass_import_OBJECTS)
 cdao_mass_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
-	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
-am_cdao_phylip_import_OBJECTS = main4.$(OBJEXT) util.$(OBJEXT) \
-	node.$(OBJEXT) shm_heap.$(OBJEXT) \
-	data_representation.$(OBJEXT) \
-	tree_description_scanner.$(OBJEXT) \
-	tree_description_parser.$(OBJEXT) nexus_reader.$(OBJEXT) \
-	phylip_reader.$(OBJEXT) codegen.$(OBJEXT) \
-	nexus-codegen.$(OBJEXT) phylip-codegen.$(OBJEXT) \
-	mega-codegen.$(OBJEXT)
-cdao_phylip_import_OBJECTS = $(am_cdao_phylip_import_OBJECTS)
-cdao_phylip_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 am_cdao_read_tree_OBJECTS = read-tree.$(OBJEXT) shm_heap.$(OBJEXT) \
 	util.$(OBJEXT) node.$(OBJEXT) data_representation.$(OBJEXT) \
@@ -123,20 +112,20 @@ CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(cdao_import_SOURCES) $(cdao_mass_import_SOURCES) \
-	$(cdao_phylip_import_SOURCES) $(cdao_read_tree_SOURCES) \
-	$(cdao_tree_import_SOURCES) extract_trees.c
+	$(cdao_read_tree_SOURCES) $(cdao_tree_import_SOURCES) \
+	extract_trees.c
 DIST_SOURCES = $(cdao_import_SOURCES) $(cdao_mass_import_SOURCES) \
-	$(cdao_phylip_import_SOURCES) $(cdao_read_tree_SOURCES) \
-	$(cdao_tree_import_SOURCES) extract_trees.c
+	$(cdao_read_tree_SOURCES) $(cdao_tree_import_SOURCES) \
+	extract_trees.c
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /Users/bchisham/cdaotools/trunk/config/missing --run aclocal-1.10
-AMTAR = ${SHELL} /Users/bchisham/cdaotools/trunk/config/missing --run tar
+ACLOCAL = ${SHELL} /home/grad6/bchisham/cdaotools/trunk/config/missing --run aclocal-1.10
+AMTAR = ${SHELL} /home/grad6/bchisham/cdaotools/trunk/config/missing --run tar
 AR = ar
-AUTOCONF = ${SHELL} /Users/bchisham/cdaotools/trunk/config/missing --run autoconf
-AUTOHEADER = ${SHELL} /Users/bchisham/cdaotools/trunk/config/missing --run autoheader
-AUTOMAKE = ${SHELL} /Users/bchisham/cdaotools/trunk/config/missing --run automake-1.10
+AUTOCONF = ${SHELL} /home/grad6/bchisham/cdaotools/trunk/config/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/grad6/bchisham/cdaotools/trunk/config/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/grad6/bchisham/cdaotools/trunk/config/missing --run automake-1.10
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
@@ -150,15 +139,15 @@ CXXFLAGS = -g -O2
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
-DSYMUTIL = dsymutil
-ECHO = /bin/echo
-ECHO_C = \c
-ECHO_N = 
+DSYMUTIL = 
+ECHO = echo
+ECHO_C = 
+ECHO_N = -n
 ECHO_T = 
 EGREP = /usr/bin/grep -E
 EXEEXT = 
-F77 = 
-FFLAGS = 
+F77 = gfortran
+FFLAGS = -g -O2
 GREP = /usr/bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
@@ -175,9 +164,9 @@ LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIBTOOL_DEPS = config/ltmain.sh
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /Users/bchisham/cdaotools/trunk/config/missing --run makeinfo
-MKDIR_P = ../config/install-sh -c -d
-NMEDIT = nmedit
+MAKEINFO = ${SHELL} /home/grad6/bchisham/cdaotools/trunk/config/missing --run makeinfo
+MKDIR_P = /bin/mkdir -p
+NMEDIT = 
 OBJEXT = o
 PACKAGE = CdaoTranslator
 PACKAGE_BUGREPORT = bchisham@cs.nmsu.edu
@@ -187,55 +176,55 @@ PACKAGE_TARNAME = cdaotranslator
 PACKAGE_VERSION = 0.2
 PATH_SEPARATOR = :
 RANLIB = ranlib
-SED = /opt/local/bin/gsed
+SED = /usr/bin/sed
 SET_MAKE = 
 SHELL = /bin/sh
 STRIP = strip
 VERSION = 0.2
 YACC = bison -y
 YFLAGS = 
-abs_builddir = /Users/bchisham/cdaotools/trunk/src
-abs_srcdir = /Users/bchisham/cdaotools/trunk/src
-abs_top_builddir = /Users/bchisham/cdaotools/trunk
-abs_top_srcdir = /Users/bchisham/cdaotools/trunk
+abs_builddir = /home/grad6/bchisham/cdaotools/trunk/src
+abs_srcdir = /home/grad6/bchisham/cdaotools/trunk/src
+abs_top_builddir = /home/grad6/bchisham/cdaotools/trunk
+abs_top_srcdir = /home/grad6/bchisham/cdaotools/trunk
 ac_ct_CC = gcc
 ac_ct_CXX = g++
-ac_ct_F77 = 
+ac_ct_F77 = gfortran
 am__include = include
 am__leading_dot = .
 am__quote = 
 am__tar = ${AMTAR} chof - "$$tardir"
 am__untar = ${AMTAR} xf -
 bindir = ${exec_prefix}/bin
-build = i386-apple-darwin9.8.0
+build = x86_64-unknown-linux-gnu
 build_alias = 
-build_cpu = i386
-build_os = darwin9.8.0
-build_vendor = apple
+build_cpu = x86_64
+build_os = linux-gnu
+build_vendor = unknown
 builddir = .
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = i386-apple-darwin9.8.0
+host = x86_64-unknown-linux-gnu
 host_alias = 
-host_cpu = i386
-host_os = darwin9.8.0
-host_vendor = apple
+host_cpu = x86_64
+host_os = linux-gnu
+host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = $(SHELL) /Users/bchisham/cdaotools/trunk/config/install-sh
+install_sh = $(SHELL) /home/grad6/bchisham/cdaotools/trunk/config/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
 localstatedir = ${prefix}/var
 mandir = ${datarootdir}/man
-mkdir_p = $(top_builddir)/config/install-sh -c -d
+mkdir_p = /bin/mkdir -p
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /Users/bchisham
+prefix = /home/grad6/bchisham
 program_transform_name = s,x,x,
 psdir = ${docdir}
 sbindir = ${exec_prefix}/sbin
@@ -250,6 +239,7 @@ INCLUDES = -I. -I$(top_builddir) -I$(top_builddir)/src/grammar/nexus -I$(top_bui
 AM_CXXFLAGS = -Wall -g
 NEXDIR = grammar/nexus
 PHYDIR = grammar/phylip
+FASTADIR = grammar/fasta
 CODEGEN = codegen
 LIBDIR = $(top_builddir)/lib
 NCLV = 2.1.06
@@ -263,6 +253,7 @@ cdao_import_SOURCES = main.cpp \
 		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
 		    $(NEXDIR)/nexus_reader.cpp $(NEXDIR)/nexus_reader.hpp \
 		    $(PHYDIR)/phylip_reader.cpp $(PHYDIR)/phylip_reader.hpp \
+		    $(FASTADIR)/fasta_reader.cpp $(FASTADIR)/fasta_reader.hpp \
 		    $(CODEGEN)/constants.hpp \
 		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp \
 		    $(CODEGEN)/nexus/nexus-codegen.cpp $(CODEGEN)/nexus/nexus-codegen.hpp \
@@ -306,22 +297,6 @@ cdao_read_tree_SOURCES = read-tree.cpp \
 		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 
 cdao_read_tree_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
-cdao_phylip_import_SOURCES = main4.cpp \
-		    util.cpp util.hpp \
-		    node.cpp node.hpp \
-		    shm_heap.cpp shm_heap.hpp \
-		    data_representation.cpp data_representation.hpp \
-		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
-		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
-		    $(NEXDIR)/nexus_reader.cpp $(NEXDIR)/nexus_reader.hpp \
-		    $(PHYDIR)/phylip_reader.cpp $(PHYDIR)/phylip_reader.hpp \
-	 	    $(CODEGEN)/constants.hpp \
-		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp \
-		    $(CODEGEN)/nexus/nexus-codegen.cpp $(CODEGEN)/nexus/nexus-codegen.hpp \
-		    $(CODEGEN)/phylip/phylip-codegen.cpp $(CODEGEN)/phylip/phylip-codegen.hpp \
-		    $(CODEGEN)/mega/mega-codegen.cpp $(CODEGEN)/mega/mega-codegen.hpp 
-
-cdao_phylip_import_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -407,9 +382,6 @@ cdao-import$(EXEEXT): $(cdao_import_OBJECTS) $(cdao_import_DEPENDENCIES)
 cdao-mass-import$(EXEEXT): $(cdao_mass_import_OBJECTS) $(cdao_mass_import_DEPENDENCIES) 
 	@rm -f cdao-mass-import$(EXEEXT)
 	$(CXXLINK) $(cdao_mass_import_OBJECTS) $(cdao_mass_import_LDADD) $(LIBS)
-cdao-phylip-import$(EXEEXT): $(cdao_phylip_import_OBJECTS) $(cdao_phylip_import_DEPENDENCIES) 
-	@rm -f cdao-phylip-import$(EXEEXT)
-	$(CXXLINK) $(cdao_phylip_import_OBJECTS) $(cdao_phylip_import_LDADD) $(LIBS)
 cdao-read-tree$(EXEEXT): $(cdao_read_tree_OBJECTS) $(cdao_read_tree_DEPENDENCIES) 
 	@rm -f cdao-read-tree$(EXEEXT)
 	$(CXXLINK) $(cdao_read_tree_OBJECTS) $(cdao_read_tree_LDADD) $(LIBS)
@@ -445,10 +417,10 @@ distclean-compile:
 include ./$(DEPDIR)/codegen.Po
 include ./$(DEPDIR)/data_representation.Po
 include ./$(DEPDIR)/extract_trees.Po
+include ./$(DEPDIR)/fasta_reader.Po
 include ./$(DEPDIR)/main.Po
 include ./$(DEPDIR)/main2.Po
 include ./$(DEPDIR)/main3.Po
-include ./$(DEPDIR)/main4.Po
 include ./$(DEPDIR)/mega-codegen.Po
 include ./$(DEPDIR)/nexus-codegen.Po
 include ./$(DEPDIR)/nexus_reader.Po
@@ -575,6 +547,20 @@ phylip_reader.obj: $(PHYDIR)/phylip_reader.cpp
 #	source='$(PHYDIR)/phylip_reader.cpp' object='phylip_reader.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o phylip_reader.obj `if test -f '$(PHYDIR)/phylip_reader.cpp'; then $(CYGPATH_W) '$(PHYDIR)/phylip_reader.cpp'; else $(CYGPATH_W) '$(srcdir)/$(PHYDIR)/phylip_reader.cpp'; fi`
+
+fasta_reader.o: $(FASTADIR)/fasta_reader.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT fasta_reader.o -MD -MP -MF $(DEPDIR)/fasta_reader.Tpo -c -o fasta_reader.o `test -f '$(FASTADIR)/fasta_reader.cpp' || echo '$(srcdir)/'`$(FASTADIR)/fasta_reader.cpp
+	mv -f $(DEPDIR)/fasta_reader.Tpo $(DEPDIR)/fasta_reader.Po
+#	source='$(FASTADIR)/fasta_reader.cpp' object='fasta_reader.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o fasta_reader.o `test -f '$(FASTADIR)/fasta_reader.cpp' || echo '$(srcdir)/'`$(FASTADIR)/fasta_reader.cpp
+
+fasta_reader.obj: $(FASTADIR)/fasta_reader.cpp
+	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT fasta_reader.obj -MD -MP -MF $(DEPDIR)/fasta_reader.Tpo -c -o fasta_reader.obj `if test -f '$(FASTADIR)/fasta_reader.cpp'; then $(CYGPATH_W) '$(FASTADIR)/fasta_reader.cpp'; else $(CYGPATH_W) '$(srcdir)/$(FASTADIR)/fasta_reader.cpp'; fi`
+	mv -f $(DEPDIR)/fasta_reader.Tpo $(DEPDIR)/fasta_reader.Po
+#	source='$(FASTADIR)/fasta_reader.cpp' object='fasta_reader.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o fasta_reader.obj `if test -f '$(FASTADIR)/fasta_reader.cpp'; then $(CYGPATH_W) '$(FASTADIR)/fasta_reader.cpp'; else $(CYGPATH_W) '$(srcdir)/$(FASTADIR)/fasta_reader.cpp'; fi`
 
 codegen.o: $(CODEGEN)/codegen.cpp
 	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT codegen.o -MD -MP -MF $(DEPDIR)/codegen.Tpo -c -o codegen.o `test -f '$(CODEGEN)/codegen.cpp' || echo '$(srcdir)/'`$(CODEGEN)/codegen.cpp

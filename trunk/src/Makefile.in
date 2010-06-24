@@ -39,7 +39,7 @@ build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = cdao-import$(EXEEXT) cdao-mass-import$(EXEEXT) \
 	cdao-tree-import$(EXEEXT) cdao-read-tree$(EXEEXT) \
-	extract_trees.pl$(EXEEXT) cdao-phylip-import$(EXEEXT)
+	extract_trees.pl$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/config.h.in
@@ -57,9 +57,9 @@ am_cdao_import_OBJECTS = main.$(OBJEXT) shm_heap.$(OBJEXT) \
 	util.$(OBJEXT) node.$(OBJEXT) data_representation.$(OBJEXT) \
 	tree_description_scanner.$(OBJEXT) \
 	tree_description_parser.$(OBJEXT) nexus_reader.$(OBJEXT) \
-	phylip_reader.$(OBJEXT) codegen.$(OBJEXT) \
-	nexus-codegen.$(OBJEXT) phylip-codegen.$(OBJEXT) \
-	mega-codegen.$(OBJEXT)
+	phylip_reader.$(OBJEXT) fasta_reader.$(OBJEXT) \
+	codegen.$(OBJEXT) nexus-codegen.$(OBJEXT) \
+	phylip-codegen.$(OBJEXT) mega-codegen.$(OBJEXT)
 cdao_import_OBJECTS = $(am_cdao_import_OBJECTS)
 cdao_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
@@ -70,17 +70,6 @@ am_cdao_mass_import_OBJECTS = main2.$(OBJEXT) shm_heap.$(OBJEXT) \
 	phylip_reader.$(OBJEXT) codegen.$(OBJEXT)
 cdao_mass_import_OBJECTS = $(am_cdao_mass_import_OBJECTS)
 cdao_mass_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
-	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
-am_cdao_phylip_import_OBJECTS = main4.$(OBJEXT) util.$(OBJEXT) \
-	node.$(OBJEXT) shm_heap.$(OBJEXT) \
-	data_representation.$(OBJEXT) \
-	tree_description_scanner.$(OBJEXT) \
-	tree_description_parser.$(OBJEXT) nexus_reader.$(OBJEXT) \
-	phylip_reader.$(OBJEXT) codegen.$(OBJEXT) \
-	nexus-codegen.$(OBJEXT) phylip-codegen.$(OBJEXT) \
-	mega-codegen.$(OBJEXT)
-cdao_phylip_import_OBJECTS = $(am_cdao_phylip_import_OBJECTS)
-cdao_phylip_import_DEPENDENCIES = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la \
 	$(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 am_cdao_read_tree_OBJECTS = read-tree.$(OBJEXT) shm_heap.$(OBJEXT) \
 	util.$(OBJEXT) node.$(OBJEXT) data_representation.$(OBJEXT) \
@@ -123,11 +112,11 @@ CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(cdao_import_SOURCES) $(cdao_mass_import_SOURCES) \
-	$(cdao_phylip_import_SOURCES) $(cdao_read_tree_SOURCES) \
-	$(cdao_tree_import_SOURCES) extract_trees.c
+	$(cdao_read_tree_SOURCES) $(cdao_tree_import_SOURCES) \
+	extract_trees.c
 DIST_SOURCES = $(cdao_import_SOURCES) $(cdao_mass_import_SOURCES) \
-	$(cdao_phylip_import_SOURCES) $(cdao_read_tree_SOURCES) \
-	$(cdao_tree_import_SOURCES) extract_trees.c
+	$(cdao_read_tree_SOURCES) $(cdao_tree_import_SOURCES) \
+	extract_trees.c
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -250,6 +239,7 @@ INCLUDES = -I. -I$(top_builddir) -I$(top_builddir)/src/grammar/nexus -I$(top_bui
 AM_CXXFLAGS = -Wall -g
 NEXDIR = grammar/nexus
 PHYDIR = grammar/phylip
+FASTADIR = grammar/fasta
 CODEGEN = codegen
 LIBDIR = $(top_builddir)/lib
 NCLV = 2.1.06
@@ -263,6 +253,7 @@ cdao_import_SOURCES = main.cpp \
 		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
 		    $(NEXDIR)/nexus_reader.cpp $(NEXDIR)/nexus_reader.hpp \
 		    $(PHYDIR)/phylip_reader.cpp $(PHYDIR)/phylip_reader.hpp \
+		    $(FASTADIR)/fasta_reader.cpp $(FASTADIR)/fasta_reader.hpp \
 		    $(CODEGEN)/constants.hpp \
 		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp \
 		    $(CODEGEN)/nexus/nexus-codegen.cpp $(CODEGEN)/nexus/nexus-codegen.hpp \
@@ -306,22 +297,6 @@ cdao_read_tree_SOURCES = read-tree.cpp \
 		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp
 
 cdao_read_tree_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
-cdao_phylip_import_SOURCES = main4.cpp \
-		    util.cpp util.hpp \
-		    node.cpp node.hpp \
-		    shm_heap.cpp shm_heap.hpp \
-		    data_representation.cpp data_representation.hpp \
-		    $(NEXDIR)/tree_description_scanner.cpp $(NEXDIR)/tree_description_scanner.hpp \
-		    $(NEXDIR)/tree_description_parser.cpp $(NEXDIR)/tree_description_parser.hpp \
-		    $(NEXDIR)/nexus_reader.cpp $(NEXDIR)/nexus_reader.hpp \
-		    $(PHYDIR)/phylip_reader.cpp $(PHYDIR)/phylip_reader.hpp \
-	 	    $(CODEGEN)/constants.hpp \
-		    $(CODEGEN)/codegen.cpp $(CODEGEN)/codegen.hpp \
-		    $(CODEGEN)/nexus/nexus-codegen.cpp $(CODEGEN)/nexus/nexus-codegen.hpp \
-		    $(CODEGEN)/phylip/phylip-codegen.cpp $(CODEGEN)/phylip/phylip-codegen.hpp \
-		    $(CODEGEN)/mega/mega-codegen.cpp $(CODEGEN)/mega/mega-codegen.hpp 
-
-cdao_phylip_import_LDADD = $(LIBDIR)/ncl-$(NCLV)/ncl/libncl.la $(LIBDIR)/CppLoggerV2/src/libCppLogger.la
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -407,9 +382,6 @@ cdao-import$(EXEEXT): $(cdao_import_OBJECTS) $(cdao_import_DEPENDENCIES)
 cdao-mass-import$(EXEEXT): $(cdao_mass_import_OBJECTS) $(cdao_mass_import_DEPENDENCIES) 
 	@rm -f cdao-mass-import$(EXEEXT)
 	$(CXXLINK) $(cdao_mass_import_OBJECTS) $(cdao_mass_import_LDADD) $(LIBS)
-cdao-phylip-import$(EXEEXT): $(cdao_phylip_import_OBJECTS) $(cdao_phylip_import_DEPENDENCIES) 
-	@rm -f cdao-phylip-import$(EXEEXT)
-	$(CXXLINK) $(cdao_phylip_import_OBJECTS) $(cdao_phylip_import_LDADD) $(LIBS)
 cdao-read-tree$(EXEEXT): $(cdao_read_tree_OBJECTS) $(cdao_read_tree_DEPENDENCIES) 
 	@rm -f cdao-read-tree$(EXEEXT)
 	$(CXXLINK) $(cdao_read_tree_OBJECTS) $(cdao_read_tree_LDADD) $(LIBS)
@@ -445,10 +417,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/codegen.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/data_representation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/extract_trees.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fasta_reader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main3.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main4.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mega-codegen.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nexus-codegen.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nexus_reader.Po@am__quote@
@@ -575,6 +547,20 @@ phylip_reader.obj: $(PHYDIR)/phylip_reader.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(PHYDIR)/phylip_reader.cpp' object='phylip_reader.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o phylip_reader.obj `if test -f '$(PHYDIR)/phylip_reader.cpp'; then $(CYGPATH_W) '$(PHYDIR)/phylip_reader.cpp'; else $(CYGPATH_W) '$(srcdir)/$(PHYDIR)/phylip_reader.cpp'; fi`
+
+fasta_reader.o: $(FASTADIR)/fasta_reader.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT fasta_reader.o -MD -MP -MF $(DEPDIR)/fasta_reader.Tpo -c -o fasta_reader.o `test -f '$(FASTADIR)/fasta_reader.cpp' || echo '$(srcdir)/'`$(FASTADIR)/fasta_reader.cpp
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/fasta_reader.Tpo $(DEPDIR)/fasta_reader.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(FASTADIR)/fasta_reader.cpp' object='fasta_reader.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o fasta_reader.o `test -f '$(FASTADIR)/fasta_reader.cpp' || echo '$(srcdir)/'`$(FASTADIR)/fasta_reader.cpp
+
+fasta_reader.obj: $(FASTADIR)/fasta_reader.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT fasta_reader.obj -MD -MP -MF $(DEPDIR)/fasta_reader.Tpo -c -o fasta_reader.obj `if test -f '$(FASTADIR)/fasta_reader.cpp'; then $(CYGPATH_W) '$(FASTADIR)/fasta_reader.cpp'; else $(CYGPATH_W) '$(srcdir)/$(FASTADIR)/fasta_reader.cpp'; fi`
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/fasta_reader.Tpo $(DEPDIR)/fasta_reader.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$(FASTADIR)/fasta_reader.cpp' object='fasta_reader.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o fasta_reader.obj `if test -f '$(FASTADIR)/fasta_reader.cpp'; then $(CYGPATH_W) '$(FASTADIR)/fasta_reader.cpp'; else $(CYGPATH_W) '$(srcdir)/$(FASTADIR)/fasta_reader.cpp'; fi`
 
 codegen.o: $(CODEGEN)/codegen.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT codegen.o -MD -MP -MF $(DEPDIR)/codegen.Tpo -c -o codegen.o `test -f '$(CODEGEN)/codegen.cpp' || echo '$(srcdir)/'`$(CODEGEN)/codegen.cpp

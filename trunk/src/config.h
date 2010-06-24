@@ -64,9 +64,6 @@
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "cdaotranslator"
 
-/* Define to the home page for this package. */
-/* #undef PACKAGE_URL */
-
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "0.2"
 
