@@ -6,7 +6,7 @@
 #include <AbstractStream.hpp>
 #include <LogManager.hpp>
 
-
+#include <ncl/nxsmultiformat.h>
 
 namespace CDAO {
 
@@ -16,6 +16,14 @@ namespace CDAO {
 	MEGA_FORMAT,
 	NEXML_FORMAT,
 	CDAO_FORMAT
+  };
+
+  enum DataType_t {
+	AA_TYPE,
+	DNA_TYPE,
+	RNA_TYPE,
+	CONT_TYPE,
+	DESC_TYPE
   };
 
 
@@ -40,6 +48,15 @@ public:
   static void setInFormat( Format_t inf ){ in_format_ = inf; }
   static Format_t getOutFormat(){ return out_format_; }
   static void setOutFormat( Format_t otf ){ out_format_ = otf; }
+  
+  static void setFileName( char* filename );
+  
+  static char* getFileName(){ return file_name_; }
+
+  static void setDataType( DataType_t dt ){ data_type_ = dt; }
+  static DataType_t getDataType( ){ return data_type_; }
+
+  static MultiformatReader::DataFormatType getFormatDataType();
 private:
   static std::wistream* in_;
  // static std::istream* narrow_in_;
@@ -50,6 +67,9 @@ private:
   static bool interleaved_;
   static Format_t in_format_;
   static Format_t out_format_;
+  static char* file_name_;
+  static DataType_t data_type_;
+  static MultiformatReader::DataFormatType data_foramt_type_;
   
 };
 
@@ -71,6 +91,9 @@ private:
   static const std::string INFORMAT_ARG = "-if";
   static const std::string OUTFORMAT_ARG = "-of";
   static const std::string INTERLEAVED_ARG = "-il";
+
+  static const std::string DATA_TYPE_ARG   = "-dt";
+
   static const std::string VERBOSE_1   =  "-v";
   static const std::string VERBOSE_2   =  "-vv";
   static const std::string VERBOSE_3   =  "-vvv";
@@ -79,9 +102,17 @@ private:
 
   static const std::string NEXUS_FORMAT_ARG = "nexus";
   static const std::string PHYLIP_FORMAT_ARG = "phylip";
+  static const std::string PHYLIP_RELAXED_ARG = "relaxed-phylip"
   static const std::string MEGA_FORMAT_ARG = "mega";
   static const std::string NEXML_FORMAT_ARG = "nexml";
   static const std::string CDAO_FORMAT_ARG  = "cdao";
+  static const std::string FASTA_FORMAT_ARG = "fasta";
+
+  static const std::string AA_TYPE_ARG = "aa";
+  static const std::string RNA_TYPE_ARG = "rna";
+  static const std::string DNA_TYPE_ARG = "dna";
+
+
   
   /*
    * Process the argument list and setup the environment.

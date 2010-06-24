@@ -1,4 +1,5 @@
 #include "util.hpp"
+#include <limits.h>
 #include <cstdio>
 #include <iostream>
 #include <fstream>
@@ -30,6 +31,10 @@ namespace CDAO {
 
   Format_t GlobalState::in_format_ = NEXUS_FORMAT;
   Format_t GlobalState::out_format_ = CDAO_FORMAT;
+
+  DataType_t GlobalState::data_type_;
+
+  char* GlobalState::file_name_ = "";
 
 static std::string input_file = "";
 static std::string output_file = "";
@@ -70,6 +75,44 @@ wstring number_to_wstring( int number ){
 	return str_to_wstr( string(str_number) );
 }
 
+void GlobalState::setFileName( char* filename ){
+        size_t len = strnlen( filename, PATH_MAX + NAME_MAX );
+	file_name_ = new char[ len + 1 ];
+	strncpy( file_name_, filename, len );
+	return;
+}
+
+
+MultiFormatReader::DataFormatType GlobalState::getFormatDataType(){
+  MultiFormatReader::DataForamtType ret = MuliFormatReader::DataFormatType::UNSUPPORTED_FORMAT;
+  map< Format_t, map< DataType_t, MultiFormatReader::DataFormatType > > type_translate = map< Format_t, map< DataType_t, MultiFormatReader::DataFormatType > >();
+
+  type_translate[ NEXUS_FORMAT ][ AA_TYPE  ] =  MuliFormatReader::DataFormatType::NEXUS_FORMAT;
+  type_translate[ NEXUS_FORMAT ][ DNA_TYPE ] =  MuliFormatReader::DataFormatType::NEXUS_FORMAT;
+  type_translate[ NEXUS_FORMAT ][ RNA_TYPE ] =  MuliFormatReader::DataFormatType::NEXUS_FORMAT;
+
+  type_translate[ PHYLIP_FORMAT ][ AA_TYPE  ] =  MuliFormatReader::DataFormatType::PHYLIP_AA_FORMAT;
+  type_translate[ PHYLIP_FORMAT ][ DNA_TYPE ] =  MuliFormatReader::DataFormatType::PHYLIP_DNA_FORMAT;
+  type_translate[ PHYLIP_FORMAT ][ RNA_TYPE ] =  MuliFormatReader::DataFormatType::PHYLIP_RNA_FORMAT;
+
+  if ( GlobalState::isInterleaved() ){
+     type_translate[ PHYLIP_FORMAT ][ AA_TYPE  ] =  MuliFormatReader::DataFormatType::INTERLEAVED_PHYLIP_AA_FORMAT;
+     type_translate[ PHYLIP_FORMAT ][ DNA_TYPE ] =  MuliFormatReader::DataFormatType::INTERLEAVED_PHYLIP_DNA_FORMAT;
+     type_translate[ PHYLIP_FORMAT ][ RNA_TYPE ] =  MuliFormatReader::DataFormatType::INTERLEAVED_PHYLIP_RNA_FORMAT;
+  }
+
+  type_translate[ FASTA_FORMAT ][ AA_TYPE  ] =  MuliFormatReader::DataFormatType::FASTA_AA_FORMAT;
+  type_translate[ FASTA_FORMAT ][ DNA_TYPE ] =  MuliFormatReader::DataFormatType::FASTA_DNA_FORMAT;
+  type_translate[ FASTA_FORMAT ][ RNA_TYPE ] =  MuliFormatReader::DataFormatType::FASTA_RNA_FORMAT;
+
+  
+   
+  return type_translate[ GlobalState::getFileType() ][ GlobalState::getDataType() ];
+
+}
+
+
+
 void processArgs(int argc, char** argv, char** env){
 
   map< string, Format_t > arg_to_format = map< string, Format_t >();
@@ -80,6 +123,13 @@ void processArgs(int argc, char** argv, char** env){
   arg_to_format[ PHYLIP_FORMAT_ARG ] = PHYLIP_FORMAT;
   arg_to_format[ MEGA_FORMAT_ARG   ] = MEGA_FORMAT;
 
+
+  map< string, DataType_t > arg_to_type = map< string, DataType_t>();
+
+  arg_to_type[ AA_TYPE_ARG ] = AA_TYPE;
+  arg_to_type[ DNA_TYPE_ARG ] = DNA_TYPE;
+  arg_to_type[ RNA_TYPE_ARG ] = RNA_TYPE; 
+ 
   //wcerr << L"processArgs( argc: " << argc << ", argv: " << argv << ", env: " << env << ")\n";
   GlobalState::setInfile( &wcin );
   GlobalState::setOutfile( &wcout );
@@ -95,6 +145,7 @@ void processArgs(int argc, char** argv, char** env){
     if ( argv[ i ] == INFILE_ARG){
 	//input_file = argv[ i + 1 ];
                 setInputFile( argv[i + 1 ] );
+		setFileName( argv[ i + 1 ] );
                 //wcerr << L"Set input file: " << str_to_wstr(getInputFile()) << endl;
 
                 wifstream* winf = new wifstream( getInputFile().c_str() );
@@ -117,6 +168,12 @@ void processArgs(int argc, char** argv, char** env){
     }
     else if (argv[ i ] == INTERLEAVED_ARG){
         GlobalState::setInterleaved( true );
+    }
+
+    else if ( argv[ i ] == DATA_TYPE_ARG ){
+      if ( arg_to_type.find( argv[ i+ 1 ] ) != arg_to_type.end() ){  
+         GlobalState::setDataType( arg_to_type[ argv[i + 1] ] );
+      }
     }
 
     else if ( argv[ i ]  == INFORMAT_ARG ){
