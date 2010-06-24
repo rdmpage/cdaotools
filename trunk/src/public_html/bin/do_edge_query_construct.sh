@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "SELECT ?edge ?src ?dest 
+echo -e "SELECT ?edge ?src ?dest
       WHERE 
       { 
          ?dest cdao:part_of <$1>.

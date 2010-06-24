@@ -44,13 +44,13 @@ else
                  xmlns:cdao="http://www.evolutionaryontology.org/cdao.owl#"
                  xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
                  http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
-           <key id="d0" for="node" attr.name="IdLabel" attr.type="string"/>
-           <key id="d1" for="edge" attr.name="color" attr.type="string">black</key>
+           <key id="d0" for="all" attr.name="IdLabel" attr.type="string"/>
+           <!-- <key id="d1" for="edge" attr.name="color" attr.type="string">black</key>-->
            <!-- <key id="boostrap" for="edge" attr.name="weight" attr.type="double"/> -->
            <graph id="$XMLNS$TREEE_NAME" edgedefault="$TYPE">
 	   <!-- NODE_QUERY: $NODE_QUERY -->
 	   <!-- EDGE_QUERY: $EDGE_QUERY -->
-          $(do_query.py "$TRIPLESTORE_CONFIG_STRING"  "$XMLNS" "$NODE_QUERY" "<node id=\"%s\"><data key=\"d0\">%s</data></node>" "$EDGE_QUERY" "<edge id=\"%s\" source=\"%s\" target=\"%s\"/>" | perl -p -e 's/<data key=\"d0\">http.*#/<data key=\"d0\">/g' )
+          $(do_query.py "$TRIPLESTORE_CONFIG_STRING"  "$XMLNS" "$NODE_QUERY" "<node id=\"%s\"><data key=\"d0\">%s</data></node>" "$EDGE_QUERY" "<edge id=\"%s\" source=\"%s\" target=\"%s\"></edge>" | perl -p -e 's/<data key=\"d0\">http.*#/<data key=\"d0\">/g' )
              </graph>
 	   </graphml>
 EOM

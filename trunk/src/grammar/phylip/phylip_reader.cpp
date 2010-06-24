@@ -4,6 +4,9 @@
 #include <Logger.hpp>
 #include <LogManager.hpp>
 #include <util.hpp>
+#include <ncl/ncl.h>
+#include <ncl/nxsmultiformat.h>
+
 
 using namespace std;
 using namespace CDAO;
@@ -26,24 +29,42 @@ static void readstandard( wistream& in, vector< wstring >& taxons, vector< wstri
 static const int TAXON_LABEL_SIZE = 10;
 
 namespace CDAO {
-DataRepresentation* phylipparse(){
+  DataRepresentation* phylipparse(){
    DataRepresentation* model=NULL;
-   //if ( env ){
-     vector< wstring > data = vector< wstring >();
-     vector< wstring > taxons = vector< wstring >();
-     unsigned ntax = getntaxtrait( *(GlobalState::getInfile()) );
-     unsigned ntraits = getntaxtrait( *(GlobalState::getInfile()) );
-     
-     if ( GlobalState::isInterleaved() ){
-         readinterleaved( *(GlobalState::getInfile()), taxons, data, ntax, ntraits );
-     }
-     else {
-         readstandard( *(GlobalState::getInfile()), taxons, data, ntax, ntraits );
-     }
-     model = new PhylipDataRepresentation( data, taxons );
-   //}
-   return model;
-}
+   
+   MultiFormatReader mfr = MultiFormatReader( );
+
+   NxsTaxaBlock* taxa               = new NxsTaxaBlock();
+   NxsAssumptionsBlock* assumptions = new NxsAssumptionsBlock( taxa );
+   NxsTreesBlock* trees             = new NxsTreesBlock( taxa );
+   NxsCharactersBlock* wchar_tacters   = new NxsCharactersBlock( taxa, assumptions );
+   NxsDataBlock* data               = new NxsDataBlock( taxa, assumptions );
+   NxsDistancesBlock* distances     = new NxsDistancesBlock( taxa );
+
+     //cerr << L"Initialized the blocks\n";
+
+   NxsToken token( nread.inf );
+
+  //cerr << L"Initialized the token\n";
+
+   nread.Add(taxa);
+   nread.Add(assumptions);
+   nread.Add(trees);
+   nread.Add(wchar_tacters);
+   nread.Add(data);
+   nread.Add(distances);
+
+   mfr.ReadFilePath( GlobalState::getFileName(), GlobalState::getDataFormatType() );
+   vector< const Node* > parsed_trees = vector< const Node* >();
+   for (vector< wstring >::iterator i = tree_description.begin(); i < tree_description.end(); ++i){
+    
+     TreeDescriptionParser  treeParser( *i );
+     parsed_trees.push_back( treeParser.getParseTree() ); 
+   }
+  
+    model = new NexusDataRepresentation( parsed_trees, taxa, trees, assumptions, wchar_tacters, data, distances );
+    return model;
+  }
 }
 
 void readinterleaved( wistream& in, vector< wstring >& taxons, vector< wstring >& data, unsigned ntax, unsigned ntraits  ){
