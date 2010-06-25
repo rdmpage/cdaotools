@@ -1,4 +1,5 @@
 #include "phylip_reader.hpp"
+#include <grammar/nexus/nexus_reader.hpp>
 #include <cassert>
 #include <fstream>
 #include <Logger.hpp>
@@ -32,7 +33,7 @@ namespace CDAO {
   DataRepresentation* phylipparse(){
    DataRepresentation* model=NULL;
    
-   MultiFormatReader mfr = MultiFormatReader( );
+   MultiFormatReader nread = MultiFormatReader( );
 
    NxsTaxaBlock* taxa               = new NxsTaxaBlock();
    NxsAssumptionsBlock* assumptions = new NxsAssumptionsBlock( taxa );
@@ -43,7 +44,7 @@ namespace CDAO {
 
      //cerr << L"Initialized the blocks\n";
 
-   NxsToken token( nread.inf );
+   NxsToken token( *(GlobalState::getInfile()) );
 
   //cerr << L"Initialized the token\n";
 
@@ -54,14 +55,9 @@ namespace CDAO {
    nread.Add(data);
    nread.Add(distances);
 
-   mfr.ReadFilePath( GlobalState::getFileName(), GlobalState::getDataFormatType() );
+   nread.ReadFilepath( GlobalState::getFileName(), GlobalState::getFormatDataType() );
    vector< const Node* > parsed_trees = vector< const Node* >();
-   for (vector< wstring >::iterator i = tree_description.begin(); i < tree_description.end(); ++i){
-    
-     TreeDescriptionParser  treeParser( *i );
-     parsed_trees.push_back( treeParser.getParseTree() ); 
-   }
-  
+     
     model = new NexusDataRepresentation( parsed_trees, taxa, trees, assumptions, wchar_tacters, data, distances );
     return model;
   }

@@ -1,16 +1,17 @@
-#include <fasta_reader.hpp>
+#include "fasta_reader.hpp"
 #include <ncl/ncl.h>
-#include <ncl/multiformat.h>
+#include <ncl/nxsmultiformat.h>
+#include <grammar/nexus/nexus_reader.hpp>
 #include <vector>
 
-using CDAO;
-using std;
+using namespace CDAO;
+using namespace std;
 
 DataRepresentation* fastaparse(){
    DataRepresentation* ret = NULL;
 
 
-    MultiFormatReader mfr = MultiFormatReader( );
+    MultiFormatReader nread = MultiFormatReader( );
 
    NxsTaxaBlock* taxa               = new NxsTaxaBlock();
    NxsAssumptionsBlock* assumptions = new NxsAssumptionsBlock( taxa );
@@ -21,7 +22,7 @@ DataRepresentation* fastaparse(){
 
      //cerr << L"Initialized the blocks\n";
 
-   NxsToken token( nread.inf );
+   NxsToken token( *(GlobalState::getInfile()) );
 
   //cerr << L"Initialized the token\n";
 
@@ -32,14 +33,8 @@ DataRepresentation* fastaparse(){
    nread.Add(data);
    nread.Add(distances);
 
-   mfr.ReadFilePath( GlobalState::getFileName(), GlobalState::getDataFormatType() );
+   nread.ReadFilepath( GlobalState::getFileName(), GlobalState::getFormatDataType() );
    vector< const Node* > parsed_trees = vector< const Node* >();
-   for (vector< wstring >::iterator i = tree_description.begin(); i < tree_description.end(); ++i){
-    
-     TreeDescriptionParser  treeParser( *i );
-     parsed_trees.push_back( treeParser.getParseTree() ); 
-   }
-  
    ret = new NexusDataRepresentation( parsed_trees, taxa, trees, assumptions, wchar_tacters, data, distances );
    return ret;
 }
