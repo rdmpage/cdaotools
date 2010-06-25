@@ -15,7 +15,8 @@ namespace CDAO {
 	PHYLIP_FORMAT,
 	MEGA_FORMAT,
 	NEXML_FORMAT,
-	CDAO_FORMAT
+	CDAO_FORMAT,
+	FASTA_FORMAT
   };
 
   enum DataType_t {
@@ -56,7 +57,7 @@ public:
   static void setDataType( DataType_t dt ){ data_type_ = dt; }
   static DataType_t getDataType( ){ return data_type_; }
 
-  static MultiformatReader::DataFormatType getFormatDataType();
+  static MultiFormatReader::DataFormatType getFormatDataType();
 private:
   static std::wistream* in_;
  // static std::istream* narrow_in_;
@@ -69,7 +70,7 @@ private:
   static Format_t out_format_;
   static char* file_name_;
   static DataType_t data_type_;
-  static MultiformatReader::DataFormatType data_foramt_type_;
+  static MultiFormatReader::DataFormatType data_foramt_type_;
   
 };
 
@@ -102,7 +103,7 @@ private:
 
   static const std::string NEXUS_FORMAT_ARG = "nexus";
   static const std::string PHYLIP_FORMAT_ARG = "phylip";
-  static const std::string PHYLIP_RELAXED_ARG = "relaxed-phylip"
+  static const std::string PHYLIP_RELAXED_ARG = "relaxed-phylip";
   static const std::string MEGA_FORMAT_ARG = "mega";
   static const std::string NEXML_FORMAT_ARG = "nexml";
   static const std::string CDAO_FORMAT_ARG  = "cdao";

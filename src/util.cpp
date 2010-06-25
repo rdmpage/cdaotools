@@ -15,6 +15,9 @@
 #include <Logger.hpp>
 #include <AbstractStream.hpp>
 #include <LogManager.hpp>
+#include <string.h>
+#include <strings.h>
+#include <ncl/nxsmultiformat.h>
 
 #define SHARED_HEAP_SIZE (1024 * 1024 * 128 )
 
@@ -76,7 +79,7 @@ wstring number_to_wstring( int number ){
 }
 
 void GlobalState::setFileName( char* filename ){
-        size_t len = strnlen( filename, PATH_MAX + NAME_MAX );
+        size_t len = strlen( filename /*, PATH_MAX + NAME_MAX*/ );
 	file_name_ = new char[ len + 1 ];
 	strncpy( file_name_, filename, len );
 	return;
@@ -84,30 +87,30 @@ void GlobalState::setFileName( char* filename ){
 
 
 MultiFormatReader::DataFormatType GlobalState::getFormatDataType(){
-  MultiFormatReader::DataForamtType ret = MuliFormatReader::DataFormatType::UNSUPPORTED_FORMAT;
+  MultiFormatReader::DataFormatType ret = MultiFormatReader::UNSUPPORTED_FORMAT;
   map< Format_t, map< DataType_t, MultiFormatReader::DataFormatType > > type_translate = map< Format_t, map< DataType_t, MultiFormatReader::DataFormatType > >();
 
-  type_translate[ NEXUS_FORMAT ][ AA_TYPE  ] =  MuliFormatReader::DataFormatType::NEXUS_FORMAT;
-  type_translate[ NEXUS_FORMAT ][ DNA_TYPE ] =  MuliFormatReader::DataFormatType::NEXUS_FORMAT;
-  type_translate[ NEXUS_FORMAT ][ RNA_TYPE ] =  MuliFormatReader::DataFormatType::NEXUS_FORMAT;
+  type_translate[ CDAO::NEXUS_FORMAT ][ AA_TYPE  ] =  MultiFormatReader::NEXUS_FORMAT;
+  type_translate[ CDAO::NEXUS_FORMAT ][ DNA_TYPE ] =  MultiFormatReader::NEXUS_FORMAT;
+  type_translate[ CDAO::NEXUS_FORMAT ][ RNA_TYPE ] =  MultiFormatReader::NEXUS_FORMAT;
 
-  type_translate[ PHYLIP_FORMAT ][ AA_TYPE  ] =  MuliFormatReader::DataFormatType::PHYLIP_AA_FORMAT;
-  type_translate[ PHYLIP_FORMAT ][ DNA_TYPE ] =  MuliFormatReader::DataFormatType::PHYLIP_DNA_FORMAT;
-  type_translate[ PHYLIP_FORMAT ][ RNA_TYPE ] =  MuliFormatReader::DataFormatType::PHYLIP_RNA_FORMAT;
+  type_translate[ CDAO::PHYLIP_FORMAT ][ AA_TYPE  ] =  MultiFormatReader::PHYLIP_AA_FORMAT;
+  type_translate[ CDAO::PHYLIP_FORMAT ][ DNA_TYPE ] =  MultiFormatReader::PHYLIP_DNA_FORMAT;
+  type_translate[ CDAO::PHYLIP_FORMAT ][ RNA_TYPE ] =  MultiFormatReader::PHYLIP_RNA_FORMAT;
 
   if ( GlobalState::isInterleaved() ){
-     type_translate[ PHYLIP_FORMAT ][ AA_TYPE  ] =  MuliFormatReader::DataFormatType::INTERLEAVED_PHYLIP_AA_FORMAT;
-     type_translate[ PHYLIP_FORMAT ][ DNA_TYPE ] =  MuliFormatReader::DataFormatType::INTERLEAVED_PHYLIP_DNA_FORMAT;
-     type_translate[ PHYLIP_FORMAT ][ RNA_TYPE ] =  MuliFormatReader::DataFormatType::INTERLEAVED_PHYLIP_RNA_FORMAT;
+     type_translate[ CDAO::PHYLIP_FORMAT ][ AA_TYPE  ] =  MultiFormatReader::INTERLEAVED_PHYLIP_AA_FORMAT;
+     type_translate[ CDAO::PHYLIP_FORMAT ][ DNA_TYPE ] =  MultiFormatReader::INTERLEAVED_PHYLIP_DNA_FORMAT;
+     type_translate[ CDAO::PHYLIP_FORMAT ][ RNA_TYPE ] =  MultiFormatReader::INTERLEAVED_PHYLIP_RNA_FORMAT;
   }
 
-  type_translate[ FASTA_FORMAT ][ AA_TYPE  ] =  MuliFormatReader::DataFormatType::FASTA_AA_FORMAT;
-  type_translate[ FASTA_FORMAT ][ DNA_TYPE ] =  MuliFormatReader::DataFormatType::FASTA_DNA_FORMAT;
-  type_translate[ FASTA_FORMAT ][ RNA_TYPE ] =  MuliFormatReader::DataFormatType::FASTA_RNA_FORMAT;
+  type_translate[ CDAO::FASTA_FORMAT ][ AA_TYPE  ] =  MultiFormatReader::FASTA_AA_FORMAT;
+  type_translate[ CDAO::FASTA_FORMAT ][ DNA_TYPE ] =  MultiFormatReader::FASTA_DNA_FORMAT;
+  type_translate[ CDAO::FASTA_FORMAT ][ RNA_TYPE ] =  MultiFormatReader::FASTA_RNA_FORMAT;
 
   
    
-  return type_translate[ GlobalState::getFileType() ][ GlobalState::getDataType() ];
+  return type_translate[ GlobalState::getInFormat() ][ GlobalState::getDataType() ];
 
 }
 
@@ -145,7 +148,7 @@ void processArgs(int argc, char** argv, char** env){
     if ( argv[ i ] == INFILE_ARG){
 	//input_file = argv[ i + 1 ];
                 setInputFile( argv[i + 1 ] );
-		setFileName( argv[ i + 1 ] );
+		GlobalState::setFileName( argv[ i + 1 ] );
                 //wcerr << L"Set input file: " << str_to_wstr(getInputFile()) << endl;
 
                 wifstream* winf = new wifstream( getInputFile().c_str() );
