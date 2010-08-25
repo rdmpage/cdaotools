@@ -102,10 +102,10 @@
  
 
 %Review style settings
-\newenvironment{bmcformat}{\begin{raggedright}\baselineskip20pt\sloppy\setboolean{publ}{false}}{\end{raggedright}\baselineskip20pt\sloppy}
+%\newenvironment{bmcformat}{\begin{raggedright}\baselineskip20pt\sloppy\setboolean{publ}{false}}{\end{raggedright}\baselineskip20pt\sloppy}
 
 %Publication style settings
-%\newenvironment{bmcformat}{\fussy\setboolean{publ}{true}}{\fussy}
+\newenvironment{bmcformat}{\fussy\setboolean{publ}{true}}{\fussy}
 
 
 
@@ -120,7 +120,9 @@
 %%                                          %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{CDAO Store: A New Vision for Data Integration}
+%\title{CDAO Store: A New Vision for Data Integration}
+\title{\emph{CDAO-Store:} Ontology-driven Data Integration for Phylogenetic Analysis}
+
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                          %%
@@ -139,17 +141,17 @@
 \author{Brandon Chisham\correspondingauthor%
        \email{Brandon Chisham\correspondingauthor - bchisham@cs.nmsu.edu}%
       \and
+               Ben Wright \correspondingauthor%
+         \email{Ben Wright \correspondingauthor - bwright@cs.nmsu.edu}%
+	\and
          Trung Le%
          \email{Trung Le - tle@cs.nmsu.edu}%
-    \and
-	Enrico Pontelli%
-	\email{Enrico Pontelli -epontell@cs.nmsu.edu}%
     \and
 	Tran Son %
 	\email{Tran Son - tson@cs.nmsu.edu}%
        and 
-         Ben Wright \correspondingauthor%
-         \email{Ben Wright \correspondingauthor - bwright@cs.nmsu.edu}%
+	Enrico Pontelli%
+	\email{Enrico Pontelli -epontell@cs.nmsu.edu}%
       }
       
 
@@ -185,21 +187,34 @@
 \begin{abstract}
         % Do not use inserted blank lines (ie \\) until main body of text.
         %This should not exceet 350 words and should be structured into separate sections headed Background, Results, Conclusions.  Please do not use abbreviations or references in the abstract.
-	\paragraph*{Background:} The Comparative Data Analysis Ontology(CDAO)
-\footnote{\url{http://www.evolutionaryontology.org}} is an ontology developed,
+	\paragraph*{Background:} The Comparative Data Analysis Ontology
+	(CDAO) is an ontology developed,
 as part of the
-EvoInfo\footnote{\url{https://www.nescent.org/wg_evoinfo/Main_Page}} and
-EvoIO\footnote{\url{http://evoio.org/wiki/Main_Page}} groups supported by
-NESCent\footnote{\url{http://www.nescent.org/index.php}},  to provide semantics
+EvoInfo and
+EvoIO groups supported by
+NESCent,  to provide semantics
 to the descriptions of data and transformations commonly found in the domain of
 phylogenetic inference. The core concepts of the ontology enables the
 description of phylogenetic trees and associated character data matrices.
 
  
-        \paragraph*{Results:} Using CDAO as a backend triple-store, we developed CDAO-Store. CDAO-Store is a web-based application that can be used to query phylogenetic data for nearest common ancestor or minimum spanning clade as well as filter multiple trees in the store by size, author, taxan,  tree identifier, algorithm or method.  In addition, CDAO-Store also has a visualization application called CDAO-Explorer which can be used to view both the character matrix or tree of anything in CDAO-Store.  In order to keep CDAO-Store up to date, PHYLIP, MEGA, and NEXUS files can be translated to CDAO format and then uploaded to CDAO-Store.
+        \paragraph*{Results:} Using CDAO as the semantic backend, we
+        developed a triple-store, named \emph{CDAO-Store.} CDAO-Store is a RDF-based
+        store of phylogenetic data, including a complete import of TreeBASE. CDAO-Store provides
+        a web-based front-end to perform both user-defined as well as domain-specific
+        queries; domain-specific queries include search for nearest common ancestors,
+        minimum spanning clades,  filter multiple trees in the store by size, author, taxa,  
+        tree identifier, algorithm or method.  In addition, CDAO-Store provides a
+        visualization front-end, called \emph{CDAO-Explorer}, which can be used 
+        to view both character data matrices and trees extracted from the CDAO-Store.  
+        CDAO-Store provides import capabilities, enabling the addition of new data
+        to the triple-store; files in PHYLIP, MEGA, and NEXUS formats can be imported and
+        their CDAO representation added to the triple-store.
 
-        \paragraph*{Conclusions:} CDAO store is made up of a versatile and compelling set of tools. It provides an good example of what can be done
-         with an extensible, semantically aware data resource.
+        \paragraph*{Conclusions:} CDAO-Store is made up of a versatile and integrated
+        set of tools to support phylogenetic analysis. To the best of our knowledge, CDAO-Store
+        is the first semantically-aware repository of phylogenetic data with domain-specific
+        querying capabilities. The portal to CDAO-Store is available at \url{http://....}.
 \end{abstract}
 
 
@@ -241,31 +256,144 @@ description of phylogenetic trees and associated character data matrices.
 %% Background %%
 %%
 \section*{Background}
+
+The \emph{CDAO-Store} is a novel portal aimed at facilitating the storage 
+and retrieval of phylogenetic data. The novelty of CDAO-Store lies in the use of a 
+\emph{semantic-based}
+approach to the storage and querying of data, building on established ontologies for the
+semantic annotation of data. This approach enables us to overcome restrictions imposed
+by the use of specific data formats (facilitating inter-operation among phylogenetic analysis
+applications) and makes it possible to formulate more meaningful domain-specific queries.
+
+
+\subsection*{Motivations}
+
+Phylogenetic trees have gained a central role in modern biology. Trees provide  a
+systematic structure to organize evolutionary knowledge about diversity of life. Trees
+have become fundamental tools for building new knowledge, thanks to their explanatory
+and comparative-based predictive capabilities. Evolutionary relationships provide 
+clues about processes underlying biodiversity and enable predictive inferences about
+future changes in biodiversity (e.g., in response to climate or anthropogenic changes).
+Phylogenies are used with increase frequency in several fields, e.g., comparative
+genomics \cite{Ell08}, metagenomics \cite{WE08}, and community ecology \cite{WAMD02}.
+
+... ENRICO: here we need to introduce some motivations behind the development of this project; we
+should dig out some issues about the need for 
+\begin{itemize}
+\item phylogenetic repositories (e.g., look at the motivations of Treebase)
+
+\item data interoperation
+
+[ENRICO: Need to elaborate something along these lines...]
+
+While powerful tools exist for guiding the inference of 
+phylogenies, and while there is a general consensus of the effectiveness of evolutionary
+approaches, the broad availability and repurposing of phylogenies are severely restricted
+by the lack of
+standards and  community-driven processes for the adoption and extension of trees.
+While several data formats are in use representation of trees and associated molecular
+or morphological character data, there are no accepted methods for annotating
+nodes and branches, and there have been no attempts to standardize the description
+of other types of metadata, such as evolutionary models and provenance.
+
+\item semantics and ontologies
+
+[ENRICO: Need something along these lines]
+
+In order to gain full effectiveness, data interoperability cannot be restricted to 
+exchange of data, but it needs to rely on the exchange of \emph{semantics}. While
+data formats capture the syntax of data (e.g., for data transmission), explicit 
+semantics is necessary (e.g., \cite{cdao-evol}) for interpretation, repurposing and 
+application of phylogenetic data. In recent years, knowledge representation in 
+the biomedical domains has predominantly built on the use of domain
+specific ontologies \cite{SK02,Skl01}.
+
+\item domain-specific querying
+
+[ENRICO: a summary drawn from the paper on querying phylogenies]
+
+
+\end{itemize}
+
+
+
 \subsection*{CDAO}
 
-  CDAO, Comparative Data Analysis Ontology, provides a framework for describing phylogenies and their associated
-  character state matrices. It was developed as part of the Evolutionary Informatics working group along with the
-  NeXML file format, and the PhyloWS Webservice standard, forming what the group called the EvoIO stack. CDAO forms
-  the base of this stack defining the semantics for the data represented as NeXML files, or otherwise supplied by
-  services implementing this set of standards. 
+  The \emph{Comparative Data Analysis Ontology (CDAO)}\footnote{\url{http://www.evolutionaryontology.org}} \cite{cdao-evol} provides a formal ontology
+  for describing phylogenies and their associated
+  character state matrices. It was developed as part of the 
+  \emph{Evolutionary Informatics (EvoInfo)}\footnote{\url{https://www.nescent.org/wg_evoinfo/Main_Page}} working group, sponsored by 
+  the National Evolutionary Synthesis Center.\footnote{\url{http://www.nescent.org/index.php}}
+  
+  The CDAO ontology provides the semantic component of a data representation and interoperation stack for phyloinformatics, 
+  known as the  \emph{EvoIO stack} \cite{evoio}---along with a data exchange format, called {\tt Nexml} \cite{nexml}, and 
+  a phyloinformatics web servces API, known as PhyloWS \cite{phylows}. CDAO forms
+  the base of this stack defining the semantics for the data represented as {\tt Nexml} files, or otherwise supplied by
+  services implementing this set of standards. Figure \ref{stack} illustrates the EvolIO 
+  stack.
+
+
 
   CDAO is defined in terms of an OWL-DL ontology. It provides a general framework
   for talking about the relationships between taxa, characters, states, their matrices, and associated 
-  phylogenies. As a general framework it supplies general classes and relations between those classes, 
-  it is intended that for practical work these will be extended to for example talk about more specific
-  types of characters or states. (e.g. Beak length might be defined as a specialization of CDAO's \textit{Standard} 
-  character type). 
+  phylogenies.   The ontology is organized around four central concepts (see also
+	Figure \ref{cdao1}): OTUs, characters, character states, phylogenetic trees, and
+transitions. The key concepts and their mutual relationships
+within CDAO are illustrated in Figure \ref{cdao2}.
+A phylogenetic analysis starts with the identification of a
+collection of \emph{operational taxonomic units (OTUs)}, representing
+the entities being described (e.g., species, genes). Each OTU is
+described, in the analysis, by a collection of properties, typically
+referred to as \emph{characters}. In phylogenetic analysis,
+it is common to collect the characters and associated character states in a matrix, the
+character state matrix, where the rows correspond to the different
+OTUs and the columns correspond to the different characters.
+  
+In evolutionary biology, phylogenetic ``trees'' and ``networks'' are
+used to represent paths of descent-with-modification, capturing the
+evolutionary process underlying the considered OTUs. Since evolution moves
+forward in time, the branches (edges) on a tree are directed. The
+terminal nodes typically are anchored in the present time because
+they represent observations or measurements made on currently
+existing organisms. The internal nodes represent common
+ancestors, with the deepest node as the ``root'' node of the tree.
+The restriction that each node has at most one immediate ancestor
+reflects the assumption that evolutionary lineages, once separate,
+do not fuse; this assumption follows from the \emph{biological species
+concept} based on reproductive isolation. Branching is seen as a
+binary process of splitting by speciation or, in the case of
+molecular sequences, by gene duplication. 
+Even with terminal nodes anchored in the present, it may be
+impossible to infer the direction of each internal branch, in which
+case the tree may be referred to as an ``unrooted tree,'' or as a
+``network.'' Even the restriction of single parentage may be
+abandoned, for strictly biological reasons, in the case of lateral
+transfer or reticulate evolution. 
+  
+  As a general framework, CDAO supplies general classes and relations between those classes, 
+  that can be further specialized to meet the needs of a specific application---\emph{Beak length}
+   might be defined as a specialization of CDAO's \textit{Standard} 
+  character type.
+   
 
-\subsection*{NeXML}
-  NeXML\footnote{\url{http://www.nexml.org}} is a file format for exchanging data containing character state data
+\subsection*{\tt nexml}
+  {\tt nexml} \cite{nexml} is a file format for exchanging data containing character state data
   matrices and phylogenies. It is syntax is defined in terms of an XML schema, and the semantics of its elements
   are defined in terms of CDAO classes. Being defined in this way allows direct translation to CDAO class instances.
-  This guarantee is also important to using it as a medium of exchange since it's semantics can be agreed upon by
+  This guarantee is also important to using it as a medium of exchange since its semantics can be agreed upon by
   both the provider and recipient of a dataset.
+  
+  [ENRICO: The description of NeXML is too vague. Characterize the main elements in the format]
 
-\subsection*{PhyloWS}
-  PhyloWS\footnote{Phyloinformatics Web Services API} is a standard for exposing phylogenetic data as a webservice, in such a way that particular data items,
-  can be referenced by persistent HTTP URI's.  PhlyoWS URI's begin with /phylows/ as the standard delimiter, then based on the phylogenetic information being queried such as accession number or what type of data, such as taxon, tree, or study.  A specification for PhyloWS can be found at \url{https://www.nescent.org/wg_evoinfo/PhyloWS/REST}.
+\subsection*{PhlyoWS}
+  \emph{PhyloWS (Phyloinformatics Web Services API)} is a standard for exposing 
+  phylogenetic data as a Web service, in such a way that particular data items,
+  can be referenced by persistent HTTP URI's.  PhlyoWS URI's begin with {\tt /phylows/} 
+  as the standard delimeter, then based on the phylogenetic information being queried, e.g.,
+   accession number or what type of data, such as taxon, tree, or study.  [ENRICO: the previous sentence is suspended]
+   A specification for PhyloWS can be found at \url{www.nescent.org/wg_evoinfo/PhyloWS/REST}.
+  
+  [ENRICO: people may not be familiar with web services and similar things; please define what a web service API is, what is it for. Provide one example in PhyloWS; include citations]
 
 %%%%%%%%%%%%%%%%
 %%Implementation %%
@@ -459,7 +587,7 @@ does not do anything with tree edges.
 
 {\ifthenelse{\boolean{publ}}{\footnotesize}{\small}
  \bibliographystyle{bmc_article}  % Style BST file
-  \bibliography{bmc_article} }     % Bibliography file (usually '*.bib' ) 
+  \bibliography{bibfile} }     % Bibliography file (usually '*.bib' ) 
 
 %%%%%%%%%%%
 
@@ -480,7 +608,39 @@ does not do anything with tree edges.
 %% Do not use \listoffigures as most will included as separate files
 
 \section*{Figures}
-  \subsection*{Figure 1 - TreeViewer with search}
+
+\subsection*{Figure 1 - The EvoIO Stack}
+This is the structure of the EvoIO stack developed by he EvoInfo working
+group of the National Evolutionary Synthesis Center.
+
+\begin{figure}[h]
+\centerline{\includegraphics[width=0.6\textwidth]{EvoioStack.pdf}}
+\caption{The EvoIO Stack}
+\label{stack}
+\end{figure}
+
+\subsection*{Figure 2 - The Principle View of OTUs and Characters}
+This figure summarizes the core concepts from phylogenetic analysis that
+are captured by the CDAO ontology.
+
+\begin{figure}[h]
+\centerline{\includegraphics[width=0.9\textwidth]{cdofig.pdf}}
+\caption{OTUs and Characters}
+\label{cdao1}
+\end{figure}
+
+\subsection*{Figure 3 - Snapshot of the Key concepts of CDAO}
+This figure provides a very small summary of the core concepts and relations
+described in CDAO.
+
+\begin{figure}[h]
+\centerline{\includegraphics[width=0.8\textwidth]{cdao2.pdf}}
+\caption{Core Concepts in CDAO}
+\label{cdao2}
+\end{figure}
+
+
+  \subsection*{Figure 2 - TreeViewer with search}
 
       This is the TreeViewer Application displaying the tree Tree3099 from Treebase and searching for all nodes and edges with \#Ilex\_
 
@@ -530,7 +690,6 @@ does not do anything with tree edges.
 
 \end{bmcformat}
 \end{document}
-
 
 
 
