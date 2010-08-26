@@ -384,12 +384,12 @@ transfer or reticulate evolution.
 \subsection*{PhlyoWS}
   \emph{PhyloWS (Phyloinformatics Web Services API)} is a standard for exposing 
   phylogenetic data as a web service. Web services are tools that can perform certain tasks via HTTP \cite{WebService}.
-  PhlyoWS specifically uses a RESTful style web service which uses a few well-known operations to relay data\cite{PhyloWS}\cite{WebService}.
+  PhlyoWS specifically uses a RESTful style web service which uses a few well-known operations to relay data\cite{PhyloWSwiki}\cite{WebService}.
   This works in a similar way as GET or POST for HTTP  \cite{WebService}.  All PhlyoWS URI's begin with {\tt /phylows/} as the 
   standard delimeter. Then based on the phylogenetic information being queried a datastructure will be given, such as taxon, tree, or study.
   This is followed by any specific identifiers needed for the query.  For example, \url{http://purl.org/phylo/treebase/phylows/tree/TB2:Tr3099?format=rdf}
   is a way to access information from TreeBase2 using PhyloWS.  When this url is accessed, it returns the tree with the Treebase ID of 'Tr3099' in an
-  rdf format \cite{treebasePhyloWS}. A specification for PhyloWS can be found at \cite{PhyloWS}.
+  rdf format \cite{treebasePhyloWS}. A specification for PhyloWS can be found at \cite{PhyloWSwiki}.
 %%%%%%%%%%%%%%%%
 %%Implementation %%
 %%
