@@ -401,8 +401,8 @@ transfer or reticulate evolution.
 \subsection*{PhlyoWS}
   \emph{PhyloWS (Phyloinformatics Web Services API)} is a standard for exposing 
   phylogenetic data as a web service. Web services are tools that can perform certain tasks via HTTP \cite{WebService}.
-  PhlyoWS specifically uses a RESTful style web service which uses a few well-known operations to relay data\cite{PhyloWSwiki}\cite{WebService}.
-  This works in a similar way as GET or POST for HTTP  \cite{WebService}.  All PhlyoWS URI's begin with {\tt /phylows/} as the 
+  PhlyoWS specifically uses a RESTful style web service which uses a few well-known operations to relay data\cite{PhyloWSwiki}\cite{Fielding02principleddesign}.
+  This works in a similar way as GET or POST for HTTP  \cite{Fielding02principleddesign}.  All PhlyoWS URI's begin with {\tt /phylows/} as the 
   standard delimeter. Then based on the phylogenetic information being queried a datastructure will be given, such as taxon, tree, or study.
   This is followed by any specific identifiers needed for the query.  For example, \url{http://purl.org/phylo/treebase/phylows/tree/TB2:Tr3099?format=rdf}
   is a way to access information from TreeBase2 using PhyloWS.  When this url is accessed, it returns the tree with the Treebase ID of 'Tr3099' in an
@@ -749,8 +749,15 @@ This is the TreeViewer Application displaying the tree Tree3099 from TreeBase an
 
 \newpage
 
- \subsection*{Figure 5 - Matrix Viewer}
- 
+ \subsection*{Figure 6 - Matrix Viewer}
+
+\begin{figure}[h]
+\centerline{\includegraphics[width=0.8\textwidth]{matrix-view-m1004.pdf}}
+\caption{MatrixViewer Application}
+\label{matrix}
+\end{figure} 
+
+
 %  \subsection*{Figure 2 - Sample figure title}
 %      Figure legend text.
 
