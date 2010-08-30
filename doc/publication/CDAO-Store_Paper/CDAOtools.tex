@@ -102,10 +102,10 @@
  
 
 %Review style settings
-\newenvironment{bmcformat}{\begin{raggedright}\baselineskip20pt\sloppy\setboolean{publ}{false}}{\end{raggedright}\baselineskip20pt\sloppy}
+%\newenvironment{bmcformat}{\begin{raggedright}\baselineskip20pt\sloppy\setboolean{publ}{false}}{\end{raggedright}\baselineskip20pt\sloppy}
 
 %Publication style settings
-%\newenvironment{bmcformat}{\fussy\setboolean{publ}{true}}{\fussy}
+\newenvironment{bmcformat}{\fussy\setboolean{publ}{true}}{\fussy}
 
 
 
@@ -412,33 +412,84 @@ transfer or reticulate evolution.
 %%
 \section*{Implementation}
 
-CDAO-store builds on the EvoIO technology stack to provide a framework for supplying semantic services
-for phylogenetic data services. The platform is open-source and is available on source-forge, at
-\url{http://sourceforge.net/projects/cdaotools/}. It's divided into three main parts. A data importer/file translator,
-a database and web interface, and a gui visualization tool. 
+CDAO-store builds on the EvoIO technology stack to provide a 
+semantic-based repository of phylogenetic data, accessible through
+semantic web services and a domain-specific query language.
+The CDAO-strore platform is open-source and is available as
+a SourceForge project, at \url{sourceforge.net/projects/cdaotools}. 
 
-The file importer/translator is implemented in C++ and Python. In addition to its own set of parsers, 
-the translator uses the NCL\footnote{\url{http://sourceforge.net/projects/ncl/}} library to read certain file formats.
-After reading, it maps data from these files on to an object model that mirrors CDAO classes, and then either converts
-to some specified format or to an RDF/XML serialization of the data. The import portion of this part of the system is
-written in Python and uses the RDFlib\footnote{\url{http://www.rdflib.net/}} module to store the RDF serializations 
-produced by the translator into a database making it available to query on the web or by using the visual tools.
+The implementation of CDAO-store is organized in three interconnected
+modules, as illustrated in Figure \ref{struct}:
+a \emph{data importer module}, a \emph{repository module}, and
+an  \emph{exporter module}. 
 
-The web and database portion of the application stores, and provides access to the data for the visual tools. This
-portion of the application is primarily implemented as a set of scripts in a variety of languages. The web interface
-is divided into two principal parts an HTML user interface, and a PhyloWS data provider. The HTML interface allows 
-for online querying/exploration of datasets, while the PhyloWS interface supplies access to datasets for our visual
-tools or other third party programs. The database portion of the application is implemented as an RDFlib store running
-on a MySQL database. 
+\subsection*{Data Importer Module}
+The purpose of the \emph{data importer} module is to import phylogenies and
+their associated data into the repository, automatically extracting their representations
+in terms of instances of the CDAO ontology.
+The \emph{data importer} module can process phylogenetic data encoded in several 
+commonly 
+used data formats. The importing process is used to extract a semantic-based encoding
+of the input data, as instances of the concepts and properties of CDAO. The current 
+implementation provides sub-modules that can extract CDAO instances from files 
+encoded in NEXUS \cite{nexus}, {\tt nexml} \cite{nexml}, PHYLIP \cite{phylip}, and
+MEGA \cite{mega}.
+The various parsing sub-modules have been developed either from scratch, using
+combinations of C++ and XSLT style sheets, or using pre-built libraries, such as
+the NEXUS Class Library (NCL).\footnote{\url{sourceforge.net/projects/ncl}}
+The data importer module is also designed to enable the processing of the 
+content of the TreeBase\footnote{\url{www.treebase.org}} repository---a popular repository of user-submitted phylogenies
+and associated generating data---importing the corresponding CDAO instances
+into CDAO-store.
+After reading each input file, 
+the data importer module maps data from these files to an object model that mirrors 
+CDAO classes, producing RDF/XML triples that can be deposited in the CDAO-store
+repository (i.e., passed to the repository module). The data importer module is also capable
+of mapping the object model back into any of the acceptable input data formats; this enables
+the use of the CDAO-store system for conversion among data formats.
 
-The visual tools are implemented as a Java JNLP application called CDAO-Explorer. It uses a variety of frameworks
-to support its operation including Pellet\footnote{\url{http://pellet.owldl.com/}} and
-  Prefuse\footnote{\url{http://prefuse.org/}}. 
+\subsection*{Repository Module}
+The repository module provides two core functionalities: \emph{storage} and \emph{querying}. 
+The repository module maintains a triple store, used to maintain all the CDAO instances created, either
+through submitted user files or through processing of TreeBase content. The triple store is implemented in 
+Python and uses the RDFlib\footnote{\url{www.rdflib.net}} module to store the RDF serializations of
+CDAO instances in a relational database (implemented using
+a MySQL database). The repository modules supports the execution of queries
+against the triple store. Two querying mechanisms are supported by the repository module:
+\begin{list}{$\bullet$}{\topsep=1pt \parsep=0pt \itemsep=1pt}
+\item The RDFlib has been linked to a SPARQL \cite{sparql} engine and an 
+	OWL reasoner, Pellet \footnote{\url{http://pellet.owldl.com/}}, enabling the execution of
+	standard SPARQL queries to access the data in the triple store; 
+\item Nakhleh et al. \cite{queries} provide a characterization of a relevant set of domain specific
+	queries that are desirable for any repository of phylogenetic structures. The repository module
+	supports all the types of queries identified in \cite{queries}. While some of the query types 
+	can be directly mapped to SPARQL queries, others are beyond the expressive power of the
+	standard RDF query languages. In order to support the latter, the repository module has the 
+	capability of mapping CDAO tree and network structures, stored in the triple store, to corresponding
+	representations of trees and networks in Prolog \cite{prolog}, a popular programming language for 
+	knowledge representation and reasoning. The remaining types of queries are implemented in 
+	Prolog.  
+\end{list}
 
-CDAO-Explorer provides a tree and matrix search windows which allow one to search for and load particular datasets,
-and visualizers for those data sets. It also allows one to make annotations about a dataset, or a general project space,
+\subsection*{Exporter Module}
+The goal of the exporter module is to provide interactions with the user. The module provides three main
+interaction mechanisms: a \emph{web portal}, a \emph{web service interface}, and a set of
+\emph{visualization tools}.
+
+The web portal offers a HTML interface to interact with the repository. The interface allows the on-line
+submission of queries,  the ability to browse the content of the triple store, and forms to submit
+new data sets to the triple store. The web portal allows also  one to make annotations 
+about a dataset, or a general project space,
 a set of data sets of interest. These annotations can be from CDAO, Dublin-Core, or from a user-supplied source of
-annotation types.
+annotation types (i.e., another ontology).
+
+The web service interface is an implementation of the PhyloWS protocol; this is realized by a collection of
+scripts, capable of generating the necessary SPARQL queries to be submitted to the repository module.
+
+The visual interface, called CDAO-Explorer, provides two graphical visualization tools; one tool is used to
+provide a graphical representation of phylogenetic trees and networks, while the second one provides graphical
+representations of character data matrices. The tools have been implemented using a combination of Java
+and the Prefuse visualization toolkit.\footnote{\url{prefuse.org}}
 
 
 
@@ -468,6 +519,10 @@ limit and offset parameters to paginate results. The size query takes a
 direction (greater, less, or equal),  a criteria (node, internal, or leaf) and
 a size (some numeral).
 
+[ENRICO: in the previous two paragraphs we need more details; in particular I 
+would like a precise list of the different types of queries we can handle.]
+  
+  
   
   \subsection*{CDAO-Explorer}
   CDAO-Explorer has achieved a basic level of functionality. It provides search
@@ -481,28 +536,37 @@ CDAO-triplestore. It also allows users to export pictures of particular
 visualizations. 
 
 \subsubsection*{Tree Viewer}
-Tree Viewer is the graphical application used to display trees.  It is built on
-top of the Prefuse visualization framework. Data from the CDAO-triplestore is
-converted into the Graphml format \footnote{http://graphml.graphdrawing.org/}
-and then run through the visualization application.  \\ Tree Viewer has a few
+Tree Viewer is the graphical application used to display trees.  It is built using the
+ Prefuse visualization framework. Data from the CDAO triple store (provided by
+ the repository module) is
+converted into the GraphML format \cite{graphml}
+and then supplied to the  visualization application.  Figure \ref{treeview} shows
+a snapshot of the tree visualization.
+
+The Tree Viewer has several 
 key features.  The first is that there is two different layouts for the tree to
-be displayed.  By default, it uses a Force Layout which allows the nodes of the
-tree to 'bounce' around as if pulled by strings till it reaches an equilibrium.
-The second is called a Node Layout which resembles a more standard parent/child
-structured tree going from left to right.  \\ Another ability that TreeViewer
-has is to search across the tree using the node and edge label names,
+be displayed.  By default, it uses the Tree Viewer uses a
+\emph{force layout}, which allows the nodes of the
+tree to ``bounce'' around as if pulled by strings until an equilibrium is reached.
+The second  layout is called \emph{node layout}, which resembles a more standard parent/child
+structured tree going from left to right.  
+
+Another feature provided by the Tree Viewer
+is the ability  to search across the tree using the node and edge label names,
 highlighting all that currently apply.  For instance, a tree may have many
-nodes that have as part of its name '\#Ilex\_'.  When this search is performed,
+nodes that have as part of its name \verb|#Ilex_|.  When this search is performed,
 all nodes with the label containing that will be highlighted.  Labels for nodes
-are generally the taxa name for that TU or if it is an unknown internal node
-will have the convention of being named '\#nodeX' where X is some number.  Edge
+are generally the taxa name for the corresponding TU or if it is an unknown internal node
+will have the convention of being named \verb|#nodeX| where \verb|X| is some number.  Edge
 labels are similar in that they are the labels of the two nodes combined as
-'source\_destination'.  \\ 
+'source\_destination'.  
+
 It is also possible to view more specific details on
 a specific node or edge.  Currently, the only detailed information available is
-the label.  \\
- Lastly, there is the option to save the tree visualization as a
-jpg or png file.  
+the label.  
+
+ Finally, the Tree Viewer provides  the option to save the tree visualization as a 
+ jpeg or png file.  
 
 \subsubsection*{Matrix Viewer} We have developed  a custom
 framework for visualizing matrices. It assigns color codes to character states
@@ -510,6 +574,10 @@ allowing one to graphically appraise large matrices to quickly see patterns in
 the source data. It allows users to scale matrices, select regions of a matrix
 to see in greater detail, and attach annotations to particular cells of a
 matrix. 
+
+Figure \ref{matrix} shows a snapshot of the Matrix Viewer.
+
+[ENRICO: add figure]
   
 %Things to compare functionality with: Nexplorer and PhyloWidget  (about the same functionality with trees, but they don't display matrices and viewing edges as data)
 \subsection*{Related Work}
@@ -557,10 +625,11 @@ does not do anything with tree edges.
   \textbf{Project name:} CDAO Tools\\
   \textbf{Project home page:} \url{http://www.cs.nmsu.edu/~cdaostore/} \\ 
   \textbf{Operating system(s):} Linux, Mac, Unix \\
-  \textbf{Programming language:} Bash, C++, Java, Perl, PHP, Python \\ 
+  \textbf{Programming language:} Bash, C++, Java, Perl, PHP, Python, Prolog \\ 
   \textbf{Other requirements:} \\ 
   \textbf{License:} GPL \\ 
   \textbf{Any restriction to use by non-academics:} \\ 
+
 
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -631,6 +700,8 @@ group of the National Evolutionary Synthesis Center.
 \label{stack}
 \end{figure}
 
+\newpage
+
 \subsection*{Figure 2 - The Principle View of OTUs and Characters}
 This figure summarizes the core concepts from phylogenetic analysis that
 are captured by the CDAO ontology.
@@ -640,6 +711,8 @@ are captured by the CDAO ontology.
 \caption{OTUs and Characters}
 \label{cdao1}
 \end{figure}
+
+\newpage
 
 \subsection*{Figure 3 - Snapshot of the Key concepts of CDAO}
 This figure provides a very small summary of the core concepts and relations
@@ -651,11 +724,33 @@ described in CDAO.
 \label{cdao2}
 \end{figure}
 
+\newpage
 
-  \subsection*{Figure 2 - TreeViewer with search}
+\subsection*{Figure 4 - Structure of CDAO-store}
+This figure shows the overall structure of the implementation of the
+CDAO-store.
 
-      This is the TreeViewer Application displaying the tree Tree3099 from Treebase and searching for all nodes and edges with \#Ilex\_
+\begin{figure}[h]
+\centerline{\includegraphics[width=0.9\textwidth]{struct.pdf}}
+\caption{Overall Organization of CDAO-store}
+\label{struct}
+\end{figure}
 
+\newpage
+
+  \subsection*{Figure 5 - Tree Viewer with search}
+This is the TreeViewer Application displaying the tree Tree3099 from TreeBase and searching for all nodes and edges with \verb|#Ilex_|.
+      
+\begin{figure}[h]
+\centerline{\includegraphics[width=0.8\textwidth]{TreeViewerSearch.pdf}}
+\caption{TreeViewer Application with the force layout and the search feature.}
+\label{treeview}
+\end{figure}
+
+\newpage
+
+ \subsection*{Figure 5 - Matrix Viewer}
+ 
 %  \subsection*{Figure 2 - Sample figure title}
 %      Figure legend text.
 
@@ -694,11 +789,6 @@ described in CDAO.
 %% Additional Files              %%
 %%                               %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section*{Additional Files}
-  \subsection*{Additional file 1 --- TreeViewerSearch.jpg}
-	This is Figure 1
-
 
 \end{bmcformat}
 \end{document}
