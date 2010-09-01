@@ -276,9 +276,19 @@ genomics \cite{Ell08}, metagenomics \cite{WE08}, and community ecology \cite{WAM
 
 \begin{itemize}
 \item Phylogenetic Repositories %(e.g., look at the motivations of Treebase)
-  Repositories provide a well-known certeralized location for sharing results
+  Repositories provide a well-known centralized location for sharing results
   with the research community. As mentioned in the TreeBASE's overview statement
-  this promotes the \textit{reuse reassessment, and recombination}\cite{treebase.org} of existing results.
+  this promotes the \textit{reuse reassessment, and recombination}\cite{treebase} of existing results.
+  Also when data are collected into a repository, one can query across large sets of data to determine
+  general features about phylogenies or merge phylogenies into a super-tree like the Tree of Life.\cite{queries,tol}
+  For example, being able to gather statistics about the structure of published trees, software developers,
+  can write better test-suites for their packages. A variety of specialities from population genetics to
+  historical linguistics will benefit from such a comprehensive resource\cite{queries}.
+  A resource's data-model is critical to determining its ability to serve these functions, because the model
+  restricts the kinds of queries one can perform on the resource. Many prior resources use Newick 
+  strings to represent trees limiting the ability for users to query based on structures contained in their
+  trees.\cite{queries}  
+
 
 \item Data Interoperation
    Data Reuse however is not practically possible without data interoperation. Data tied to
@@ -286,7 +296,7 @@ genomics \cite{Ell08}, metagenomics \cite{WE08}, and community ecology \cite{WAM
    value to users of a repository. Ideally repositories should supply their clients with
    results in a maximally compatible format that does not limit the client to the use of
    particular software. This issue of particular interest to the Evolutionary Biology
-   community. Several compeating formats exist for representing phylogenies and morphological
+   community. Several competing formats exist for representing phylogenies and morphological
    character data. Additionally there are no commonly accepted methods for applying annotations
    to branches in a phylogeny, or describing evolutionary models. Also other meta-data such
    as provenance is not handled.
@@ -312,13 +322,13 @@ ontology for Character State and Phylogenetic data, CDAO, so that data may be su
 any particular format because the repository operates on semantics rather than relying on
 any particular file syntax because while data formats capture the syntax of data 
 (e.g., for data transmission), explicit  semantics is necessary (e.g., \cite{cdao-evol}) for interpretation, 
-repurposing and application of phylogenetic data. In recent years, knowledge representation in 
+re-purposing and application of phylogenetic data. In recent years, knowledge representation in 
 the biomedical domains has predominantly built on the use of domain
 specific ontologies \cite{SK02,Skl01}.
 
 \item domain-specific querying
 
-Domain specific querying is also an important feature for a phylogenetic repository.\cite{bibe.pdf}
+Domain specific querying is also an important feature for a phylogenetic repository.\cite{queries}
 This level of query support helps investigators easily pose questions to the resource that might be
 difficult or impossible to be expressed in a general purpose query language. While a certain amount, of
 query complexity can be hidden behind the resource's user-interface.
