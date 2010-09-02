@@ -470,25 +470,90 @@ the use of the CDAO-store system for conversion among data formats.
 \subsection*{Repository Module}
 The repository module provides two core functionalities: \emph{storage} and \emph{querying}. 
 The repository module maintains a triple store, used to maintain all the CDAO instances created, either
-through submitted user files or through processing of TreeBase content. The triple store is implemented in 
-Python and uses the RDFlib\footnote{\url{www.rdflib.net}} module to store the RDF serializations of
+through submitted user files or through processing of TreeBASE content. The triple store is implemented in 
+Python and uses the RDFlib\cite{rdflib} module to store the RDF serializations of
 CDAO instances in a relational database (implemented using
 a MySQL database). The repository modules supports the execution of queries
-against the triple store. Two querying mechanisms are supported by the repository module:
+against the triple store.
+
+       This set of queries is primarily
+      drawn from the descriptions given by Nakhleh et al. \cite{queries}, who provide a characterization of a relevant set of domain specific
+	queries that are desirable for any repository of phylogenetic structures. 
+	The repository module
+	supports all the, fully-specified, types of queries identified in \cite{queries}.
+        This is a diverse set of queries ranging from those that can be processed using
+	simple syntactic matching requiring little additional reasoning to complex queries
+        of tree structures. To address this variation, the query system is divided into two
+	primary modules.
+
 \begin{list}{$\bullet$}{\topsep=1pt \parsep=0pt \itemsep=1pt}
-\item The RDFlib has been linked to a SPARQL \cite{sparql} engine and an 
-	OWL reasoner, Pellet \footnote{\url{http://pellet.owldl.com/}}, enabling the execution of
-	standard SPARQL queries to access the data in the triple store; 
-\item Nakhleh et al. \cite{queries} provide a characterization of a relevant set of domain specific
-	queries that are desirable for any repository of phylogenetic structures. The repository module
-	supports all the types of queries identified in \cite{queries}. While some of the query types 
-	can be directly mapped to SPARQL queries, others are beyond the expressive power of the
-	standard RDF query languages. In order to support the latter, the repository module has the 
-	capability of mapping CDAO tree and network structures, stored in the triple store, to corresponding
-	representations of trees and networks in Prolog \cite{prolog}, a popular programming language for 
-	knowledge representation and reasoning. The remaining types of queries are implemented in 
-	Prolog.  
-\end{list}
+\item A scripting library has been built on top of the RDFlib library allowing the system to process
+      most queries using standard SPARQL queries. This portion of the query engine is primarily 
+      used for queries that require simple matching or basic reasoning about types. 
+\item More advanced queries are accomplished using Prolog. It is a popular programming language for
+      knowledge representation and reasoning, which provides a more natural milieu  for expressing
+      some complex relations, especially those that are transitive, or require matching or reasoning about
+      tree structure.
+     \end{list}
+
+\begin{tabular}{|l|c|}
+\hline
+  Query                               &  Engine \\
+\hline
+  Minimum Spanning Clade              & \\
+    of a Set of Taxa \cite{queries}                 & Prolog \\
+  \hline
+  Given a set of Taxa                 & \\
+    find all the relationships        &\\
+    between them                      & \\
+    in all  phylogenies\cite{queries}               &  Not Supported\\
+   \hline
+  Given a set of Taxa                 & \\
+     find all phylogenies             & \\
+     containing that set\cite{queries}              & SPARQL \\
+  \hline
+  Given a phylogenetic method         & \\
+     find all phylogenies             &   \\
+	constructed using it\cite{queries}          & SPARQL \\
+  \hline
+  Given an integer                    & \\
+     find all phylogenies             & \\
+	 that contain                 & \\ 
+     that many taxa\cite{queries}     & Prolog \\
+  \hline
+  Find all phylogenies                & \\
+   constructed by                     & \\
+   an author or tool\cite{queries}                  & SPARQL \\
+  \hline
+  Given a characteristic,             & \\
+    return phylogenies                & \\
+    with that characteristic \cite{queries}         & Prolog  \\
+  \hline
+  Given a phylogeny                   & \\
+    and a measure                     & \\
+    return all phylogenies            & \\
+    some distance from it \cite{queries}            & Prolog \\
+  \hline
+  Given a model of evolution          &  \\
+    return phylogenies                &\\
+      reconstructed                   & \\ 
+       using that model\cite{queries}               & Not Supported\\
+  \hline
+  Given some measures                 & \\
+ return statistics                    & \\
+  about the database\cite{queries}                  & \\
+                             for them & SPARQL \\
+\hline
+\end{tabular}
+
+For the queries that are not supported, the primary cause is a lack of full specification
+of the query, or the data is not currently available. For example, the set of relationships
+one might be interested in having returned was not fully specified in the original article. 
+Though once some specific characteristics of phylogenies are identified it will be possible
+to incorporate them into the system with minimal effort. Also the source data did not
+contain information about which models where used to construct which phylogenies, nor does CDAO
+currently contain a model description framework, so it is not currently possible to perform
+this query on the repository.
 
 \subsection*{Exporter Module}
 The goal of the exporter module is to provide interactions with the user. The module provides three main
