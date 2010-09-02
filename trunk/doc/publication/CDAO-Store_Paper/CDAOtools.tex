@@ -406,7 +406,16 @@ transfer or reticulate evolution.
   This guarantee is also important to using it as a medium of exchange since its semantics can be agreed upon by
   both the provider and recipient of a dataset.
   
-  [ENRICO: The description of NeXML is too vague. Characterize the main elements in the format]
+  A basic overview of the nexml structure:
+  \begin{itemize}
+    \item {\tt <nexml>}  This is the root element for {\tt nexml}\cite{nexmlFormat}.  Meaning everything is nested inside here.
+    \item {\tt <otus>} This is the similar to the TAXA block in {\tt NEXUS} files.  Nested inside are ids and (optionally) labels to all the relevant TUs \cite{nexmlFormat}.
+   \item {\tt <characters>} This is very similar to the CHARACTERS block in {\tt NEXUS} files \cite{nexmlFormat}.  As such, it sets up the character state matrix.  It can do this in a few different formats such as molecular sequences, categorical data, or continuous data.  A difference from {\tt NEXUS} though is that more information per character can be specified here.  Depending on the format, the matrices can be formed by either {\tt <matrix> <row>} or {\tt <states> <state>} elements \cite{nexmlFormat}.
+   \item {\tt <tree>} This element sets up the tree in a manner very similar to {\tt GraphML}\cite{graphml}.  Where the tree is described as a list of {\tt <node>} and {\tt <edge>} elements \cite{nexmlFormat}.  Where all the elements in the tree are listed as individual nodes with the connections of the trees being explicitiy stated as edges between nodes.  Edges work in a source to target manner \cite{nexmlFormat}.
+   \item {\tt <dict>} This allows one to set up arbritrary key/value pairs that may be useful to the data file, but not necessarily defined elsewhere in the {\tt nexml} format \cite{nexmlFormat}.
+   \end{itemize}
+
+%%  [ENRICO: The description of NeXML is too vague. Characterize the main elements in the format]
 
 \subsection*{PhlyoWS}
   \emph{PhyloWS (Phyloinformatics Web Services API)} is a standard for exposing 
@@ -751,6 +760,7 @@ This is the TreeViewer Application displaying the tree Tree3099 from TreeBase an
       
 \begin{figure}[h]
 \centerline{\includegraphics[width=0.8\textwidth]{TreeViewerSearch.pdf}}
+\centerline{\includegraphics[width=0.8\textwidth]{TreeViewer_Search.pdf}}
 \caption{TreeViewer Application with the force layout and the search feature.}
 \label{treeview}
 \end{figure}
