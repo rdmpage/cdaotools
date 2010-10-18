@@ -11,8 +11,8 @@ echo -e "Content-type: text/xml; charset utf-8\n\n"
 
 TREE_NAME=$(echo $REQUEST_URI | grep -oE "msc/[a-zA-Z0-9]*/" | sed 's/msc\///' | sed 's/\/$//g' )
 FILE_NAME=$(grep "$TREE_NAME" tree_to_file.dat | cut -d' ' --fields=1 )
-XMLNS="http://www.cs.nmsu.edu/~epontell/$FILE_NAME#"
-EXMLNS="http:\/\/www.cs.nmsu.edu\/~epontell\/$FILE_NAME#"
+XMLNS="http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/tree/$TREE_NAME#"
+EXMLNS="http:\/\/www.cs.nmsu.edu\/~cdaostore\/cgi-bin\/phylows\/tree\/TREE_NAME#"
 
 NODE_SET=$(echo $REQUEST_URI | grep -oE "$TREE_NAME/.*$" | sed "s/$TREE_NAME//" | sed "s/\// $EXMLNS/g")
 CSV_NODE_SET=$( echo $NODE_SET | sed "s/ /','/g" | sed "s/,$//" )

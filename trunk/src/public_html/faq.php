@@ -47,7 +47,11 @@
   <code>
       curl http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/msc/TreeBASE_Tree_ID/TU1/TU2/.../TU_N
   </code><br/>
-
+  A list of trees by some size criterion, such as the number of nodes, leaves, or internal nodee, and
+  the direction of the relation (ie trees larger than or smaller than the specified amount).
+  <code>
+      curl http://www.cs.nmsu.edu/~cdaostrore/cgi-bin/phylows/size/node/greater/50
+  </code><br/>
   We also support searching for available tree and matrix id&quot;s as follows.
   <code>
     curl http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/listing/trees[?key=SUB_STRING]

@@ -26,8 +26,8 @@ FORMAT=$(echo "$QUERY_STRING" | grep -oE "format=[a-zA-Z][a-zA-Z]*" | cut -d= --
 
 if [[ "$FORMAT" == "prolog" ]]; then
    echo -e -n "Content-type: text/plain\n\n"
-   echo -e "/* TREE: $TREE_NAME FORMAT: $FORMAT  */"
-   do_query.py "$TRIPLESTORE_CONFIG_STRING" "$XMLNS" "$NODE_QUERY" "node( '$TREE_NAME', '%s'). /*%s*/" "$EDGE_QUERY" "edge( '$TREE_NAME','directional', '%s', '%s', '%s')."
+   echo -e "% TREE: $TREE_NAME FORMAT: $FORMAT  "
+   do_query.py "$TRIPLESTORE_CONFIG_STRING" "$XMLNS" "$NODE_QUERY" "node( '$TREE_NAME', '%s'). /*%s*/" "$EDGE_QUERY" "edge( '$TREE_NAME','directional', '%s', '%s', '%s')." | sed 's/\/\*.*\*\///g'
    cat ancestor_of.pl
 else
    #echo -e -n "Content-type: text/xml\n\n"

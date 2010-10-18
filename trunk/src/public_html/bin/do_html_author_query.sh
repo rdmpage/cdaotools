@@ -10,7 +10,7 @@
 #----->$3 xml base.
 #----->$4 directed/undirected 
 #Note do_query.py expects DBCONFIG_STRING QUERY_STRING FORMAT_STRING XML_BASE_URI
-#export TREE_DAT_FILE=~bchisham/tree_to_file.dat
+#export TREE_DAT_FILE=$(whoami)/tree_to_file.dat
 source ~/.bashrc
 
 export cdao="http://www.evolutionaryontology.org/cdao.owl"

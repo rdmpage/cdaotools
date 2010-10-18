@@ -19,7 +19,7 @@ rm -f "$TMP_RULES" "$PROLOG_OUT" #$TMP_GOAL
 cat << EOM
    <div resource="$XMLNS$TREE_NAME">
       <div resource="">
-          In <a href="http://www.cs.nmsu.edu/~$(whoami)/cgi-bin/tree/query?format=html&amp;tree=$TREE_NAME">$TREE_NAME</a> the minimum spannning clade of<br/> $NODE_SET
+           In <a href="http://www.cs.nmsu.edu/~$(whoami)/cgi-bin/tree/query?format=html&amp;tree=$TREE_NAME">$TREE_NAME</a> the minimum spannning clade of<br/> $NODE_SET
           <div rel="">
              <div resource="#node_set" style="position: relative; top: 0px; left: 30px;">
 EOM
