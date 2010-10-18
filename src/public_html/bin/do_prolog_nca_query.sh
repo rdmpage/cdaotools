@@ -9,9 +9,9 @@
 #----->$3 xml base.
 #----->$4 Type
 #----->$5 NodeSet
-export CDAO_STORE_URI="http://www.cs.nmsu.edu/~bchisham/cdao-store/"
-export TREE_DAT_FILE=~bchisham/bin/tree_to_file.dat
-export ANCESTOR_OF_FILE=~bchisham/public_html/cgi-bin/nca/ancestor_of.pl
+export CDAO_STORE_URI="http://www.cs.nmsu.edu/~$(whoami)/"
+export TREE_DAT_FILE=~$(whoami)/bin/tree_to_file.dat
+export ANCESTOR_OF_FILE=~$(whoami)/public_html/cgi-bin/nca/ancestor_of.pl
 export cdao="http://www.evolutionaryontology.org/cdao.owl"
 export CDAONS="$cdao#"
 export GRAPH_CONFIG="$1"

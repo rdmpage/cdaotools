@@ -2,7 +2,7 @@
 #Deployment management for web binaries.
 #April 14, 2010
 
-REMOTE_HOST=athena.cs.nmsu.edu
+REMOTE_HOST=daedalus.cs.nmsu.edu
 REMOTE_BIN_DIR=~/bin
 REMOTE_RC_DIR=~/
 

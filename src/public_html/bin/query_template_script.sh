@@ -62,7 +62,7 @@ function printform {
 
 cat << EOM
   <p>
-    <a href="../../cdao-store/index.html"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao Store Logo" style="border: 0px;" /></a>
+    <a href="../../index.php"><img src="../../cdao-triplestore-logo.jpg" alt="Cdao Store Logo" style="border: 0px;" /></a>
   </p>
 
  <form id="TreeForm" method="get" action="$REQUEST_URI" enctype="application/x-www-form-urlencoded">
@@ -134,7 +134,7 @@ if [[ "$TREE" != "" ]]; then
   responseheader;
  # echo $NODE_SET
 #  echo "<p>running query:<br/>$SPARQL_QUERY</p>"
-  ssh daedalus.cs.nmsu.edu "cd public_html/cgi-bin && do_'$RESPONSE_TYPE'_'$QUERY_TYPE'_query.sh \"$TRIPLESTORE_CONFIG_STRING\" \"$TREE\" \"$XML_BASE/$TFILE#\" \"$TREE_TYPE\" \"$NODE_SET\""
+   do_'$RESPONSE_TYPE'_'$QUERY_TYPE'_query.sh "$TRIPLESTORE_CONFIG_STRING" "$TREE" "$XML_BASE/$TFILE#" "$TREE_TYPE" "$NODE_SET"
   responsefooter
 else
 

@@ -15,8 +15,8 @@ TREE_NAME=$(set_tree_name "nca")
 #NODE_SET=$( set_node_set "$TREE_NAME" )
 #TREE_NAME=$(echo $REQUEST_URI | grep -oE "nca/[a-zA-Z0-9]*/" | sed 's/nca\///' | sed 's/\/$//g' )
 FILE_NAME=$(grep "$TREE_NAME" tree_to_file.dat | cut -d' ' --fields=1 )
-XMLNS="http://www.cs.nmsu.edu/~epontell/$FILE_NAME#"
-EXMLNS="http:\/\/www.cs.nmsu.edu\/~epontell\/$FILE_NAME#"
+XMLNS="http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/tree/"
+EXMLNS="http:\/\/www.cs.nmsu.edu\/~cdaostore\/cgi-bin\/phylows\/tree\/$TREE_NAME#"
 
 NODE_SET=$(echo $REQUEST_URI | grep -oE "$TREE_NAME/.*$" | sed "s/$TREE_NAME//" | sed "s/\// $EXMLNS/g")
 CSV_NODE_SET=$( echo $NODE_SET | sed "s/ /','/g" | sed "s/,$//" )
@@ -33,12 +33,12 @@ NODE_COUNT=$(echo "$NODE_SET" | wc -w )
 NODE_QUERY=$(do_node_query_construct.sh "$XMLNS$TREE_NAME" )
 EDGE_QUERY=$(do_edge_query_construct.sh "$XMLNS$TREE_NAME" )
 
-TMP_PROLOG_IN=`mktemp | sed "s/\/tmp//g"`
-TMP_PROLOG_BIN=`mktemp | sed "s/\/tmp//g"`
+TMP_PROLOG_IN=`mktemp | sed 's/\///'`
+TMP_PROLOG_BIN=`mktemp | sed 's/\///' `
 #TMP_PROLOG_OUT=`mktemp`
 
-
-curl "http://$SERVER_NAME$(echo $REQUEST_URI | sed 's/nca\/.*/tree/')/$TREE_NAME?format=prolog" >> "$TMP_PROLOG_IN"
+curl "$XMLNS/$TREE_NAME?format=prolog"
+#curl "http://$SERVER_NAME$(echo $REQUEST_URI | sed 's/nca\/.*/tree/')/$TREE_NAME?format=prolog" >> "$TMP_PROLOG_IN"
 
 NCA_PRED_HEAD="nearest_common_ancestor_of( Tree, Ancestor "
 DIS_PRED_HEAD="distant_common_ancestor_of( Tree, Ancestor "
@@ -96,6 +96,8 @@ cat << EOM
        </cdao:SetOfNodes>
      </cdao:ncd_node_of>
   </cdao:Node>
+  <!-- PROLOG_IN: $TMP_PROLOG_IN 
+       PROLOG_BIN: $TMP_PROLOG_BIN -->
 </rdf:RDF>
 EOM
 

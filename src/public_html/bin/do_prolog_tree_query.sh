@@ -9,7 +9,7 @@
 #Note do_query.py expects DBCONFIG_STRING QUERY_STRING FORMAT_STRING XML_BASE_URI
 
 export cdao="http://www.evolutionaryontology.org/cdao.owl"
-export CDAO_STORE_URI="http://www.cs.nmsu.edu/~bchisham/cdao-store"
+export CDAO_STORE_URI="http://www.cs.nmsu.edu/$(whoami)/"
 export CDAONS="$cdao#"
 export GRAPH_CONFIG="$1"
 export TREE_NAME="$2"

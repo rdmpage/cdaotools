@@ -23,7 +23,7 @@ function print_results {
    <!-- $NODE_PATH -->
    <div resource="$XMLNS">
       <div resource="$NCA_NODE">
-          In <a href="http://www.cs.nmsu.edu/~bchisham/cgi-bin/tree/query?format=html&amp;tree=$TREE_NAME">$TREE_NAME</a>, $NCA_NODE is the nearest common ancestor of....
+          In <a href="http://www.cs.nmsu.edu/$(whoami)/cgi-bin/tree/query?format=html&amp;tree=$TREE_NAME">$TREE_NAME</a>, $NCA_NODE is the nearest common ancestor of....
           <div rel="cdao:nca_node_of">
              <div resource="#node_set" style="position: relative; top: 0px; left: 30px;">
              $(

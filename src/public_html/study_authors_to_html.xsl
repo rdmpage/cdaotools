@@ -14,7 +14,7 @@
                     
                      <xsl:when test="@name = 'lname'">
                        <a>
-                        <xsl:attribute name="href">http://www.cs.nmsu.edu/~bchisham/cgi-bin/author/html?last=<xsl:value-of select="sparql:literal"/>
+                        <xsl:attribute name="href">http://www.cs.nmsu.edu/~cdaostore/cgi-bin/author/html?last=<xsl:value-of select="sparql:literal"/>
                         </xsl:attribute>
                         <xsl:value-of select="sparql:literal"/>
                         </a><br/>
