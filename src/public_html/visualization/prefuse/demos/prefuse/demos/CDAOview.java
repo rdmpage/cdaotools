@@ -525,7 +525,10 @@ public class CDAOview extends JPanel {
         JMenu dataMenu = new JMenu("Layout");
         dataMenu.setMnemonic(KeyEvent.VK_L);
         dataMenu.add(new ForceLayoutAction(view));
-        dataMenu.add(new NodeLinkTreeLayoutAction(view));
+        dataMenu.add(new NodeLinkTreeLayoutAction(view, 0));
+        dataMenu.add(new NodeLinkTreeLayoutAction(view, 1));
+        dataMenu.add(new NodeLinkTreeLayoutAction(view, 2));
+        dataMenu.add(new NodeLinkTreeLayoutAction(view, 3));
         
         JMenu effectMenu = new JMenu("Effects");
         effectMenu.setMnemonic(KeyEvent.VK_E);
@@ -626,6 +629,7 @@ public class CDAOview extends JPanel {
     	public FocusItemDetail(CDAOview view){
     		m_view = view;
     		this.putValue(AbstractAction.NAME, "Focus Objects Properties");
+    		this.putValue(MNEMONIC_KEY, KeyEvent.VK_D);
     		prop = new JFrame();
     	}
     	public void actionPerformed(ActionEvent e)
@@ -714,14 +718,7 @@ public class CDAOview extends JPanel {
     		}
     	}
     }
-    
-    
-    
-    
-    
-    
-    
-    
+        
     
     
     /**
@@ -737,6 +734,7 @@ public class CDAOview extends JPanel {
     		jfc = new JFileChooser();
     		jfc.setFileFilter((javax.swing.filechooser.FileFilter) new ImgFileFilter());
     		this.putValue(AbstractAction.NAME, "Save Graph As...");
+    		this.putValue(MNEMONIC_KEY, KeyEvent.VK_S);
     	}
     	public void actionPerformed(ActionEvent e)
     	{   
@@ -792,19 +790,39 @@ public class CDAOview extends JPanel {
      * This layout is switched around with the Force Layout.
      * @author Ben Wright
      */
+    static int[] orient = {prefuse.Constants.ORIENT_LEFT_RIGHT, prefuse.Constants.ORIENT_RIGHT_LEFT, prefuse.Constants.ORIENT_BOTTOM_TOP, prefuse.Constants.ORIENT_TOP_BOTTOM};
+    static int oc = 0;
     public static class NodeLinkTreeLayoutAction extends AbstractAction {
     	private CDAOview m_view;
-    	public NodeLinkTreeLayoutAction(CDAOview view){
+    	private int orientation;
+    	public NodeLinkTreeLayoutAction(CDAOview view, int orient){
     		m_view = view;
-    		this.putValue(AbstractAction.NAME, "Node Link Tree Layout");
+    		orientation = orient;
+    		String name = "Node Link Tree Layout ";
+    		if(orientation == 0)
+    			name += "from Left to Right";
+    		else if(orientation == 1)
+    			name+= "from Right to Left";
+    		else if(orientation == 2)
+    			name+= "from Bottom to Top";
+    		else
+    			name+= "from Top to Bottom";
+    		this.putValue(AbstractAction.NAME, name);
+    		//this.putValue(MNEMONIC_KEY, KeyEvent.VK_N);
     	}
     	public void actionPerformed(ActionEvent e)
     	{
+    	  feye.setEnabled(false);
+    	  fishUpdate.setEnabled(false);
     	  ActionList l = (ActionList) m_view.m_vis.getAction("layout");
     	  fdl.cancel();
+    	  //nltl.cancel();
     	  l.remove(fdl);
-    	  nltl = new NodeLinkTreeLayout(graph);
+    	  nltl = new NodeLinkTreeLayout(graph, orient[orientation], 50.0, 5.0, 25.0);
+          nltl.setRootNodeOffset(10.0);
+    	  //oc = (oc + 1 ) % 4;
     	  l.add(nltl);
+    	  nltl.run();
     	  m_view.m_vis.putAction("layout", l);
     	  m_view.m_vis.run("draw");
     	}
@@ -822,13 +840,15 @@ public class CDAOview extends JPanel {
             this.putValue(AbstractAction.ACCELERATOR_KEY,
                           KeyStroke.getKeyStroke("ctrl f"));
             this.putValue(AbstractAction.NAME, "Force Layout");
+            this.putValue(MNEMONIC_KEY, KeyEvent.VK_F);
         }
         public void actionPerformed(ActionEvent e) {
          	  ActionList l = (ActionList) m_view.m_vis.getAction("layout");
          	  nltl.cancel();
          	  l.remove(nltl);
+         	  fdl = new ForceDirectedLayout(graph,false, false);
         	  l.add(fdl);
-        	  fdl.reset();
+        	  //fdl.reset();
         	  fdl.run();
         	  m_view.m_vis.putAction("layout", l);
         	  m_view.m_vis.run("draw");
