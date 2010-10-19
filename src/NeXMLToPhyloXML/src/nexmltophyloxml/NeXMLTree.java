@@ -29,16 +29,19 @@ import org.xml.sax.helpers.DefaultHandler;
 public class NeXMLTree extends DefaultHandler{
     private HashMap<String, ArrayList<String>> edges;
     private HashMap<String, String > node_to_label;
+    private HashMap<String, String > node_to_sequence;
     private HashMap<String, String > label_to_node;
     private HashMap<String, String> redges;
     private Set< String > processedNodes;
     private String graphID;
+    private String filename;
     //private String currentNode;
     //int level;
     public NeXMLTree(){
         this.edges = new HashMap();
         this.redges = new HashMap();
         this.node_to_label = new HashMap();
+        this.node_to_sequence = new HashMap();
         //this.label_to_node = new HashMap();
         this.processedNodes = new TreeSet();
         this.graphID = "defaultId";
@@ -60,9 +63,11 @@ public class NeXMLTree extends DefaultHandler{
     }
 
     public void parse( File file) throws IOException{
+        this.filename = file.getPath();
         this.parse( file.toURL() );
     }
     public void parse( URL url ) throws IOException{
+        this.filename = url.toExternalForm();
         this.parse( url.openStream() );
     }
 
@@ -102,26 +107,27 @@ public class NeXMLTree extends DefaultHandler{
     }
     public void   printPhyloXML( PrintStream ps ){
         ps.println(  "<phyloxml:phyloxml\n" +
-                        "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
-                        "xmlns=\"http://www.phyloxml.org\"\n" +
-                        "xsi:schemaLocation=\"http://www.phyloxml.org http://www.phyloxml.org/1.10/phyloxml.xsd\">\n");
+                        "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
+                        "  xmlns:phyloxml=\"http://www.phyloxml.org\"\n" +
+                        "  xsi:schemaLocation=\"http://www.phyloxml.org http://www.phyloxml.org/1.10/phyloxml.xsd\">\n");
 
 
            //ps.println("  <key id=\"d0\" for=\"all\" attr.name=\"IdLabel\" attr.type=\"string\"/>" );
            //ps.println("  <!--<key id=\"d1\" for=\"edge\" attr.name=\"color\" attr.type=\"string\">black</key>-->");
 
-           ps.println( "  <phyloxml:clade>");
-           ps.println("      <phyloxml:name>" + this.graphID + "</phyloxml:name>");
+           ps.println( "  <phyloxml:phylogeny>");
+           ps.println( "    <phyloxml:name>" + this.graphID + "</phyloxml:name>");
+           ps.println("     <phyloxml:description>" + this.filename + "</phyloxml:description>");
            
            makeClades( ps, findRoot(), 2);
 
-
+           ps.println("    </phyloxml:phylogeny>");
            ps.println(" </phyloxml:phyloxml>");
     }
 
     private String levelPrefix(int level ){
         StringBuffer ret = new StringBuffer();
-        for (int i = 0; i < level; ++i){ ret = ret.append("\t"); }
+        for (int i = 0; i < level; ++i){ ret = ret.append("   "); }
         return ret.toString();
     }
 
@@ -130,11 +136,17 @@ public class NeXMLTree extends DefaultHandler{
         String prefix = levelPrefix( level );
         ps.println( prefix + "<phyloxml:clade>");
         if ( this.node_to_label.containsKey(current) ){
-            ps.println( prefix +"\t<phyloxml:name>" + this.node_to_label.get(current) + "</phyloxml:name>");
+            ps.println( prefix + " <phyloxml:taxonomy>");
+            ps.println( prefix + "     <phyloxml:scientific_name>" + this.node_to_label.get(current) + "</phyloxml:scientific_name>");
+            ps.println( prefix + " </phyloxml:taxonomy>");
         }
-         else {
-            ps.println( prefix + "\t<phyloxml:name>" + current + "</plyloxml>");
-        }
+         //else {
+           // ps.println( prefix + "  <phyloxml:name>" + current + "</phyloxml:name>");
+        //}
+       // if ( this.node_to_sequence.containsKey( current )){
+         //   ps.println( prefix + "  <phyloxml:sequence>" + this.node_to_sequence.get(current) + "</phyloxml:sequence>" );
+        //}
+
         if ( (nextNodes = this.edges.get(current)) != null){
             Iterator< String > childit = nextNodes.iterator();
             while (childit.hasNext()){
