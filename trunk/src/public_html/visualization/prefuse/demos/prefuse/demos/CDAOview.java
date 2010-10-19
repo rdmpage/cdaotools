@@ -792,6 +792,7 @@ public class CDAOview extends JPanel {
      */
     static int[] orient = {prefuse.Constants.ORIENT_LEFT_RIGHT, prefuse.Constants.ORIENT_RIGHT_LEFT, prefuse.Constants.ORIENT_BOTTOM_TOP, prefuse.Constants.ORIENT_TOP_BOTTOM};
     static int oc = 0;
+    static boolean once = true;
     public static class NodeLinkTreeLayoutAction extends AbstractAction {
     	private CDAOview m_view;
     	private int orientation;
@@ -812,12 +813,21 @@ public class CDAOview extends JPanel {
     	}
     	public void actionPerformed(ActionEvent e)
     	{
-    	  feye.setEnabled(false);
-    	  fishUpdate.setEnabled(false);
     	  ActionList l = (ActionList) m_view.m_vis.getAction("layout");
-    	  fdl.cancel();
-    	  //nltl.cancel();
-    	  l.remove(fdl);
+    	  if(once)
+    	  {
+    		feye.setEnabled(false);
+    	  	fishUpdate.setEnabled(false);	
+    	  	fdl.cancel();
+    	  	//nltl.cancel();
+    	  	l.remove(fdl);
+    	  	once = false;
+    	  }
+    	  else
+    	  {
+    		  nltl.cancel();
+    		  l.remove(nltl);
+    	  }
     	  nltl = new NodeLinkTreeLayout(graph, orient[orientation], 50.0, 5.0, 25.0);
           nltl.setRootNodeOffset(10.0);
     	  //oc = (oc + 1 ) % 4;
@@ -846,6 +856,7 @@ public class CDAOview extends JPanel {
          	  ActionList l = (ActionList) m_view.m_vis.getAction("layout");
          	  nltl.cancel();
          	  l.remove(nltl);
+         	  once = true;
          	  fdl = new ForceDirectedLayout(graph,false, false);
         	  l.add(fdl);
         	  //fdl.reset();
