@@ -2,7 +2,7 @@
 #Script to list trees containing a given tu.
 
 CRITERION=`echo $QUERY_STRING | grep -oE "(^|[?&])criterion=[^&]+" | sed "s/%20/ /g"  | cut -f 2 -d "="`
-SIZE=`echo $QUERY_STRING | grep -oE "(^|[?&])size=[^&]+" | sed "s/%20/ /g"  | cut -f 2 -d "="`
+SIZE=`echo $QUERY_STRING | grep -oE "(^|[?&])size=[^&]+" | sed "s/%20/ /g"  | cut -f 2 -d "=" | grep -oE "(^[1-9][0-9]*)$"`
 DIRECTION=`echo $QUERY_STRING | grep -oE "(^|[?&])direction=[^&]+" | sed "s/%20/ /g"  | cut -f 2 -d "="`
 
 PHYLOWS_SIZE="http://www.cs.nmsu.edu/~$(whoami)/cgi-bin/phylows/size"
@@ -19,7 +19,7 @@ function print_form {
                                 </td></tr>
           <tr><td>Direction:</td><td>less <input type="radio" class="text" id="direction" name="direction" value="less"/><br/>
 				     greater <input type="radio" class="text" id="direction" name="direction" value="greater"/><br/>
-				     equal <input type="radio" class="text" id="direction" name="direction" value="equal"/><br/>
+				     <!-- range <input type="radio" class="text" id="direction" name="direction" value="equal"/><br/> -->
 
 				</td></tr>
           <tr><td>Size:</td>     <td> <input type="text" class="text" id="size" name="size" value=""/></td></tr>
@@ -39,7 +39,7 @@ function print_results {
   for i in `echo "$RESULTS"`; do
      tree=`echo $i | grep -oE '[a-zA-Z0-9][-_a-zA-Z0-9]*$'`
      echo "$tree <a href=\"../tree/query?format=html&amp;tree=$tree\">Query</a> <a href=\"../../cdao-explorer/launch.php?tree=$tree\">View</a><br/>"
-  done 
+  done
 
   RESULT_SIZE=$[$(echo "$RESULTS" | grep -oE "http" | wc -l ) ]
   #echo $RESULTS
