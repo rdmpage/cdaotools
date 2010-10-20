@@ -278,6 +278,24 @@
                           		<input type="submit" class="button" id="html-tu-submit" value="Search"/></p>
                        		</form>
 			</li>
+  		        <li>
+ 		 		<form action="cgi-bin/size/html" method="get">
+				   <table>
+          				<tr><td>Criterion:</td><td>node <input type="radio" class="text" about="cdao:Tree" id="criterion" name="criterion" value="node" /><br/>
+				     internal <input type="radio" class="text" about="cdao:Tree" id="criterion" name="criterion" value="internal" /><br/>
+				     leaf <input type="radio" class="text" about="cdao:Tree" id="criterion" name="criterion" value="leaf" />
+                                	</td></tr>
+         			     <tr><td>Direction:</td><td>less <input type="radio" class="text" id="direction" name="direction" value="less"/><br/>
+				     greater <input type="radio" class="text" id="direction" name="direction" value="greater"/><br/>
+				     <!-- range <input type="radio" class="text" id="direction" name="direction" value="equal"/><br/> -->
+
+						</td></tr>
+         			 	<tr><td>Size:</td>     <td> <input type="text" class="text" id="size" name="size" value=""/></td></tr>
+          				<tr><td colspan="2"><input class="button" type="submit" value="Submit" /><input class="button" type="reset" value="Reset"/></td></tr>
+        			  </table>
+
+				</form>
+			</li>
          </ul><br/><br/>
 	<h2><a href="cdao-explorer/launch.jnlp">Go to CDAO Explorer Application</a></h2>
 	

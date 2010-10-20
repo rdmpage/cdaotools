@@ -53,7 +53,7 @@ RELATION+=('equal' '-eq')
 function print_record {
   TREE="$1"
   COUNT="$2"
-  echo "<cdao:Tree rdf:about=\"$PHYLOWSTREE/$TREE\"><treestats:has_$CRIT_TO_STAT[$SIZE_CRITERIA]>$COUNT</treestats:has_$CRIT_TO_STAT[$SIZE_CRITERIA]>"
+  echo "<cdao:Tree rdf:about=\"$PHYLOWSTREE/$TREE\"><treestats:has_$CRIT_TO_STAT[$SIZE_CRITERIA]>$COUNT</treestats:has_$CRIT_TO_STAT[$SIZE_CRITERIA]>i</cdao:Tree>"
 
 }
 
