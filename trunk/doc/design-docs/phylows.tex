@@ -1,0 +1,117 @@
+\documentclass[10pt]{article}
+%imports extra math symbols
+\usepackage{amssymb}
+%used for doublespace text
+\usepackage{setspace}
+% uncomment the next line to use graphics
+%\usepackage{graphicx}
+%shortnames for common commands
+\newcommand{\BD}{\begin{doublespace}}
+\newcommand{\ED}{\end{doublespace}}
+\newcommand{\BE}{\begin{enumerate}}
+\newcommand{\EE}{\end{enumerate}}
+\newcommand{\BI}{\begin{itemize}}
+\newcommand{\EI}{\end{itemize}}
+\newcommand{\BT}{\begin{tabular}}
+\newcommand{\ET}{\end{tabular}}
+\newcommand{\BV}{\begin{verbatim}}
+\newcommand{\EV}{\end{verbatim}}
+\newcommand{\BM}{\begin{displaymath}}
+\newcommand{\EM}{\end{displaymath}}
+\newcommand{\BC}{\begin{center}}
+\newcommand{\EC}{\end{center}}
+\newcommand{\BFR}{\begin{flushright}}
+\newcommand{\EFR}{\end{flushright}}
+\newcommand{\BFL}{\begin{flushleft}}
+\newcommand{\EFL}{\end{flushleft}}
+%Stretches out the page
+\setlength{\oddsidemargin}{-0.50in}
+\setlength{\evensidemargin}{-0.50in}
+\setlength{\textwidth}{7.0in}
+\setlength{\topmargin}{0.0in}
+\setlength{\textheight}{9.0in}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{0ex}
+\pagestyle{empty}
+%Sets title page information
+\author{Brandon Chisham}
+\title{Phylows Processing on CDAO-Store}
+\date{\today}
+\begin{document}
+%Generates the title page
+\maketitle
+%uncomment the next line to generate a table of contents
+%\tableofcontents
+\section{What is Phylows}
+PhyloWS is a standard for RESTful querying of phylogenetic data. 
+CDAO-Store implements provides the following querying for matrices,
+trees conforming to a variety of criteria, and studies through this
+interface.
+
+\section{How Does the CDAO-Store PhyloWS Interface Work?}
+The implementation is broken into 3 layers
+  \subsection{Request Manager}
+    The request manager takes care of parsing, sanitizing, intrepreting request arguments, and orchestrating  
+   the remaining components. 
+     In practice this is broken into a set of scripts named according to the following convention 
+     do\_FORMAT\_QUERY-NAME\_query.sh where FORMAT indicates the output format of the script, and QUERY-NAME
+     indicates the type of query that the script handles. These scripts are installed outside the web-space for
+     ease of use since otherwise permission issues would prevent them from being used and also installable by
+     members of the ``cdao'' group.
+
+     After processing the arguments the handler script invokes the Query Processing layer, and formats the output
+     from the query processor.
+
+     \paragraph{Anatomy of a Request Manager}
+      The structure of a request manager mirrors this layering. First query variables are extracted from the QUERY\_STRING
+      and/or REQUEST\_URI environment variables. 
+      Next the query processor is run. For SparQL queries this is the do\_query.py script. For prolog queries, several more
+      steps are necessary including creating several temporary files for the prolog saved state file, as well as input rules, 
+      used to create the saved state. The prolog system then processes the query and the results are reformatted for the client.
+  \subsection{Query Processing}
+     \paragraph{Basic Processing} Most queries are processed using the do\_query.py Phython script. This script uses the RDFlib
+     library to query the store, and return formatted results based on a query and format string that
+     are supplied as arguments.
+     
+     \paragraph{Prolog} Some queries supported by the store are not processable with SQARQL alone. These queries generally
+      require features such as transitivity that are hard or impossible to process given the limits on the expressibility 
+      of these queries. The following queries use Prolog to process Nearest-Common Ancestor or Minimum Spanning-Clade of a
+      set of Taxa, or the finding trees by some size criterion. 
+
+      The nearest-common ancestor of a set of taxa is an ancestor of each taxon in the set, and none of it's descendants are also
+      ancestors of all the taxa in the set. 
+      
+       The minimum spanning clade of a set of taxa is the set of nodes that includes the nearest-common ancestor of all the taxa
+       in the set, and all of its descendants.
+
+       The size queries provide the most variety, since size depends entirely on one's choice of metric. CDAO-Store implements the
+       following measures of size. The number of nodes, the number of internal nodes, the number of leaves, the radius, or the diameter
+       of a tree. These queries also operate on the entire collection of trees rather than a particular tree or small small set of trees.
+       The various count queries are quite efficient since they mostly require looking at the nodes and only process edge relations to the
+       extent they are needed to classify a node as a leaf or an internal node, but this check does not require any recursive varification
+       of relations so it is also quite efficient.
+
+       The radius and diameter queries require finding the shortest and longest paths across a tree respectively, but this requires checking all
+       the paths, in all the trees, which ends up being too slow to be usable on the web since clients will time-out before the request can
+       be full-filled. 
+
+       \subparagraph{Pre-processing}
+       The nearest common ancestor and minimum spanning clade queries begin using the sparql layer to generate a set of facts about the tree
+       including its nodes and edges. The final step in pre-processing is to append a set of rules for deriving basic relationships between nodes
+       based on edge facts.
+
+       The user's request is then converted into a prolog format query. At this point addition facts are also dynamically generated. Things such
+       as the rule for finding nearest common ancestor depend on the size of the set of taxa so they can not be statically defined. 
+       
+       Finally the request is compiled into a Prolog stored computation, which is then run. 
+
+       The results of from the prolog environment are then reformatted for the user's requested output format and returned to the user.
+  \subsection{Output Formatting}
+     After query processing results are formatted for output. For most queries the formatting is largely
+     determined by the format string given to the query processor, and a query dependent header and footer.
+     For the tree queries, the output is filtered through another post processing layer to reorder the 
+     results so that they can be more easily processed by some tools. In this phase, the node and edge
+     definitions are put into breadth-first order. (they are declared in the file in an order such that
+     a client reading the file will encounter the declarations in the same order they would if making a
+     breadth first traversal of the actual tree being defined).
+\end{document}
