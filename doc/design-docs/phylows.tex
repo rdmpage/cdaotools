@@ -114,4 +114,53 @@ The implementation is broken into 3 layers
      definitions are put into breadth-first order. (they are declared in the file in an order such that
      a client reading the file will encounter the declarations in the same order they would if making a
      breadth first traversal of the actual tree being defined).
+
+
+
+\subsection{Repository Module}
+The repository module provides two core functionalities: storage and querying. The repository module maintains a triple store, used to maintain all
+the CDAO instances created, either through submitted user les or through processing of Tree-BASE content. The triple store is implemented in
+Python and uses the RDFlib5 module to store the RDF serializations of CDAO instances in a relational database (implemented using a MySQL database).
+The repository modules supports the execution of queries against the triple store. This set of queries is primarily drawn from the description given by Nakhleh et al. [12], 
+that provides a characterization of a relevant set of domain specific queries that are desirable for any repository of phylogenetic structures. The repository module supports
+ all the, fully-specified, types of queries identified in [12]. This is a diverse set of queries ranging from those that can be processed using simple syntactic matching requiring little additional reasoning to complex queries of tree structures. The domain-specific types of queries are:
+\begin{enumerate}
+\item Determine all the phylogenies containing a given set of taxa;
+\item Determine the relationships among a set of taxa in all phylogenies;
+\item Determine the minimum spanning tree/clade for a given set of taxa;
+\item Determine all phylogenies constructed using a given inference method;
+\item Determine all the phylogenies containing a set number of taxa;
+\item Determine all the phylogenies produced by a given tool or author;
+\item Determine all phylogenies containing a given characteristic (e.g., diameter of the tree, width of the tree);
+\item Given a phylogeny P, a measure m, and a quantity q, determine all the phylogenies that are at distance q from P according to the measure m (e.g., for the purpose of clustering phylogenies that are "close" to a given tree);
+\item Given a model of evolution, determine all the phylogenies that have been constructed using such model of evolution;
+\item Given some measures, return statistics about the measure in the phylogenies present in the repository (e.g., distribution of tree lengths);
+\item Given a type of data and a set of taxa, determine all the phylogenies on the set of taxa that have been constructed using the specified type of data (e.g., determine all phylogenies built using morphological data or using DNA sequences).
+\end{enumerate}
+To address these dierent types of queries, the query system is divided into two primary modules:
+\begin{itemize}
+\item The RDFlib has been linked to a SPARQL [22] engine and an OWL reasoner, Pellet6, enabling the execution of standard SPARQL queries to access the data in the triple store;
+\item Other types of queries are beyond the expressive power of the standard SPARQL query languages. In order to support these, the repository module has the capability of mapping CDAO tree and network structures, stored in the triple store, to corresponding representations of trees and networks in Prolog [23], a popular programming language for knowledge representation and reasoning. The remaining types of queries are implemented in Prolog.
+\end{itemize}
+
+The Table 1 maps each type of query to the corresponding implementation method. For the queries that are not supported, the primary cause is the lack of a precise specification of the query, or the data is not currently available. For example, the set of relationships one might be interested in having returned was not fully specified in the original article [12].  Clearly, the availability of a SPARQL interface enables the user to submit also arbitrary other queries, as long as these are expressible as SPARQL queries.
+
+The table illustrates the implementation method employed for each one of the various classes of queries
+discussed in [12].
+Query # Implementation Method
+#1 SPARQL
+#2 Not Supported
+#3 Prolog
+#4 SPARQL
+#5 Prolog
+#6 SPARQL
+#7 Prolog
+#8 Prolog
+#9 Not Supported
+#10 SPARQL
+#11 Prolog
+
+
+
+
 \end{document}
