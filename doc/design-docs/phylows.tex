@@ -3,6 +3,7 @@
 \usepackage{amssymb}
 %used for doublespace text
 \usepackage{setspace}
+\usepackage{listings}
 % uncomment the next line to use graphics
 %\usepackage{graphicx}
 %shortnames for common commands
@@ -33,20 +34,58 @@
 \setlength{\parindent}{0cm}
 \setlength{\parskip}{0ex}
 \pagestyle{empty}
+%\lstset{language=Prolog, frame=lines}
 %Sets title page information
 \author{Brandon Chisham, Ben Wright}
 \title{Web Service Querying for Phylogenetic Information}
 \date{\today}
+
 \begin{document}
 %Generates the title page
 \maketitle
+
 %uncomment the next line to generate a table of contents
 %\tableofcontents
-\section{What is Phylows?}
-PhyloWS is a standard for RESTful querying of phylogenetic data. 
-CDAO-Store implements provides the following querying for matrices,
-trees conforming to a variety of criteria, and studies through this
-interface.
+\section{Introduction}
+
+\section{Background}
+PhyloWS is a standard for RESTful querying of phylogenetic data. CDAO-Store implements provides the following querying for matrices, trees conforming to a variety of criteria, and studies through this interface.
+
+\subsection{Phylogenetics}
+%TAKEN FROM CDAO-STORE PAPER BACKGROUND
+Phylogenetic trees have gained a central role in modern biology. Trees provide a systematic structure to organize evolutionary knowledge about diversity of life. Trees have become fundamental tools for building new knowledge, thanks to their explanatory and comparative-based predictive capabilities.
+Evolutionary relationships provide clues about processes underlying biodiversity and enable predictive inferences about future changes in biodiversity (e.g., in response to climate or anthropogenic changes).  Phylogenies are used with increase frequency in several fields, e.g., comparative genomics [1], metagenomics [2], and community ecology [3].  The development of novel solutions to enhance the ability to use phyloinformatics solutions in various areas of biology, have built on a number of important technologies.
+
+\subsection{CDAO}
+%THIS SECTION TAKEN VERBATIM FROM THE CDAO-STORE PAPER
+The Comparative Data Analysis Ontology (CDAO)1 [9] provides a formal ontology for describing phylogenies and their associated character state matrices.  It was developed as part of the Evolutionary Informatics (EvoInfo)2 working group, sponsored by the National Evolutionary Synthesis Center.
+
+The CDAO ontology provides the semantic component of a data representation and inter-operation stack for phyloinformatics, known as the EvoIO stack [13]|along with a data exchange format, called nexml [7], and a phyloinformatics web services API, known as PhyloWS [14]. CDAO forms the base of this stack defining the semantics for the data represented as nexml files, or otherwise supplied by services implementing this set of standards.  Figure 1 illustrates the EvoIO stack.
+
+
+CDAO is implemented as a formal ontology encoded in OWL. It provides a general framework for talking about the relationships between taxa, characters, states, their matrices, and associated phylogenies. The ontology is organized around four central concepts (see also Figure 2): OTUs, characters, character states, phylogenetic trees, and transitions. The key concepts and their mutual relationships within CDAO are illustrated in Figure 3.  A phylogenetic analysis starts with the identification of a collection of operational taxonomic units (OTUs), representing the entities being described (e.g., species, genes). Each OTU is described, in the analysis, by a collection of properties, typically referred to as characters. In phylogenetic analysis, it is common to collect the characters and associated character states in a matrix, the character state matrix, where the rows correspond to the different OTUs and the columns correspond to the characters.
+
+
+In evolutionary biology, phylogenetic trees and networks are used to represent paths of descent-with-modification, capturing the evolutionary process underlying the considered OTUs.  Since evolution moves forward in time, the branches of a tree are typically directed. The terminal nodes are anchored in the present, as they represent observations or measurements made on existing organisms. The internal nodes represent common ancestors, with the deepest node as the root node of the tree. The restriction that each node has at most one immediate ancestor reflects the assumption that evolutionary lineages, once separates, do not fuse (e.g., because of the assumption of the biological species concept based on reproductive isolation). Branching is considered to be a binary process of splitting by specification (or gene duplication, in the case of molecular sequences). Even with terminal nodes anchored in the present, it may be impossible to infer the direction of each internal branch, in which case the tree may be referred to as an unrooted tree or as a network. Even the restriction of single parentage maybe occasionally abandoned (e.g., in the case of lateral transfer or reticulate evolution).
+
+
+As a general framework, CDAO supplies general classes and relations between those classes, that can be further specialized to meet the needs of a specific application|Beak length might be defined as a specialization of CDAO's Standard character type.
+
+\subsection{CDAO-Store}
+%FROM BACKGROUND SECTION OF CDAO-STORE PAPER
+The CDAO-Store is a novel portal aimed at facilitating the storage and retrieval of phylogenetic data. The novelty of CDAO-Store lies in the use of a semantic-based approach to the storage and querying of data, building on established ontologies for the semantic annotation of data. This approach enables us to overcome restrictions imposed by the use of specific data formats (facilitating interoperation among phylogenetic analysis applications) and makes it possible to formulate more meaningful domain-specific queries.
+
+%TAKEN FROM IMPLEMENTATION SECTION OF CDAO-STORE PAPER
+CDAO-store builds on the EvoIO technology stack to provide a semantic-based repository of phylogenetic data, accessible through semantic web services and a domain-specific query language. The CDAO-Store platform is open-source and is available as a SourceForge project, at sourceforge.net/projects/cdaotools.  The implementation of CDAO-store is organized in three interconnected modules, as illustrated in Figure 4: a data importer module, a repository module, and an exporter module.  For more detail, please refer to the CDAO-Store paper.
+
+\subsection{PhyloWS}
+%Taken from BACKGROUND PHYLOWS section of CDAO-STORE PAPER
+PhyloWS (Phyloinformatics Web Services API) is a standard for exposing phylogenetic data as a web service. Web services are tools that can perform certain tasks via HTTP [17]. PhlyoWS specifically uses a RESTful style web service which uses a few well-known operations to relay data [18] [19]. This works in a similar way as GET or POST for HTTP [19].  All PhlyoWS URI's begin with /phylows/ as the standard delimiter. Then based on the phylogenetic information being queried a data structure will be given, such as taxon, tree, or study.  This is followed by any specific identifiers needed for the query. For example, http://purl.org/phylo/treebase/phylows/tree/TB2:Tr3099?format=rdf is a way to access information from TreeBASE using PhyloWS. When this URL is accessed, it returns the tree with the TreeBASE ID equal to 'Tr3099' in RDF format [20]. A specification for PhyloWS can be found at [18].
+
+%TAKEN FROM Results:Web-Tools of CDAO-STORE PAPER
+The web tools from CDAO-Store provide a variety of querying and data access features for both human and programmatic access to data. It allows one to retrieve data sets by author name, tree identifier, taxon, algorithm, or method. It also supports computing the minimum spanning clade or the nearest common ancestor of a set of taxa. It also allows one to list trees conforming to certain measures. For example, finding all trees larger or smaller than a given size. 
+
+Our PhyloWS implementation is the basis for all the data access features of CDAO-Store. The other web components, and the CDAO-Explorer tool use it to access data. URI's are divided into three conceptual parts. The address of the store site, and path prefix www.cs.nmsu.edu/cdaostore/cgi-bin/phylows, a query type (i.e., tree, matrix, msc, nca, or size), and parameter list. The specific parameters depend on the query type. For example, the msc and nca query types expect a list of taxon id's separated by `/'. The listing query takes optional limit and offset parameters to paginate results. The size query takes a direction (greater, less, or equal), a criteria (node, internal, or leaf) and a size (a numeral).
 
 \section{How Does the CDAO-Store PhyloWS Interface Work?}
 The implementation is broken into 3 layers
@@ -73,7 +112,20 @@ The implementation is broken into 3 layers
      library to query the store, and return formatted results based on a query and format string that
      are supplied as arguments.
      
-     \paragraph{Prolog} Some queries supported by the store are not processable with SQARQL alone. These queries generally
+ 
+  \subsection{Output Formatting}
+     After query processing results are formatted for output. For most queries the formatting is largely
+     determined by the format string given to the query processor, and a query dependent header and footer.
+     For the tree queries, the output is filtered through another post processing layer to reorder the 
+     results so that they can be more easily processed by some tools. In this phase, the node and edge
+     definitions are put into breadth-first order. (they are declared in the file in an order such that
+     a client reading the file will encounter the declarations in the same order they would if making a
+     breadth first traversal of the actual tree being defined).
+
+
+
+\section{Query Processing Implementation}
+    \paragraph{Prolog} Some queries supported by the store are not processable with SQARQL alone. These queries generally
       require features such as transitivity that are hard or impossible to process given the limits on the expressibility 
       of these queries. The following queries use Prolog to process Nearest-Common Ancestor or Minimum Spanning-Clade of a
       set of Taxa, or the finding trees by some size criterion. 
@@ -95,7 +147,7 @@ The implementation is broken into 3 layers
        the paths, in all the trees, which ends up being too slow to be usable on the web since clients will time-out before the request can
        be full-filled. 
 
-       \subparagraph{Pre-processing}
+       \paragraph{Pre-processing}
        The nearest common ancestor and minimum spanning clade queries begin using the sparql layer to generate a set of facts about the tree
        including its nodes and edges. The final step in pre-processing is to append a set of rules for deriving basic relationships between nodes
        based on edge facts.
@@ -106,24 +158,14 @@ The implementation is broken into 3 layers
        Finally the request is compiled into a Prolog stored computation, which is then run. 
 
        The results of from the prolog environment are then reformatted for the user's requested output format and returned to the user.
-  \subsection{Output Formatting}
-     After query processing results are formatted for output. For most queries the formatting is largely
-     determined by the format string given to the query processor, and a query dependent header and footer.
-     For the tree queries, the output is filtered through another post processing layer to reorder the 
-     results so that they can be more easily processed by some tools. In this phase, the node and edge
-     definitions are put into breadth-first order. (they are declared in the file in an order such that
-     a client reading the file will encounter the declarations in the same order they would if making a
-     breadth first traversal of the actual tree being defined).
 
-
-
-\subsection{Repository Module}
 The repository module provides two core functionalities: storage and querying. The repository module maintains a triple store, used to maintain all
 the CDAO instances created, either through submitted user les or through processing of Tree-BASE content. The triple store is implemented in
 Python and uses the RDFlib5 module to store the RDF serializations of CDAO instances in a relational database (implemented using a MySQL database).
 The repository modules supports the execution of queries against the triple store. This set of queries is primarily drawn from the description given by Nakhleh et al. [12], 
 that provides a characterization of a relevant set of domain specific queries that are desirable for any repository of phylogenetic structures. The repository module supports
  all the, fully-specified, types of queries identified in [12]. This is a diverse set of queries ranging from those that can be processed using simple syntactic matching requiring little additional reasoning to complex queries of tree structures. The domain-specific types of queries are:
+
 \begin{enumerate}
 \item Determine all the phylogenies containing a given set of taxa;
 \item Determine the relationships among a set of taxa in all phylogenies;
@@ -143,7 +185,7 @@ To address these different types of queries, the query system is divided into tw
 \item Other types of queries are beyond the expressive power of the standard SPARQL query languages. In order to support these, the repository module has the capability of mapping CDAO tree and network structures, stored in the triple store, to corresponding representations of trees and networks in Prolog [23], a popular programming language for knowledge representation and reasoning. The remaining types of queries are implemented in Prolog.
 \end{itemize}
 
-\subsection{Prolog Implementation}
+\subsection{Query Implementation}
 Questions 1,4,6,and10 can be answered using just SPARQL queries.  Questions 3,5,7,8,and11 have been implemented using Prolog.   For the queries that are not supported, the primary cause is the lack of a precise specification of the query, or the data is not currently available. For example, the set of relationships one might be interested in having returned was not fully specified in the original article [12].  Clearly, the availability of a SPARQL interface enables the user to submit also arbitrary other queries, as long as these are expressible as SPARQL queries.
 \subsubsection{Basic Structure}
 
@@ -157,8 +199,18 @@ For simplicity, the nodes can be checked as internal, root, or leaf node as well
 \begin{verbatim}
 leaf( Tree, Node ):- node( Tree, Node ), not(edge(Tree, _, _, Node, _)).
 root( Tree, Node ):- node( Tree, Node ), not(edge(Tree,_,_, _,Node )).
-internal_node( Tree, Node ):- node( Tree, Node ), not(leaf( Tree, Node)).
+internal_node( Tree, Node ):- node( Tree, Node ), edge(Tree,_,Node,_).
 \end{verbatim}
+
+\subsubsection{Question 1}
+ Determine all the phylogenies containing a given set of taxa.
+
+This has been implemented using SPARQL.
+
+\subsubsection{Question 2}
+Determine the relationships among a set of taxa in all phylogenies.
+
+Not implemented.  The term "relationship" is too ambigious.
 
 \subsubsection{Question 3}
 Determine the minimum spanning tree/clade for a given set of taxa.
@@ -173,52 +225,136 @@ clade( Tree, Node ):- setof( Member, clade( Tree, Node, Member ), Members ), wri
 
 This uses one helper function, \emph{ ancestor\_of/3 }.  This returns true if Member is a child of Node, or a child of one of Node's children.
 
+\subsubsection{Question 4}
+Determine all phylogenies constructed using a given inference method;
+
+There are two different 'methods' that can be checked.  One is the algorithm, the other is by the software used.  Both are implemented using SPARQL.
+
+\begin{verbatim}
+PREFIX study: <http://www.cs.nmsu.edu/~bchisham/study.owl#>
+PREFIX contact: <http://www.w3.org/2000/10/swap/pim/contact#>
+PREFIX foaf: <http://www.mindswap.org/2003/owl/foaf#>
+SELECT ?tree
+WHERE {
+    ?study study:has_analysis ?analysis.
+    ?analysis study:has_algorithm '$ALGO' .
+    ?analysis study:has_output_tree ?tree .
+}
+\end{verbatim}
+
+\begin{verbatim}
+PREFIX study: <http://www.cs.nmsu.edu/~bchisham/study.owl#>
+PREFIX contact: <http://www.w3.org/2000/10/swap/pim/contact#>
+PREFIX foaf: <http://www.mindswap.org/2003/owl/foaf#>
+SELECT ?tree
+WHERE {
+    ?study study:has_analysis ?analysis .
+    ?analysis study:has_software '$ALGO' .
+    ?analysis study:has_output_tree ?tree .
+}
+\end{verbatim}
+
+Where \emph{\$ALGO} is the variable for the given algorithm/software being checked for.
+
 \subsubsection{Question 5}
  Determine all the phylogenies containing a set number of taxa.
 
 \begin{verbatim}
 %Count the number of nodes in a tree
 node_count( Tree, Count ):- root( Tree, RootNode ), node_count( Tree, RootNode, Count ).
-node_count( Tree, StartNode, Count ):- setof( Node, descendent_of(Tree, Node, StartNode), Nodes ), length( Nodes, Count ).
+node_count( Tree, StartNode, Count ):- setof( Node, descendent_of(Tree, Node, StartNode), Nodes ),
+					     length( Nodes, Count ).
 %Count the leaves in a tree.
 leaf_count( Tree, Count ):- leaf_count( Tree, _, Count ).
 leaf_count( Tree, _, Count ):- setof( LNode, leaf( Tree, LNode ), Nodes ), length( Nodes, Count ).
 %Count the internal nodes in a tree.
 internal_count( Tree, Count ):- internal_count( Tree, _, Count ).
-internal_count( Tree, _, Count ):- setof( INode, internal_node(Tree,INode), Nodes ), length( Nodes, Count ).
+internal_count( Tree, _, Count ):- setof( INode, internal_node(Tree,INode), Nodes ), 
+				       length( Nodes, Count ).
 \end{verbatim}
+
+\subsubsection{Question 6}
+ Determine all the phylogenies produced by a given tool or author;
+
+Searching for specific authors has been implemented using SPARQL.
+
+\begin{verbatim}
+PREFIX study: <http://www.cs.nmsu.edu/~bchisham/study.owl#>
+      PREFIX contact: <http://www.w3.org/2000/10/swap/pim/contact#>
+      PREFIX foaf: <http://www.mindswap.org/2003/owl/foaf#>
+SELECT ?study
+WHERE {
+   ?study study:has_author ?authorid.
+   ?authorid foaf:last_name '$LAST_NAME'^^<http://www.w3.org/2001/XMLSchema#string>.
+   ?authorid foaf:first_name '$FIRST_NAME'^^<http://www.w3.org/2001/XMLSchema#string>.}
+\end{verbatim}
+
+Where \emph{\$LAST\_NAME} and \emph{\$FIRST\_NAME} are the last and first name of the author respectively.  The option to search on just the last name is also available.
 
 \subsubsection{Question 7}
 Determine all phylogenies containing a given characteristic (e.g., diameter of the tree, width of the tree);
 
 This one is seperated to asking for width, diameter, or radius.
 \begin{verbatim}
-eccentricity( Tree, Len, Start ):- findall( E, (not(LeafNode == Start), leaf(Tree, LeafNode), pathlength(Tree, Start, LeafNode, E)), Lens  ), max_list( Lens, Len ).
-
+eccentricity(Tree,Len,Start ):- findall( E, (not(LeafNode == Start),
+					leaf(Tree, LeafNode), 
+					pathlength(Tree,Start,LeafNode, E)), 
+					Lens),
+				max_list(Lens, Len).
 %Radius = minimum eccentricity of any vertex.
 radius( Tree, R ):- findall(Leaf, leaf(Tree, Leaf), Leaves),
-	       	    radii(Tree, Leaves, R, _).
+	       	      radii(Tree, Leaves, R, _).
 radii(Tree, [Leaf | Leaves], Radius, Curr) :- findall( E, eccentricity(Tree, E, Leaf), Es  ),
-	                                      min_list(Es, LCurr),
-					      LCurr < Curr, radii(Tree, Leaves, Radius, LCurr);
-					      radii(Tree, Leaves, Radius, Curr).
+	                           		          min_list(Es, LCurr),
+					          LCurr < Curr, radii(Tree, Leaves, Radius, LCurr);
+					          radii(Tree, Leaves, Radius, Curr).
 radii(_, [], R, R).
-
 radius_count( Tree, _, R ):- radius(Tree, R).
-
 %Diameter = maximum eccentricity of any vertex.
-diameter( Tree, D):- findall( E, (leaf(Tree, LeafNode), eccentricity(Tree, E, LeafNode)), Es ), max_list(Es, D ).
+diameter( Tree, D):- findall( E, (leaf(Tree, LeafNode), eccentricity(Tree, E, LeafNode)), Es ), 
+		         max_list(Es, D ).
 diameter_count(Tree, _, D):- diameter( Tree, D ).
 \end{verbatim}
 
-
-
-
-
 \subsubsection{Question 8}
 Given a phylogeny P, a measure m, and a quantity q, determine all the phylogenies that are at distance q from P according to the measure m (e.g., for the purpose of clustering phylogenies that are "close" to a given tree);
+
+\subsubsection{Question 9}
+Given a model of evolution, determine all the phylogenies that have been constructed using such model of evolution;
+
+
+Not Implemented due to lack of complete data on phylogenies.  Not all phylogenies say what model of evolution it used in its construction.
+
+\subsubsection{Question 10}
+Given some measures, return statistics about the measure in the phylogenies present in the repository (e.g., distribution of tree lengths);
+
+
+Implemented using SPARQL.
+
 \subsubsection{Question 11}
 Given a type of data and a set of taxa, determine all the phylogenies on the set of taxa that have been constructed using the specified type of data (e.g., determine all phylogenies built using morphological data or using DNA sequences).	
+
+
+This can be done with a combination of Question 1 and then using a SPARQL query to filter/reduce that set based on the type of data requested.
+
+\section{Results}
+
+\subsection{Triple-Store}
+
+\subsection{Prolog Storage}
+
+\subsection{Timed Queries}
+
+
+
+\section{Related Work}
+
+\subsection{TreeBase}
+
+\subsection{Nexplorer}
+
+
+\section{Future Work}
 
 
 \end{document}
