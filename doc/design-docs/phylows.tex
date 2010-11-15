@@ -80,7 +80,7 @@ CDAO-store builds on the EvoIO technology stack to provide a semantic-based repo
 
 \subsection{PhyloWS}
 %Taken from BACKGROUND PHYLOWS section of CDAO-STORE PAPER
-PhyloWS (Phyloinformatics Web Services API) is a standard for exposing phylogenetic data as a web service. Web services are tools that can perform certain tasks via HTTP [17]. PhlyoWS specifically uses a RESTful style web service which uses a few well-known operations to relay data [18] [19]. This works in a similar way as GET or POST for HTTP [19].  All PhlyoWS URI's begin with /phylows/ as the standard delimiter. Then based on the phylogenetic information being queried a data structure will be given, such as taxon, tree, or study.  This is followed by any specific identifiers needed for the query. For example, http://purl.org/phylo/treebase/phylows/tree/TB2:Tr3099?format=rdf is a way to access information from TreeBASE using PhyloWS. When this URL is accessed, it returns the tree with the TreeBASE ID equal to 'Tr3099' in RDF format [20]. A specification for PhyloWS can be found at [18].
+PhyloWS (Phyloinformatics Web Services API) is a standard for exposing phylogenetic data as a web service. Web services are tools that can perform certain tasks via HTTP [17]. PhyloWS specifically uses a RESTful style web service which uses a few well-known operations to relay data [18] [19]. This works in a similar way as GET or POST for HTTP [19].  All PhyloWS URI's begin with /phylows/ as the standard delimiter. Then based on the phylogenetic information being queried a data structure will be given, such as taxon, tree, or study.  This is followed by any specific identifiers needed for the query. For example, http://purl.org/phylo/treebase/phylows/tree/TB2:Tr3099?format=rdf is a way to access information from TreeBASE using PhyloWS. When this URL is accessed, it returns the tree with the TreeBASE ID equal to 'Tr3099' in RDF format [20]. A specification for PhyloWS can be found at [18].
 
 %TAKEN FROM Results:Web-Tools of CDAO-STORE PAPER
 The web tools from CDAO-Store provide a variety of querying and data access features for both human and programmatic access to data. It allows one to retrieve data sets by author name, tree identifier, taxon, algorithm, or method. It also supports computing the minimum spanning clade or the nearest common ancestor of a set of taxa. It also allows one to list trees conforming to certain measures. For example, finding all trees larger or smaller than a given size. 
@@ -90,7 +90,7 @@ Our PhyloWS implementation is the basis for all the data access features of CDAO
 \section{How Does the CDAO-Store PhyloWS Interface Work?}
 The implementation is broken into 3 layers
   \subsection{Request Manager}
-    The request manager takes care of parsing, sanitizing, intrepreting request arguments, and orchestrating  
+    The request manager takes care of parsing, sanitizing, interpreting request arguments, and orchestrating  
    the remaining components. 
      In practice this is broken into a set of scripts named according to the following convention 
      do\_FORMAT\_QUERY-NAME\_query.sh where FORMAT indicates the output format of the script, and QUERY-NAME
@@ -104,7 +104,7 @@ The implementation is broken into 3 layers
      \paragraph{Anatomy of a Request Manager}
       The structure of a request manager mirrors this layering. First query variables are extracted from the QUERY\_STRING
       and/or REQUEST\_URI environment variables. 
-      Next the query processor is run. For SparQL queries this is the do\_query.py script. For prolog queries, several more
+      Next the query processor is run. For SPARQL queries this is the do\_query.py script. For prolog queries, several more
       steps are necessary including creating several temporary files for the prolog saved state file, as well as input rules, 
       used to create the saved state. The prolog system then processes the query and the results are reformatted for the client.
   \subsection{Query Processing}
@@ -125,7 +125,7 @@ The implementation is broken into 3 layers
 
 
 \section{Query Processing Implementation}
-    \paragraph{Prolog} Some queries supported by the store are not processable with SQARQL alone. These queries generally
+    \paragraph{Prolog} Some queries supported by the store are not processable with SPARQL alone. These queries generally
       require features such as transitivity that are hard or impossible to process given the limits on the expressibility 
       of these queries. The following queries use Prolog to process Nearest-Common Ancestor or Minimum Spanning-Clade of a
       set of Taxa, or the finding trees by some size criterion. 
@@ -160,7 +160,7 @@ The implementation is broken into 3 layers
        The results of from the prolog environment are then reformatted for the user's requested output format and returned to the user.
 
 The repository module provides two core functionalities: storage and querying. The repository module maintains a triple store, used to maintain all
-the CDAO instances created, either through submitted user les or through processing of Tree-BASE content. The triple store is implemented in
+the CDAO instances created, either through submitted user files or through processing of Tree-BASE content. The triple store is implemented in
 Python and uses the RDFlib5 module to store the RDF serializations of CDAO instances in a relational database (implemented using a MySQL database).
 The repository modules supports the execution of queries against the triple store. This set of queries is primarily drawn from the description given by Nakhleh et al. [12], 
 that provides a characterization of a relevant set of domain specific queries that are desirable for any repository of phylogenetic structures. The repository module supports
@@ -210,7 +210,7 @@ This has been implemented using SPARQL.
 \subsubsection{Question 2}
 Determine the relationships among a set of taxa in all phylogenies.
 
-Not implemented.  The term "relationship" is too ambigious.
+Not implemented.  The term "relationship" is too ambiguous.
 
 \subsubsection{Question 3}
 Determine the minimum spanning tree/clade for a given set of taxa.
@@ -294,7 +294,7 @@ Where \emph{\$LAST\_NAME} and \emph{\$FIRST\_NAME} are the last and first name o
 \subsubsection{Question 7}
 Determine all phylogenies containing a given characteristic (e.g., diameter of the tree, width of the tree);
 
-This one is seperated to asking for width, diameter, or radius.
+This one is separated to asking for width, diameter, or radius.
 \begin{verbatim}
 eccentricity(Tree,Len,Start ):- findall( E, (not(LeafNode == Start),
 					leaf(Tree, LeafNode), 
