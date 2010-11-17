@@ -378,6 +378,8 @@ Not implemented.  The term "relationship" is too ambiguous.
 \subsubsection{Question 3}
 Determine the minimum spanning tree/clade for a given set of taxa.
 
+\paragraph{Minimum Spanning Tree/Clade}
+
 Clades are merely subsets of nodes in the tree.
 
 \begin{verbatim}
@@ -388,6 +390,10 @@ clade( Tree, Node ):- setof( Member, clade( Tree, Node, Member ), Members ), wri
 
 This uses one helper function, \emph{ ancestor\_of/3 }.  This returns true if
 Member is a child of Node, or a child of one of Node's children.
+
+\paragraph{Nearest Common Ancestor}
+
+Nca is slightly different from msc and as such, is done seperately.
 
 \subsubsection{Question 4}
 Determine all phylogenies constructed using a given inference method;
@@ -526,6 +532,37 @@ to filter/reduce that set based on the type of data requested.
 \subsection{Prolog Storage}
 
 \subsection{Timed Queries}
+
+Queries were timed using the \emph{time} and \emph{curl} commands.  Since our WebPortal uses cgi-bin we just call directly with a specific url instead of the form to get a more accurate time.
+
+In order to get a basic idea of how long each query took, we used various computers from our Department Computer Lab and averaged them up.  Table 1 shows the average times per query when using either PhyloWS or the Portals cgi-bin.  Some cases dont have both implemented however.
+
+The lab contained 3 different levels of hardware, we tested each evenly.
+
+they are:\begin{verbatim}
+HP 	Linux (SuSE) 	4 GB 	Intel Core2 Quad (4 cores) (64bit) 	2.5 Ghz
+HP 	Linux (SuSE) 	2 GB 	AMD Athlon X2 Dual (64 bit) 	       5200+
+HP 	Linux (SuSE) 	8 GB 	Intel Core i7 860 	                 2.8 GHz
+\end{verbatim}
+
+\begin{tabular}{|c|c|c|}
+\hline
+        & PhlyoWS Time & WebPortal Time \\ \hline
+Q1   &         &      \\ \hline
+Q2   & N/A  & N/A\\ \hline
+Q3a   &         &\\ \hline
+Q3b  &         &\\ \hline
+Q4   &         &\\ \hline
+Q5   &         &\\ \hline
+Q6   &         &\\ \hline
+Q7   &         &\\ \hline
+Q8   & N/A & N/A\\ \hline
+Q9   & N/A & N/A\\ \hline
+Q10 & N/A & N/A\\ \hline
+Q11 & N/A & N/A\\ \hline
+
+
+\end{tabular}
 
 
 
