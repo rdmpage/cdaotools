@@ -63,22 +63,22 @@ their explanatory and comparative-based predictive capabilities.  Evolutionary
 relationships provide clues about processes underlying biodiversity and enable
 predictive inferences about future changes in biodiversity (e.g., in response
 to climate or anthropogenic changes).  Phylogenies are used with increase
-frequency in several fields, e.g., comparative genomics [1], metagenomics [2],
-and community ecology [3].  The development of novel solutions to enhance the
+frequency in several fields, e.g., comparative genomics \cite{Ell08}, metagenomics \cite{WE08},
+and community ecology \cite{WAMD02}.  The development of novel solutions to enhance the
 ability to use phyloinformatics solutions in various areas of biology, have
 built on a number of important technologies.
 
 \subsection{CDAO}
 %THIS SECTION TAKEN VERBATIM FROM THE CDAO-STORE PAPER
-The Comparative Data Analysis Ontology (CDAO)1 [9] provides a formal ontology
+The Comparative Data Analysis Ontology (CDAO) \cite{cdao-evol} provides a formal ontology
 for describing phylogenies and their associated character state matrices.  It
-was developed as part of the Evolutionary Informatics (EvoInfo)2 working group,
+was developed as part of the Evolutionary Informatics (EvoInfo) working group,
 sponsored by the National Evolutionary Synthesis Center.
 
 The CDAO ontology provides the semantic component of a data representation and
-inter-operation stack for phyloinformatics, known as the EvoIO stack [13]|along
-with a data exchange format, called nexml [7], and a phyloinformatics web
-services API, known as PhyloWS [14]. CDAO forms the base of this stack defining
+inter-operation stack for phyloinformatics, known as the EvoIO stack \cite{evoio}along
+with a data exchange format, called nexml \cite{nexml}, and a phyloinformatics web
+services API, known as PhyloWS \cite{phylows}. CDAO forms the base of this stack defining
 the semantics for the data represented as nexml files, or otherwise supplied by
 services implementing this set of standards.  Figure 1 illustrates the EvoIO
 stack.
@@ -145,16 +145,16 @@ exporter module.  For more detail, please refer to the CDAO-Store paper.
 %Taken from BACKGROUND PHYLOWS section of CDAO-STORE PAPER
 PhyloWS (Phyloinformatics Web Services API) is a standard for exposing
 phylogenetic data as a web service. Web services are tools that can perform
-certain tasks via HTTP [17]. PhyloWS specifically uses a RESTful style web
-service which uses a few well-known operations to relay data [18] [19]. This
-works in a similar way as GET or POST for HTTP [19].  All PhyloWS URI's begin
+certain tasks via HTTP \cite{WebService}. PhyloWS specifically uses a RESTful style web
+service which uses a few well-known operations to relay data \cite{PhyloWSWiki}  \cite{Fielding02principleddesign}. This
+works in a similar way as GET or POST for HTTP \cite{Fielding02principleddesign}.  All PhyloWS URI's begin
 with /phylows/ as the standard delimiter. Then based on the phylogenetic
 information being queried a data structure will be given, such as taxon, tree,
 or study.  This is followed by any specific identifiers needed for the query.
 For example, http://purl.org/phylo/treebase/phylows/tree/TB2:Tr3099?format=rdf
 is a way to access information from TreeBASE using PhyloWS. When this URL is
 accessed, it returns the tree with the TreeBASE ID equal to 'Tr3099' in RDF
-format [20]. A specification for PhyloWS can be found at [18].
+format \cite{treebasePhyloWS}. A specification for PhyloWS can be found at \cite{PhyloWSWiki}.
 
 %TAKEN FROM Results:Web-Tools of CDAO-STORE PAPER
 The web tools from CDAO-Store provide a variety of querying and data access
@@ -274,11 +274,11 @@ Tree-BASE content. The triple store is implemented in Python and uses the
 RDFlib5 module to store the RDF serializations of CDAO instances in a
 relational database (implemented using a MySQL database).  The repository
 modules supports the execution of queries against the triple store. This set of
-queries is primarily drawn from the description given by Nakhleh et al. [12],
+queries is primarily drawn from the description given by Nakhleh et al. \cite{queries},
 that provides a characterization of a relevant set of domain specific queries
 that are desirable for any repository of phylogenetic structures. The
 repository module supports all the, fully-specified, types of queries
-identified in [12]. This is a diverse set of queries ranging from those that
+identified in \cite{queries}. This is a diverse set of queries ranging from those that
 can be processed using simple syntactic matching requiring little additional
 reasoning to complex queries of tree structures. The domain-specific types of
 queries are:
@@ -306,14 +306,14 @@ sequences).
 \end{enumerate}
 To address these different types of queries, the query system is divided into two primary modules:
 \begin{itemize}
-\item The RDFlib has been linked to a SPARQL [22] engine and an OWL reasoner,
-Pellet[6], enabling the execution of standard SPARQL queries to access the data
+\item The RDFlib has been linked to a SPARQL \cite{sparql} engine and an OWL reasoner,
+Pellet, enabling the execution of standard SPARQL queries to access the data
 in the triple store;
 \item Other types of queries are beyond the expressive power of the standard
 SPARQL query languages. In order to support these, the repository module has
 the capability of mapping CDAO tree and network structures, stored in the
 triple store, to corresponding representations of trees and networks in Prolog
-[23], a popular programming language for knowledge representation and
+\cite{prolog}, a popular programming language for knowledge representation and
 reasoning. The remaining types of queries are implemented in Prolog.
 \end{itemize}
 
@@ -323,7 +323,7 @@ Questions 1,4,6,and10 can be answered using just SPARQL queries.  Questions
 not supported, the primary cause is the lack of a precise specification of the
 query, or the data is not currently available. For example, the set of
 relationships one might be interested in having returned was not fully
-specified in the original article [12].  Clearly, the availability of a SPARQL
+specified in the original article \cite{queries}.  Clearly, the availability of a SPARQL
 interface enables the user to submit also arbitrary other queries, as long as
 these are expressible as SPARQL queries.
 \subsubsection{Basic Structure}
@@ -529,7 +529,11 @@ to filter/reduce that set based on the type of data requested.
 
 \subsection{Triple-Store}
 
+Trees in the Triple-Store were taken from TreeBase as Nexus files, then converted the files to RDF using our own program, then loaded up the RDF files to our database.  Matrices can be downloaded as NeXML files from TreeBase, we do not store them in our database just convert them when we needd to access them.
+
 \subsection{Prolog Storage}
+
+The basic set up for the Prolog queries were described previously.  All the ground rules were generated from the Triple-Store and converted into their prolog form.  This is then loaded with the actual prolog query anytime it is called.
 
 \subsection{Timed Queries}
 
@@ -548,20 +552,22 @@ HP 	Linux (SuSE) 	8 GB 	Intel Core i7 860 	                 2.8 GHz
 \begin{tabular}{|c|c|c|}
 \hline
         & PhlyoWS Time & WebPortal Time \\ \hline
-Q1   &                        &      \\ \hline
+Q1   &  N/A                &      \\ \hline
 Q2   & N/A                 & N/A\\ \hline
 Q3a &                        &\\ \hline
 Q3b &                        &\\ \hline
-Q4   &                        &\\ \hline
+Q4a   & N/A                       &\\ \hline
+Q4b & N/A                &\\ \hline
 Q5   &                        &\\ \hline
-Q6   &                        &\\ \hline
+Q6   & N/A                       &\\ \hline
 Q7   &                        &\\ \hline
 Q8   & N/A                 & N/A\\ \hline
 Q9   & N/A                 & N/A\\ \hline
 Q10 & N/A                 & N/A\\ \hline
 Q11 & N/A                 & N/A\\ \hline
 \end{tabular}
-
+\\
+\\
 
 Query 1: WebPortal Query \\
 {\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/tu/html?tu=Ilex\_anomala\&tu=Ilex\_glabra}
@@ -589,13 +595,18 @@ Query 6: WebPortal Query \\
 \section{Related Work}
 
 \subsection{TreeBase}
+%%TAKEN FROM CDAO PAPER RELATED WORK
+
+TreeBASE \cite{treebase} is a relational database that stores phylogenies (of different nature), the associated alignments and character data used to derive the phylogenies, and several types of meta-data (e.g., authors and citations). The content of TreeBASE is community contributed and it is restricted to results of published studies. TreeBASE occupies a unique role, in providing access to both description of trees as well as corresponding generating data matrices.  The spirit of TreeBASE is to enable retrieval of trees and data for study comparison, combination, and for reuse. The relational nature of the underlying repository enables a set of standard queries for accessing the repository. The original TreeBASE provided six forms of access to the repository- search by taxon, by author, by citation, by study accession number, by matrix accession number, and by structure.  The newest release has expanded the submission formats (adding nexml as one of the supported formats, along with NEXUS), added support for the PhyloWS API, and connection to the PhyloWidget visualization tool.
 
 \subsection{Nexplorer}
+%%TAKEN FROM CDAO PAPER RELATED WORK
 
 
 \section{Future Work}
 
 Improving the speed on some queries and fully implementing others.  Work on adding MIAPA qualities to the webportal and eventually to the queries as well.
 
-
+\bibliographystyle{plain}
+  \bibliography{bibfile}
 \end{document}
