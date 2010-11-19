@@ -145,12 +145,14 @@ exporter module.  For more detail, please refer to the CDAO-Store paper.
 %Taken from BACKGROUND PHYLOWS section of CDAO-STORE PAPER
 PhyloWS (Phyloinformatics Web Services API) is a standard for exposing
 phylogenetic data as a web service. Web services are tools that can perform
-certain tasks via HTTP \cite{WebService}. PhyloWS specifically uses a RESTful style web
-service which uses a few well-known operations to relay data \cite{PhyloWSWiki}  \cite{Fielding02principleddesign}. This
-works in a similar way as GET or POST for HTTP \cite{Fielding02principleddesign}.  All PhyloWS URI's begin
-with /phylows/ as the standard delimiter. Then based on the phylogenetic
-information being queried a data structure will be given, such as taxon, tree,
-or study.  This is followed by any specific identifiers needed for the query.
+certain tasks via HTTP \cite{WebService}. PhyloWS specifically uses a RESTful
+style web service which uses a few well-known operations to relay data
+\cite{PhyloWSWiki}  \cite{Fielding02principleddesign}. This works in a similar
+way as GET or POST for HTTP \cite{Fielding02principleddesign}.  All PhyloWS
+URI's begin with /phylows/ as the standard delimiter. Then based on the
+phylogenetic information being queried a data structure will be given, such as
+taxon, tree, or study.  This is followed by any specific identifiers needed for
+the query.
 For example, http://purl.org/phylo/treebase/phylows/tree/TB2:Tr3099?format=rdf
 is a way to access information from TreeBASE using PhyloWS. When this URL is
 accessed, it returns the tree with the TreeBASE ID equal to 'Tr3099' in RDF
@@ -328,7 +330,8 @@ interface enables the user to submit also arbitrary other queries, as long as
 these are expressible as SPARQL queries.
 \subsubsection{Basic Structure}
 
-The ground rules used for the Prolog queries are the nodes and edges of all the trees, formatted as follows:
+The ground rules used for the Prolog queries are the nodes and edges of all the
+trees, formatted as follows:
 \begin{verbatim}
 node(TreeName, NodeName).
 edge(TreeName, EdgeName, Direction, SourceNode, DestinationNode).
@@ -467,7 +470,10 @@ available.
 \subsubsection{Question 7}
 Determine all phylogenies containing a given characteristic (e.g., diameter of the tree, width of the tree);
 
-This one is separated to asking for width, diameter, or radius.  For the definitions of what the diameter or radius of a phylogenetic tree is, we treat the trees as graphs and use the definitions from graph theory for radius and diameter.
+This one is separated to asking for width, diameter, or radius.  For the
+definitions of what the diameter or radius of a phylogenetic tree is, we treat
+the trees as graphs and use the definitions from graph theory for radius and
+diameter.
 \begin{verbatim}
 eccentricity(Tree,Len,Start ):- findall( E, (not(LeafNode == Start),
 					leaf(Tree, LeafNode), 
@@ -529,17 +535,29 @@ to filter/reduce that set based on the type of data requested.
 
 \subsection{Triple-Store}
 
-Trees in the Triple-Store were taken from TreeBase as Nexus files, then converted the files to RDF using our own program, then loaded up the RDF files to our database.  Matrices can be downloaded as NeXML files from TreeBase, we do not store them in our database just convert them when we needd to access them.
+Trees in the Triple-Store were taken from TreeBase as Nexus files, then
+converted the files to RDF using our own program, then loaded up the RDF files
+to our database.  Matrices can be downloaded as NeXML files from TreeBase, we
+do not store them in our database just convert them when we needd to access
+them.
 
 \subsection{Prolog Storage}
 
-The basic set up for the Prolog queries were described previously.  All the ground rules were generated from the Triple-Store and converted into their prolog form.  This is then loaded with the actual prolog query anytime it is called.
+The basic set up for the Prolog queries were described previously.  All the
+ground rules were generated from the Triple-Store and converted into their
+prolog form.  This is then loaded with the actual prolog query anytime it is
+called.
 
 \subsection{Timed Queries}
 
-Queries were timed using the \emph{time} and \emph{curl} commands.  Since our WebPortal uses cgi-bin we just call directly with a specific url instead of the form to get a more accurate time.
+Queries were timed using the \emph{time} and \emph{curl} commands.  Since our
+WebPortal uses cgi-bin we just call directly with a specific url instead of the
+form to get a more accurate time.
 
-In order to get a basic idea of how long each query took, we used various computers from our Department Computer Lab and averaged them up.  Table 1 shows the average times per query when using either PhyloWS or the Portals cgi-bin.  Some cases dont have both implemented however.
+In order to get a basic idea of how long each query took, we used various
+computers from our Department Computer Lab and averaged them up.  Table 1 shows
+the average times per query when using either PhyloWS or the Portals cgi-bin.
+Some cases dont have both implemented however.
 
 The lab contained 3 different levels of hardware, we tested each evenly.
 
@@ -597,18 +615,36 @@ Query 6: WebPortal Query \\
 
 Query 7:  Special Case
 
-Query 7 is a special case in that it has not been fully implemented into the Web Service yet due to timing constraints.  Currently, any query for this in a web service times out the browswer we run it in.  However, we ran this natively with SWI-Prolog and got the following results.
+Query 7 is a special case in that it has not been fully implemented into the
+Web Service yet due to timing constraints.  Currently, any query for this in a
+web service times out the browswer we run it in.  However, we ran this natively
+with SWI-Prolog and got the following results.
 
 \section{Related Work}
 
 \subsection{TreeBase}
 %%TAKEN FROM CDAO PAPER RELATED WORK
 
-TreeBASE \cite{treebase} is a relational database that stores phylogenies (of different nature), the associated alignments and character data used to derive the phylogenies, and several types of meta-data (e.g., authors and citations). The content of TreeBASE is community contributed and it is restricted to results of published studies. TreeBASE occupies a unique role, in providing access to both description of trees as well as corresponding generating data matrices.  The spirit of TreeBASE is to enable retrieval of trees and data for study comparison, combination, and for reuse. The relational nature of the underlying repository enables a set of standard queries for accessing the repository. The original TreeBASE provided six forms of access to the repository- search by taxon, by author, by citation, by study accession number, by matrix accession number, and by structure.  The newest release has expanded the submission formats (adding nexml as one of the supported formats, along with NEXUS), added support for the PhyloWS API, and connection to the PhyloWidget visualization tool.
+TreeBASE \cite{treebase} is a relational database that stores phylogenies (of
+different nature), the associated alignments and character data used to derive
+the phylogenies, and several types of meta-data (e.g., authors and citations).
+The content of TreeBASE is community contributed and it is restricted to
+results of published studies. TreeBASE occupies a unique role, in providing
+access to both description of trees as well as corresponding generating data
+matrices.  The spirit of TreeBASE is to enable retrieval of trees and data for
+study comparison, combination, and for reuse. The relational nature of the
+underlying repository enables a set of standard queries for accessing the
+repository. The original TreeBASE provided six forms of access to the
+repository- search by taxon, by author, by citation, by study accession number,
+by matrix accession number, and by structure.  The newest release has expanded
+the submission formats (adding nexml as one of the supported formats, along
+with NEXUS), added support for the PhyloWS API, and connection to the
+PhyloWidget visualization tool.
 
 \section{Future Work}
 
-Improving the speed on some queries and fully implementing others.  Work on adding MIAPA qualities to the webportal and eventually to the queries as well.
+Improving the speed on some queries and fully implementing others.  Work on
+adding MIAPA qualities to the webportal and eventually to the queries as well.
 
 \bibliographystyle{plain}
   \bibliography{bibfile}
