@@ -1,5 +1,5 @@
 #/bin/bash
-
+export PATH="~/bin:$PATH"
 export HOSTS_FILE="$1"
 export JOBS_FILE="$2"
 
