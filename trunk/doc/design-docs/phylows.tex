@@ -168,7 +168,7 @@ given size.
 Our PhyloWS implementation is the basis for all the data access features of
 CDAO-Store. The other web components, and the CDAO-Explorer tool use it to
 access data. URI's are divided into three conceptual parts. The address of the
-store site, and path prefix \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows}, a
+store site, and path prefix \url{http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/phylows}, a
 query type (i.e., tree, matrix, msc, nca, or size), and parameter list. The
 specific parameters depend on the query type. For example, the msc and nca
 query types expect a list of taxon id's separated by `/'. The listing query
@@ -551,16 +551,16 @@ HP 	Linux (SuSE) 	8 GB 	Intel Core i7 860 	                 2.8 GHz
 
 \begin{tabular}{|c|c|c|}
 \hline
-        & PhlyoWS Time & WebPortal Time \\ \hline
-Q1   &  N/A                &      \\ \hline
+        & PhlyoWS Time(s) & WebPortal Time(s) \\ \hline
+Q1   &  N/A                &   2.65   \\ \hline
 Q2   & N/A                 & N/A\\ \hline
-Q3a &                        &\\ \hline
-Q3b &                        &\\ \hline
-Q4a   & N/A                       &\\ \hline
-Q4b & N/A                &\\ \hline
-Q5   &                        &\\ \hline
-Q6   & N/A                       &\\ \hline
-Q7   &                        &\\ \hline
+Q3a &                        & 2.23 \\ \hline
+Q3b &                        & 1.12 \\ \hline
+Q4a   & N/A                       &7.01 \\ \hline
+Q4b & N/A                &  7.20\\ \hline
+Q5   &                        & 44.27\\ \hline
+Q6   & N/A                       &6.13\\ \hline
+Q7   &   *                     & *\\ \hline
 Q8   & N/A                 & N/A\\ \hline
 Q9   & N/A                 & N/A\\ \hline
 Q10 & N/A                 & N/A\\ \hline
@@ -574,9 +574,15 @@ Query 1: WebPortal Query \\
 
 Query 3a: WebPortal Query \\
 {\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/node/html?qtype=msc\&tree=Tree3099\&node=Ilex\_anomala\&node=Ilex\_glabra}
+\\
+PhyloWS Query\\
+{\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/phylows/msc/Tree3099/Ilex\_anomala/Ilex\_glabra}
 
 Query 3b: WebPortal Query \\
 {\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/node/html?qtype=nca\&tree=Tree3099\&node=Ilex\_anomala\&node=Ilex\_glabra}
+\\
+PhyloWS Query\\
+{\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/phylows/nca/Tree3099/Ilex\_anomala/Ilex\_glabra}
 
 Query 4a: WebPortal Query \\
 {\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/algorithm/html?algorithm=parsimony}
@@ -586,11 +592,16 @@ Query 4b: WebPortal Query \\
 
 Query 5: WebPortal Query \\
 {\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/size/html?criterion=node\&direction=less\&size=25}
+\\
+PhyloWS Query\\
+{\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/phylows/size/node/less/25}
 
 Query 6: WebPortal Query \\
 {\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/author/html?last=Piel}
 
+Query 7:  Special Case
 
+Query 7 is a special case in that it has not been fully implemented into the Web Service yet due to timing constraints.  Currently, any query for this in a web service times out the browswer we run it in.  However, we ran this natively with SWI-Prolog and got the following results.
 
 \section{Related Work}
 
@@ -598,10 +609,6 @@ Query 6: WebPortal Query \\
 %%TAKEN FROM CDAO PAPER RELATED WORK
 
 TreeBASE \cite{treebase} is a relational database that stores phylogenies (of different nature), the associated alignments and character data used to derive the phylogenies, and several types of meta-data (e.g., authors and citations). The content of TreeBASE is community contributed and it is restricted to results of published studies. TreeBASE occupies a unique role, in providing access to both description of trees as well as corresponding generating data matrices.  The spirit of TreeBASE is to enable retrieval of trees and data for study comparison, combination, and for reuse. The relational nature of the underlying repository enables a set of standard queries for accessing the repository. The original TreeBASE provided six forms of access to the repository- search by taxon, by author, by citation, by study accession number, by matrix accession number, and by structure.  The newest release has expanded the submission formats (adding nexml as one of the supported formats, along with NEXUS), added support for the PhyloWS API, and connection to the PhyloWidget visualization tool.
-
-\subsection{Nexplorer}
-%%TAKEN FROM CDAO PAPER RELATED WORK
-
 
 \section{Future Work}
 
