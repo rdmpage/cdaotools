@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Script to dump nodes in GraphML Format
+#Script to print list of studies for an outhor in HTML Format
 #Brandon Chisham
 #Feb. 11, 2010
 #Description:

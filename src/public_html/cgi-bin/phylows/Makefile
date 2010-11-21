@@ -2,7 +2,13 @@
 REMOTE_WS_DIR=~/public_html/cgi-bin/phylows
 REMOTE_WS_HOST=daedalus.cs.nmsu.edu
 
-deploy: tree.deployed listing.deployed matrix.deployed msc.deployed nca.deployed phylows.env.deployed size.deployed tree-count.pl.deployed tree-query-main.pl.deployed
+deploy: author.deployed study.deployed tree.deployed listing.deployed matrix.deployed msc.deployed nca.deployed phylows.env.deployed size.deployed tree-count.pl.deployed tree-query-main.pl.deployed
+
+author.deployed: author
+	scp author $(REMOTE_WS_HOST):$(REMOTE_WS_DIR)
+	ssh $(REMOTE_WS_HOST) "cd $(REMOTE_WS_DIR) && chmod 755 author"
+	touch author.deployed
+
 
 listing.deployed: listing
 	scp listing $(REMOTE_WS_HOST):$(REMOTE_WS_DIR)
@@ -33,6 +39,13 @@ size.deployed: size tree-query-main.pl
 	scp size $(REMOTE_WS_HOST):$(REMOTE_WS_DIR)
 	ssh $(REMOTE_WS_HOST) "cd $(REMOTE_WS_DIR) && chmod 755 size"
 	touch size.deployed
+
+study.deployed: study
+	scp study $(REMOTE_WS_HOST):$(REMOTE_WS_DIR)
+	ssh $(REMOTE_WS_HOST) "cd $(REMOTE_WS_DIR) && chmod 755 study"
+	touch study.deployed
+
+
 tree-count.pl.deployed: tree-count.pl
 	scp tree-count.pl $(REMOTE_WS_HOST):$(REMOTE_WS_DIR)
 	ssh $(REMOTE_WS_HOST) "cd $(REMOTE_WS_DIR) && gzip -f tree-count.pl && zcat prolog-trees.pl.gz tree-count.pl.gz | gzip  > prolog-trees-integrated-functions.pl.gz"

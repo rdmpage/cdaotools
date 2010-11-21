@@ -11,7 +11,7 @@ REMOTE_XSL_DIR=~/public_html/
 
 
 
-deploy:index.php.deployed config.php.deployed footer.php.deployed header.php.deployed faq.php.deployed phylows.php.deployed about.php.deployed  style.css.deployed cdao-triplestore-logo.jpg.deployed cdao-triplestore-logo.ico.deployed nexml_to_csv.xsl.deployed study_result_to_html.xsl.deployed tu_to_filelist.xsl.deployed study_authors_to_html.xsl.deployed trees_to_file.xsl.deployed
+deploy:index.php.deployed config.php.deployed footer.php.deployed header.php.deployed faq.php.deployed phylows.php.deployed about.php.deployed  style.css.deployed cdao-triplestore-logo.jpg.deployed cdao-triplestore-logo.ico.deployed nexml_to_csv.xsl.deployed study_result_to_foaf.xsl.deployed study_result_to_html.xsl.deployed tu_to_filelist.xsl.deployed study_authors_to_foaf.xsl.deployed study_authors_to_html.xsl.deployed trees_to_file.xsl.deployed
 	(cd bin && make deploy)
 	(cd cgi-bin && make deploy)
 
