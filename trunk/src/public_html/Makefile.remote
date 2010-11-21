@@ -10,7 +10,7 @@ REMOTE_DAT_DIR=~$(PRODUCTION_USER)/bin/
 REMOTE_XSL_DIR=~$(PRODUCTION_USER)/public_html_staging/
 
 
-deploy:.index.php.deployed .inputfiletranslator.php.deployed .footer.php.deployed .header.php.deployed .faq.php.deployed .phylows.php.deployed .about.php.deployed .style.css.deployed .cdao-triplestore-logo.jpg.deployed .cdao-triplestore-logo.ico.deployed .nexml_to_csv.xsl.deployed .study_result_to_html.xsl.deployed .tu_to_filelist.xsl.deployed .study_authors_to_html.xsl.deployed
+deploy:.index.php.deployed .inputfiletranslator.php.deployed .footer.php.deployed .header.php.deployed .faq.php.deployed .phylows.php.deployed .about.php.deployed .style.css.deployed .cdao-triplestore-logo.jpg.deployed .cdao-triplestore-logo.ico.deployed .nexml_to_csv.xsl.deployed .study_result_to_phylows.xsl.deployed .study_result_to_html.xsl.deployed .tu_to_filelist.xsl.deployed .study_authors_to_phylows.xsl.deployed .study_authors_to_html.xsl.deployed
 
 .%.php.deployed: %.php
 	cp $< $(REMOTE_WEB_DIR)
