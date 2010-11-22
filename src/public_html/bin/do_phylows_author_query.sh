@@ -14,7 +14,9 @@ export FIRST_NAME=`echo $REQUEST_URI |grep -oE "first[/]+[-'%a-zA-Z0-9]+" | sed 
 export LAST_NAME=`echo $REQUEST_URI | grep -oE "last[/]+[-'%a-zA-Z0-9]+" | sed "s/%20/ /g"  | cut -f 2 -d "/"`
 export AUTHOR_QUERY=$(do_author_work_list_query_construct.sh "$LAST_NAME" "$FIRST_NAME");
 export XMLNS="http://www.cs.nmsu.edu/~bchisham/study.owl#"
-export STUDY_URL="http://www.cs.nmsu.edu/~$(whoami)/cgi-bin/phylows/study"
+export PHYLOWS_BASE="http://www.cs.nmsu.edu"
+
+export STUDY_URL="$PHYLOWS_BASE/~$(whoami)/cgi-bin/phylows/study"
 source ~/cdaostorecgi.rc
 
 function open_document {
@@ -35,8 +37,8 @@ EOM
 #Print the results for the author.
 function print_result {
    echo "<!-- AUTHOR_QUERY: $AUTHOR_QUERY -->"
-   echo "<foaf:Person rdf:about=\"$REQUEST_URI\">
-            <foaf:givenNamee>$FIRST_NAME<foaf:givenName>
+   echo "<foaf:Person rdf:about=\"$PHYLOWS_BASE$REQUEST_URI\">
+            <foaf:givenName>$FIRST_NAME<foaf:givenName>
             <foaf:familyName>$LAST_NAME</foaf:familyName>"
       TMP_QUERY_FILE=`mktemp`".rql";
    echo "$AUTHOR_QUERY" > $TMP_QUERY_FILE;
