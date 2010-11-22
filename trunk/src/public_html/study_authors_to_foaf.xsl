@@ -13,11 +13,10 @@
                   <xsl:choose>
                     
                      <xsl:when test="@name = 'lname'">
-                       <foaf:Person>
-                        <xsl:attribute name="rdf:about">http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/author/last/<xsl:value-of select="sparql:literal"/>
+                       <foaf:maker>
+                        <xsl:attribute name="rdf:resource">http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/author/last/<xsl:value-of select="sparql:literal"/>
                         </xsl:attribute>
-                        <xsl:value-of select="sparql:literal"/>
-                        </foaf:Person>
+                       </foaf:maker>
                      </xsl:when>
                      <xsl:otherwise></xsl:otherwise>
                  </xsl:choose>
