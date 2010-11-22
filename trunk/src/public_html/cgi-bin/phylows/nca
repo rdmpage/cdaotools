@@ -94,7 +94,7 @@ cat << EOM
 	  done
         )
        </cdao:SetOfNodes>
-     </cdao:ncd_node_of>
+     </cdao:nca_node_of>
   </cdao:Node>
   <!-- PROLOG_IN: $TMP_PROLOG_IN 
        PROLOG_BIN: $TMP_PROLOG_BIN -->
