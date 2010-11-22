@@ -37,19 +37,26 @@ EOM
 #Print the results for the author.
 function print_result {
    echo "<!-- AUTHOR_QUERY: $AUTHOR_QUERY -->"
-   echo "<foaf:Person rdf:about=\"$PHYLOWS_BASE$REQUEST_URI\">
-            <foaf:givenName>$FIRST_NAME<foaf:givenName>
-            <foaf:familyName>$LAST_NAME</foaf:familyName>"
+   echo "<foaf:Person rdf:about=\"$PHYLOWS_BASE$REQUEST_URI\">"
+   if [[ $FIRST_NAME != "" ]]; then
+   	echo         "<foaf:givenName>$FIRST_NAME</foaf:givenName>"
+   fi
+   echo         "<foaf:familyName>$LAST_NAME</foaf:familyName>"
       TMP_QUERY_FILE=`mktemp`".rql";
    echo "$AUTHOR_QUERY" > $TMP_QUERY_FILE;
    RESULT_SIZE=0;
-   for result in $(sparql -q --results text --query "$TMP_QUERY_FILE" --graph "$GRAPH_FILE"  | grep -oE "<.*>" | sed "s/<$ESCAPED_DUMP_URI\(.*\)>/\1/g" );
+   RESULTS=$(sparql -q --results text --query "$TMP_QUERY_FILE" --graph "$GRAPH_FILE"  | grep -oE "<.*>" | sed "s/<$ESCAPED_DUMP_URI\(.*\)>/\1/g" )
+   for result in $RESULTS;
    do
         RESULT_SIZE=$[ $RESULT_SIZE + 1 ]
-        echo "<foaf:Publication rdf:about=\"$STUDY_URL/$result\" />";
+        echo "<foaf:made rdf:resource=\"$STUDY_URL/$result\" />"
    done
    echo "</foaf:Person>"
    rm -f $TMP_QUERY_FILE
+   for result in $RESULTS;
+   do
+       echo "<foaf:Document rdf:about=\"$STUDY_URL/$result\"><foaf:maker rdf:resource=\"$PHYLOWS_BASE$REQUEST_URI\"/></foaf:Document>" 
+   done
 }
 
 
