@@ -2,7 +2,7 @@
 REMOTE_WS_DIR=~/public_html/cgi-bin/phylows
 REMOTE_WS_HOST=daedalus.cs.nmsu.edu
 
-deploy: author.deployed study.deployed tree.deployed listing.deployed matrix.deployed msc.deployed nca.deployed phylows.env.deployed size.deployed tree-count.pl.deployed tree-query-main.pl.deployed
+deploy: author.deployed study.deployed tree.deployed listing.deployed matrix.deployed msc.deployed nca.deployed phylows.env.deployed program.deployed size.deployed tree-count.pl.deployed tree-query-main.pl.deployed
 
 author.deployed: author
 	scp author $(REMOTE_WS_HOST):$(REMOTE_WS_DIR)
@@ -35,6 +35,13 @@ nca.deployed: nca phylows.env.deployed
 phylows.env.deployed: phylows.env
 	scp phylows.env $(REMOTE_WS_HOST):$(REMOTE_WS_DIR)
 	touch phylows.env.deployed
+
+program.deployed: program
+	scp program $(REMOTE_WS_HOST):$(REMOTE_WS_DIR)
+	ssh $(REMOTE_WS_HOST) "cd $(REMOTE_WS_DIR) && chmod 755 program"
+	touch program.deployed
+
+
 size.deployed: size tree-query-main.pl
 	scp size $(REMOTE_WS_HOST):$(REMOTE_WS_DIR)
 	ssh $(REMOTE_WS_HOST) "cd $(REMOTE_WS_DIR) && chmod 755 size"

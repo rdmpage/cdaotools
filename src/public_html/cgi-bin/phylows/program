@@ -1,0 +1,4 @@
+#!/bin/bash
+source ~/.bashrc
+
+exec do_phylows_program_query.sh
