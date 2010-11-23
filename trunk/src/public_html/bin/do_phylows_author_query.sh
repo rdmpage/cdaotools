@@ -21,7 +21,7 @@ source ~/cdaostorecgi.rc
 
 function open_document {
     cat <<EOM
-ContentType: application/xml
+ContentType: text/xml
 
 <?xml version="1.0"?>
 <rdf:RDF
