@@ -1,5 +1,6 @@
 #!/bin/bash
 #Script to list trees containing a given tu.
+source ~/.bashrc
 
 TU=`echo $REQUEST_URI | grep -oE "tu/[_a-zA-Z0-9%/]+" | sed "s/%20/_/g"  | sed 's/tu\///' | sed 's/\//\n/g'`
 
@@ -13,9 +14,8 @@ PHYLOWS_TREE_URL="http://www.cs.nmsu.edu/~$(whoami)/cgi-bin/phylows/tree"
 source ~/cdaostorecgi.rc
 
 function open_document {
-    cat <<EOM
-ContentType: text/xml
-
+    echo -n -e "ContentType: text/xml\n\n"
+cat << EOM
 <?xml version="1.0"?>
 <rdf:RDF
     xmlns:foaf="http://xmlns.com/foaf/0.1/" 
@@ -64,8 +64,8 @@ function print_results {
         RESULTS="$RESULTS $tree";
       fi
     done
-    #RESULTS=$(echo "$RESULTS" | sort | uniq )
-    for tree in $(echo $RESULTS | sort | uniq );
+    echo "<!--$(echo $RESULTS | sed 's/ /\n/g' | sort | uniq ) -->"
+    for tree in $(echo $RESULTS | sed 's/ /\n/g' | sort | uniq );
     do
        echo -e "\t<cdao:Tree rdf:about=\"$PHYLOWS_TREE_URL/$tree\" />"
     done
