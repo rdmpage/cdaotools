@@ -640,6 +640,10 @@ Web Service yet due to timing constraints.  Currently, any query for this in a
 web service times out the browswer we run it in.  However, we ran this natively
 with SWI-Prolog and got the following results.
 
+\subsection{Discussion}
+
+The later queries, begin to have larger times due to the fact that the query is checking all possible trees in the Triple-Store, rather than looking only looking at nodes from a particular tree.  Some ways to improve these times may include keeping meta-data of the tress for some of the queries.  For instance, query 5.  We do not keep an overall 'count' for each tree. These are calculated each time the query is run on that tree.  For other queries, such as 6, keeping the amount of database access to a minumun will also help.
+
 \section{Related Work}
 
 \subsection{TreeBase}
