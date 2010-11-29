@@ -245,7 +245,7 @@ collection of trees rather than a particular tree or small small set of trees.
 The various count queries are quite efficient since they mostly require looking
 at the nodes and only process edge relations to the extent they are needed to
 classify a node as a leaf or an internal node, but this check does not require
-any recursive varification of relations so it is also quite efficient.
+any recursive verification of relations so it is also quite efficient.
 
        The radius and diameter queries require finding the shortest and longest
 paths across a tree respectively, but this requires checking all the paths, in
@@ -254,7 +254,7 @@ clients will time-out before the request can be full-filled.
 
        \paragraph{Pre-processing}
        The nearest common ancestor and minimum spanning clade queries begin
-using the sparql layer to generate a set of facts about the tree including its
+using the SpaRQL layer to generate a set of facts about the tree including its
 nodes and edges. The final step in pre-processing is to append a set of rules
 for deriving basic relationships between nodes based on edge facts.
 
@@ -273,7 +273,7 @@ The repository module provides two core functionalities: storage and querying.
 The repository module maintains a triple store, used to maintain all the CDAO
 instances created, either through submitted user files or through processing of
 Tree-BASE content. The triple store is implemented in Python and uses the
-RDFlib5 module to store the RDF serializations of CDAO instances in a
+RDFlib module to store the RDF serializations of CDAO instances in a
 relational database (implemented using a MySQL database).  The repository
 modules supports the execution of queries against the triple store. This set of
 queries is primarily drawn from the description given by Nakhleh et al. \cite{queries},
@@ -320,8 +320,8 @@ reasoning. The remaining types of queries are implemented in Prolog.
 \end{itemize}
 
 \subsection{Query Implementation}
-Questions 1,4,6,and10 can be answered using just SPARQL queries.  Questions
-3,5,7,8,and11 have been implemented using Prolog.   For the queries that are
+Questions 1,4,6,and 10 can be answered using just SPARQL queries.  Questions
+3,5,7,8,and 11 have been implemented using Prolog.   For the queries that are
 not supported, the primary cause is the lack of a precise specification of the
 query, or the data is not currently available. For example, the set of
 relationships one might be interested in having returned was not fully
@@ -366,9 +366,9 @@ of their source files rather than a common name space, the above query is not
 our implementation.
 
 With a script we have pre-computed the inverse of the tree to tu relation given
-in the source data, and then using xslt we extract the intersection of the
-trees that each tu has in common based on this pre-computed result-set.
-Ultimately this measure will be replaced as we migrate the existing set of TU
+in the source data, and then using xslt we extract the trees associated
+with each taxon and then compute the intersection of those sets of 
+trees. Ultimately this measure will be replaced as we migrate the existing set of TU
 names to be references to NCBI or some other commonly accepted taxonomic
 reference.
 
@@ -396,7 +396,7 @@ Member is a child of Node, or a child of one of Node's children.
 
 \paragraph{Nearest Common Ancestor}
 
-Nca is slightly different from msc and as such, is done seperately.
+Nca is slightly different from msc and as such, is done separately.
 
 \subsubsection{Question 4}
 Determine all phylogenies constructed using a given inference method;
@@ -428,7 +428,7 @@ WHERE {
 }
 \end{verbatim}
 
-Where \emph{\$ALGO} is the variable for the given algorithm/software being checked for.
+Where \emph{\$ALGO} is the variable for the given algorithm/software being checked.
 
 \subsubsection{Question 5}
  Determine all the phylogenies containing a set number of taxa.
@@ -503,7 +503,8 @@ the purpose of clustering phylogenies that are "close" to a given tree);
 This query has not been implemented. The basic frame-work developed for the other
 size related queries will help with this, but supporting this query requires much
 more extensive API documentation, and some analysis of the security implications
-of accepting these from users.
+of accepting arbitrary queries from users, as well as the potential quality
+and denial of service issues that this feature will introduce.
 
 
 \subsubsection{Question 9}
@@ -519,7 +520,8 @@ Given some measures, return statistics about the measure in the phylogenies
 present in the repository (e.g., distribution of tree lengths);
 
 
-Not currently implemented but can be implemented using SPARQL.
+Not currently implemented but can be implemented using SPARQL by pre-computing and
+maintaining these data as new information is added to the system.
 
 \subsubsection{Question 11}
 Given a type of data and a set of taxa, determine all the phylogenies on the
@@ -537,15 +539,18 @@ to filter/reduce that set based on the type of data requested.
 
 Trees in the Triple-Store were taken from TreeBase as Nexus files, then
 converted the files to RDF using our own program, then loaded up the RDF files
-to our database.  Matrices can be downloaded as NeXML files from TreeBase, we
-do not store them in our database just convert them when we need to access
-them.
+to our database. We do not store alignment matrices, and handle requests for matrices
+using TreeBASE. 
+
+% Matrices can be downloaded as NeXML files from TreeBase, we
+%do not store them in our database just convert them when we need to access
+%them.
 
 \subsection{Prolog Storage}
 
 The basic set up for the Prolog queries were described previously.  All the
 ground rules were generated from the Triple-Store and converted into their
-prolog form.  This is then loaded with the actual prolog query anytime it is
+Prolog form.  This is then loaded with the actual Prolog query anytime it is
 called.
 
 \subsection{Timed Queries}
@@ -555,7 +560,7 @@ WebPortal uses cgi-bin we just call directly with a specific url instead of the
 form to get a more accurate time.
 
 In order to get a basic idea of how long each query took, we used various
-computers from our Department Computer Lab and averaged them up.  Table 1 shows
+computers from our Department Computer Lab and averaged them.  Table 1 shows
 the average times per query when using either PhyloWS or the Portals cgi-bin.
 Query 7 is a special case, for details see that section.
 %Some cases do not have both implemented however.
@@ -570,15 +575,15 @@ HP 	Linux (SuSE) 	8 GB 	Intel Core i7 860 	                 2.8 GHz
 
 \begin{tabular}{|c|c|c|}
 \hline
-        & PhlyoWS Time(s) & WebPortal Time(s) \\ \hline
-Q1   &  N/A                &   2.65   \\ \hline
-Q3a &  2.12                      & 2.23 \\ \hline
-Q3b &  1.05                      & 1.12 \\ \hline
-Q4a   & 6.85                       &7.01 \\ \hline
-Q4b & 6.99               &  7.20\\ \hline
-Q5   &  37.08                      & 44.27\\ \hline
-Q6   & 6.13                       &6.13\\ \hline
-Q7   &   *                     & *\\ \hline
+    & PhlyoWS Time(s) & WebPortal Time(s) \\ \hline
+Q1  &  N/A            & 2.65   \\ \hline
+Q3a &  2.12           & 2.23 \\ \hline
+Q3b &  1.05           & 1.12 \\ \hline
+Q4a & 6.85            & 7.01 \\ \hline
+Q4b & 6.99            & 7.20\\ \hline
+Q5  &  37.08          & 44.27\\ \hline
+Q6  & 6.13            & 6.13\\ \hline
+Q7  &   *             & *\\ \hline
 \end{tabular}
 \\
 \\
@@ -646,10 +651,10 @@ with SWI-Prolog and got the following results.
 The later queries, begin to have larger times due to the fact that the query is
 checking all possible trees in the Triple-Store, rather than looking only
 looking at nodes from a particular tree.  Some ways to improve these times may
-include keeping meta-data of the tress for some of the queries.  For instance,
-query 5.  We do not keep an overall 'count' for each tree. These are calculated
+include keeping meta-data of the tress for some of the queries.  For instance with
+query 5,  we do not keep an overall 'count' for each tree. These are calculated
 each time the query is run on that tree. Having this extra level of annotation 
-available would also make it possible to implement these queries with SparQL.
+available would also make it possible to implement this and similar queries with SparQL.
 
 %For other queries, such as 6, keeping the amount of database access to a minumun will also help. 
 Also some restructuring of the relationships between author, study, and their associated trees
