@@ -581,46 +581,57 @@ Q7   &   *                     & *\\ \hline
 \end{tabular}
 \\
 \\
+Here are the queries used, a quick reminder Queries 2,8,9,10,11 were not implemented yet.
 
-Query 1: WebPortal Query \\
-{\tt \url{http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/tu/html?tu=Ilex\_anomala\&tu=Ilex\_glabra}}
+Most times for the WebPortal take longer due to the fact that we still use the PhyloWS scripts we imlemented, it just takes some extra parsing to do it for the portal.
 
-Query 3a: WebPortal Query \\
-{\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/node/html?qtype=msc\&tree=Tree3099\&node=Ilex\_anomala\&node=Ilex\_glabra}
 \\
-PhyloWS Query\\
-{\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/phylows/msc/Tree3099/Ilex\_anomala/Ilex\_glabra}
-
-Query 3b: WebPortal Query \\
-{\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/node/html?qtype=nca\&tree=Tree3099\&node=Ilex\_anomala\&node=Ilex\_glabra}
+Query 1: What trees contain the TUs Ilex anomala and Ilex glabra?
+\\ WebPortal Query \\
+{\tt \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/tu/html?tu=Ilex_anomala&tu=Ilex_glabra}}
 \\
-PhyloWS Query\\
-{\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/phylows/nca/Tree3099/Ilex\_anomala/Ilex\_glabra}
 
-Query 4a: WebPortal Query \\
-{\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/algorithm/html?algorithm=parsimony}
+Query 3a:What is the Minimum Spanning Clade in Tree3099 for the TUs Ilex anomala and Ilex glabra?\\
+ WebPortal Query \\
+{\tt \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/node/html?qtype=msc&tree=Tree3099&node=Ilex_anomala&node=Ilex_glabra}}
+\\PhyloWS Query\\
+{\tt \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/msc/Tree3099/Ilex_anomala/Ilex_glabra}}
 \\
-PhyloWS Query\\
-{\tt http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/algorithm/parsimony}
 
-Query 4b: WebPortal Query \\
-{\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/software/html?software=paup}
+Query 3b:What is the nearest common ancestor for TUs Ilex anomala and Ilex glabra in Tree3099?\\
+ WebPortal Query \\
+{\tt \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/node/html?qtype=nca&tree=Tree3099&node=Ilex_anomala&node=Ilex_glabra}}
+\\PhyloWS Query\\
+{\tt \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/nca/Tree3099/Ilex_anomala/Ilex_glabra}}
 \\
-PhyloWS Query\\
-{\tt http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/program/paup}
 
-Query 5: WebPortal Query \\
-{\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/size/html?criterion=node\&direction=less\&size=25}
+Query 4a: What trees were made using the Parsimony algorithm?
+\\ WebPortal Query \\
+{\tt \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/algorithm/html?algorithm=parsimony}}
+\\PhyloWS Query\\
+{\tt \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/algorithm/parsimony}}
 \\
-PhyloWS Query\\
-{\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/phylows/size/node/less/25}
 
-Query 6: WebPortal Query \\
-{\tt http://www.cs.nmsu.edu/\~{}cdaostore/cgi-bin/author/html?last=Piel}
+Query 4b:What trees were made using the Paup software?\\
+ WebPortal Query \\
+{\tt \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/software/html?software=paup}}
+\\PhyloWS Query\\
+{\tt \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/program/paup}}
 \\
-PhyloWS Query\\
-{\tt http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/author/last/Piel}
 
+Query 5: What are the trees with less than 25 nodes?\\
+ WebPortal Query \\
+{\tt \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/size/html?criterion=node&direction=less&size=25}}
+\\PhyloWS Query\\
+{\tt \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/size/node/less/25}}
+\\
+
+Query 6: What trees are published by Piel?\\
+ WebPortal Query \\
+{\tt \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/author/html?last=Piel}}
+\\PhyloWS Query\\
+{\tt \url{http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/author/last/Piel}}
+\\
 
 Query 7:  Special Case
 
