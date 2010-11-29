@@ -583,8 +583,8 @@ Q7   &   *                     & *\\ \hline
 \\
 Here are the queries used, a quick reminder Queries 2,8,9,10,11 were not implemented yet.
 
-Most times for the WebPortal take longer due to the fact that we still use the PhyloWS scripts we imlemented, it just takes some extra parsing to do it for the portal.
-
+%Most times for the WebPortal take longer due to the fact that we still use the PhyloWS scripts we imlemented, it just takes some extra parsing to do it for the portal.
+Most portal times take slightly longer because they are themselves clients of the PhyloWS interface, and then reformat the results for display on the portal.
 \\
 Query 1: What trees contain the TUs Ilex anomala and Ilex glabra?
 \\ WebPortal Query \\
@@ -642,7 +642,23 @@ with SWI-Prolog and got the following results.
 
 \subsection{Discussion}
 
-The later queries, begin to have larger times due to the fact that the query is checking all possible trees in the Triple-Store, rather than looking only looking at nodes from a particular tree.  Some ways to improve these times may include keeping meta-data of the tress for some of the queries.  For instance, query 5.  We do not keep an overall 'count' for each tree. These are calculated each time the query is run on that tree.  For other queries, such as 6, keeping the amount of database access to a minumun will also help.
+The later queries, begin to have larger times due to the fact that the query is
+checking all possible trees in the Triple-Store, rather than looking only
+looking at nodes from a particular tree.  Some ways to improve these times may
+include keeping meta-data of the tress for some of the queries.  For instance,
+query 5.  We do not keep an overall 'count' for each tree. These are calculated
+each time the query is run on that tree. Having this extra level of annotation 
+available would also make it possible to implement these queries with SparQL.
+
+%For other queries, such as 6, keeping the amount of database access to a minumun will also help. 
+Also some restructuring of the relationships between author, study, and their associated trees
+would help to improve query speed. 
+
+An asynchronous query mechanism would also be useful for running queries such as
+radius and diameter so that we would not have the timeout issues. The introduction of
+some parallel processing would also help to improve performance, since the radius or
+diameter of trees are in dependent of each other. This type of meta-data could also be
+pre-computed for all trees in the system and for new ones as added.
 
 \section{Related Work}
 
@@ -667,8 +683,14 @@ PhyloWidget visualization tool.
 
 \section{Future Work}
 
-Improving the speed on some queries and fully implementing others.  Work on
-adding MIAPA qualities to the webportal and eventually to the queries as well.
+Improving the speed on some queries and fully implementing others. Including allowing
+users to specify more complex relationships with a custom sparql or prolog query.
+
+Work on
+adding MIAPA qualities to the WebPortal and eventually to the queries as well allowing
+users to more information about the provenance of a tree and how to reconstruct it. 
+
+
 
 \bibliographystyle{plain}
   \bibliography{bibfile}
