@@ -475,19 +475,21 @@ definitions of what the diameter or radius of a phylogenetic tree is, we treat
 the trees as graphs and use the definitions from graph theory for radius and
 diameter.
 \begin{verbatim}
-eccentricity(Tree,Len,Start ):- findall( E, (not(LeafNode == Start),
-					leaf(Tree, LeafNode), 
-					pathlength(Tree,Start,LeafNode, E)), 
-					Lens),
-				max_list(Lens, Len).
-%Radius = minimum eccentricity of any vertex.
 radius( Tree, R ):- findall(Leaf, leaf(Tree, Leaf), Leaves),
-	       	      radii(Tree, Leaves, R, _).
-radii(Tree, [Leaf | Leaves], Radius, Curr) :- findall( E, eccentricity(Tree, E, Leaf), Es  ),
-	                           		          min_list(Es, LCurr),
-					          LCurr < Curr, radii(Tree, Leaves, Radius, LCurr);
-					          radii(Tree, Leaves, Radius, Curr).
-radii(_, [], R, R).
+                    length(Leaves, Num), 
+		    write('Number of Leaves for this tree is:'+ Num+'\n'),
+	       	      radii(Tree, Leaves, R, 9999).
+radii(Tree, [Leaf | Leaves], Radius, Curr) :- 
+					      eccList(Tree,Leaf,Leaves,Lens),
+					      max_list(Lens,Len),
+					      length(Leaves, Num),
+					      ((Len < Curr) *-> (  radii(Tree,Leaves,Radius,Len));
+					                    ( radii(Tree,Leaves,Radius,Curr))).
+radii( _, Leaf, R, R):- length(Leaf, 1).
+eccList(Tree, Leaf, [LeafNode | Leaves], [E | Rest]):- pathlength(Tree,Leaf,LeafNode,E),
+						  %write('pathlength('+Tree+','+Leaf+','+LeafNode+','+E+') just finished.\n'),    
+                                                       eccList(Tree,Leaf,Leaves,Rest).
+eccList(_,_,[],[]).
 radius_count( Tree, _, R ):- radius(Tree, R).
 %Diameter = maximum eccentricity of any vertex.
 diameter( Tree, D):- findall( E, (leaf(Tree, LeafNode), eccentricity(Tree, E, LeafNode)), Es ), 
