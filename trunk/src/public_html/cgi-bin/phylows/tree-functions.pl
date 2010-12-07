@@ -98,9 +98,10 @@ radii(Tree, [Leaf | Leaves], Radius, Curr) :-
 					      eccList(Tree,Leaf,Leaves,Lens),
 					      max_list(Lens,Len),
 					      length(Leaves, Num),
-					      write(Num+' leaves left to check... Len is: '+ Len+' Curr is: '+Curr),
-					      ((Len < Curr) *-> (write('true branch\n'),  radii(Tree,Leaves,Radius,Len));
-					                    (write('false-branch\n'), radii(Tree,Leaves,Radius,Curr))).
+					     % write(Num+' leaves left to check... Len is: '+ Len+' Curr is: '+Curr),
+					      ((Len < Curr) *-> (  radii(Tree,Leaves,Radius,Len));
+					                    ( radii(Tree,Leaves,Radius,Curr))).
+radii( _, Leaf, R, R):- length(Leaf, 1).
 eccList(Tree, Leaf, [LeafNode | Leaves], [E | Rest]):- pathlength(Tree,Leaf,LeafNode,E),
 						  %write('pathlength('+Tree+','+Leaf+','+LeafNode+','+E+') just finished.\n'),    
                                                        eccList(Tree,Leaf,Leaves,Rest).
@@ -113,7 +114,6 @@ eccList(_,_,[],[]).
 %						  flush_output, 
 %					          radii(Tree, Leaves, Radius, Curr).
 
-radii( _, [], R, R).
 radius_count( Tree, _, R ):- radius(Tree, R).
 %Diameter = maximum eccentricity of any vertex.
 diameter( Tree, D):- findall( E, (leaf(Tree, LeafNode), eccentricity(Tree, E, LeafNode)), Es ), 
