@@ -4,11 +4,8 @@
 %example tree
 
 :- use_module(library( lists ) ).
-:- include('gzconsult').
-gzconsult( File ):- gzopen( File, read, In ), load_files( File, [stream(In), format( source )]).
-:- gzconsult( 'prolog-trees.pl.gz').
-
-%:- include('Tree3099').
+:- include( 'gzconsult' ).
+:- gzconsult( 'prolog-trees.pl.gz' ).
 
 %node( 'foo-tree', 'a' ).
 %node( 'foo-tree', 'b' ).
@@ -50,8 +47,9 @@ max_depth( Tree, Node, Depth ):- root( Tree, Anst ),
 			   Depth > Depth2.
 %count( Node, 1 ):- root( Node ).
 %Count the number of nodes in a tree
-node_count( Tree, Count ):- root( Tree, RootNode ), node_count( Tree, RootNode, Count ).
-node_count( Tree, StartNode, Count ):- setof( Node, descendent_of(Tree, Node, StartNode), Nodes ), length( Nodes, Count ).
+node_count( Tree, Count ):- findall( Tree, node( Tree, _ ), Nodes ), length( Nodes, Count ).
+%node_count( Tree, Count ):- root( Tree, RootNode ), node_count( Tree, RootNode, Count ).
+%node_count( Tree, StartNode, Count ):- setof( Node, descendent_of(Tree, Node, StartNode), Nodes ), length( Nodes, Count ).
 %Count the leaves in a tree.
 leaf_count( Tree, Count ):- leaf_count( Tree, _, Count ).
 leaf_count( Tree, _, Count ):- setof( LNode, leaf( Tree, LNode ), Nodes ), length( Nodes, Count ).
