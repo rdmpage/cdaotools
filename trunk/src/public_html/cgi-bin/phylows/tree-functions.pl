@@ -4,12 +4,11 @@
 %example tree
 
 :- use_module(library( lists ) ).
-%:- include('prolog-trees').
-:- include('gzconsult').
+%:- include('gzconsult').
+%gzconsult( File ):- gzopen( File, read, In ), load_files( File, [stream(In), format( source )]).
+%:- gzconsult( 'prolog-trees.pl.gz').
 
-:- gzconsult( 'prolog-trees.pl.gz').
-
-%:- module( tree_count, [leaf_count/2, internal_count/2, node_count/2 ] ).
+:- include('Tree3099').
 
 %node( 'foo-tree', 'a' ).
 %node( 'foo-tree', 'b' ).
@@ -68,6 +67,7 @@ clade( Tree, Node ):- setof( Member, clade( Tree, Node, Member ), Members ), wri
 % if the Node starts at the Root, just find the depth of Node End...
 pathlength( _, Node, Node, 0).
 pathlength( Tree, Start, End, Len ):- root(Tree, Start ), depth( Tree, End, Len ).
+pathlength( Tree, Start, End, Len ):- root(Tree, End   ), depth( Tree, Start, 0 ).
 
 pathlength( Tree, Start, End, Len ):- ancestor_of( Tree, Start, End ),
 	                              depth( Tree, Start, Slen ),
@@ -83,15 +83,45 @@ pathlength( Tree, Start, End, Len ):- nearest_common_ancestor_of( Tree, Nca, [St
 				      plus( NElen, NSlen, Len).
 
 %Maximum distance between Start and some other vertex.
-eccentricity( Tree, Len, Start ):- findall( E, (not(LeafNode == Start), leaf(Tree, LeafNode), pathlength(Tree, Start, LeafNode, E)), Lens  ), max_list( Lens, Len ).
 
+eccentricity(Tree,Len,Start ):- findall( E, (not(LeafNode == Start),
+					leaf(Tree, LeafNode), 
+					pathlength(Tree,Start,LeafNode, E)), 
+					Lens),
+				max_list(Lens, Len).
 %Radius = minimum eccentricity of any vertex.
-radius( Tree, R ):- findall( E, (leaf(Tree, LeafNode), eccentricity(Tree, E, LeafNode)), Es  ), min_list(Es, R).
-radius_count( Tree, _, Count ):- radius(Tree, Count).
+radius( Tree, R ):- findall(Leaf, leaf(Tree, Leaf), Leaves),
+                    length(Leaves, Num), 
+		    write('Number of Leaves for this tree is:'+ Num+'\n'),
+	       	      radii(Tree, Leaves, R, 9999).
+radii(Tree, [Leaf | Leaves], Radius, Curr) :- 
+					      eccList(Tree,Leaf,Leaves,Lens),
+					      max_list(Lens,Len),
+					      length(Leaves, Num),
+					      write(Num+' leaves left to check...\n'),
+					      Len < Curr -> radii(Tree,Leaves,Radius,Len);
+					                    radii(Tree,Leaves,Radius,Curr).
+eccList(Tree, Leaf, [LeafNode | Leaves], [E | Rest]):- pathlength(Tree,Leaf,LeafNode,E),
+						  %write('pathlength('+Tree+','+Leaf+','+LeafNode+','+E+') just finished.\n'),    
+                                                       eccList(Tree,Leaf,Leaves,Rest).
+eccList(_,_,[],[]).
 
+%findall( E, eccentricity(Tree, E, Leaf), Es  ),
+%	                           		          min_list(Es, LCurr),
+%					          LCurr < Curr, radii(Tree, Leaves, Radius, LCurr);
+%						  write(length(Leaves)+' leaves left to check...\n'),
+%						  flush_output, 
+%					          radii(Tree, Leaves, Radius, Curr).
+
+radii( _, [], R, R).
+radius_count( Tree, _, R ):- radius(Tree, R).
 %Diameter = maximum eccentricity of any vertex.
-diameter( Tree, D):- findall( E, (leaf(Tree, LeafNode), eccentricity(Tree, E, LeafNode)), Es ), max_list(Es, D ).
-diameter_count(Tree, _, Count):- diameter( Tree, Count ).
+diameter( Tree, D):- findall( E, (leaf(Tree, LeafNode), eccentricity(Tree, E, LeafNode)), Es ), 
+		         max_list(Es, D ).
+diameter_count(Tree, _, D):- diameter( Tree, D ).
+
+
+
 %Parent can directly be concluded from the edge relationships
 parent_of( TreeName, Parent, Child ):- edge( TreeName, 'directional', _, Parent, Child).
 %The parent is an ancestor of the child.
