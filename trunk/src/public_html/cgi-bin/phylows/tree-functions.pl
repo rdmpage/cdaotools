@@ -45,16 +45,24 @@ max_depth( Tree, Node, Depth ):- root( Tree, Anst ),
 	 		   depth( Tree, Node, Depth ),
 			   depth( Tree, Node2, Depth2 ),
 			   Depth > Depth2.
-%count( Node, 1 ):- root( Node ).
+
+nodes( Tree, Nodes ):- setof( Node, node( Tree, Node ), Nodes ).
+
+leaves( Tree, Leaves ):- setof( Leaf, leaf( Tree, Leaf ), Leaves ).
+
+internals( Tree, INodes):- setof( INode, internal( Tree, INode ), INodes ).
+
+
 %Count the number of nodes in a tree
-node_count( Tree, Count ):- setof( Node, node( Tree, Node ), Nodes ), length( Nodes, Count ).
+node_count( Tree, Count ):- nodes(Tree, Nodes ), length( Nodes, Count ).
 
 %Count the leaves in a tree.
-leaf_count( Tree, Count ):- leaf_count( Tree, _, Count ).
-leaf_count( Tree, _, Count ):- setof( LNode, leaf( Tree, LNode ), Nodes ), length( Nodes, Count ).
+leaf_count( Tree, Count ):- leaves( Tree, Nodes ), length( Nodes, Count ).
+
 %Count the internal nodes in a tree.
-internal_count( Tree, Count ):- internal_count( Tree, _, Count ).
-internal_count( Tree, _, Count ):- setof( INode, internal_node(Tree,INode), Nodes ), length( Nodes, Count ).
+internal_count( Tree, Count ):- internals( Tree, Nodes ), length( Nodes, Count ).
+
+
 %Finds descendents of a particular node.
 clade( Tree, Node, Member ):- ancestor_of( Tree, Node, Member ).
 clade( Tree, Node, Node):- node( Tree, Node ).
@@ -87,12 +95,8 @@ pathlength( Tree, Start, End, Len ):- nearest_common_ancestor_of( Tree, Nca, [St
 %					Lens),
 %				max_list(Lens, Len).
 
-nodes( Tree, Nodes ):- findall( Node, node( Tree, Node ), Nodes ).
-
-leaves( Tree, Leaves ):- findall( Leaf, leaf( Tree, Leaf ), Leaves ).
-
 %Radius = minimum eccentricity of any vertex.
-radius( Tree, R ):- leaves(Tree, Leaves ), %findall(Leaf, leaf(Tree, Leaf), Leaves),
+radius( Tree, R ):- leaves(Tree, Leaves ),
                     length(Leaves, Num), 
 		    write('Number of Leaves for this tree is:'+ Num+'\n'),
 	       	      radii(Tree, Leaves, R, 9999).
@@ -111,12 +115,17 @@ eccList(_,_,[],[]).
 
 
 radius_count( Tree, _, R ):- radius(Tree, R).
-%Diameter = maximum eccentricity of any vertex.
-diameter( Tree, D):- findall( E, (leaf(Tree, LeafNode), eccentricity(Tree, E, LeafNode)), Es ), 
-		         max_list(Es, D ).
-diameter_count(Tree, _, D):- diameter( Tree, D ).
 
-
+ diameter( Tree, D):- findall(Leaf, leaf(Tree,Leaf), Leaves),
+ 		      diameter(Tree, Leaves, D, -1).
+ 	
+ diameter(Tree, [Leaf | Leaves], D, Curr) :- eccList(Tree, Leaf, Leaves, Lens),
+ 					max_list(Lens, Len),
+ 					((Len > Curr) *-> (diameter(Tree, Leaves, D, Len));
+ 							(diameter(Tree, Leaves, D, Curr))).
+diameter(_, Leaf, D, D):- length(Leaf, 1).
+ 	
+ diameter_count(Tree, _, D):- diameter( Tree, D ). 
 
 %Parent can directly be concluded from the edge relationships
 parent_of( TreeName, Parent, Child ):- edge( TreeName, 'directional', _, Parent, Child).
