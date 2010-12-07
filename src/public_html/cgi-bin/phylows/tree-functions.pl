@@ -47,9 +47,8 @@ max_depth( Tree, Node, Depth ):- root( Tree, Anst ),
 			   Depth > Depth2.
 %count( Node, 1 ):- root( Node ).
 %Count the number of nodes in a tree
-node_count( Tree, Count ):- findall( Tree, node( Tree, _ ), Nodes ), length( Nodes, Count ).
-%node_count( Tree, Count ):- root( Tree, RootNode ), node_count( Tree, RootNode, Count ).
-%node_count( Tree, StartNode, Count ):- setof( Node, descendent_of(Tree, Node, StartNode), Nodes ), length( Nodes, Count ).
+node_count( Tree, Count ):- setof( Node, node( Tree, Node ), Nodes ), length( Nodes, Count ).
+
 %Count the leaves in a tree.
 leaf_count( Tree, Count ):- leaf_count( Tree, _, Count ).
 leaf_count( Tree, _, Count ):- setof( LNode, leaf( Tree, LNode ), Nodes ), length( Nodes, Count ).
@@ -82,49 +81,39 @@ pathlength( Tree, Start, End, Len ):- nearest_common_ancestor_of( Tree, Nca, [St
 
 %Maximum distance between Start and some other vertex.
 
-eccentricity(Tree,Len,Start ):- findall( E, (not(LeafNode == Start),
-					leaf(Tree, LeafNode),
-					pathlength(Tree,Start,LeafNode, E)),
-					Lens),
-				max_list(Lens, Len).
+%eccentricity(Tree,Len,Start ):- findall( E, (not(LeafNode == Start),
+%					leaf(Tree, LeafNode), 
+%					pathlength(Tree,Start,LeafNode, E)), 
+%					Lens),
+%				max_list(Lens, Len).
+
+nodes( Tree, Nodes ):- findall( Node, node( Tree, Node ), Nodes ).
+
+leaves( Tree, Leaves ):- findall( Leaf, leaf( Tree, Leaf ), Leaves ).
+
 %Radius = minimum eccentricity of any vertex.
-radius( Tree, R ):- findall(Leaf, leaf(Tree, Leaf), Leaves),
-                    %length(Leaves, Num),
-		    %write('Number of Leaves for this tree is:'+ Num+'in Tree:'+Tree+'\n'),
+radius( Tree, R ):- leaves(Tree, Leaves ), %findall(Leaf, leaf(Tree, Leaf), Leaves),
+                    length(Leaves, Num), 
+		    write('Number of Leaves for this tree is:'+ Num+'\n'),
 	       	      radii(Tree, Leaves, R, 9999).
-radii(Tree, [Leaf | Leaves], Radius, Curr) :-
+radii(Tree, [Leaf | Leaves], Radius, Curr) :- 
 					      eccList(Tree,Leaf,Leaves,Lens),
 					      max_list(Lens,Len),
-					      %length(Leaves, Num),
+					      length(Leaves, Num),
 					     % write(Num+' leaves left to check... Len is: '+ Len+' Curr is: '+Curr),
 					      ((Len < Curr) *-> (  radii(Tree,Leaves,Radius,Len));
 					                    ( radii(Tree,Leaves,Radius,Curr))).
 radii( _, Leaf, R, R):- length(Leaf, 1).
 eccList(Tree, Leaf, [LeafNode | Leaves], [E | Rest]):- pathlength(Tree,Leaf,LeafNode,E),
-						  %write('pathlength('+Tree+','+Leaf+','+LeafNode+','+E+') just finished.\n'),
+						  %write('pathlength('+Tree+','+Leaf+','+LeafNode+','+E+') just finished.\n'),    
                                                        eccList(Tree,Leaf,Leaves,Rest).
 eccList(_,_,[],[]).
 
-%findall( E, eccentricity(Tree, E, Leaf), Es  ),
-%	                           		          min_list(Es, LCurr),
-%					          LCurr < Curr, radii(Tree, Leaves, Radius, LCurr);
-%						  write(length(Leaves)+' leaves left to check...\n'),
-%						  flush_output,
-%					          radii(Tree, Leaves, Radius, Curr).
 
 radius_count( Tree, _, R ):- radius(Tree, R).
 %Diameter = maximum eccentricity of any vertex.
-%diameter( Tree, D):- findall( E, (leaf(Tree, LeafNode), eccentricity(Tree, E, LeafNode)), Es ),
-%		         max_list(Es, D ).
-diameter( Tree, D):- findall(Leaf, leaf(Tree,Leaf), Leaves),
-	             diameter(Tree, Leaves, D, -1).
-
-diameter(Tree, [Leaf | Leaves], D, Curr) :- eccList(Tree, Leaf, Leaves, Lens),
-	                                    max_list(Lens, Len),
-					    ((Len > Curr) *-> (diameter(Tree, Leaves, D, Len));
-							      (diameter(Tree, Leaves, D, Curr))).
-diameter(_, Leaf, D, D):- length(Leaf, 1).
-
+diameter( Tree, D):- findall( E, (leaf(Tree, LeafNode), eccentricity(Tree, E, LeafNode)), Es ), 
+		         max_list(Es, D ).
 diameter_count(Tree, _, D):- diameter( Tree, D ).
 
 
