@@ -36,7 +36,7 @@ public class NeXMLTree extends DefaultHandler{
     private String graphID;
     private String filename;
     //private String currentNode;
-    //int level;
+    int level;
     public NeXMLTree(){
         this.edges = new HashMap();
         this.redges = new HashMap();
@@ -45,7 +45,7 @@ public class NeXMLTree extends DefaultHandler{
         //this.label_to_node = new HashMap();
         this.processedNodes = new TreeSet();
         this.graphID = "defaultId";
-        //this.level = 0;
+        this.level = 0;
     }
 
     public void parse(InputStream is){
