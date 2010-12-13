@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class Main {
 
     /**
-     * @param args the command line arguments
+     * @param args the command-line arguments
      */
     public static void main(String[] args) {
         System.err.println("Starting Translation");
@@ -31,7 +31,7 @@ public class Main {
             }
             System.err.println("Parsing complete -- Printing...");
             //pt.printTree( System.err );
-            System.err.println("Dumping PhyloXML");
+            System.err.println("Dumping PhyloXML to stdout");
             pt.printPhyloXML( System.out );
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
