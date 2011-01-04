@@ -5,6 +5,7 @@
 
 package cdaoexplorer;
 
+import cdaoexplorer.forms.Loader;
 import cdaoexplorer.forms.Workbench;
 import prefuse.demos.CDAOview;
 
@@ -24,7 +25,8 @@ public class Main {
                 System.err.println("argument[" + i + "]: " + args[i]);
             }
        System.err.println("--End of Argument list--");
-            Workbench.main(args);
+            //Workbench.main(args);
+            Loader.main(args);
         
         
     }

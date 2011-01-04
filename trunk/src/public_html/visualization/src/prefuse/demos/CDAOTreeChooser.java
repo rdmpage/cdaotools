@@ -47,7 +47,7 @@ public class CDAOTreeChooser extends CDAODataSetChooser {
 
     public void view(){
         String[] params = new String[ 2 ];
-        String treeURI = "http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/tree/" +
+        String treeURI = "http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/tree/" +
                 this.getSelectedItem() + "?format=graphml" ;
 
         System.err.println("Displaying URI: " + treeURI );
