@@ -235,20 +235,31 @@ public class NodeLinkTreeLayout extends TreeLayout {
     /**
      * @see prefuse.action.Action#run(double)
      */
+    static boolean ran_once = false;
     public void run(double frac) {
         Graph g = (Graph)m_vis.getGroup(m_group);
         initSchema(g.getNodes());
         
         Arrays.fill(m_depths, 0);
         m_maxDepth = 0;
-        
-        Point2D a = getLayoutAnchor();
-        m_ax = a.getX();
-        m_ay = a.getY();
-        
-        NodeItem root = getLayoutRoot();
-        Params rp = getParams(root);
-        
+        NodeItem root;
+        Params rp;
+        if(!ran_once)
+        {
+          Point2D a = getLayoutAnchor();
+          m_ax = a.getX();
+          m_ay = a.getY();
+          ran_once = true;
+          root = getLayoutRoot();
+          rp = getParams(root);
+        }
+        else
+        {
+        	root = getLayoutRoot();
+        	rp = getParams(root);
+        	m_ay = root.getY();
+        	m_ax = root.getX();
+        }
         // do first pass - compute breadth information, collect depth info
         firstWalk(root, 0, 1);
         
