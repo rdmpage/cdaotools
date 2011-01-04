@@ -22,7 +22,7 @@ public class TreeNameListModel implements javax.swing.ListModel {
     private List<String> data;
     private List<ListDataListener> selected;
     private List listeners;
-    private static final String TREE_SERVICE_URI_BASE = "http://www.cs.nmsu.edu/~bchisham/cgi-bin/phylows/listing";
+    private static final String TREE_SERVICE_URI_BASE = "http://www.cs.nmsu.edu/~cdaostore/cgi-bin/phylows/listing";
     private String listType;
     private int start;
     private int limit;

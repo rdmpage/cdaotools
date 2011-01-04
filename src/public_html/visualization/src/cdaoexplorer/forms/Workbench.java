@@ -34,6 +34,11 @@ public class Workbench extends javax.swing.JFrame {
     FileDialog fileChooser;
     ErrorReportDialog errorDialog;
     AddAnnotation addAnnotationDialog;
+
+    private static boolean loaded = false;
+
+    public static boolean isLoaded(){ return loaded; }
+
     /** Creates new form Workbench */
     public Workbench() {
         initComponents();
@@ -46,8 +51,8 @@ public class Workbench extends javax.swing.JFrame {
         fileChooser = new FileDialog( this, true );
         this.errorDialog = new ErrorReportDialog( this, false );
         this.errorDialog.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-        this.addAnnotationDialog = new AddAnnotation(this, true);
-
+        //this.addAnnotationDialog = new AddAnnotation(this, true);
+        loaded = true;
     }
 
     public Workbench(String[] args){
@@ -61,10 +66,16 @@ public class Workbench extends javax.swing.JFrame {
         fileChooser = new FileDialog( this, true );
         this.errorDialog = new ErrorReportDialog( this, false );
         this.errorDialog.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-        this.addAnnotationDialog = new AddAnnotation(this, true);
+    //    this.addAnnotationDialog = new AddAnnotation(this, true);
+        loaded = true;
+
+        System.err.println(" Workbench Loaded ");
+
         if (args.length > 0){
             try {
                 this.treeChooser.doOpenFile(new URL(args[0]));
+                //this.addAnnotationDialog = new AddAnnotation(this, true);
+                loaded = true;
             } catch (MalformedURLException ex) {
                 Logger.getLogger(Workbench.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -151,6 +162,7 @@ public class Workbench extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CDAO Explorer");
+        setLocation(new java.awt.Point(200, 22));
 
         iconLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cdaoexplorer/forms/cdao-triplestore-logo.jpg"))); // NOI18N
 
@@ -293,7 +305,12 @@ public class Workbench extends javax.swing.JFrame {
             final String params[] = args;
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
-                    new Workbench(params).setVisible(true);
+                    if ( null != params && params.length > 0 ){
+                        new Workbench(params).setVisible(true);
+                    }
+                    else {
+                        new Workbench().setVisible( true );
+                    }
                 }
             });
     }

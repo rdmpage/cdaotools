@@ -35,32 +35,36 @@ import org.semanticweb.owl.model.OWLOntologyManager;
  * @author bchisham
  */
 public class AddAnnotation extends javax.swing.JDialog {
-    private OWLOntologyManager ontologyManager;
-    private AnnotationSourceCollection annotationSource;
-    private DefaultComboBoxModel slistModel;
-    private boolean selectionMade;
+    private static OWLOntologyManager ontologyManager;
+    private static AnnotationSourceCollection annotationSource;
+    private static Set< String > shortNames = new TreeSet();
+    private static DefaultComboBoxModel slistModel = new DefaultComboBoxModel();;
+    private static boolean selectionMade = false;
+    
+    public static int  getOntologiesLoaded(){ return shortNames.size(); }
+
     /** Creates new form AddAnnotation */
     public AddAnnotation(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        try {
+        
             initComponents();
-            this.ontologyManager = OWLManager.createOWLOntologyManager();
-            this.annotationSource = new AnnotationSourceCollection();
-            this.slistModel = new DefaultComboBoxModel();
-            this.addNewAnnotationType("cdao", new URL("http://www.evolutionaryontology.org/cdao.owl"));
-            this.addNewAnnotationType( "study", new URL("http://www.cs.nmsu.edu/~bchisham/study.owl"));
-            
             this.annotationComboBox.setModel(slistModel);
-            this.annotationComboBox.setSelectedIndex(0);
-            this.setAvailableProperties();
-            this.selectionMade = false;
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(AddAnnotation.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            //this.annotationComboBox.setSelectedIndex(0);
+           // setAvailableProperties();
+            AddAnnotation.selectionMade = false;
+        
 
     }
 
+    public static void  loadAnnotations() throws MalformedURLException{
+         if (null == AddAnnotation.annotationSource ){
+                AddAnnotation.ontologyManager = OWLManager.createOWLOntologyManager();
+                AddAnnotation.annotationSource = new AnnotationSourceCollection();
+            }
 
+            AddAnnotation.addNewAnnotationType("cdao", new URL("http://www.evolutionaryontology.org/cdao/1.0/cdao.owl"));
+            AddAnnotation.addNewAnnotationType( "study", new URL("http://www.cs.nmsu.edu/~bchisham/study.owl"));
+    }
 
     /**
      * Get the annotation term.
@@ -79,37 +83,45 @@ public class AddAnnotation extends javax.swing.JDialog {
 
 
     public void setAvailableProperties(){
-        String src = (String) this.annotationComboBox.getSelectedItem();
-        Set< URI > pset  = this.annotationSource.getTerms(src);
-        this.annotationTermComboBox.setModel( new URLList( pset ) );
-        this.repaint();
+        String src = (String) annotationComboBox.getSelectedItem();
+        Set< URI > pset  = AddAnnotation.annotationSource.getTerms(src);
+        annotationTermComboBox.setModel( new URLList( pset ) );
+        repaint();
     }
 
 
-    public void addNewAnnotationType( String shortName, URL source ){
+    public static void addNewAnnotationType( String shortName, URL source ){
         try {
             //OWLDataFactory dataFactory = this.ontologyManager.getOWLDataFactory();
             //PelletReasonerFactory reasonerFactory = new PelletReasonerFactory();
             //OWLReasonerFactory reasonerFactory = null;
 
-            System.err.println("Adding: xmlns:" + shortName + "=\"" + source.toString() + "\"" );
-
-            OWLOntology ontology = ontologyManager.loadOntologyFromPhysicalURI( source.toURI() );
-
-            Reasoner reasoner = new Reasoner( ontologyManager );
-
-
-            reasoner.setOntology( ontology );
             
 
-            Set< OWLDataProperty > props = reasoner.getDataProperties();
-            TreeSet< URI > uri_props = new TreeSet();
-            Iterator< OWLDataProperty > pit = props.iterator();
-            while (  pit.hasNext() ){
-                uri_props.add( pit.next().getURI() );
+            if ( ! shortNames.contains( shortName ) ){
+                System.err.println("Adding: xmlns:" + shortName + "=\"" + source.toString() + "\"" );
+
+                OWLOntology ontology = ontologyManager.loadOntologyFromPhysicalURI( source.toURI() );
+
+                Reasoner reasoner = new Reasoner( ontologyManager );
+
+
+                reasoner.setOntology( ontology );
+
+
+                Set< OWLDataProperty > props = reasoner.getDataProperties();
+                TreeSet< URI > uri_props = new TreeSet();
+                Iterator< OWLDataProperty > pit = props.iterator();
+                while (  pit.hasNext() ){
+                    uri_props.add( pit.next().getURI() );
+                }
+                AddAnnotation.annotationSource.addSource(shortName, uri_props);
+                slistModel.addElement( shortName );
+                shortNames.add(shortName);
+
+
+                
             }
-            this.annotationSource.addSource(shortName, uri_props);
-            this.slistModel.addElement( shortName );
             
             //this.setAvailableProperties();
         } catch (OWLOntologyCreationException ex) {
